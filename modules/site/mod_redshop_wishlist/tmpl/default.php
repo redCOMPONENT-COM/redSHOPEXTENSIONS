@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 $user   = JFactory::getUser();
-$Itemid = RedshopHelperUtility::getItemId();
+$Itemid = RedshopHelperRouter::getItemId();
 ?>
 
 <div class="mod_redshop_wishlist <?php echo $moduleClassSuffix ?>">

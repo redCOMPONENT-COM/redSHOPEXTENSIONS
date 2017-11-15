@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" client="site" type="plugin" group="content" method="upgrade">
     <name>PLG_CONTENT_REDSHOP_PRODUCT</name>
-    <version>1.5.3</version>
-    <redshop>2.0</redshop>
-    <creationDate>Sep 2016</creationDate>
+    <version>2.0.0</version>
+    <redshop>2.1.0</redshop>
+    <creationDate>November 2017</creationDate>
     <author>redCOMPONENT.com</author>
     <copyright>redCOMPONENT.com</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>

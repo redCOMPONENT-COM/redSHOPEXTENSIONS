@@ -358,7 +358,7 @@ if (!class_exists('redproductScroller'))
 			}
 			else
 			{
-				$Itemid = RedshopHelperUtility::getItemId($row->product_id);
+				$Itemid = RedshopHelperRouter::getItemId($row->product_id);
 			}
 
 			$data_add   = '';

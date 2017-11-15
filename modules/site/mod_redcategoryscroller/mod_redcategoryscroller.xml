@@ -2,8 +2,8 @@
 <extension type="module" version="3.5.0" client="site" method="upgrade">
     <name>MOD_REDCATEGORYSCROLLER</name>
     <version>2.0.0</version>
-    <redshop>2.0.0</redshop>
-    <creationDate>May 2017</creationDate>
+    <redshop>2.1.0</redshop>
+    <creationDate>November 2017</creationDate>
     <author>redCOMPONENT.com</author>
     <authorEmail>email@redcomponent.com</authorEmail>
     <copyright>redCOMPONENT.com</copyright>

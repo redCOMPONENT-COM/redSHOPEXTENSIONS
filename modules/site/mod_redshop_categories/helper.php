@@ -460,7 +460,7 @@ class modProMenuHelper
 
 				$catname = JText::_($category_tmp[$row_list[$n]]["category_name"]);
 
-				$Itemid = RedshopHelperUtility::getCategoryItemid($category_tmp[$row_list[$n]]["category_child_id"]);
+				$Itemid = RedshopHelperRouter::getCategoryItemid($category_tmp[$row_list[$n]]["category_child_id"]);
 
 				if (!$Itemid)
 				{
