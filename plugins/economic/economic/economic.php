@@ -143,9 +143,9 @@ class plgEconomicEconomic extends JPlugin
 		$manifestFile = simplexml_load_file(__DIR__ . '/economic.xml');
 
 		$appIdentifier = __CLASS__ . '/' . $manifestFile->version
-					. ' redshop/' . $manifestFile->redshop
-					. ' (http://redcomponent.com/redcomponent/redshop/plugins/economic-accounting; support@redcomponent.com)'
-					. ' ' . JFactory::getConfig()->get('sitename');
+			. ' redshop/' . $manifestFile->redshop
+			. ' (http://redcomponent.com/redcomponent/redshop/plugins/economic-accounting; support@redcomponent.com)'
+			. ' ' . JFactory::getConfig()->get('sitename');
 
 		return $appIdentifier;
 	}
@@ -741,11 +741,11 @@ class plgEconomicEconomic extends JPlugin
 		try
 		{
 			$employee = $this->client
-							->Employee_FindByNumber(
-								array(
-									"number" => (int) $userInput
-								)
-							)->Employee_FindByNumberResult;
+				->Employee_FindByNumber(
+					array(
+						"number" => (int) $userInput
+					)
+				)->Employee_FindByNumberResult;
 		}
 		catch (Exception $exception)
 		{
@@ -1202,16 +1202,16 @@ class plgEconomicEconomic extends JPlugin
 		try
 		{
 			return $this->client->Product_GetBarCode(
-								array('productHandle' => $productHandle)
-							)->Product_GetBarCodeResult;
+				array('productHandle' => $productHandle)
+			)->Product_GetBarCodeResult;
 		}
 		catch (Exception $e)
 		{
-			print("<p><i>ProductGetBarCode:" . $exception->getMessage() . "</i></p>");
+			print("<p><i>ProductGetBarCode:" . $e->getMessage() . "</i></p>");
 
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "Product_GetBarCode:" . $exception->getMessage());
+				JError::raiseWarning(21, "Product_GetBarCode:" . $e->getMessage());
 			}
 			else
 			{
@@ -2207,7 +2207,7 @@ class plgEconomicEconomic extends JPlugin
 			}
 
 			$cashBookEntryHandle = $this->client->CashBookEntry_CreateCreditorPayment($info)
-												->CashBookEntry_CreateCreditorPaymentResult;
+				->CashBookEntry_CreateCreditorPaymentResult;
 
 			$this->client->CashBookEntry_SetAmount(
 				array(
