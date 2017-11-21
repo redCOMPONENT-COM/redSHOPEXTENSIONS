@@ -22,7 +22,6 @@
       "redshop_products",
       "redshop_products_slideshow",
       "redshop_promote_free_shipping",
-      "redshop_search",
       "redshop_shoppergroup_category",
       "redshop_shoppergroup_product",
       "redshop_shoppergrouplogo",
@@ -47,9 +46,6 @@
       "product"
     ],
     "logman": [
-      "redshop"
-    ],
-    "quickicon": [
       "redshop"
     ],
     "redshop_checkout": [
@@ -144,10 +140,6 @@
     ],
     "redshop_vies_registration": [
       "rs_vies_registration"
-    ],
-    "search": [
-      "redshop_categories",
-      "redshop_products"
     ],
     "system": [
       "agile_crm",

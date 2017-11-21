@@ -47,17 +47,17 @@ gulp.task('copy:' + baseTask,
 // Copy: plugin
 gulp.task('copy:' + baseTask + ':plugin', ['clean:' + baseTask + ':plugin'], function() {
     return gulp.src([
-            extPath + '/**',
-            '!' + extPath + '/language',
-            '!' + extPath + '/language/**'
-        ])
-        .pipe(gulp.dest(wwwExtPath));
+        extPath + '/**',
+        '!' + extPath + '/language',
+        '!' + extPath + '/language/**'
+    ])
+    .pipe(gulp.dest(wwwExtPath));
 });
 
 // Copy: Language
 gulp.task('copy:' + baseTask + ':language', ['clean:' + baseTask + ':language'], function() {
     return gulp.src(extPath + '/language/**')
-        .pipe(gulp.dest(config.wwwDir + '/language'));
+    .pipe(gulp.dest(config.wwwDir + '/language'));
 });
 
 // Watch
