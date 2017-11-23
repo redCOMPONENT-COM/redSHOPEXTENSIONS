@@ -26,8 +26,7 @@ var google, service_points;
 			}
 		});
 
-		$('input[type="radio"][id^="shipping_rate_id"]').click(function ()
-		{
+		$('body').on('click', 'input[type="radio"][id^="shipping_rate_id"]', function(event){
 			if (checkPDinput($(this)))
 			{
 				inject_button($(this));
@@ -35,7 +34,7 @@ var google, service_points;
 			{
 				$('#showMap_input, #sp_info, #sp_inputs, #showMap, #postdanmark_html_inject').remove();
 			}
-		});
+		})
 
 		var body = $('body');
 
