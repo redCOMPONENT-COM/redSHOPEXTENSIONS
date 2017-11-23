@@ -55,14 +55,20 @@ var google, service_points;
 
 		$('body').on('click', 'input[name="checkoutnext"], input[name="checkout_final"]', function (e)
 		{
-			$('.pn_error').remove();
-			if (validate_postdanmark())
+			var checkedShipping = jQuery('input[name="shipping_rate_id"]:checked');
+			var attrOnclick = jQuery(checkedShipping).attr('onclick');
+
+			if (attrOnclick.search('postdanmark') !== -1)
 			{
-				$('form#adminForm').submit();
-			} else
-			{
-				$('#sp_info').after('<div class="pn_error" style="color: red; font-weight: normal; ">' + Joomla.JText._('PLG_REDSHOP_SHIPPING_POSTDANMARK_PRESS_POINT_TO_DELIVERY') + '</div>')
-				e.preventDefault();
+				$('.pn_error').remove();
+				if (validate_postdanmark())
+				{
+					$('form#adminForm').submit();
+				} else
+				{
+					$('#sp_info').after('<div class="pn_error" style="color: red; font-weight: normal; ">' + Joomla.JText._('PLG_REDSHOP_SHIPPING_POSTDANMARK_PRESS_POINT_TO_DELIVERY') + '</div>')
+					e.preventDefault();
+				}
 			}
 		})
 
@@ -184,7 +190,6 @@ function injectPostnord()
 
 function inject_button(el)
 {
-
 	// Is mobile
 	if (redSHOP.postDanmark.useMap)
 	{
