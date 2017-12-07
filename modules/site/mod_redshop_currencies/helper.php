@@ -33,16 +33,6 @@ class ModRedshopCurrenciesHelper
 	 */
 	public static function getList(&$params)
 	{
-		// Set product currency
-		$session        = JFactory::getSession();
-		$newCurrencyId  = JFactory::getApplication()->input->getInt('product_currency', 0);
-		$currencyEntity = RedshopEntityCurrency::getInstance($newCurrencyId);
-
-		if ($currencyEntity->isValid())
-		{
-			$session->set('product_currency', $currencyEntity->get('currency_code'));
-		}
-
 		// Prepare available currency list.
 		$availableCurrencies = $params->get('product_currency', array());
 
@@ -79,9 +69,7 @@ class ModRedshopCurrenciesHelper
 	public static function getActive()
 	{
 		$session        = JFactory::getSession();
-		$activeCurrency = $session->get('product_currency', 0);
-		$activeCurrency = !$activeCurrency ?
-			RedshopEntityCurrency::getInstance()->loadFromCode(Redshop::getConfig()->get('CURRENCY_CODE'))->getId() : $activeCurrency;
+		$activeCurrency = $session->get('product_currency', RedshopEntityCurrency::getInstance()->loadFromCode(Redshop::getConfig()->get('CURRENCY_CODE'))->getId());
 
 		return $activeCurrency;
 	}
