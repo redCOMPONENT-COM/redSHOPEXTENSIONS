@@ -72,7 +72,7 @@ class Wss_DataFeedApplicationCli extends JApplicationCli
 				'product&pid=' . $productId
 			);
 
-			$itemId = count($itemData) > 0 ? $itemData->id : RedshopHelperUtility::getItemId($productId, $categoryId);
+			$itemId = count($itemData) > 0 ? $itemData->id : RedshopHelperRouter::getItemId($productId, $categoryId);
 
 			$url = $params->get('url') . 'index.php?option=com_redshop&view=product&pid=' . $productId
 				. '&cid=' . $categoryId . '&Itemid=' . $itemId;

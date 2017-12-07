@@ -37,7 +37,7 @@ $productFields          = $params->get('product_fields', array());
 $showCustomfield        = trim($params->get('showCustomfield', ''));
 $excludeCategories      = implode(',', $params->get('excludeCategories', ''));
 $javaFun                = "";
-$itemId                 = RedshopHelperUtility::getItemId();
+$itemId                 = RedshopHelperRouter::getItemId();
 
 $categoryData     = ModRedshopSearch::getCategories();
 $manufacturerData = ModRedshopSearch::getManufacturers();

@@ -84,7 +84,7 @@ for ($i = 0, $countRows = count($rows); $i < $countRows; $i++)
 	}
 	else
 	{
-		$Itemid = RedshopHelperUtility::getItemId($row->product_id);
+		$Itemid = RedshopHelperRouter::getItemId($row->product_id);
 	}
 
 	$catattach = '';
