@@ -151,6 +151,8 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 	 * @param   string  &$render  Render of layout
 	 *
 	 * @return  void
+	 *
+	 * @throws  Exception
 	 */
 	public function onRedshopAdminRender(&$render)
 	{
@@ -158,25 +160,25 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 
 		if (!$app->isAdmin())
 		{
-			return true;
+			return;
 		}
 
-		$jinput = $app->input;
+		$input = $app->input;
 
-		if ($jinput->get('option', '') != 'com_redshop')
+		if ($input->get('option', '') != 'com_redshop')
 		{
-			return true;
+			return;
 		}
 
-		if ($jinput->get('view', '') != 'voucher' && $jinput->get('view', '') != 'coupon')
+		if ($input->get('view', '') != 'voucher' && $input->get('view', '') != 'coupon')
 		{
-			return true;
+			return;
 		}
 
 		$render .= RedshopLayoutHelper::render(
 			'form',
 			array(
-				'view' => $jinput->get('view', '')
+				'view' => $input->get('view', '')
 			),
 			JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/layouts'
 		);
@@ -195,33 +197,18 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 		$db = JFactory::getDbo();
 
 		$query = $db->getQuery(true);
+		$table = $type == 'voucher' ? '#__redshop_voucher' : '#__redshop_coupons';
 
-		if ($type == "voucher")
-		{
-			$query->select(
-					array
-					(
-						$db->qn('code', 'code'),
-						$db->qn('amount', 'value'),
-						$db->qn('type', 'type'),
-					)
-				)
-				->from($db->qn('#__redshop_voucher'))
-				->where($db->qn('id') . ' = ' . (int) $id);
-		}
-		else
-		{
-			$query->select(
-					array
-					(
-						$db->qn('coupon_code', 'code'),
-						$db->qn('coupon_value', 'value'),
-						$db->qn('percent_or_total', 'type'),
-					)
-				)
-				->from($db->qn('#__redshop_coupons'))
-				->where($db->qn('coupon_id') . ' = ' . (int) $id);
-		}
+		$query->select(
+			array
+			(
+				$db->qn('code'),
+				$db->qn('amount'),
+				$db->qn('type'),
+			)
+		)
+			->from($db->qn($table))
+			->where($db->qn('id') . ' = ' . (int) $id);
 
 		return $db->setQuery($query)->loadObject();
 	}
