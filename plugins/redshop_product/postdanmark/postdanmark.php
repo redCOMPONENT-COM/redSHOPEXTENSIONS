@@ -17,6 +17,20 @@ defined('_JEXEC') or die;
 class PlgRedshop_ProductPostDanmark extends JPlugin
 {
 	/**
+	 * This event will trigger while order place and before generate Economic invoice
+	 *
+	 * @param   array   $cart         Cart information Array
+	 * @param   object  $orderResult  Order information Object
+	 *
+	 *
+	 * @return  void
+	 */
+	public function onBeforeCreateEconomicInvoice($cart, $orderResult)
+	{
+		$this->afterOrderPlace($cart, $orderResult);
+	}
+
+	/**
 	 * Method will trigger on After redSHOP Order Place to update PostDanmark shipping info
 	 *
 	 * @param   array   $cart         Cart information Array
