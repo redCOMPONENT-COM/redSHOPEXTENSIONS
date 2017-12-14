@@ -30,6 +30,14 @@
                         label="PLG_SYSTEM_ITUNES_REVIEWS_FIELD_ID"
                         size="50"
                 />
+
+                <field
+                        name="joomla_category_id"
+                        type="category"
+                        extension="com_content"
+                        label="PLG_SYSTEM_ITUNES_REVIEWS_FIELD_SELECT_CATEGORY"
+                        description=""
+                />
             </fieldset>
         </fields>
     </config>

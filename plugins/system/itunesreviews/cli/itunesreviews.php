@@ -46,6 +46,9 @@ require_once JPATH_ROOT . '/plugins/system/itunesreviews/helper/vendor/autoload.
  */
 class Itunesreviews extends JApplicationCli
 {
+	/**
+	 * @var  JRegistry
+	 */
 	protected $params = null;
 
 	/**
@@ -72,8 +75,13 @@ class Itunesreviews extends JApplicationCli
 			// Get plugin params
 			$this->params = $this->params->loadString($plugin->params);
 		}
+
+		$this->getItunes();
 	}
 
+	/**
+	 * @return boolean
+	 */
 	protected function getItunes()
 	{
 		$url       = 'https://itunes.apple.com/dk/rss/customerreviews/id=' . $this->params->get('itunes_id') . '/xml';
@@ -118,7 +126,7 @@ class Itunesreviews extends JApplicationCli
 
 						$article->created          = JDate::getInstance((string) $entry->updated)->toSql();
 						$article->state            = 1;
-						$article->catid            = 2;
+						$article->catid            = $this->params->get('joomla_category_id');
 						$article->created_by_alias = (string) $entry->author->name;
 
 						$this->toJoomlaArticle($article->getProperties());
@@ -128,6 +136,11 @@ class Itunesreviews extends JApplicationCli
 		}
 	}
 
+	/**
+	 * @param   array  $article
+	 *
+	 * @return  boolean
+	 */
 	protected function toJoomlaArticle($article)
 	{
 		$table = JTable::getInstance('content', 'JTable');
