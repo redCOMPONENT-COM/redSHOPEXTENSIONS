@@ -129,7 +129,25 @@ class Itunesreviews extends JApplicationCli
 						$article->catid            = $this->params->get('joomla_category_id');
 						$article->created_by_alias = (string) $entry->author->name;
 
-						$this->toJoomlaArticle($article->getProperties());
+						$table = $this->toJoomlaArticle($article->getProperties());
+
+						// By logic article will be created only one time. So no need to check for INSERT
+						if ($table)
+						{
+							$im = $entry->children('http://itunes.apple.com/rss');
+							$rating = (int) $im->rating;
+
+							// Update rating
+							$db = JFactory::getDbo();
+							$query = $db->getQuery(true);
+
+							// Insert rating
+							$query->insert($db->quoteName('#__content_rating'))
+								->columns($db->quoteName(array('content_id', 'rating_sum', 'rating_count')))
+								->values((int) $table->get('id'), (int) $rating, 1);
+
+							$db->setQuery($query)->execute();
+						}
 					}
 				}
 			}
