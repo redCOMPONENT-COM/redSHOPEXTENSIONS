@@ -46,7 +46,6 @@ class JFormFieldSynctool extends JFormField
 					dataType:\'json\',
 				}).always(function (data, textStatus){
 					var haveErrors = false;
-					console.log(data);
 					if (data)
 					{
 						jQuery.each(data.messages, function(messageTypeIdx, messageTypeData) {

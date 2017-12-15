@@ -1,6 +1,5 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS `#__redshop_redshopb_xref` ;
 CREATE TABLE IF NOT EXISTS `#__redshop_redshopb_xref` (
 	`redshop_product_id` int(11) NOT NULL,
 	`redshopb_product_id` int(11) NOT NULL,
@@ -8,7 +7,14 @@ CREATE TABLE IF NOT EXISTS `#__redshop_redshopb_xref` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-DROP TABLE IF EXISTS `#__redshop_redshopb_manufacturer_xref` ;
+CREATE TABLE IF NOT EXISTS `#__redshop_syncb2b_remote` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `local_id` int(11) NOT NULL,
+  `remote_id` int(11) NOT NULL,
+  `object` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `#__redshop_redshopb_manufacturer_xref` (
 	`redshop_manufacturer_id` int(11) NOT NULL,
 	`redshopb_manufacturer_id` int(11) NOT NULL,
