@@ -134,17 +134,17 @@ class Itunesreviews extends JApplicationCli
 						// By logic article will be created only one time. So no need to check for INSERT
 						if ($table)
 						{
-							$im = $entry->children('http://itunes.apple.com/rss');
+							$im     = $entry->children('http://itunes.apple.com/rss');
 							$rating = (int) $im->rating;
 
 							// Update rating
-							$db = JFactory::getDbo();
+							$db    = JFactory::getDbo();
 							$query = $db->getQuery(true);
 
 							// Insert rating
 							$query->insert($db->quoteName('#__content_rating'))
 								->columns($db->quoteName(array('content_id', 'rating_sum', 'rating_count')))
-								->values((int) $table->get('id'), (int) $rating, 1);
+								->values((int) $table->get('id') . ',' . (int) $rating . ',' . 1);
 
 							$db->setQuery($query)->execute();
 						}
@@ -155,7 +155,7 @@ class Itunesreviews extends JApplicationCli
 	}
 
 	/**
-	 * @param   array  $article
+	 * @param   array $article
 	 *
 	 * @return  boolean
 	 */
