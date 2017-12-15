@@ -13,30 +13,21 @@ defined('_JEXEC') or die;
  * PlgSystemRedSHOP class.
  *
  * @extends JPlugin
- * @since  1.0.0
+ * @since   1.0.0
  */
-class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
+class PlgSystemRedSHOP_Send_Discountcode extends Plugin
 {
 	/**
-	 * Constructor
+	 * Load the language file on instantiation.
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An optional associative array of configuration settings.
-	 *                             Recognized key values include 'name', 'group', 'params', 'language'
-	 *                             (this list is not meant to be comprehensive).
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config = array())
-	{
-		JLoader::import('redshop.library');
-		JPlugin::loadLanguage('plg_system_redshop_send_discountcode');
-
-		parent::__construct($subject, $config);
-	}
+	protected $autoloadLanguage = true;
 
 	/**
 	 * Add Send Discount Button for Menu Bar on voucher and coupon view
 	 *
-	 * @return  void
+	 * @return  boolean
 	 */
 	public function onAfterRoute()
 	{
@@ -47,14 +38,14 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 			return true;
 		}
 
-		$jinput = $app->input;
+		$input = $app->input;
 
-		if ($jinput->get('option', '') != 'com_redshop')
+		if ($input->get('option', '') != 'com_redshop')
 		{
 			return true;
 		}
 
-		if ($jinput->get('view', '') != 'voucher' && $jinput->get('view', '') != 'coupon')
+		if ($input->get('view', '') != 'voucher' && $input->get('view', '') != 'coupon')
 		{
 			return true;
 		}
@@ -69,8 +60,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 	 */
 	public function onAjaxRedShop_SendDiscountCodeByMail()
 	{
-		$productHelper = productHelper::getInstance();
-		$config        = JFactory::getConfig();
+		$config = JFactory::getConfig();
 
 		if (!$config->get('mailonline'))
 		{
@@ -86,7 +76,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 		}
 
 		$mailBody = $mailInfo[0]->mail_body;
-		$subject = $mailInfo[0]->mail_subject;
+		$subject  = $mailInfo[0]->mail_subject;
 
 		$from     = $config->get('mailfrom');
 		$fromName = $config->get('fromname');
@@ -98,12 +88,12 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 
 		$mailBody = RedshopHelperMail::imgInMail($mailBody);
 
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
+		$app   = JFactory::getApplication();
+		$input = $app->input;
 
-		$email        = $jinput->getString('email', '');
-		$view        = $jinput->getString('view', '');
-		$discountId = $jinput->getInt('discountId', '');
+		$email      = $input->getString('email', '');
+		$view       = $input->getString('view', '');
+		$discountId = $input->getInt('discountId', '');
 
 		// Get Code
 		$discountDetail = $this->getDiscountCode($discountId, $view);
@@ -113,7 +103,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 			return true;
 		}
 
-		$value = $productHelper->getProductFormattedPrice($discountDetail->value);
+		$value = RedshopHelperProductPrice::formattedPrice($discountDetail->value);
 
 		if ($discountDetail->type == '1' || $discountDetail->type == 'Percentage')
 		{
@@ -136,7 +126,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 	/**
 	 * This function add more Mail Sections on redSHOP
 	 *
-	 * @param   array  &$options  Mail Sections
+	 * @param   array &$options Mail Sections
 	 *
 	 * @return  void
 	 */
@@ -148,9 +138,11 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 	/**
 	 * Load a layout for modal button on onAfterRoute function
 	 *
-	 * @param   string  &$render  Render of layout
+	 * @param   string &$render Render of layout
 	 *
 	 * @return  void
+	 *
+	 * @throws  Exception
 	 */
 	public function onRedshopAdminRender(&$render)
 	{
@@ -158,25 +150,25 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 
 		if (!$app->isAdmin())
 		{
-			return true;
+			return;
 		}
 
-		$jinput = $app->input;
+		$input = $app->input;
 
-		if ($jinput->get('option', '') != 'com_redshop')
+		if ($input->get('option', '') != 'com_redshop')
 		{
-			return true;
+			return;
 		}
 
-		if ($jinput->get('view', '') != 'voucher' && $jinput->get('view', '') != 'coupon')
+		if ($input->get('view', '') != 'voucher' && $input->get('view', '') != 'coupon')
 		{
-			return true;
+			return;
 		}
 
 		$render .= RedshopLayoutHelper::render(
 			'form',
 			array(
-				'view' => $jinput->get('view', '')
+				'view' => $input->get('view', '')
 			),
 			JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/layouts'
 		);
@@ -185,8 +177,8 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 	/**
 	 * [getDiscountCode description]
 	 *
-	 * @param   int     $id    Discount ID
-	 * @param   string  $type  Voucher or Coupon
+	 * @param   int    $id   Discount ID
+	 * @param   string $type Voucher or Coupon
 	 *
 	 * @return  string         Discount Code
 	 */
@@ -195,33 +187,18 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 		$db = JFactory::getDbo();
 
 		$query = $db->getQuery(true);
+		$table = $type == 'voucher' ? '#__redshop_voucher' : '#__redshop_coupons';
 
-		if ($type == "voucher")
-		{
-			$query->select(
-					array
-					(
-						$db->qn('code', 'code'),
-						$db->qn('amount', 'value'),
-						$db->qn('type', 'type'),
-					)
-				)
-				->from($db->qn('#__redshop_voucher'))
-				->where($db->qn('id') . ' = ' . (int) $id);
-		}
-		else
-		{
-			$query->select(
-					array
-					(
-						$db->qn('coupon_code', 'code'),
-						$db->qn('coupon_value', 'value'),
-						$db->qn('percent_or_total', 'type'),
-					)
-				)
-				->from($db->qn('#__redshop_coupons'))
-				->where($db->qn('coupon_id') . ' = ' . (int) $id);
-		}
+		$query->select(
+			array
+			(
+				$db->qn('code'),
+				$db->qn('amount'),
+				$db->qn('type'),
+			)
+		)
+			->from($db->qn($table))
+			->where($db->qn('id') . ' = ' . (int) $id);
 
 		return $db->setQuery($query)->loadObject();
 	}

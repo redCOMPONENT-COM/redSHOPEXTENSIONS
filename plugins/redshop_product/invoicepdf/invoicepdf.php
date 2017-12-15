@@ -27,8 +27,8 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 	/**
 	 * Constructor
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An optional associative array of configuration settings.
+	 * @param   object &$subject   The object to observe
+	 * @param   array  $config     An optional associative array of configuration settings.
 	 *                             Recognized key values include 'name', 'group', 'params', 'language'
 	 *                             (this list is not meant to be comprehensive).
 	 *
@@ -36,7 +36,7 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 	 */
 	public function __construct(&$subject, $config = array())
 	{
-		$lang          = JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_product_invoicepdf', JPATH_ADMINISTRATOR);
 
 		parent::__construct($subject, $config);
@@ -45,7 +45,7 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 	/**
 	 * This method will trigger when redSHOP order status will be updated.
 	 *
-	 * @param   object  $data  Order Status Information
+	 * @param   object $data Order Status Information
 	 *
 	 * @return  void
 	 */
@@ -64,8 +64,8 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 		if ($data['order_status_all'] == 'S' && $data['order_paymentstatus' . $orderId] != "Paid")
 		{
 			$message .= '<li class="red text-error">'
-						. JText::sprintf("PLG_REDSHOP_PRODUCT_INVOICEPDF_CREATE_FAIL", "<span class=\"badge badge-important\">" . $orderId . "</span>")
-					. '</li>';
+				. JText::sprintf("PLG_REDSHOP_PRODUCT_INVOICEPDF_CREATE_FAIL", "<span class=\"badge badge-important\">" . $orderId . "</span>")
+				. '</li>';
 		}
 		elseif (RedshopHelperPdf::isAvailablePdfPlugins())
 		{
@@ -117,53 +117,43 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 
 	public function createShippedInvoicePdf($orderId)
 	{
-		$orderHelper   = order_functions::getInstance();
-		$carthelper    = rsCarthelper::getInstance();
-		$redshopMail   = redshopMail::getInstance();
+		$cartHelper   = rsCarthelper::getInstance();
+		$redshopMail  = redshopMail::getInstance();
+		$row          = RedshopHelperOrder::getOrderDetails($orderId);
+		$discounts    = explode('@', $row->discount_type);
+		$discountType = '';
 
-		$arr_discount_type = array();
-
-		$row = $orderHelper->getOrderDetails($orderId);
-
-		$barcode_code = $row->barcode;
-		$arr_discount = explode('@', $row->discount_type);
-		$discount_type = '';
-
-		for ($d = 0, $dn = count($arr_discount); $d < $dn; $d++)
+		foreach ($discounts as $discount)
 		{
-			if ($arr_discount[$d])
+			$discount = explode(':', $discount);
+
+			if ($discount[0] == 'c')
 			{
-				$arr_discount_type = explode(':', $arr_discount[$d]);
+				$discountType .= JText::_('COM_REDSHOP_COUPON_CODE') . ' : ' . $discount[1] . '<br>';
+			}
 
-				if ($arr_discount_type[0] == 'c')
-				{
-					$discount_type .= JText::_('COM_REDSHOP_COUPON_CODE') . ' : ' . $arr_discount_type[1] . '<br>';
-				}
-
-				if ($arr_discount_type[0] == 'v')
-				{
-					$discount_type .= JText::_('COM_REDSHOP_VOUCHER_CODE') . ' : ' . $arr_discount_type[1] . '<br>';
-				}
+			if ($discount[0] == 'v')
+			{
+				$discountType .= JText::_('COM_REDSHOP_VOUCHER_CODE') . ' : ' . $discount[1] . '<br>';
 			}
 		}
 
-		if (!$discount_type)
+		if (!$discountType)
 		{
-			$discount_type = JText::_('COM_REDSHOP_NO_DISCOUNT_AVAILABLE');
+			$discountType = JText::_('COM_REDSHOP_NO_DISCOUNT_AVAILABLE');
 		}
 
-		$body             = $this->params->get('shippment_invoice_template');
+		$body = $this->params->get('shippment_invoice_template');
 
-		$search[]         = "{discount_type}";
-		$replace[]        = $discount_type;
-		$body             = str_replace($search, $replace, $body);
+		$search[]  = "{discount_type}";
+		$replace[] = $discountType;
+		$body      = str_replace($search, $replace, $body);
 
-		$body             = $redshopMail->imginmail($body);
-		$user             = JFactory::getUser();
+		$body             = RedshopHelperMail::imgInMail($body);
 		$billingaddresses = RedshopHelperOrder::getOrderBillingUserInfo($orderId);
 		$email            = $billingaddresses->user_email;
 		$userfullname     = $billingaddresses->firstname . " " . $billingaddresses->lastname;
-		$body             = $carthelper->replaceOrderTemplate($row, $body);
+		$body             = $cartHelper->replaceOrderTemplate($row, $body);
 
 		return $body;
 	}
@@ -174,11 +164,13 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 	 * @param   array  $mergeOrderIds  List id of order
 	 *
 	 * @return  string                 Set PDF path on the viewport
+	 *
+	 * @throws  Exception
 	 */
 	public function mergeShippingPdf($mergeOrderIds)
 	{
-		$pdfLocation   = 'components/com_redshop/assets/document/invoice/';
-		$pdfRootPath   = JPATH_SITE . '/' . $pdfLocation;
+		$pdfLocation = 'components/com_redshop/assets/document/invoice/';
+		$pdfRootPath = JPATH_SITE . '/' . $pdfLocation;
 
 		JArrayHelper::toInteger($mergeOrderIds);
 
