@@ -38,8 +38,7 @@ gulp-config.json
 npm-debug.log
 node_modules/
 
-# Composer
-composer.lock
+# Composers
 vendor/*
 **/vendor/*
 
