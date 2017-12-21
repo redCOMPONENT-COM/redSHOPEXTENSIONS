@@ -33,6 +33,9 @@
     "acymailing": [
       "redshop"
     ],
+    "aesir_field": [
+      "redshop_product"
+    ],
     "ajax": [
       "xmlcron"
     ],
