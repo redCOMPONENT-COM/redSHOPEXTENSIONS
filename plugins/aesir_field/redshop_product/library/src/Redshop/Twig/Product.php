@@ -1,13 +1,16 @@
 <?php
 /**
- * @package     Aesir.Library
+ * @package     Redshop.Plugin
  * @subpackage  Twig.Extension
  *
- * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
 namespace Redshop\Twig;
+
+use function is_object;
+use Redshop\Twig\Entity\Product as TwigProduct;
 
 defined('_JEXEC') or die;
 
@@ -33,13 +36,20 @@ class Product extends \Twig_Extension
 	/**
 	 * Get an product.
 	 *
-	 * @param   integer  $id  User identifier
+	 * @param   mixed  $product  User identifier
 	 *
-	 * @return  \RedshopProduct
+	 * @return  TwigProduct
 	 */
-	public function getProduct($id)
+	public function getProduct($product)
 	{
-		return \RedshopProduct::getInstance($id);
+		if (is_object($product))
+		{
+			$product = \RedshopEntityProduct::getInstance($product->product_id)->bind($product);
+
+			return new TwigProduct($product);
+		}
+
+		return new TwigProduct(\RedshopEntityProduct::getInstance((int) $product));
 	}
 
 	/**

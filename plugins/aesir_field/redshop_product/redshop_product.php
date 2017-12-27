@@ -85,7 +85,7 @@ final class PlgAesir_FieldRedshop_Product extends AbstractFieldPlugin
 
 		foreach ($data AS $val)
 		{
-			$tmp[$val] = RedshopProduct::getInstance($val);
+			$tmp[$val] = RedshopHelperProduct::getProductById($val);
 		}
 
 		return $tmp;
@@ -155,10 +155,8 @@ final class PlgAesir_FieldRedshop_Product extends AbstractFieldPlugin
 
 		if (is_callable(array($loader, 'loadClass')))
 		{
-			return false;
+			\Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 		}
-
-		Doctrine\Common\Annotations\Annotation::registerLoader(array($loader, 'loadClass'));
 
 		return true;
 	}

@@ -2,9 +2,12 @@
     "name": "redcomponent-com/aesir-redshop",
     "description": "Integrate plugin for Aesir - redSHOP",
     "license": "GPL-2.0+",
+    "require": {
+        "doctrine/annotations": "1.4.*"
+    },
     "autoload": {
         "psr-4": {
-            "Kvasir\\": "src/Twig/"
+            "Redshop\\Twig\\": "src/Redshop/Twig"
         }
     }
 }
