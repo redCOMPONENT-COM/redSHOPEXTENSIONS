@@ -47,11 +47,11 @@ class ModRedshopCurrenciesHelper
 		{
 			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true)
-				->select($db->qn('currency_id', 'value'))
-				->select($db->qn('currency_name', 'text'))
+				->select($db->qn('id', 'value'))
+				->select($db->qn('name', 'text'))
 				->from($db->qn('#__redshop_currency'))
-				->where($db->qn('currency_code') . ' IN (' . implode(',', RedshopHelperUtility::quote($availableCurrencies)) . ')')
-				->order($db->qn('currency_name'));
+				->where($db->qn('code') . ' IN (' . implode(',', RedshopHelperUtility::quote($availableCurrencies)) . ')')
+				->order($db->qn('name'));
 
 			self::$cache[$key] = $db->setQuery($query)->loadObjectList();
 		}
@@ -69,7 +69,10 @@ class ModRedshopCurrenciesHelper
 	public static function getActive()
 	{
 		$session        = JFactory::getSession();
-		$activeCurrency = $session->get('product_currency', RedshopEntityCurrency::getInstance()->loadFromCode(Redshop::getConfig()->get('CURRENCY_CODE'))->getId());
+		$activeCurrency = $session->get(
+			'product_currency',
+			RedshopEntityCurrency::getInstance()->loadFromCode(Redshop::getConfig()->get('CURRENCY_CODE'))->getId()
+		);
 
 		return $activeCurrency;
 	}
