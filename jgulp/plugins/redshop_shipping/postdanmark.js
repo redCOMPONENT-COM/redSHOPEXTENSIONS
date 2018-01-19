@@ -97,8 +97,8 @@ gulp.task('compressjs:' + baseTask, function() {
         .pipe(rename('functions.js'))
         .pipe(gulp.dest(extPath + '/includes/js/'));
 
-	gulp.src(extPath + '/includes/js/map_functions-uncompressed.js')
-		.pipe(uglify())
-		.pipe(rename('map_functions.js'))
-		.pipe(gulp.dest(extPath + '/includes/js/'));
+    gulp.src(extPath + '/includes/js/map_functions-uncompressed.js')
+        .pipe(uglify())
+        .pipe(rename('map_functions.js'))
+        .pipe(gulp.dest(extPath + '/includes/js/'));
 });
