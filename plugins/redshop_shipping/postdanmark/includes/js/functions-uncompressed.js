@@ -235,6 +235,11 @@ redSHOP.postDanmark.loadLocationMobile = function (el)
 			{
 				var results = [];
 
+				if (data.error)
+				{
+					return { results: results };
+				}
+
 				for (i = 0; i < data.addresses.length; i++)
 				{
 					var markup = '<div class="row-fluid">' +

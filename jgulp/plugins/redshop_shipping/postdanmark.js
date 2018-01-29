@@ -6,6 +6,8 @@ var config = require('../../../gulp-config.json');
 // Dependencies
 var browserSync = require('browser-sync');
 var del         = require('del');
+var uglify      = require('gulp-uglify');
+var rename      = require('gulp-rename');
 
 var group = 'redshop_shipping';
 var name  = 'postdanmark';
@@ -86,4 +88,17 @@ gulp.task('watch:' + baseTask + ':language', function() {
             extPath + '/language/**'
         ],
         ['copy:' + baseTask + ':language', browserSync.reload]);
+});
+
+// Compress js
+gulp.task('compressjs:' + baseTask, function() {
+    gulp.src(extPath + '/includes/js/functions-uncompressed.js')
+        .pipe(uglify())
+        .pipe(rename('functions.js'))
+        .pipe(gulp.dest(extPath + '/includes/js/'));
+
+    gulp.src(extPath + '/includes/js/map_functions-uncompressed.js')
+        .pipe(uglify())
+        .pipe(rename('map_functions.js'))
+        .pipe(gulp.dest(extPath + '/includes/js/'));
 });
