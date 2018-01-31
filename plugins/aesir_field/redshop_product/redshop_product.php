@@ -12,10 +12,9 @@ defined('_JEXEC') or die;
 JLoader::import('reditem.library');
 JLoader::registerPrefix('PlgAesir_FieldRedshop_Product', __DIR__);
 
-use Aesir\App;
 use Aesir\Plugin\AbstractFieldPlugin;
 use Aesir\Entity\FieldInterface;
-use Aesir\Entity\EntityCollection;
+use Aesir\Twig\Enviroment;
 
 /**
  * Item related plugin
@@ -76,9 +75,20 @@ final class PlgAesir_FieldRedshop_Product extends AbstractFieldPlugin
 			return;
 		}
 
-		$decodedValues = json_decode($value);
+		if (empty($value))
+		{
+			return;
+		}
 
-		return $decodedValues ? array_unique($decodedValues): null;
+		$data = array_filter(array_values(json_decode($value, true)));
+		$tmp  = array();
+
+		foreach ($data AS $val)
+		{
+			$tmp[$val] = RedshopHelperProduct::getProductById($val);
+		}
+
+		return $tmp;
 	}
 
 	/**
@@ -99,5 +109,55 @@ final class PlgAesir_FieldRedshop_Product extends AbstractFieldPlugin
 		$value = array_values(array_filter((array) $value, 'strlen'));
 
 		return empty($value) ? '' : json_encode($value);
+	}
+
+	/**
+	 * Event run after Aesir Twig Environment loaded
+	 *
+	 * @param   Enviroment                 $environment  Aesir Twig environment
+	 * @param   Twig_LoaderInterface|null  $loader       Twig loader interface
+	 * @param   array                      $options      Options list.
+	 *
+	 * @return  void
+	 */
+	public function onAesirAfterTwigLoad(Enviroment $environment, Twig_LoaderInterface $loader = null, $options = array())
+	{
+		// Require our Composer libraries
+		if (!$this->loadLibrary())
+		{
+			return;
+		}
+
+		$environment->addExtension(new Redshop\Twig\Product);
+	}
+
+	/**
+	 * Method for load library
+	 *
+	 * @return  boolean
+	 */
+	protected function loadLibrary()
+	{
+		if (class_exists('Redshop\\Twig\\Product'))
+		{
+			return true;
+		}
+
+		// Require our Composer libraries
+		$composerAutoload = __DIR__ . '/library/vendor/autoload.php';
+
+		if (!JFile::exists($composerAutoload))
+		{
+			return false;
+		}
+
+		$loader = require_once $composerAutoload;
+
+		if (is_callable(array($loader, 'loadClass')))
+		{
+			\Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+		}
+
+		return true;
 	}
 }

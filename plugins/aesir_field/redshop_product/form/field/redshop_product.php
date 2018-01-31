@@ -12,7 +12,6 @@ defined('_JEXEC') or die;
 require_once JPATH_LIBRARIES . '/reditem/library.php';
 
 use Aesir\Field\CustomField;
-use Joomla\Utilities\ArrayHelper;
 
 /**
  * Item Related field.
@@ -79,15 +78,15 @@ class PlgAesir_FieldRedshop_ProductFormFieldRedshop_Product extends CustomField
 
 	/**
 	 * Method for get options of this field.
-	 * 
+	 *
 	 * @param   array  $values  List of selected values
 	 *
 	 * @return  array           List of options
 	 */
 	private function getOptions($values)
 	{
-		$hash = md5($this->name . $this->element);
-		$db = JFactory::getDBO();
+		$hash  = md5($this->name . $this->element);
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select($db->qn('product_id'))
 			->select($db->qn('product_name'))
@@ -101,11 +100,11 @@ class PlgAesir_FieldRedshop_ProductFormFieldRedshop_Product extends CustomField
 
 		if ($this->addSelectOption)
 		{
-			$selected = (!empty($values) && in_array('', $values)) ? true : false;
+			$selected = (!empty($values) && in_array('', array_keys($values))) ? true : false;
 
 			$data[] = array(
-				'text' => \JText::_($this->emptyOptionText),
-				'value' => '',
+				'text'     => JText::_($this->emptyOptionText),
+				'value'    => '',
 				'selected' => $selected
 			);
 		}
@@ -117,7 +116,7 @@ class PlgAesir_FieldRedshop_ProductFormFieldRedshop_Product extends CustomField
 
 		foreach ($items as $key => $item)
 		{
-			$selected = (!empty($values) && in_array($item->product_id, $values)) ? true : false;
+			$selected = (!empty($values) && in_array($item->product_id, array_keys($values))) ? true : false;
 
 			$data[] = array(
 				'text'     => htmlspecialchars(trim($item->product_name . '(' . $item->product_number . ')'), ENT_COMPAT, 'UTF-8'),

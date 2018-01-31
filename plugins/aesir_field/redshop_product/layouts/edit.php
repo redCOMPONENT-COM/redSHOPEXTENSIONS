@@ -66,9 +66,10 @@ if ($multiple)
 	$selectName = $id . '-selector';
 
 	// Depends on jQuery UI
-	JHtml::_('rjquery.ui', array('core', 'sortable'));
+	JHtml::_('jquery.ui', array('core', 'sortable'));
 
-	AssetHelper::load('script.min.js', 'plg_aesir_field_item_related');
+	AssetHelper::load('sortable-select2.js', 'reditem');
+
 	JFactory::getDocument()->addScriptDeclaration('
 		(function($){
 			$(document).ready(function(){
@@ -78,7 +79,7 @@ if ($multiple)
 						tolerance   : "pointer"
 					},
 					ss2 : {
-						selected : ' . json_encode($values) . '
+						selected : ' . json_encode(array_keys($values)) . '
 					}
 				});
 			});
@@ -89,39 +90,37 @@ if ($multiple)
 $readOnly = ((string) $readonly === 'true' || (string) $readonly === '1');
 ?>
 <?php if (!$readOnly) : ?>
-	<input type="hidden" name="<?=$name; ?>" value=""/>
+    <input type="hidden" name="<?=$name; ?>" value=""/>
 <?php endif; ?>
 <div class="reditem_customfield_item_related">
-	<select class="select2 test form-control" name="<?=$selectName?>" data-name="<?php echo $name; ?>" id="<?=$id?>" <?php echo $attributes ?>>
-		<option></option>
+    <select class="select2 test form-control" name="<?=$selectName?>" data-name="<?php echo $name; ?>" id="<?=$id?>" <?php echo $attributes ?>>
+        <option></option>
 		<?php if (!empty($data)): ?>
 			<?php foreach ($data as $key => $item): ?>
 				<?php if (isset($item['text'])) : ?>
 					<?php
 					$selected = ($item['selected']) ? 'selected="selected"' : '';
 					?>
-					<option value="<?=$item['value']?>" <?php echo $selected; ?>><?=$item['text']?></option>
+                    <option value="<?=$item['value']?>" <?php echo $selected; ?>><?=$item['text']?></option>
 				<?php else : ?>
-					<optgroup label="<?php echo $key ?>">
+                    <optgroup label="<?php echo $key ?>">
 						<?php foreach ($item as $option): ?>
 							<?php
 							$selected = ($option['selected']) ? 'selected="selected"' : '';
 							?>
-							<option value="<?=$option['value']?>" <?php echo $selected; ?>><?=$option['text']?></option>
+                            <option value="<?=$option['value']?>" <?php echo $selected; ?>><?=$option['text']?></option>
 						<?php endforeach; ?>
-					</optgroup>
+                    </optgroup>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		<?php endif; ?>
-	</select>
+    </select>
 	<?php if ($multiple) : ?>
-		<div class="js-ss2-values-container">
-			<?php foreach ($values as $value): ?>
-				<?php
-					$value = htmlspecialchars(trim($value), ENT_COMPAT, 'UTF-8');
-				?>
-				<input type="hidden" name="<?=$name; ?>" value="<?=$value?>"/>
+        <div class="js-ss2-values-container">
+			<?php foreach (array_keys($values) as $value): ?>
+				<?php $value = htmlspecialchars(trim($value), ENT_COMPAT, 'UTF-8'); ?>
+                <input type="hidden" name="<?=$name; ?>" value="<?=$value?>"/>
 			<?php endforeach; ?>
-		</div>
+        </div>
 	<?php endif; ?>
 </div>
