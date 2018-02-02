@@ -2,7 +2,7 @@
 <extension version="3.0" client="site" type="plugin" group="economic" method="upgrade">
     <name>PLG_ECONOMIC_ECONOMIC</name>
     <version>2.0.0</version>
-    <redshop>2.0.0</redshop>
+    <redshop>2.0.6</redshop>
     <creationDate>January 2018</creationDate>
     <author>redCOMPONENT.com</author>
     <copyright>redCOMPONENT.com</copyright>

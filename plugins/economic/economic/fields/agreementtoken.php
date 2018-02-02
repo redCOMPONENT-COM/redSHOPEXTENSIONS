@@ -40,6 +40,14 @@ class JFormFieldAgreementtoken extends JFormFieldText
 	 */
 	protected function getInput()
 	{
+		$plugin = JPluginHelper::getPlugin('economic', 'economic');
+
+		if (empty($plugin))
+		{
+			return '<div class="alert alert-error"><i class="icon icon-warning"></i>'
+				. JText::_('PLG_ECONOMIC_ECONOMIC_ENABLE_PLUGIN') . '</div>';
+		}
+
 		if (empty($this->value))
 		{
 			return '<div class="alert alert-warning"><i class="icon icon-warning"></i>'
