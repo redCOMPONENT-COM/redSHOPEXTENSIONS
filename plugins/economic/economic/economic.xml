@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <extension version="3.0" client="site" type="plugin" group="economic" method="upgrade">
-    <name>PLG_E-CONOMIC</name>
-    <version>1.6</version>
-    <redshop>2.0</redshop>
-    <creationDate>Sep 2016</creationDate>
+    <name>PLG_ECONOMIC_ECONOMIC</name>
+    <version>2.0.0</version>
+    <redshop>2.0.6</redshop>
+    <creationDate>January 2018</creationDate>
     <author>redCOMPONENT.com</author>
     <copyright>redCOMPONENT.com</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <description>COM_REDSHOP_PROVIDES_ECONOMIC_INTEGRATION</description>
     <files>
         <filename plugin="economic">economic.php</filename>
+        <folder>fields</folder>
     </files>
     <languages>
         <language tag="en-GB">language/en-GB/en-GB.plg_economic_economic.ini</language>
         <language tag="en-GB">language/en-GB/en-GB.plg_economic_economic.sys.ini</language>
     </languages>
     <config addfieldpath="/libraries/redshop/form/fields">
-        <fields name="params">
+        <fields name="params" addfieldpath="/plugins/economic/economic/fields">
             <fieldset name="basic">
                 <field
                         name="accountType"
@@ -24,10 +25,9 @@
                         default="economic"
                         class="btn-group"
                         label="PLG_ECONOMIC_ECONOMIC_ACCOUNT_TYPE_LBL"
-                        description="PLG_ECONOMIC_ECONOMIC_ACCOUNT_TYPE_DESC"
-                >
-                    <option value="reviso">PLG_ECONOMIC_REVISO</option>
-                    <option value="economic">PLG_ECONOMIC_ECONOMIC</option>
+                        description="PLG_ECONOMIC_ECONOMIC_ACCOUNT_TYPE_DESC">
+                    <option value="reviso">PLG_ECONOMIC_ECONOMIC_ACCOUNT_TYPE_OPTION_REVISO</option>
+                    <option value="economic">PLG_ECONOMIC_ECONOMIC_ACCOUNT_TYPE_OPTION_ECONOMIC</option>
                 </field>
                 <field
                         name="economic_agreement_number"
@@ -35,6 +35,7 @@
                         default=""
                         label="COM_REDSHOP_ECONOMIC_AGREEMENT_NUMBER_LBL"
                         description="COM_REDSHOP_DESC_ECONOMIC_AGREEMENT_NUMBER_LBL"
+                        showon="accountType:reviso"
                 />
                 <field
                         name="economic_username"
@@ -42,6 +43,7 @@
                         default=""
                         label="COM_REDSHOP_ECONOMIC_USERNAME_LBL"
                         description="COM_REDSHOP_DESC_ECONOMIC_USERNAME_LBL"
+                        showon="accountType:reviso"
                 />
                 <field
                         name="economic_password"
@@ -49,7 +51,15 @@
                         default=""
                         label="COM_REDSHOP_ECONOMIC_PASSWORD_LBL"
                         description="COM_REDSHOP_DESC_ECONOMIC_PASSWORD_LBL"
+                        showon="accountType:reviso"
                 />
+                <field
+                        name="agreementGrantToken"
+                        type="agreementtoken"
+                        label="PLG_ECONOMIC_ECONOMIC_GET_AGREEMENT_TOKEN"
+                        description="PLG_ECONOMIC_ECONOMIC_GET_AGREEMENT_TOKEN_DESC"
+                        showon="accountType:economic"
+                        />
                 <field
                         name="economic_debtor_group_id"
                         type="text"
@@ -91,8 +101,7 @@
                         class="btn-group"
                         default="1"
                         label="COM_REDSHOP_ECONOMIC_USE_CASHBOOK_LBL"
-                        description="COM_REDSHOP_ECONOMIC_USE_CASHBOOK_DESC"
-                >
+                        description="COM_REDSHOP_ECONOMIC_USE_CASHBOOK_DESC">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
