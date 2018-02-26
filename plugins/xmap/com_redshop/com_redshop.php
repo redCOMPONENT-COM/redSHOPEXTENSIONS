@@ -359,15 +359,15 @@ class Xmap_Com_Redshop
 	 */
 	static protected function getManufacturerTree($xmap, $parent, $params, $manid = 0)
 	{
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select('manufacturer_id, manufacturer_name')
+			->select('id, name')
 			->from($db->qn('#__redshop_manufacturer'))
 			->where('published = 1');
 
 		if ($manid)
 		{
-			$query->where('manufacturer_id = ' . (int) $manid);
+			$query->where('id = ' . (int) $manid);
 		}
 
 		if ($manufacturers = $db->setQuery($query)->loadObjectList())
@@ -376,8 +376,8 @@ class Xmap_Com_Redshop
 
 			foreach ($manufacturers as $manufacturer)
 			{
-				$manid   = $manufacturer->manufacturer_id;
-				$manName = $manufacturer->manufacturer_name;
+				$manid   = $manufacturer->id;
+				$manName = $manufacturer->name;
 
 				$node             = new stdclass;
 				$node->id         = $manid;
@@ -400,7 +400,7 @@ class Xmap_Com_Redshop
 		}
 	}
 
-	static protected function getParam($arr, $name, $def)
+	protected static function getParam($arr, $name, $def)
 	{
 		return JArrayHelper::getValue($arr, $name, $def, '');
 	}

@@ -131,7 +131,7 @@ class PlgRedshop_ProductGoogle_Microdata extends JPlugin
 		{
 			$data["brand"] = array(
 				"@type" => "Thing",
-				"name"  => $manufacturer->get('manufacturer_name')
+				"name"  => $manufacturer->get('name')
 			);
 		}
 

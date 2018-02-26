@@ -22,17 +22,17 @@ abstract class ModRedManufacturerHelper
 	/**
 	 * Retrieve a list of article
 	 *
-	 * @param   \Joomla\Registry\Registry  &$params  Module parameters
+	 * @param   \Joomla\Registry\Registry  $params  Module parameters
 	 *
 	 * @return  mixed
 	 */
 	public static function getList(&$params)
 	{
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select('m.media_name, ma.manufacturer_name, ma.manufacturer_id')
+			->select('m.media_name, ma.name, ma.id')
 			->from($db->qn('#__redshop_manufacturer', 'ma'))
-			->leftJoin($db->qn('#__redshop_media', 'm') . ' ON m.section_id = ma.manufacturer_id')
+			->leftJoin($db->qn('#__redshop_media', 'm') . ' ON m.section_id = ma.id')
 			->where('m.media_section = ' . $db->q('manufacturer'))
 			->where('m.published = 1')
 			->where('ma.published = 1');
@@ -47,7 +47,7 @@ abstract class ModRedManufacturerHelper
 				$query->order($db->quoteName('ma') . '.' . $db->quoteName('ordering') . ' DESC');
 				break;
 			default:
-				$query->order($db->quoteName('ma') . '.' . $db->quoteName('manufacturer_id') . ' ASC');
+				$query->order($db->quoteName('ma') . '.' . $db->quoteName('id') . ' ASC');
 				break;
 		}
 

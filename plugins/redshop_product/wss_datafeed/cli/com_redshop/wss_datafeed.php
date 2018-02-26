@@ -129,14 +129,14 @@ class Wss_DataFeedApplicationCli extends JApplicationCli
 		$categories    = $params->get('category');
 		$manufacturers = $params->get('manufacturer');
 
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select('p.*')
-			->select($db->qn('m.manufacturer_name'))
+			->select($db->qn('m.name', 'manufacturer_name'))
 			->select($db->qn('c.name', 'category_name'))
 			->from($db->qn('#__redshop_product', 'p'))
 			->leftJoin($db->qn('#__redshop_manufacturer', 'm') . ' ON '
-				. $db->qn('p.manufacturer_id') . ' = ' . $db->qn('m.manufacturer_id')
+				. $db->qn('p.manufacturer_id') . ' = ' . $db->qn('m.id')
 			)
 			->leftJoin($db->qn('#__redshop_product_category_xref', 'pcx') . ' ON '
 				. $db->qn('p.product_id') . ' = ' . $db->qn('pcx.product_id')

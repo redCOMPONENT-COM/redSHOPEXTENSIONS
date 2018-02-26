@@ -269,7 +269,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 
 		if (!$isNew)
 		{
-			$redshopBId = $this->getRedshopBManufacturerId($data->manufacturer_id);
+			$redshopBId = $this->getRedshopBManufacturerId($data->id);
 
 			if ($redshopBId)
 			{
@@ -279,8 +279,8 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 			}
 		}
 
-		$result['name']  = $data->manufacturer_name;
-		$result['alias'] = JFilterOutput::stringURLUnicodeSlug($data->manufacturer_name);
+		$result['name']  = $data->name;
+		$result['alias'] = JFilterOutput::stringURLUnicodeSlug($data->name);
 
 		$ch = curl_init($url . $params);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -298,7 +298,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 		{
 			$query   = $db->getQuery(true);
 			$columns = array('redshop_manufacturer_id', 'redshopb_manufacturer_id');
-			$values  = array($db->q((int) $data->manufacturer_id), $db->q((int) $manufacturerId));
+			$values  = array($db->q((int) $data->id), $db->q((int) $manufacturerId));
 
 			$query
 				->insert($db->quoteName('#__redshop_redshopb_manufacturer_xref'))
