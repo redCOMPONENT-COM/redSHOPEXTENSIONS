@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="system" method="upgrade">
+    <name>PLG_SYSTEM_ITUNES_REVIEWS</name>
+    <author>redCOMPONENT</author>
+    <creationDate>Dec 2017</creationDate>
+    <copyright>Copyright (C) 2008 - 2017 redCOMPONENT.com. All rights reserved.</copyright>
+    <authorEmail>email@redcomponent.com</authorEmail>
+    <authorUrl>www.redcomponent.com</authorUrl>
+    <version>1.0.0</version>
+    <description>PLG_SYSTEM_ITUNES_REVIEWS_DESCRIPTION</description>
+    <scriptfile>install.php</scriptfile>
+    <files>
+        <folder>cli</folder>
+        <folder>helper</folder>
+        <filename plugin="itunesreviews">itunesreviews.php</filename>
+        <filename>index.html</filename>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_system_itunesreviews.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_system_itunesreviews.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                        name="itunes_id"
+                        type="text"
+                        default=""
+                        required="true"
+                        label="PLG_SYSTEM_ITUNES_REVIEWS_FIELD_ID"
+                        size="50"
+                />
+
+                <field
+                        name="joomla_category_id"
+                        type="category"
+                        extension="com_content"
+                        label="PLG_SYSTEM_ITUNES_REVIEWS_FIELD_SELECT_CATEGORY"
+                        description=""
+                />
+            </fieldset>
+        </fields>
+    </config>
+</extension>
