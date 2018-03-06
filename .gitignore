@@ -45,6 +45,9 @@ vendor/*
 # Bower
 bower_components/
 
+# Npm package
+package-lock.json
+
 # Test related files
 tests/system/servers/configdef.php
 tests/system/webdriver/tests/logs/

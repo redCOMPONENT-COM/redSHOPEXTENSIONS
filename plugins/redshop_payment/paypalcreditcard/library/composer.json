@@ -3,6 +3,6 @@
   "description": "A redSHOP Payment - Paypal",
   "license": "GPL-2.0+",
   "require": {
-    "paypal/rest-api-sdk-php": "^1.12.0"
+    "paypal/rest-api-sdk-php": "^1.13.0"
   }
 }
