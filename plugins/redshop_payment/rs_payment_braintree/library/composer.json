@@ -3,6 +3,6 @@
     "description": "A redSHOP Payment plugin - BrainTree",
     "license": "GPL-2.0+",
     "require": {
-        "braintree/braintree_php": "^3.23"
+        "braintree/braintree_php": "^3.29.0"
     }
 }
