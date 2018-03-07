@@ -69,7 +69,7 @@ $document->addStyleDeclaration('
 				'index.php?option=com_redshop&view=manufacturers&layout='
 				. $PageLink . '&mid=' . $slide->manufacturer_id . '&Itemid=' . $slide->item_id, false
 			);
-			$title = $slide->manufacturer_name;
+			$title = $slide->name;
 			?>
 		<li>
 			<?php if ($showImage): ?>
