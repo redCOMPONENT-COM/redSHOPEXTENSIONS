@@ -4,27 +4,27 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "76104972b4abbd53a524d8ea5cfb4b13",
+    "content-hash": "3de35e79b0aec5766a1afed80cc8f320",
     "packages": [
         {
             "name": "mollie/mollie-api-php",
-            "version": "v1.9.4",
+            "version": "v1.9.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mollie/mollie-api-php.git",
-                "reference": "db88588ffd40ec8caee814b7a126d26d7098ad99"
+                "reference": "e87746ca87a06fdad0b8f6d279380ebb6c89bfb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mollie/mollie-api-php/zipball/db88588ffd40ec8caee814b7a126d26d7098ad99",
-                "reference": "db88588ffd40ec8caee814b7a126d26d7098ad99",
+                "url": "https://api.github.com/repos/mollie/mollie-api-php/zipball/e87746ca87a06fdad0b8f6d279380ebb6c89bfb3",
+                "reference": "e87746ca87a06fdad0b8f6d279380ebb6c89bfb3",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
                 "ext-openssl": "*",
-                "php": ">=5.2"
+                "php": ">=5.3"
             },
             "require-dev": {
                 "phpunit/phpunit": "^3.7 || ^4.8 || ^5.4"
@@ -82,7 +82,7 @@
                 "sofortbanking",
                 "subscriptions"
             ],
-            "time": "2017-08-22T09:24:05+00:00"
+            "time": "2018-02-12T08:26:20+00:00"
         }
     ],
     "packages-dev": [],
