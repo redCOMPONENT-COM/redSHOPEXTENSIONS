@@ -42,7 +42,7 @@ class PlgEconomicEconomic extends JPlugin
 	public $errorMsg = null;
 
 	/**
-	 * @var null
+	 * @var SoapClient
 	 */
 	public $client;
 
@@ -135,12 +135,12 @@ class PlgEconomicEconomic extends JPlugin
 	public function onEconomicConnect()
 	{
 		// Check whether plugin has been unpublished
-		if (empty($this->params))
+		if (null === $this->params)
 		{
 			return;
 		}
 
-		$isEconomic = 'economic' == $this->params->get('accountType', 'economic');
+		$isEconomic = 'economic' === $this->params->get('accountType', 'economic');
 
 		$soapUrl = $isEconomic ? 'https://api.e-conomic.com/secure/api1/EconomicWebService.asmx?wsdl'
 			: 'https://soap.reviso.com/api1/EconomicWebService.asmx?wsdl';
@@ -148,6 +148,8 @@ class PlgEconomicEconomic extends JPlugin
 		// Try to create SOAP client
 		try
 		{
+			ini_set('soap.wsdl_cache_enabled', '0');
+
 			$this->client = new SoapClient(
 				$soapUrl,
 				array(
@@ -200,11 +202,11 @@ class PlgEconomicEconomic extends JPlugin
 
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "onEconomicConnection:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -249,15 +251,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			// print("<p><i>error msg in Debtor_FindByNumber" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "Debtor_FindByNumber:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception, array('number' => $data['user_info_id']));
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -278,19 +278,24 @@ class PlgEconomicEconomic extends JPlugin
 
 		try
 		{
-			return $this->client->Debtor_FindByEmail(array('email' => $data ['email']))->Debtor_FindByEmailResult;
+			return $this->client->__soapCall(
+				'Debtor_FindByEmail',
+				array(
+					'Debtor_FindByEmail' => array(
+						'email' => trim($data['email'])
+					)
+				)
+			)->Debtor_FindByEmailResult;
 		}
 		catch (Exception $exception)
 		{
-			// print("<p><i>Debtor_FindByEmail:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "Debtor_FindByEmail:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception, array('email' => trim($data['email'])));
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -318,15 +323,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>Debtor_GetDebtorGroup:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "Debtor_GetDebtorGroup:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception, array('debtorHandle' => $debtorHandle));
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -488,15 +491,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>getTermOfPaymentContraAccount:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "getTermOfPaymentContraAccount:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception, array('termOfPaymentHandle' => $termOfPaymentHandle));
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -556,15 +557,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>getCashBookAll:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "getCashBookAll:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -660,10 +659,7 @@ class PlgEconomicEconomic extends JPlugin
 		{
 			$tmpDebtorGroup = $this->Debtor_GetDebtorGroup($data);
 
-			if (isset($tmpDebtorGroup->Number) && $tmpDebtorGroup->Number == $deptorGroupHandle->Number)
-			{
-			}
-			else
+			if (empty($tmpDebtorGroup->Number) || (int) $tmpDebtorGroup->Number !== (int) $deptorGroupHandle->Number)
 			{
 				$data['eco_user_number'] = '';
 			}
@@ -676,12 +672,11 @@ class PlgEconomicEconomic extends JPlugin
 		$CurrencyHandle->Code = $data ['currency_code'];
 
 		// Changes for store debtor error
-		$data ['user_info_id'] = ($data ['eco_user_number'] != "") ? $data ['eco_user_number'] : $data ['user_info_id'];
+		$data['user_info_id'] = !empty($data['eco_user_number']) ? $data['eco_user_number'] : $data['user_info_id'];
 
-		if ($data['newuserFlag'])
+		if ($data['newuserFlag'] === true)
 		{
-			$maxDebtor             = $this->getMaxDebtor();
-			$data ['user_info_id'] = $maxDebtor + 1;
+			$data['user_info_id'] = $this->getMaxDebtor() + 1;
 		}
 
 		$Handle         = new stdclass;
@@ -691,10 +686,10 @@ class PlgEconomicEconomic extends JPlugin
 
 		try
 		{
-			$userinfo = array
+			$debtorInfor = array
 			(
 				'Handle'                => $Handle,
-				'Number'                => $data ['user_info_id'],
+				'Number'                => $data['user_info_id'],
 				'DebtorGroupHandle'     => $deptorGroupHandle,
 				'Name'                  => $data['name'],
 				'VatZone'               => $data['vatzone'],
@@ -714,41 +709,39 @@ class PlgEconomicEconomic extends JPlugin
 			// Get Employee to set Our Reference Number
 			if ($employeeHandle = $this->employeeFindByNumber($data))
 			{
-				$userinfo['OurReferenceHandle'] = $employeeHandle;
+				$debtorInfor['OurReferenceHandle'] = $employeeHandle;
 			}
 
 			if (isset($data['ean_number']) && $data['ean_number'] != "")
 			{
-				$userinfo = array_merge($userinfo, array('Ean' => $data['ean_number']));
+				$debtorInfor = array_merge($debtorInfor, array('Ean' => $data['ean_number']));
 			}
 
 			if (isset($data['maximumcredit']) && $data['maximumcredit'] != 0)
 			{
-				$userinfo = array_merge($userinfo, array('CreditMaximum' => $data['maximumcredit']));
+				$debtorInfor = array_merge($debtorInfor, array('CreditMaximum' => $data['maximumcredit']));
 			}
 
-			if ($data ['eco_user_number'] != "")
+			if (!empty($data['eco_user_number']))
 			{
-				$newDebtorHandle = $this->client->Debtor_UpdateFromData(array("data" => $userinfo))->Debtor_UpdateFromDataResult;
+				$newDebtorHandle = $this->client->Debtor_UpdateFromData(array('data' => $debtorInfor))->Debtor_UpdateFromDataResult;
 			}
 			else
 			{
-				$newDebtorHandle = $this->client->Debtor_CreateFromData(array("data" => $userinfo))->Debtor_CreateFromDataResult;
+				$newDebtorHandle = $this->client->Debtor_CreateFromData(array('data' => $debtorInfor))->Debtor_CreateFromDataResult;
 			}
 
 			return $newDebtorHandle;
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>storeDebtor:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "storeDebtor:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception, $debtorInfor, $data);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -756,7 +749,7 @@ class PlgEconomicEconomic extends JPlugin
 	/**
 	 * Get Extra field value for Debtor Reference
 	 *
-	 * @param   array  $d  User information array
+	 * @param   array $d User information array
 	 *
 	 * @return  mixed      User input if found else false
 	 * @throws  Exception
@@ -812,7 +805,7 @@ class PlgEconomicEconomic extends JPlugin
 	/**
 	 * Get Employee By Number
 	 *
-	 * @param   array  $data  User information array
+	 * @param   array $data User information array
 	 *
 	 * @return  boolean|object  StdClass Object on success, false on fail.
 	 * @throws  Exception
@@ -840,7 +833,7 @@ class PlgEconomicEconomic extends JPlugin
 		{
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, __METHOD__ . $exception->getMessage());
+				$this->report(__METHOD__, $exception, array('number' => (int) $userInput));
 			}
 			else
 			{
@@ -873,15 +866,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>ProductGroup_FindByNumber:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "ProductGroup_FindByNumber:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception, array('number' => $data['productgroup_id']));
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -906,15 +897,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>Product_FindByNumber:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "Product_FindByNumber:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception, array('number' => $data['product_number']));
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -943,15 +932,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>getProductStock:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "getProductStock:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception, array('productHandle' => $productHandle));
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1016,15 +1003,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>getMaxDebtor:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "getMaxDebtor:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1064,15 +1049,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>getMaxInvoiceNumber: " . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "getMaxInvoiceNumber:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1127,15 +1110,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>getMaxDraftInvoiceNumber: " . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "getMaxDraftInvoiceNumber:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1196,15 +1177,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>getUnitGroup:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "getUnitGroup:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1252,9 +1231,9 @@ class PlgEconomicEconomic extends JPlugin
 				'ProductGroupHandle' => $productGroupHandle,
 				'Name'               => $d['product_name'],
 				'BarCode'            => '',
-				'SalesPrice'         => $d ['product_price'],
-				'CostPrice'          => $d ['product_price'],
-				'RecommendedPrice'   => $d ['product_price'],
+				'SalesPrice'         => (float) $d ['product_price'],
+				'CostPrice'          => (float) $d ['product_price'],
+				'RecommendedPrice'   => (float) $d ['product_price'],
 				'Description'        => $d ['product_s_desc'],
 				'UnitHandle'         => $UnitHandle,
 				'Volume'             => $d ['product_volume'],
@@ -1273,15 +1252,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>storeProduct:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "storeProduct:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception, $prdinfo, $d);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1301,17 +1278,15 @@ class PlgEconomicEconomic extends JPlugin
 				array('productHandle' => $productHandle)
 			)->Product_GetBarCodeResult;
 		}
-		catch (Exception $e)
+		catch (Exception $exception)
 		{
-			print("<p><i>ProductGetBarCode:" . $e->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "Product_GetBarCode:" . $e->getMessage());
+				$this->report(__METHOD__, $exception, array('productHandle' => $productHandle), $productHandle);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1362,16 +1337,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>error msg storeProductGroup:" . $exception->getMessage() . "</i></p>");
-			JError::raiseWarning(21, $exception->getMessage());
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "storeProductGroup:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception, $prdgrpinfo, $d);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1416,22 +1388,22 @@ class PlgEconomicEconomic extends JPlugin
 				$d['updateDebtorContact'] = $contactHandle->Id;
 				$this->DebtorContact_GetData($d);
 			}
-
-			$contactHandle = $this->storeDebtorContact($d);
+			else
+			{
+				$contactHandle = $this->storeDebtorContact($d);
+			}
 
 			return $contactHandle;
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>error msg in getDebtorContactHandle::" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "getDebtorContactHandle:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1457,15 +1429,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>error msg in DebtorContact_GetData::" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "DebtorContact_GetData:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception, array('entityHandle' => $entityHandle));
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1491,15 +1461,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>error msg in DebtorContact_Delete::" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "DebtorContact_Delete:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1561,15 +1529,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>storeDebtorContact:: " . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "storeDebtorContact:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1651,15 +1617,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>createInvoice:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "createInvoice:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1680,6 +1644,10 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
+			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			{
+				$this->report(__METHOD__, $exception, $invoiceHandle);
+			}
 		}
 	}
 
@@ -1731,15 +1699,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>setDeliveryAddress:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "setDeliveryAddress:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1806,15 +1772,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>createInvoiceLine:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "createInvoiceLine:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1887,16 +1851,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>createInvoiceLineArray:" . $exception->getMessage() . "</i></p>");
-
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "createInvoiceLineArray:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1925,15 +1886,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>checkDraftInvoice:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "checkDraftInvoice:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1959,15 +1918,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>checkBookInvoice:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "checkBookInvoice:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -1998,15 +1955,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>updateInvoiceDate:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "updateInvoiceDate:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -2082,15 +2037,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>CurrentInvoice_BookWithNumber:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "CurrentInvoice_BookWithNumber:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -2123,15 +2076,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>CurrentInvoice_Book:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "CurrentInvoice_Book:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -2157,15 +2108,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>Invoice_GetPdf:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "Invoice_GetPdf:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -2244,13 +2193,13 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
 	}
@@ -2341,16 +2290,73 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			print("<p><i>createCashbookEntry:" . $exception->getMessage() . "</i></p>");
-
 			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
-				JError::raiseWarning(21, "createCashbookEntry:" . $exception->getMessage());
+				$this->report(__METHOD__, $exception);
 			}
 			else
 			{
-				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+				JError::raiseWarning(21, JText::_('COM_REDSHOP_DETAIL_ERROR_MESSAGE_LBL'));
 			}
 		}
+	}
+
+	/**
+	 * Method for send report
+	 *
+	 * @param   Exception $exception Exception throw from E-conomic
+	 * @param   array     $soapData  Soap prepared data
+	 * @param   array     $data      List of data.
+	 *
+	 * @return  boolean                True on success. False otherwise
+	 * @throws  Exception
+	 */
+	private function report($method, $exception = null, $soapData = array(), $data = array())
+	{
+		$app      = JFactory::getApplication();
+		$from     = $app->get('mailfrom', '');
+		$fromName = $app->get('fromname', '');
+		$email    = Redshop::getConfig()->get('ADMINISTRATOR_EMAIL', $from);
+		$subject  = 'E-conomic error';
+		$data     = (array) $data;
+		$soapData = (array) $soapData;
+
+		$body = '<p>Hi ' . $fromName . '</p>'
+			. '<p>There are an error from Economic: </p>'
+			. '<blockquote>' . $exception->getMessage() . '</blockquote>'
+			. '<p>On method: ' . $method . '</p>';
+
+		if (!empty($data))
+		{
+			$body .= '<hr /><h4>Data</h4>'
+				. '<table style="width: 100%;">'
+				. '<thead><tr><th>Key</th><th>Value</th></tr></thead><tbody>';
+
+			foreach ($data as $key => $value)
+			{
+				$body .= '<tr><td>' . $key . '</td>'
+					. '<td>' . (is_array($value) || is_object($value) ? json_encode($value) : $value) . '</td></tr>';
+			}
+
+			$body .= '</tbody>'
+				. '</table>';
+		}
+
+		if (!empty($soapData))
+		{
+			$body .= '<hr /><h4>SOAP data</h4>'
+				. '<table style="width: 100%;">'
+				. '<thead><tr><th>Key</th><th>Value</th></tr></thead><tbody>';
+
+			foreach ($soapData as $key => $value)
+			{
+				$body .= '<tr><td>' . $key . '</td>'
+					. '<td>' . (is_array($value) || is_object($value) ? json_encode($value) : $value) . '</td></tr>';
+			}
+
+			$body .= '</tbody></table>';
+		}
+
+		return RedshopHelperMail::sendEmail($from, $fromName, $email, $subject, $body, true, null, '', null, 'economic');
 	}
 }

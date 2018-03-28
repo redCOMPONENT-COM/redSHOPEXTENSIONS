@@ -6,6 +6,10 @@ PHP Version: **>= 5.6**
 
 ## Changelog
 
+**2018/03/28**
+
+- [Plugins] e-conomic integration | plg_economic_economic-v2.0.1
+
 **2018/03/06**
 
 - [Composer] redSHOP Payment - Mollieideal - v1.9.6
