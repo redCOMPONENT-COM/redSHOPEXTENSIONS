@@ -14,6 +14,7 @@ JLoader::import('redshop.library');
 // Initialize variables.
 $app                     = JFactory::getApplication();
 $db                      = JFactory::getDbo();
+$session                 = JFactory::getSession();
 $type                    = trim($params->get('type', 0));
 $count                   = trim($params->get('count', 5));
 $image                   = trim($params->get('image', 0));
@@ -31,6 +32,11 @@ $showStockroomStatus     = trim($params->get('show_stockroom_status', 1));
 $showChildProducts       = trim($params->get('show_childproducts', 1));
 $showWishlist            = trim($params->get('show_wishlist', 0));
 $isUrlCategoryId         = trim($params->get('urlCategoryId', 0));
+$showLoadmore            = trim($params->get('show_loadmore', 0));
+$loadmoreCount           = trim($params->get('loadmore_count', 9));
+$loadmoreBtnText         = trim($params->get('loadmore_text', 'Se flere tilbud'));
+$isLoadmore              = $app->input->getInt('loadmore', 0);
+$loadedProductIds        = $session->get('mod_redshop_products.' . $module->id . '.loadedpids', array());
 
 $user = JFactory::getUser();
 
@@ -46,23 +52,23 @@ switch ((int) $type)
 	// Newest Product
 	case 0:
 		$query->order($db->qn('p.product_id') . ' DESC');
-	break;
+		break;
 
 	// Latest Product
 	case 1:
 
 		$query->leftjoin(
-					$db->qn('#__redshop_product_attribute', 'a')
-					. ' ON ' . $db->qn('a.product_id') . ' = ' . $db->qn('p.product_id')
-				)
+			$db->qn('#__redshop_product_attribute', 'a')
+			. ' ON ' . $db->qn('a.product_id') . ' = ' . $db->qn('p.product_id')
+		)
 			->leftjoin(
-					$db->qn('#__redshop_product_attribute_property', 'ap')
-					. ' ON ' . $db->qn('a.attribute_id') . ' = ' . $db->qn('ap.attribute_id')
-				)
+				$db->qn('#__redshop_product_attribute_property', 'ap')
+				. ' ON ' . $db->qn('a.attribute_id') . ' = ' . $db->qn('ap.attribute_id')
+			)
 			->order($db->qn('ap.property_id') . ' DESC')
 			->order($db->qn('p.product_id') . ' DESC');
 
-	break;
+		break;
 
 	// Most Sold Product
 	case 2:
@@ -107,9 +113,9 @@ switch ((int) $type)
 
 		if (!empty($watched))
 		{
-			$query->where($db->qn('p.product_id') . ' IN (' . implode(',', $watched) . ')');	
+			$query->where($db->qn('p.product_id') . ' IN (' . implode(',', $watched) . ')');
 		}
-		
+
 		break;
 }
 
@@ -180,11 +186,21 @@ else
 if ($stockrooms && Redshop::getConfig()->get('USE_STOCKROOM') == 1)
 {
 	$query->leftjoin($db->qn('#__redshop_product_stockroom_xref', 'sx') . ' ON p.product_id = sx.product_id')
-			->where($db->qn('sx.stockroom_id') . ' IN (' . $stockrooms . ')')
-			->where($db->qn('sx.quantity') . ' > 0');
+		->where($db->qn('sx.stockroom_id') . ' IN (' . $stockrooms . ')')
+		->where($db->qn('sx.quantity') . ' > 0');
 }
 
 $rows = array();
+
+if ($isLoadmore)
+{
+	if (!empty($loadedProductIds))
+	{
+		$query->where($db->qn('p.product_id') . ' NOT IN(' . implode(', ', $loadedProductIds) . ')');
+	}
+
+	$count = $loadmoreCount;
+}
 
 if ($productIds = $db->setQuery($query, 0, $count)->loadColumn())
 {
@@ -201,6 +217,15 @@ if ($productIds = $db->setQuery($query, 0, $count)->loadColumn())
 		RedshopHelperProduct::setProduct($rows);
 		$rows = array_values($rows);
 	}
+
+	$newLoadedProductIds = $productIds;
+
+	if ($isLoadmore)
+	{
+		$newLoadedProductIds = array_merge($loadedProductIds, $productIds);
+	}
+
+	$session->set('mod_redshop_products.' . $module->id . '.loadedpids', $newLoadedProductIds);
 }
 
 require JModuleHelper::getLayoutPath('mod_redshop_products', $params->get('layout', 'default'));

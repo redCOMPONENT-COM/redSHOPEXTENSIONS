@@ -13,6 +13,8 @@ JHTML::_('behavior.modal');
 
 $uri = JURI::getInstance();
 $url = $uri->root();
+$fullUrl = $uri->toString();
+$loadmoreUrl = $fullUrl . (strpos($fullUrl, "?") == false ? '?' : '&') . 'loadmore=1';
 
 $Itemid = JRequest::getInt('Itemid');
 $user   = JFactory::getUser();
@@ -30,11 +32,11 @@ $redhelper       = redhelper::getInstance();
 $redTemplate     = Redtemplate::getInstance();
 $extraField      = extraField::getInstance();
 $stockroomhelper = rsstockroomhelper::getInstance();
+$moduleId        = "mod_" . $module->id;
 
+echo "<div class=\"mod_redshop_products_wrapper\" id=\"{$moduleId}\">";
 
-echo "<div class=\"mod_redshop_products_wrapper\">";
-
-$moduleId = "mod_" . $module->id;
+echo "<div id=\"{$moduleId}_products_wrapper\">";
 
 for ($i = 0, $in = count($rows); $i < $in; $i++)
 {
@@ -279,3 +281,46 @@ for ($i = 0, $in = count($rows); $i < $in; $i++)
 }
 
 echo "</div>";
+
+if ($showLoadmore)
+{
+	echo "
+	<div id=\"{$moduleId}_loadmorewrapper\" class=\"text-center\">
+		<div id=\"{$moduleId}_loadmorebtn\" class=\"btn btn-primary\">{$loadmoreBtnText}</div>
+		<img id=\"{$moduleId}_loadmoreloading\" src=\"{$url}/components/com_redshop/assets/images/loading.gif\" />
+	</div>
+    ";
+}
+
+echo "</div>";
+
+echo "
+<script type=\"text/javascript\">
+	(function ($) {
+	    $(document).ready(function () {
+            $('#{$moduleId}_loadmoreloading').hide();
+            
+            $('#{$moduleId}_loadmorebtn').on('click', function () {
+                $(this).hide();
+                $('#{$moduleId}_loadmoreloading').show();
+                
+                $.ajax({
+                    url: '{$loadmoreUrl}',
+                    success: function (html) {
+                        var productsHtml = $(html).find('#{$moduleId}_products_wrapper');
+                        
+                        productsHtml.insertBefore('#{$moduleId}_loadmorewrapper');
+                        
+                        if (productsHtml.find('.frontProduct.front').length == {$loadmoreCount})
+                        {
+                            $('#{$moduleId}_loadmorebtn').show();
+                        }
+                        
+                        $('#{$moduleId}_loadmoreloading').hide();
+                    }
+                });
+            });
+	    });
+	})(jQuery);
+</script>
+";

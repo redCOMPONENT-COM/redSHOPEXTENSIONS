@@ -205,6 +205,34 @@
                     multiple="true"
                     description="COM_REDSHOP_SELECT_STOCKROOM_DESC"
                 />
+                <field
+                    name="show_loadmore"
+                    type="radio"
+                    default="0"
+                    label="MOD_REDSHOP_PRODUCTS_SHOW_LOADMORE"
+                    class="btn-group btn-group-yesno"
+                    description="MOD_REDSHOP_PRODUCTS_SHOW_LOADMORE_DESC">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field
+                    name="loadmore_count"
+                    type="number"
+                    showon="show_loadmore:1"
+                    default="5"
+                    size="10"
+                    label="MOD_REDSHOP_PRODUCTS_LOADMORE_COUNT"
+                    description="MOD_REDSHOP_PRODUCTS_LOADMORE_COUNT_DESC"
+                />
+                <field
+                    name="loadmore_text"
+                    type="text"
+                    showon="show_loadmore:1"
+                    default="Load more"
+                    size="10"
+                    label="MOD_REDSHOP_PRODUCTS_LOADMORE_TEXT"
+                    description="MOD_REDSHOP_PRODUCTS_LOADMORE_TEXT_DESC"
+                />
             </fieldset>
             <fieldset name="advanced">
                 <field name="layout"
