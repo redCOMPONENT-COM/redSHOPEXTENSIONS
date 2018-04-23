@@ -921,7 +921,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 		JLoader::import('redshop.library');
 
 		// If the project is used as its own project, it would use rest-api-sdk-php composer autoloader.
-		$composerAutoload = __DIR__ . '/vendor/autoload.php';
+		$composerAutoload = __DIR__ . '/library/vendor/autoload.php';
 
 		if (!JFile::exists($composerAutoload))
 		{

@@ -6,11 +6,15 @@ PHP Version: **>= 5.6**
 
 ## Changelog
 
-**2018/03/28**
+**23th April 2018**
+
+- [Plugins] redSHOP Shipping - Postdanmark | plg_redshop_shipping_postdanmark-v2.0.0
+
+**28th March 2018**
 
 - [Plugins] e-conomic integration | plg_economic_economic-v2.0.1
 
-**2018/03/06**
+**06th March 2018**
 
 - [Composer] redSHOP Payment - Mollieideal - v1.9.6
 - [Composer] redSHOP Payment - Paypal Credit Card - v1.13.0
@@ -18,7 +22,7 @@ PHP Version: **>= 5.6**
 - [Composer] redSHOP Payment - Stripe - v6.4.1
 - [Composer] redSHOP PDF - mPDF - v7.0.3
 
-**2018/03/01**
+**01st March 2018**
 
 - [Modules] redWEB - Facebook plugins | mod_redweb_facebook_plugins-v1.0.0
 - [Plugins] redWEB Itunes reviews | plg_system_itunesreviews-v1.0.0
