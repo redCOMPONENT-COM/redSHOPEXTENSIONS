@@ -110,7 +110,7 @@ class PlgRedshop_PaymentQuickpay extends RedshopPayment
 		// Invalid request
 		if ($response->merchant_id != $this->params->get("merchantId"))
 		{
-			JLog::add('Invalid Request', JLog::ERROR, 'jerror');
+			JLog::add(JText::_('PLG_REDSHOP_PAYMENT_QUICKPAY_PAYMENT_INVALID_REQUEST'), JLog::ERROR, 'jerror');
 
 			return false;
 		}
