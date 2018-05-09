@@ -12,10 +12,11 @@ defined('_JEXEC') or die;
 JLoader::import('redshop.library');
 
 // Initialize variables.
+/** @var JApplicationSite $app */
 $app                     = JFactory::getApplication();
 $db                      = JFactory::getDbo();
 $session                 = JFactory::getSession();
-$type                    = trim($params->get('type', 0));
+$type                    = (int) $params->get('type', 0);
 $count                   = trim($params->get('count', 5));
 $image                   = trim($params->get('image', 0));
 $showFeaturedProduct     = trim($params->get('featured_product', 0));
@@ -29,25 +30,27 @@ $showDiscountPriceLayout = trim($params->get('show_discountpricelayout', 1));
 $showDescription         = trim($params->get('show_desc', 1));
 $showVat                 = trim($params->get('show_vat', 1));
 $showStockroomStatus     = trim($params->get('show_stockroom_status', 1));
-$showChildProducts       = trim($params->get('show_childproducts', 1));
+$showChildProducts       = (int) $params->get('show_childproducts', 1);
 $showWishlist            = trim($params->get('show_wishlist', 0));
 $isUrlCategoryId         = trim($params->get('urlCategoryId', 0));
 $showLoadmore            = trim($params->get('show_loadmore', 0));
 $loadmoreCount           = trim($params->get('loadmore_count', 9));
 $loadmoreBtnText         = trim($params->get('loadmore_text', 'Se flere tilbud'));
-$isLoadmore              = $app->input->getInt('loadmore', 0);
-$loadedProductIds        = $session->get('mod_redshop_products.' . $module->id . '.loadedpids', array());
+$specificProducts        = $params->get('specific_products', array());
+
+$isLoadmore       = $app->input->getInt('loadmore', 0);
+$loadedProductIds = $session->get('mod_redshop_products.' . $module->id . '.loadedpids', array());
 
 $user = JFactory::getUser();
 
 $query = $db->getQuery(true)
-	->select('p.product_id')
+	->select($db->qn('p.product_id'))
 	->from($db->qn('#__redshop_product', 'p'))
-	->leftJoin('#__redshop_product_category_xref AS pc ON pc.product_id = p.product_id')
+	->leftJoin($db->qn('#__redshop_product_category_xref', 'pc') . ' ON ' . $db->qn('pc.product_id') . ' = ' . $db->qn('p.product_id'))
 	->where($db->qn('p.published') . ' = 1')
-	->group('p.product_id');
+	->group($db->qn('p.product_id'));
 
-switch ((int) $type)
+switch ($type)
 {
 	// Newest Product
 	case 0:
@@ -56,12 +59,11 @@ switch ((int) $type)
 
 	// Latest Product
 	case 1:
-
-		$query->leftjoin(
+		$query->leftJoin(
 			$db->qn('#__redshop_product_attribute', 'a')
 			. ' ON ' . $db->qn('a.product_id') . ' = ' . $db->qn('p.product_id')
 		)
-			->leftjoin(
+			->leftJoin(
 				$db->qn('#__redshop_product_attribute_property', 'ap')
 				. ' ON ' . $db->qn('a.attribute_id') . ' = ' . $db->qn('ap.attribute_id')
 			)
@@ -72,7 +74,6 @@ switch ((int) $type)
 
 	// Most Sold Product
 	case 2:
-
 		$subQuery = $db->getQuery(true)
 			->select('SUM(' . $db->qn('oi.product_quantity') . ') AS qty, oi.product_id')
 			->from($db->qn('#__redshop_order_item', 'oi'))
@@ -85,14 +86,12 @@ switch ((int) $type)
 
 	// Random Product
 	case 3:
-
 		$query->order('rand()');
 
 		break;
 
 	// Product On Sale
 	case 4:
-
 		$query->where($db->qn('p.product_on_sale') . '=1')
 			->order($db->qn('p.product_name'));
 
@@ -102,11 +101,15 @@ switch ((int) $type)
 	case 5:
 		$time = time();
 		$query->where($db->qn('p.product_on_sale') . ' = 1')
-			->where('((p.discount_stratdate = 0 AND p.discount_enddate = 0) OR (p.discount_stratdate <= '
+			->where(
+				'((p.discount_stratdate = 0 AND p.discount_enddate = 0) OR (p.discount_stratdate <= '
 				. $time . ' AND p.discount_enddate >= ' . $time . ') OR (p.discount_stratdate <= '
-				. $time . ' AND p.discount_enddate = 0))')
+				. $time . ' AND p.discount_enddate = 0))'
+			)
 			->order($db->qn('p.product_name'));
 		break;
+
+	// Product watched
 	case 6:
 		$session = JFactory::getSession();
 		$watched = $session->get('watched_product');
@@ -117,18 +120,25 @@ switch ((int) $type)
 		}
 
 		break;
+
+	case 7:
+		// Specific products
+		$specificProducts = empty($specificProducts) ? array(0) : $specificProducts;
+
+		$query->where($db->qn('p.product_id') . ' IN (' . implode(',', $specificProducts) . ')');
+		break;
 }
 
 // Only Display Feature Product
 if ($showFeaturedProduct)
 {
-	$query->where($db->qn('p.product_special') . '=1');
+	$query->where($db->qn('p.product_special') . ' = 1');
 }
 
 // Show Child Products or Parent Products
 if ($showChildProducts != 1)
 {
-	$query->where($db->qn('p.product_parent_id') . '=0');
+	$query->where($db->qn('p.product_parent_id') . ' = 0');
 }
 
 $category = $params->get('category', '');
@@ -149,11 +159,10 @@ if ($isUrlCategoryId)
 
 	if ($category)
 	{
-		$categoryArray = explode(",", $category);
-		array_push($categoryArray, $urlCategoryId);
-		JArrayHelper::toInteger($categoryArray);
-
-		$category = implode(",", $categoryArray);
+		$categoryArray   = explode(",", $category);
+		$categoryArray[] = $urlCategoryId;
+		$categoryArray   = \Joomla\Utilities\ArrayHelper::toInteger($categoryArray);
+		$category        = implode(',', $categoryArray);
 	}
 	else
 	{
@@ -168,7 +177,7 @@ if ($category)
 }
 else
 {
-	$query->leftJoin($db->qn('#__redshop_category', 'c') . ' ON c.id = pc.category_id')
+	$query->leftJoin($db->qn('#__redshop_category', 'c') . ' ON ' . $db->qn('c.id') . ' = ' . $db->qn('pc.category_id'))
 		->where($db->qn('c.published') . ' = 1');
 }
 
@@ -183,9 +192,9 @@ else
 	$stockrooms = trim($stockrooms);
 }
 
-if ($stockrooms && Redshop::getConfig()->get('USE_STOCKROOM') == 1)
+if ($stockrooms && Redshop::getConfig()->getBool('USE_STOCKROOM'))
 {
-	$query->leftjoin($db->qn('#__redshop_product_stockroom_xref', 'sx') . ' ON p.product_id = sx.product_id')
+	$query->leftJoin($db->qn('#__redshop_product_stockroom_xref', 'sx') . ' ON ' . $db->qn('p.product_id') . ' = ' . $db->qn('sx.product_id'))
 		->where($db->qn('sx.stockroom_id') . ' IN (' . $stockrooms . ')')
 		->where($db->qn('sx.quantity') . ' > 0');
 }
@@ -202,17 +211,21 @@ if ($isLoadmore)
 	$count = $loadmoreCount;
 }
 
-if ($productIds = $db->setQuery($query, 0, $count)->loadColumn())
+$productIds = $db->setQuery($query, 0, $count)->loadColumn();
+
+if (!empty($productIds))
 {
 	// Third steep get all product relate info
 	$query->clear()
-		->where('p.product_id IN (' . implode(',', $productIds) . ')')
+		->where($db->qn('p.product_id') . ' IN (' . implode(',', $productIds) . ')')
 		->order('FIELD(p.product_id, ' . implode(',', $productIds) . ')');
 
 	$query = RedshopHelperProduct::getMainProductQuery($query, $user->id)
 		->select('CONCAT_WS(' . $db->q('.') . ', p.product_id, ' . (int) $user->id . ') AS concat_id');
 
-	if ($rows = $db->setQuery($query)->loadObjectList('concat_id'))
+	$rows = $db->setQuery($query)->loadObjectList('concat_id');
+
+	if (!empty($rows))
 	{
 		RedshopHelperProduct::setProduct($rows);
 		$rows = array_values($rows);

@@ -6,6 +6,9 @@ PHP Version: **>= 5.6**
 
 ## Changelog
 
+**9th May 2018**
+- [Modules] redWEB - Facebook plugins | mod_redweb_facebook_plugins-v1.0.0
+
 **23th April 2018**
 
 - [Plugins] redSHOP Shipping - Postdanmark | plg_redshop_shipping_postdanmark-v2.0.0
