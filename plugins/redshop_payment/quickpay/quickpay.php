@@ -240,14 +240,14 @@ class PlgRedshop_PaymentQuickpay extends RedshopPayment
 		$response = $this->sendQuickpayRequest('POST', $sendData, $type);
 
 		$body = json_decode($response->body);
+		$values = new stdClass();
 
 		if (202 == $response->code && $body->accepted)
 		{
 			$operations = $body->operations;
 			$operation = $operations[count($operations) - 1];
 
-			if ($operation->pending
-				|| $operation->qp_status_code != 20000)
+			if (($operation->pending || $operation->qp_status_code != 20000) && !empty($operation->qp_status_code))
 			{
 				$message                = $operation->qp_status_msg . '<br />' . $operation->aq_status_msg;
 				$values->responsestatus = 'Fail';
