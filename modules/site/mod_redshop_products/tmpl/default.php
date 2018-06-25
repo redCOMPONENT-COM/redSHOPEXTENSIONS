@@ -282,13 +282,13 @@ $moduleId        = 'mod_' . $module->id;
                 $('#<?php echo $moduleId ?>_loadmoreloading').show();
 
                 $.ajax({
-                    url: '{$loadmoreUrl}',
+                    url: '<?php echo $loadmoreUrl ?>',
                     success: function (html) {
                         var productsHtml = $(html).find('#<?php echo $moduleId ?>_products_wrapper');
 
                         productsHtml.insertBefore('#<?php echo $moduleId ?>_loadmorewrapper');
 
-                        if (productsHtml.find('.frontProduct.front').length == <?php echo $loadmoreCount ?>) {
+                        if (productsHtml.find('.<?php echo $wrapperClass ?>').length == <?php echo $loadmoreCount ?>) {
                             $('#<?php echo $moduleId ?>_loadmorebtn').show();
                         }
 
