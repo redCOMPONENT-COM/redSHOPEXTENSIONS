@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since 1.0
  */
-class PlgRedshop_Sh404urlsSh404urls extends JPlugin
+class PlgRedshop_ProductSh404urls extends JPlugin
 {
 	/**
 	 * Constructor
