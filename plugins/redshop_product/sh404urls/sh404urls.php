@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Wonderliving
+ * @package     redSHOP
  * @subpackage  Plugin
  *
  * @copyright   Copyright (C) 2008 - 2017 redCOMPONENT.com. All rights reserved.
@@ -31,21 +31,29 @@ class PlgRedshop_ProductSh404urls extends JPlugin
 	/**
 	 * @param   $pids  array  products id
 	 *
-	 * @return  void
+	 * @return  boolean
 	 */
 	public function onAfterProductDelete($pids)
 	{
+		if (empty($pids))
+		{
+			return false;
+		}
+
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
 		foreach ($pids as $pid)
 		{
-			$db    = JFactory::getDbo();
-			$query = $db->getQuery(true);
-			$query->clear()
-			      ->delete($db->qn('#__sh404sef_urls'))
-			      ->where($db->qn('newurl') . ' LIKE ' . $db->q('%view=product%'))
-			      ->where($db->qn('newurl') . ' LIKE ' . $db->q('%option=com_redshop%'))
-			      ->where($db->qn('newurl') . ' LIKE ' . $db->q('%pid=' . (int) $pid . '%'));
-
-			$db->setQuery($query)->execute();
+			$conds[] = $db->qn('newurl') . ' LIKE ' . $db->q('%pid=' . (int) $pid . '%');
 		}
+
+		$query->clear()
+			->delete($db->qn('#__sh404sef_urls'))
+			->where($db->qn('newurl') . ' LIKE ' . $db->q('%view=product%'))
+			->where($db->qn('newurl') . ' LIKE ' . $db->q('%option=com_redshop%'))
+			->where(implode(' OR ', $conds));
+
+		return $db->setQuery($query)->execute();
 	}
 }
