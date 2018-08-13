@@ -49,7 +49,7 @@ $redHelper = redhelper::getInstance();
 			<?php endif; ?>
 							<?php $i = 0; ?>
 
-							<?php foreach ($rows as $row): ?>
+							<?php foreach ($data as $row): ?>
 								<?php if ($scrollDirection == 'left' || $scrollDirection == 'right'): ?>
                                     <td style="vertical-align:top;padding: 2px 5px 2px 5px;">
                                         <table width="<?php echo $boxWidth ?>">
@@ -103,9 +103,9 @@ $redHelper = redhelper::getInstance();
                                     <?php
 								}
 
-								if ($this->show_category_name == 'yes')
+								if ($show_category_name == 'yes')
 								{
-									$categoryName    = "<tr><td style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'><a href='" . $link . "' >" . $categoryName . "</a></td></tr>";
+									$categoryName    = "<tr><td style='text-align:" . $scrollTextAlign . ";font-weight:" . $scrollTextWeight . ";font-size:" . $scrollTextSize . "px;'><a href='" . $link . "' >" . $categoryName . "</a></td></tr>";
 									echo $categoryName;
 								}
 								?>

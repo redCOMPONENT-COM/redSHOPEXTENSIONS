@@ -46,7 +46,7 @@ class ModRedCategoryScrollerHelper
 
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select('c.*')
+			->select('*')
 			->from($db->qn('#__redshop_category'))
 			->where($db->qn('published') . ' = 1');
 
