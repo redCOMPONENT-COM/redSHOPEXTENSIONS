@@ -23,7 +23,14 @@ function pluginRelease(group, name) {
     if (!argv.skipVersion) {
         fs.readFile('./plugins/' + group + '/' + name + '/' + name + '.xml', function (err, data) {
             parser.parseString(data, function (err, result) {
-                var version = result.extension.version[0];
+                if (typeof result !== 'undefined')
+                {
+                    var version = result.extension.version[0];
+                }
+                else
+                {
+                    var version = 'n.a';
+                }
 
                 // Generate file name
                 fileName += '-v' + version + '.zip';
