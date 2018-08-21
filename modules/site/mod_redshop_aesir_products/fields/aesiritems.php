@@ -11,6 +11,7 @@
 defined('_JEXEC') or die;
 
 JLoader::import('redshop.library');
+JFormHelper::loadFieldClass('list');
 
 /**
  * Class JFormFieldRedshopCategoryRemove
