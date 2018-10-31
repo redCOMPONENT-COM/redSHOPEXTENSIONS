@@ -10,6 +10,8 @@
 // No direct access
 defined('_JEXEC') or die;
 
+JFormHelper::loadFieldClass('list');
+
 /**
  * Class JFormFieldRedshopCategoryRemove
  *
@@ -33,8 +35,7 @@ class JFormFieldAesirTypes extends JFormFieldList
 		$query = $db->getQuery(true)
 			->select($db->qn('title'))
 			->select($db->qn('id'))
-			->from($db->qn('#__reditem_types'))
-			->order($db->qn('ordering'));
+			->from($db->qn('#__reditem_types'));
 
 		$items = $db->setQuery($query)->loadObjectList();
 		$options = array();
