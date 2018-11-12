@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  * @extends JPlugin
  * @since   1.0.0
  */
-class PlgSystemRedSHOP_Send_Discountcode extends Plugin
+class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.
