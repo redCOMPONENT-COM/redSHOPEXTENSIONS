@@ -32,18 +32,6 @@ $showStockroomStatus     = trim($params->get('show_stockroom_status', 1));
 $showChildProducts       = trim($params->get('show_childproducts', 1));
 $isUrlCategoryId         = trim($params->get('urlCategoryId', 0));
 
-// Getting the configuration
-require_once JPATH_ADMINISTRATOR . '/components/com_redshop/helpers/redshop.cfg.php';
-JLoader::load('RedshopHelperAdminConfiguration');
-$redConfiguration = new Redconfiguration;
-$redConfiguration->defineDynamicVars();
-$user = JFactory::getUser();
-
-JLoader::load('RedshopHelperProduct');
-JLoader::load('RedshopHelperHelper');
-JLoader::load('RedshopHelperAdminTemplate');
-JLoader::load('RedshopHelperAdminExtra_field');
-
 $query = $db->getQuery(true)
 	->select($db->qn('table_name'))
 	->from($db->qn('#__reditem_types'))
@@ -55,13 +43,15 @@ $query = $db->getQuery(true)
 	->from($db->qn('#__reditem_items'))
 	->where($db->qn('id') . ' = ' . $db->q((int) $item));
 $itemId = $db->setQuery($query)->loadResult();
-
-$query = $db->getQuery(true)
-	->select($db->qn('redshop_products'))
-	->from($db->qn('#__reditem_types_' . $tableName))
-	->where($db->qn('id') . ' = ' . $db->q((int) $itemId));
-$jsonId = $db->setQuery($query)->loadResult();
-$ids = json_decode($jsonId);
+if ($tableName)
+{
+	$query = $db->getQuery(true)
+		->select($db->qn('redshop_products'))
+		->from($db->qn('#__reditem_types_' . $tableName))
+		->where($db->qn('id') . ' = ' . $db->q((int) $itemId));
+	$jsonId = $db->setQuery($query)->loadResult();
+	$ids = json_decode($jsonId);
+}
 
 $query = $db->getQuery(true)
 	->select($db->qn('p.product_id'))
@@ -113,4 +103,4 @@ if ($productIds = $db->setQuery($query, 0, $count)->loadColumn())
 	}
 }
 
-require JModuleHelper::getLayoutPath('mod_redshop_products');
+require JModuleHelper::getLayoutPath('mod_redshop_aesir_products');
