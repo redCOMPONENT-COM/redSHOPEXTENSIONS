@@ -46,11 +46,10 @@ $itemId = $db->setQuery($query)->loadResult();
 if ($tableName)
 {
 	$query = $db->getQuery(true)
-		->select($db->qn('redshop_products'))
+		->select($db->qn('id'))
 		->from($db->qn('#__reditem_types_' . $tableName))
 		->where($db->qn('id') . ' = ' . $db->q((int) $itemId));
-	$jsonId = $db->setQuery($query)->loadResult();
-	$ids = json_decode($jsonId);
+	$ids = $db->setQuery($query)->loadResult();
 }
 
 $query = $db->getQuery(true)
@@ -63,9 +62,13 @@ $query = $db->getQuery(true)
 	->group($db->qn('p.product_id'))
 	->order($db->qn('p.product_id') . ' DESC');
 
-if (!empty($ids))
+if (!empty($ids) && is_array($ids))
 {
 	$query->where($db->qn('p.product_id') . ' IN (' . implode(',', $ids) . ')');
+}
+elseif (!is_array($ids))
+{
+	$query->where($db->qn('p.product_id') . ' = ' . $db->q($ids));
 }
 else
 {
