@@ -10,6 +10,8 @@
 // No direct access
 defined('_JEXEC') or die;
 
+JFormHelper::loadFieldClass('list');
+
 /**
  * Class JFormFieldRedshopCategoryRemove
  *
