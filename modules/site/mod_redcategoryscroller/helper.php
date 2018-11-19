@@ -39,12 +39,9 @@ class ModRedCategoryScrollerHelper
 
 		$cid = array();
 
-		if (!empty($hierarchyTree))
+		for ($i = 0, $in = count($hierarchyTree); $i < $in; $i++)
 		{
-			foreach ($hierarchyTree as $item)
-			{
-				$cid[] = $item->id;
-			}
+			$cid[] = $hierarchyTree[$i]->id;
 		}
 
 		$db = JFactory::getDbo();
