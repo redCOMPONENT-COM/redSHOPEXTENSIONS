@@ -59,7 +59,7 @@ $redHelper = redhelper::getInstance();
 								$itemIdData = RedshopHelperRouter::getCategoryItemid($row->id);
 								$categoryName = $row->name;
 
-								$Itemid = (!empty($itemIdData)) ? $itemIdData->id : RedshopHelperRouter::getItemId($row->id);
+								$Itemid = count($itemIdData) > 0 ? $itemIdData->id : RedshopHelperRouter::getItemId($row->id);
 
 								$link = JRoute::_('index.php?option=com_redshop&view=category&layout=detail&cid=' . $row->id . '&Itemid=' . $Itemid);
 
@@ -74,7 +74,6 @@ $redHelper = redhelper::getInstance();
 									$alt   = " alt='" . $row->name . "' ";
 
 									$linkImage = REDSHOP_FRONT_IMAGES_ABSPATH . "noimage.jpg";
-									$categoryImage = REDSHOP_FRONT_IMAGES_ABSPATH . "noimage.jpg";
 
 									if ($row->category_full_image
                                         && file_exists(REDSHOP_FRONT_IMAGES_RELPATH . 'category/' . $row->category_full_image))
@@ -114,9 +113,9 @@ $redHelper = redhelper::getInstance();
                                         </table>
                                     </td>
 								<?php else: ?>
-									<?php for ($i = 0; $i < $scrollLineCharTimes; $i++): ?>
-										<?php echo  $scrollLineChar?>
-									<?php endfor; ?>
+									<?php foreach ($scrollLineCharTimes as $scrollLineCharTime): ?>
+										<?php echo $scrollLineChar ?>
+									<?php endforeach; ?>
 								<?php endif; ?>
 
 								<?php $i++; ?>
