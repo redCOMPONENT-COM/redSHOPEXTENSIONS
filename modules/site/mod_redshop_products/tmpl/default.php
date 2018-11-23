@@ -30,46 +30,50 @@ JHtml::script('com_redshop/redshop.redbox.min.js', false, true);
 $producthelper   = productHelper::getInstance();
 $extraField      = extraField::getInstance();
 $stockroomhelper = rsstockroomhelper::getInstance();
-$moduleId        = 'mod_' . $module->id;
-?>
-<div class="mod_redshop_products_wrapper" id="<?php echo $moduleId ?>">
-    <div id="<?php echo $moduleId ?>_products_wrapper">
-		<?php foreach ($rows as $row): ?>
-			<?php
-			if ($showStockroomStatus == 1)
+
+
+echo "<div class=\"mod_redshop_products_wrapper\">";
+
+$moduleId = "mod_" . $module->id;
+
+for ($i = 0, $in = count($rows); $i < $in; $i++)
+{
+	$row = $rows[$i];
+
+	if ($showStockroomStatus == 1)
+	{
+		$isStockExists = $stockroomhelper->isStockExists($row->product_id);
+
+		if (!$isStockExists)
+		{
+			$isPreorderStockExists = $stockroomhelper->isPreorderStockExists($row->product_id);
+		}
+
+		if (!$isStockExists)
+		{
+			$productPreorder = $row->preorder;
+
+			if (($productPreorder == "global" && ALLOW_PRE_ORDER) || ($productPreorder == "yes") || ($productPreorder == "" && ALLOW_PRE_ORDER))
 			{
-				$isStockExists = $stockroomhelper->isStockExists($row->product_id);
-
-				if (!$isStockExists)
+				if (!$isPreorderStockExists)
 				{
-					$isPreorderStockExists = $stockroomhelper->isPreorderStockExists($row->product_id);
-				}
-
-				if (!$isStockExists)
-				{
-					$productPreorder = $row->preorder;
-
-					if (($productPreorder == "global" && Redshop::getConfig()->get('ALLOW_PRE_ORDER')) || ($productPreorder == "yes") || ($productPreorder == "" && Redshop::getConfig()->get('ALLOW_PRE_ORDER')))
-					{
-						if (!$isPreorderStockExists)
-						{
-							$stockStatus = "<div class=\"modProductStockStatus mod_product_outstock\"><span></span>" . JText::_('COM_REDSHOP_OUT_OF_STOCK') . "</div>";
-						}
-						else
-						{
-							$stockStatus = "<div class=\"modProductStockStatus mod_product_preorder\"><span></span>" . JText::_('COM_REDSHOP_PRE_ORDER') . "</div>";
-						}
-					}
-					else
-					{
-						$stockStatus = "<div class=\"modProductStockStatus mod_product_outstock\"><span></span>" . JText::_('COM_REDSHOP_OUT_OF_STOCK') . "</div>";
-					}
+					$stockStatus = "<div class=\"modProductStockStatus mod_product_outstock\"><span></span>" . JText::_('COM_REDSHOP_OUT_OF_STOCK') . "</div>";
 				}
 				else
 				{
-					$stockStatus = "<div class=\"modProductStockStatus mod_product_instock\"><span></span>" . JText::_('COM_REDSHOP_AVAILABLE_STOCK') . "</div>";
+					$stockStatus = "<div class=\"modProductStockStatus mod_product_preorder\"><span></span>" . JText::_('COM_REDSHOP_PRE_ORDER') . "</div>";
 				}
 			}
+			else
+			{
+				$stockStatus = "<div class=\"modProductStockStatus mod_product_outstock\"><span></span>" . JText::_('COM_REDSHOP_OUT_OF_STOCK') . "</div>";
+			}
+		}
+		else
+		{
+			$stockStatus = "<div class=\"modProductStockStatus mod_product_instock\"><span></span>" . JText::_('COM_REDSHOP_AVAILABLE_STOCK') . "</div>";
+		}
+	}
 
 			$categoryId = $producthelper->getCategoryProduct($row->product_id);
 			$ItemData   = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
