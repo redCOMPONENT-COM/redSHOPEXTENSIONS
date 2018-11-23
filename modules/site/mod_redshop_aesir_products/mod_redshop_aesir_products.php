@@ -31,6 +31,7 @@ $showVat                 = trim($params->get('show_vat', 1));
 $showStockroomStatus     = trim($params->get('show_stockroom_status', 1));
 $showChildProducts       = trim($params->get('show_childproducts', 1));
 $isUrlCategoryId         = trim($params->get('urlCategoryId', 0));
+$user 					= $user = JFactory::getUser();
 
 $query = $db->getQuery(true)
 	->select($db->qn('table_name'))
@@ -66,7 +67,7 @@ if (!empty($ids) && is_array($ids))
 {
 	$query->where($db->qn('p.product_id') . ' IN (' . implode(',', $ids) . ')');
 }
-elseif (!is_array($ids))
+elseif (!empty($ids) && !is_array($ids))
 {
 	$query->where($db->qn('p.product_id') . ' = ' . $db->q($ids));
 }
