@@ -31,18 +31,7 @@ $showVat                 = trim($params->get('show_vat', 1));
 $showStockroomStatus     = trim($params->get('show_stockroom_status', 1));
 $showChildProducts       = trim($params->get('show_childproducts', 1));
 $isUrlCategoryId         = trim($params->get('urlCategoryId', 0));
-
-// Getting the configuration
-require_once JPATH_ADMINISTRATOR . '/components/com_redshop/helpers/redshop.cfg.php';
-JLoader::load('RedshopHelperAdminConfiguration');
-$redConfiguration = new Redconfiguration;
-$redConfiguration->defineDynamicVars();
-$user = JFactory::getUser();
-
-JLoader::load('RedshopHelperProduct');
-JLoader::load('RedshopHelperHelper');
-JLoader::load('RedshopHelperAdminTemplate');
-JLoader::load('RedshopHelperAdminExtra_field');
+$user 					= $user = JFactory::getUser();
 
 $query = $db->getQuery(true)
 	->select($db->qn('table_name'))
@@ -55,27 +44,32 @@ $query = $db->getQuery(true)
 	->from($db->qn('#__reditem_items'))
 	->where($db->qn('id') . ' = ' . $db->q((int) $item));
 $itemId = $db->setQuery($query)->loadResult();
-
-$query = $db->getQuery(true)
-	->select($db->qn('redshop_products'))
-	->from($db->qn('#__reditem_types_' . $tableName))
-	->where($db->qn('id') . ' = ' . $db->q((int) $itemId));
-$jsonId = $db->setQuery($query)->loadResult();
-$ids = json_decode($jsonId);
+if ($tableName)
+{
+	$query = $db->getQuery(true)
+		->select($db->qn('id'))
+		->from($db->qn('#__reditem_types_' . $tableName))
+		->where($db->qn('id') . ' = ' . $db->q((int) $itemId));
+	$ids = $db->setQuery($query)->loadResult();
+}
 
 $query = $db->getQuery(true)
 	->select($db->qn('p.product_id'))
 	->from($db->qn('#__redshop_product', 'p'))
 	->leftJoin($db->qn('#__redshop_product_category_xref', 'pc') . ' ON ' . $db->qn('pc.product_id') . ' = ' . $db->qn('p.product_id'))
-	->leftJoin($db->qn('#__redshop_category', 'c') . ' ON ' . $db->qn('c.category_id') . ' = ' . $db->qn('pc.category_id'))
+	->leftJoin($db->qn('#__redshop_category', 'c') . ' ON ' . $db->qn('c.id') . ' = ' . $db->qn('pc.category_id'))
 	->where($db->qn('c.published') . ' = 1')
 	->where($db->qn('p.published') . ' = 1')
 	->group($db->qn('p.product_id'))
 	->order($db->qn('p.product_id') . ' DESC');
 
-if (!empty($ids))
+if (!empty($ids) && is_array($ids))
 {
 	$query->where($db->qn('p.product_id') . ' IN (' . implode(',', $ids) . ')');
+}
+elseif (!empty($ids) && !is_array($ids))
+{
+	$query->where($db->qn('p.product_id') . ' = ' . $db->q($ids));
 }
 else
 {
@@ -113,4 +107,4 @@ if ($productIds = $db->setQuery($query, 0, $count)->loadColumn())
 	}
 }
 
-require JModuleHelper::getLayoutPath('mod_redshop_products');
+require JModuleHelper::getLayoutPath('mod_redshop_aesir_products');

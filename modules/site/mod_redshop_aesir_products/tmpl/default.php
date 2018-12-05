@@ -104,9 +104,9 @@ for ($i = 0; $i < count($rows); $i++)
 	{
 		$thumb = $productInfo->product_full_image;
 
-		if (WATERMARK_PRODUCT_IMAGE)
+		if (Redshop::getConfig()->get('WATERMARK_PRODUCT_IMAGE'))
 		{
-			$thumImage = RedshopHelperMedia::watermark('product', $thumb, $thumbWidth, $thumbHeight, WATERMARK_PRODUCT_THUMB_IMAGE, '0');
+			$thumImage = RedshopHelperMedia::watermark('product', $thumb, $thumbWidth, $thumbHeight, Redshop::getConfig()->get('WATERMARK_PRODUCT_IMAGE'), '0');
 			echo "<div class=\"mod_redshop_products_image\"><img src=\"" . $thumImage . "\"></div>";
 		}
 		else
@@ -118,7 +118,7 @@ for ($i = 0; $i < count($rows); $i++)
 							'product',
 							$thumbWidth,
 							$thumbHeight,
-							USE_IMAGE_SIZE_SWAPPING
+				Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
 						);
 			echo "<div class=\"mod_redshop_products_image\"><a href=\"" . $link . "\" title=\"$row->product_name\"><img src=\"" . $thumImage . "\"></a></div>";
 		}
@@ -228,7 +228,7 @@ for ($i = 0; $i < count($rows); $i++)
 		$hiddenUserField = '';
 		$userfieldArr = array();
 
-		if (AJAX_CART_BOX)
+		if (Redshop::getConfig()->get('AJAX_CART_BOX'))
 		{
 			$ajaxDetailTemplateDesc = "";
 			$ajaxDetailTemplate      = $producthelper->getAjaxDetailboxTemplate($row);
