@@ -431,6 +431,11 @@ class PlgRedshop_ProductBundle extends JPlugin
 	 */
 	public function onBeforeSetCartSession(&$cart, $data, $idx)
 	{
+		if (!isset($data['bundle_product']))
+		{
+			return;
+		}
+
 		$cart[$idx]['bundle_product'] = $data['bundle_product'];
 	}
 
