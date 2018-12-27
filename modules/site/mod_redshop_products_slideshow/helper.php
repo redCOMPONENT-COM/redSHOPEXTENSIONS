@@ -276,7 +276,7 @@ class RedshopProductSlideshow
 			$xml_data .= '<item>
 		<link>' . $curr_link . '</link>
 		<image>' . $imgpath . '</image>
-		<title>' . htmlentities($pname) . $price_txt . '</title>
+		<title>' . htmlentities($pname) . strip_tags($price_txt) . '</title>
 		</item>';
 		}
 
