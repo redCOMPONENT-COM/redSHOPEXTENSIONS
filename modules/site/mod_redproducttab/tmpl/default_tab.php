@@ -23,10 +23,10 @@ $j     = 0;
 ?>
 <?php foreach ($rows as $row): ?>
 <?php $j++; ?>
-<?php if ($j%$nbRow == 1) : ?>
+<?php if (($j%$nbRow == 0) || ($j%$nbRow == 1) ): ?>
 <div class="row <?php echo $containerClass; ?>">
 <?php  endif; ?>
-	<div class="span<?php echo (12/$productPerRow); ?> <?php echo $itemClass; ?>">
+	<div class="col-md-<?php echo (12/$productPerRow); ?> <?php echo $itemClass; ?>">
 	<?php
 		$category_id = $row->category_id;
 		$ItemData = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
