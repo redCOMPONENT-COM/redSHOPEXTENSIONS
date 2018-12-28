@@ -251,17 +251,17 @@ class PlgRedshop_Paymentrs_Payment_Sagepay_Vps extends JPlugin
 			else
 			{
 				if ($strStatus == "MALFORMED")
-					$strDBStatus = "MALFORMED - The StatusDetail was:" . mysql_real_escape_string(substr($strStatusDetail, 0, 255));
+					$strDBStatus = "MALFORMED - The StatusDetail was:" . mysqli_real_escape_string(substr($strStatusDetail, 0, 255));
                 elseif ($strStatus == "INVALID")
-					$strDBStatus = "INVALID - The StatusDetail was:" . mysql_real_escape_string(substr($strStatusDetail, 0, 255));
+					$strDBStatus = "INVALID - The StatusDetail was:" . mysqli_real_escape_string(substr($strStatusDetail, 0, 255));
                 elseif ($strStatus == "NOTAUTHED")
 					$strDBStatus = "DECLINED - The transaction was not authorised by the bank.";
                 elseif ($strStatus == "REJECTED")
 					$strDBStatus = "REJECTED - The transaction was failed by your 3D-Secure or AVS/CV2 rule-bases.";
                 elseif ($strStatus == "ERROR")
-					$strDBStatus = "ERROR - There was an error during the payment process.  The error details are: " . mysql_real_escape_string($strStatusDetail);
+					$strDBStatus = "ERROR - There was an error during the payment process.  The error details are: " . mysqli_real_escape_string($strStatusDetail);
 				else
-					$strDBStatus = "UNKNOWN - An unknown status was returned from Sage Pay.  The Status was: " . mysql_real_escape_string($strStatus) . ", with StatusDetail:" . mysql_real_escape_string($strStatusDetail);
+					$strDBStatus = "UNKNOWN - An unknown status was returned from Sage Pay.  The Status was: " . mysqli_real_escape_string($strStatus) . ", with StatusDetail:" . mysqli_real_escape_string($strStatusDetail);
 				$values->transaction_id = 0;
 				$values->responsestatus = 'Fail';
 			} ?>
