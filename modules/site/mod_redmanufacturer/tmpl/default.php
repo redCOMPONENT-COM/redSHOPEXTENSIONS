@@ -56,18 +56,20 @@ $document->addStyleDeclaration('
 <div class="flexslider">
 	<ul class="slides">
 		<?php foreach ($list as $slide):
-			$thumbUrl = RedShopHelperImages::getImagePath(
+			$thumbUrl = RedshopHelperMedia::getImagePath(
 				$slide->media_name,
 				'',
 				'thumb',
 				'manufacturer',
 				$ImageWidth,
 				$ImageHeight,
-				Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
+				Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING'),
+				'manufacturer',
+				$slide->id
 			);
 			$link = JRoute::_(
 				'index.php?option=com_redshop&view=manufacturers&layout='
-				. $PageLink . '&mid=' . $slide->manufacturer_id . '&Itemid=' . $slide->item_id, false
+				. $PageLink . '&mid=' . $slide->id . '&Itemid=' . $slide->item_id, false
 			);
 			$title = $slide->name;
 			?>
