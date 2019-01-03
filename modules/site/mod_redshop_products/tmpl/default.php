@@ -89,26 +89,20 @@ $moduleId        = 'mod_' . $module->id;
             <div class="<?php echo $wrapperClass ?>">
 				<?php $productInfo = $producthelper->getProductById($row->product_id); ?>
 				<?php if ($image): ?>
-					<?php $thumb = $productInfo->product_full_image; ?>
-					<?php if (Redshop::getConfig()->get('WATERMARK_PRODUCT_IMAGE')): ?>
-						<?php $thumImage = RedshopHelperMedia::watermark('product', $thumb, $thumbWidth, $thumbHeight, Redshop::getConfig()->get('WATERMARK_PRODUCT_THUMB_IMAGE'), '0'); ?>
-                        <div class="mod_redshop_products_image"><img src="<?php echo $thumImage ?>"></div>
-					<?php else: ?>
-						<?php $thumImage = RedShopHelperImages::getImagePath(
-							$thumb,
-							'',
-							'thumb',
-							'product',
-							$thumbWidth,
-							$thumbHeight,
-							Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
-						); ?>
-                        <div class="mod_redshop_products_image">
-                            <a href="<?php echo $link ?>" title="<?php echo $row->product_name ?>">
-                                <img src="<?php echo $thumImage ?>">
-                            </a>
-                        </div>
-					<?php endif; ?>
+
+					<?php $thumb = Redshop\Product\Image\Image::getImage(
+						$row->product_id,
+						$link,
+						$thumbWidth,
+						$thumbHeight,
+						Redshop::getConfig()->get('PRODUCT_DETAIL_IS_LIGHTBOX')
+					);
+					?>
+
+                    <div class="mod_redshop_products_image">
+                       <?php echo $thumb ?>
+                    </div>
+
 				<?php endif; ?>
 				<?php if (!empty($stockStatus)): ?>
 					<?php echo $stockStatus ?>
