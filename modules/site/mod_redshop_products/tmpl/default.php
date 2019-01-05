@@ -33,7 +33,7 @@ $stockroomhelper = rsstockroomhelper::getInstance();
 $moduleId        = 'mod_' . $module->id;
 ?>
 <div class="mod_redshop_products_wrapper" id="<?php echo $moduleId ?>">
-    <div id="<?php echo $moduleId ?>_products_wrapper">
+	<div id="<?php echo $moduleId ?>_products_wrapper">
 		<?php foreach ($rows as $row): ?>
 			<?php
 			if ($showStockroomStatus == 1)
@@ -86,38 +86,29 @@ $moduleId        = 'mod_' . $module->id;
 			$link         = JRoute::_('index.php?option=com_redshop&view=product&pid=' . $row->product_id . '&cid=' . $categoryId . '&Itemid=' . $Itemid);
 			$wrapperClass = isset($verticalProduct) && $verticalProduct ? 'mod_redshop_products' : 'mod_redshop_products_horizontal';
 			?>
-            <div class="<?php echo $wrapperClass ?>">
+			<div class="<?php echo $wrapperClass ?>">
 				<?php $productInfo = $producthelper->getProductById($row->product_id); ?>
 				<?php if ($image): ?>
-					<?php $thumb = $productInfo->product_full_image; ?>
-					<?php if (Redshop::getConfig()->get('WATERMARK_PRODUCT_IMAGE')): ?>
-						<?php $thumImage = RedshopHelperMedia::watermark('product', $thumb, $thumbWidth, $thumbHeight, Redshop::getConfig()->get('WATERMARK_PRODUCT_THUMB_IMAGE'), '0'); ?>
-                        <div class="mod_redshop_products_image"><img src="<?php echo $thumImage ?>"></div>
-					<?php else: ?>
-						<?php $thumImage = RedShopHelperImages::getImagePath(
-							$thumb,
-							'',
-							'thumb',
-							'product',
-							$thumbWidth,
-							$thumbHeight,
-							Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
-						); ?>
-                        <div class="mod_redshop_products_image">
-                            <a href="<?php echo $link ?>" title="<?php echo $row->product_name ?>">
-                                <img src="<?php echo $thumImage ?>">
-                            </a>
-                        </div>
-					<?php endif; ?>
+					<?php $thumb = Redshop\Product\Image\Image::getImage(
+						$row->product_id,
+						$link,
+						$thumbWidth,
+						$thumbHeight,
+						Redshop::getConfig()->get('PRODUCT_DETAIL_IS_LIGHTBOX')
+					);
+					?>
+					<div class="mod_redshop_products_image">
+					   <?php echo $thumb ?>
+					</div>
 				<?php endif; ?>
 				<?php if (!empty($stockStatus)): ?>
 					<?php echo $stockStatus ?>
 				<?php endif; ?>
-                <div class="mod_redshop_products_title">
-                    <a href="<?php echo $link ?>" title=""><?php echo $row->product_name ?></a>
-                </div>
+				<div class="mod_redshop_products_title">
+					<a href="<?php echo $link ?>" title=""><?php echo $row->product_name ?></a>
+				</div>
 				<?php if ($showShortDescription): ?>
-                    <div class="mod_redshop_products_desc"><?php echo $row->product_s_desc ?></div>
+					<div class="mod_redshop_products_desc"><?php echo $row->product_s_desc ?></div>
 				<?php endif; ?>
 				<?php
 				if (!$row->not_for_sale && $showPrice)
@@ -159,15 +150,15 @@ $moduleId        = 'mod_' . $module->id;
 								?>
 								<?php if ($showDiscountPriceLayout): ?>
 								<?php $productPrice = $productPriceDiscount; ?>
-                                <div id="mod_redoldprice"
-                                     class="mod_redoldprice"><?php echo $producthelper->getProductFormattedPrice($productOldPrice) ?></div>
-                                <div id="mod_redmainprice"
-                                     class="mod_redmainprice"><?php echo $producthelper->getProductFormattedPrice($productPriceDiscount) ?></div>
-                                <div id="mod_redsavedprice"
-                                     class="mod_redsavedprice"><?php echo JText::_('COM_REDSHOP_PRODCUT_PRICE_YOU_SAVED') . ' ' . $producthelper->getProductFormattedPrice($savingPrice) ?></div>
+								<div id="mod_redoldprice"
+									 class="mod_redoldprice"><?php echo $producthelper->getProductFormattedPrice($productOldPrice) ?></div>
+								<div id="mod_redmainprice"
+									 class="mod_redmainprice"><?php echo $producthelper->getProductFormattedPrice($productPriceDiscount) ?></div>
+								<div id="mod_redsavedprice"
+									 class="mod_redsavedprice"><?php echo JText::_('COM_REDSHOP_PRODCUT_PRICE_YOU_SAVED') . ' ' . $producthelper->getProductFormattedPrice($savingPrice) ?></div>
 							<?php else: ?>
 								<?php $productPrice = $productPriceDiscount; ?>
-                                <div class="mod_redshop_products_price"><?php echo $producthelper->getProductFormattedPrice($productPrice) ?></div>
+								<div class="mod_redshop_products_price"><?php echo $producthelper->getProductFormattedPrice($productPrice) ?></div>
 							<?php endif; ?>
 								<?php
 							}
@@ -178,12 +169,12 @@ $moduleId        = 'mod_' . $module->id;
 				}
 				?>
 				<?php if ($showWishlist): ?>
-                    <div class="wishlist"><?php echo $producthelper->replaceWishlistButton($row->product_id, '{wishlist_link}') ?></div>
+					<div class="wishlist"><?php echo $producthelper->replaceWishlistButton($row->product_id, '{wishlist_link}') ?></div>
 				<?php endif; ?>
 				<?php if ($showReadmore): ?>
-                    <div class="mod_redshop_products_readmore">
-                        <a href="<?php echo $link ?>"><?php echo JText::_('COM_REDSHOP_TXT_READ_MORE') ?></a>&nbsp;
-                    </div>
+					<div class="mod_redshop_products_readmore">
+						<a href="<?php echo $link ?>"><?php echo JText::_('COM_REDSHOP_TXT_READ_MORE') ?></a>&nbsp;
+					</div>
 				<?php endif; ?>
 				<?php if (isset($showAddToCart) && $showAddToCart): ?>
 					<?php
@@ -258,44 +249,44 @@ $moduleId        = 'mod_' . $module->id;
 						$userfieldArr, $totalatt, $totalAccessory, $countNoUserField, $moduleId
 					);
 					?>
-                    <div class="mod_redshop_products_addtocart"><?php echo $addtocart . $hiddenUserField ?></div>
+					<div class="mod_redshop_products_addtocart"><?php echo $addtocart . $hiddenUserField ?></div>
 				<?php endif; ?>
-            </div>
+			</div>
 		<?php endforeach; ?>
-    </div>
+	</div>
 	<?php if ($showLoadmore): ?>
-        <div id="<?php echo $moduleId ?>_loadmorewrapper" class="text-center">
-            <div id="<?php echo $moduleId ?>_loadmorebtn"
-                 class="btn btn-primary"><?php echo $loadmoreBtnText ?></div>
-            <img id="<?php echo $moduleId ?>_loadmoreloading"
-                 src="<?php echo $url ?>/components/com_redshop/assets/images/loading.gif"/>
-        </div>
+		<div id="<?php echo $moduleId ?>_loadmorewrapper" class="text-center">
+			<div id="<?php echo $moduleId ?>_loadmorebtn"
+				 class="btn btn-primary"><?php echo $loadmoreBtnText ?></div>
+			<img id="<?php echo $moduleId ?>_loadmoreloading"
+				 src="<?php echo $url ?>/components/com_redshop/assets/images/loading.gif"/>
+		</div>
 	<?php endif; ?>
 </div>
 <script type="text/javascript">
-    (function ($) {
-        $(document).ready(function () {
-            $('#<?php echo $moduleId ?>_loadmoreloading').hide();
+	(function ($) {
+		$(document).ready(function () {
+			$('#<?php echo $moduleId ?>_loadmoreloading').hide();
 
-            $('#<?php echo $moduleId ?>_loadmorebtn').on('click', function () {
-                $(this).hide();
-                $('#<?php echo $moduleId ?>_loadmoreloading').show();
+			$('#<?php echo $moduleId ?>_loadmorebtn').on('click', function () {
+				$(this).hide();
+				$('#<?php echo $moduleId ?>_loadmoreloading').show();
 
-                $.ajax({
-                    url: '<?php echo $loadmoreUrl ?>',
-                    success: function (html) {
-                        var productsHtml = $(html).find('#<?php echo $moduleId ?>_products_wrapper');
+				$.ajax({
+					url: '<?php echo $loadmoreUrl ?>',
+					success: function (html) {
+						var productsHtml = $(html).find('#<?php echo $moduleId ?>_products_wrapper');
 
-                        productsHtml.insertBefore('#<?php echo $moduleId ?>_loadmorewrapper');
+						productsHtml.insertBefore('#<?php echo $moduleId ?>_loadmorewrapper');
 
-                        if (productsHtml.find('.<?php echo $wrapperClass ?>').length == <?php echo $loadmoreCount ?>) {
-                            $('#<?php echo $moduleId ?>_loadmorebtn').show();
-                        }
+						if (productsHtml.find('.<?php echo $wrapperClass ?>').length == <?php echo $loadmoreCount ?>) {
+							$('#<?php echo $moduleId ?>_loadmorebtn').show();
+						}
 
-                        $('#<?php echo $moduleId ?>_loadmoreloading').hide();
-                    }
-                });
-            });
-        });
-    })(jQuery);
+						$('#<?php echo $moduleId ?>_loadmoreloading').hide();
+					}
+				});
+			});
+		});
+	})(jQuery);
 </script>
