@@ -42,7 +42,7 @@ $fields = $plugin->params->get('extrafield_payment', array());
 			{
 				$fieldInput = extraField::getInstance()->list_all_user_fields(
 							$name,
-					        RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
+							RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
 							'',
 							0,
 							0,
