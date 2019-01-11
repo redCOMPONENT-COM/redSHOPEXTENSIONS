@@ -68,7 +68,8 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 		}
 
 		$mailBcc  = null;
-		$mailInfo = RedshopHelperMail::getMailTemplate(0, "send_discount_code_mail");
+
+		$mailInfo = RedshopHelperMail::getMailTemplate(0, "send_discount_code_mail", '');
 
 		if (empty($mailInfo))
 		{
@@ -187,18 +188,37 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 		$db = JFactory::getDbo();
 
 		$query = $db->getQuery(true);
-		$table = $type == 'voucher' ? '#__redshop_voucher' : '#__redshop_coupons';
 
-		$query->select(
-			array
-			(
-				$db->qn('code'),
-				$db->qn('amount'),
-				$db->qn('type'),
-			)
-		)
-			->from($db->qn($table))
-			->where($db->qn('id') . ' = ' . (int) $id);
+        if ($type == 'voucher')
+        {
+            $table = '#__redshop_voucher';
+
+            $query->select(
+                array
+                (
+                    $db->qn('code'),
+                    $db->qn('amount'),
+                    $db->qn('type'),
+                )
+            )
+                ->from($db->qn($table))
+                ->where($db->qn('id') . ' = ' . (int) $id);
+
+        }
+        else {
+            $table = '#__redshop_coupons';
+
+            $query->select(
+                array
+                (
+                    $db->qn('code'),
+                    $db->qn('value'),
+                    $db->qn('type'),
+                )
+            )
+                ->from($db->qn($table))
+                ->where($db->qn('id') . ' = ' . (int) $id);
+        }
 
 		return $db->setQuery($query)->loadObject();
 	}

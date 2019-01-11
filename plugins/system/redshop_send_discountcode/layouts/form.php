@@ -37,7 +37,7 @@ extract($displayData);
 <script type="text/javascript">
 	function sendDiscountCode()
 	{
-		var discountId = jQuery('input[name="cid[]"]:checked').val();
+        var discountId = jQuery('#jform_code').val();
 
 		if (typeof discountId === "undefined")
 		{
