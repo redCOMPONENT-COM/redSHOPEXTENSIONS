@@ -1,0 +1,8 @@
+{
+    "name": "redcomponent-com/plugin-itunes-review",
+    "description": "A plugin for support get review from Apple iTunes product",
+    "license": "GPL-2.0+",
+    "require": {
+        "php-curl-class/php-curl-class": "^8.0.1"
+    }
+}

@@ -68,6 +68,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 		}
 
 		$mailBcc  = null;
+
 		$mailInfo = RedshopHelperMail::getMailTemplate(0, "send_discount_code_mail", '');
 
 		if (empty($mailInfo))
@@ -187,6 +188,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 		$db = JFactory::getDbo();
 
 		$query = $db->getQuery(true);
+
         if ($type == 'voucher')
         {
             $table = '#__redshop_voucher';

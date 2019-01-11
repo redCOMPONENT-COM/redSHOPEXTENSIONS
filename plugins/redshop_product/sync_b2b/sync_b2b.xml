@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="redshop_product" method="upgrade">
+    <name>PLG_REDSHOP_PRODUCT_SYNC_B2B</name>
+    <author>redCOMPONENT.com</author>
+    <version>1.1.0</version>
+    <creationDate>April 2017</creationDate>
+    <copyright>redCOMPONENT.com</copyright>
+    <license>GNU/GPL</license>
+    <authorEmail>email@redcomponent.com</authorEmail>
+    <authorUrl>www.redweb.dk</authorUrl>
+    <description>PLG_REDSHOP_PRODUCT_SYNC_B2B_DESC</description>
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install/mysql/install.sql</file>
+        </sql>
+    </install>
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install/mysql/uninstall.sql</file>
+        </sql>
+    </uninstall>
+    <files>
+        <filename plugin="sync_b2b">sync_b2b.php</filename>
+        <filename>index.html</filename>
+        <folder>fields</folder>
+        <folder>sql</folder>
+    </files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_redshop_product_sync_b2b.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_redshop_product_sync_b2b.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic" addfieldpath="/libraries/redshop/forms/fields">
+                <field
+                        name="url"
+                        type="text"
+                        default=""
+                        label="PLG_REDSHOP_PRODUCT_SYNC_B2B_URL"
+                        description="PLG_REDSHOP_PRODUCT_SYNC_B2B_URL_DESC"
+                        class="input-xxlarge"
+                />
+                <field
+                        name="client_id"
+                        type="text"
+                        default=""
+                        label="PLG_REDSHOP_PRODUCT_SYNC_B2B_CLIENT_ID"
+                        description="PLG_REDSHOP_PRODUCT_SYNC_B2B_CLIENT_ID_DESC"
+                        class="input-xxlarge"
+                />
+                <field
+                        name="client_secret"
+                        type="text"
+                        default=""
+                        label="PLG_REDSHOP_PRODUCT_SYNC_B2B_CLIENT_SECRET"
+                        description="PLG_REDSHOP_PRODUCT_SYNC_B2B_CLIENT_SECRET_DESC"
+                        class="input-xxlarge"
+                />
+                <field
+                        name="company"
+                        type="number"
+                        default=""
+                        label="PLG_REDSHOP_PRODUCT_SYNC_B2B_COMPANY"
+                        description="PLG_REDSHOP_PRODUCT_SYNC_B2B_COMPANY_DESC"
+                        class="input-small"
+                />
+                <field
+                        name="categories"
+                        type="redshopcategory"
+                        label="PLG_REDSHOP_PRODUCT_SYNC_B2B_COMPANY_CATEGORIES"
+                        description="PLG_REDSHOP_PRODUCT_SYNC_B2B_COMPANY_CATEGORIES_DESC"
+                        multiple="true"
+                        default=""
+                        class="input-xxlarge"/>
+                <field
+                        name="category_recursive"
+                        type="radio"
+                        label="PLG_REDSHOP_PRODUCT_SYNC_B2B_COMPANY_CATEGORY_RECURSIVE"
+                        description="PLG_REDSHOP_PRODUCT_SYNC_B2B_COMPANY_CATEGORY_RECURSIVE_DESC"
+                        default="0"
+                        class="btn-group">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+            </fieldset>
+            <fieldset name="sync" label="PLG_REDSHOP_PRODUCT_SYNC_B2B_SYNCTOOL_FIELDSET" addfieldpath="/plugins/redshop_product/sync_b2b/fields">
+                <field
+                        name="sync"
+                        type="synctool"
+                        label="PLG_REDSHOP_PRODUCT_SYNC_B2B_SYNCTOOL"
+                />
+            </fieldset>
+        </fields>
+    </config>
+</extension>
