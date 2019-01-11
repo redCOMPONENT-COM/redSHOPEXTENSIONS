@@ -18,7 +18,9 @@
 		<filename plugin="bundle">bundle.php</filename>
 		<folder>layouts</folder>
 		<folder>sql</folder>
+		<filename>install.php</filename>
 	</files>
+	<scriptfile>install.php</scriptfile>
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.sql</file>
