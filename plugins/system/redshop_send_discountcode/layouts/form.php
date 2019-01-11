@@ -37,9 +37,9 @@ extract($displayData);
 <script type="text/javascript">
 	function sendDiscountCode()
 	{
-        var discountId = jQuery('#jform_code').val();
+		var discountId = jQuery('#jform_code').val();
 
-		if (typeof discountId === "undefined")
+		if (!discountId)
 		{
 			alert('<?php echo JText::_('PLG_SYSTEM_REDSHOP_SEND_DISCOUNT_CODE_CHOOSE_DISCOUNT_CODE') ?>');
 			return;

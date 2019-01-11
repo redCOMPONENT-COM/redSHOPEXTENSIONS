@@ -94,7 +94,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 
 		$email      = $input->getString('email', '');
 		$view       = $input->getString('view', '');
-		$discountId = $input->getInt('discountId', '');
+		$discountId = $input->getString('discountId', '');
 
 		// Get Code
 		$discountDetail = $this->getDiscountCode($discountId, $view);
@@ -183,7 +183,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 	 *
 	 * @return  string         Discount Code
 	 */
-	private function getDiscountCode($id, $type = "voucher")
+	private function getDiscountCode($code, $type = "voucher")
 	{
 		$db = JFactory::getDbo();
 
@@ -202,7 +202,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
                 )
             )
                 ->from($db->qn($table))
-                ->where($db->qn('id') . ' = ' . (int) $id);
+                ->where($db->qn('code') . ' = ' . $db->q($code));
 
         }
         else {
@@ -217,7 +217,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
                 )
             )
                 ->from($db->qn($table))
-                ->where($db->qn('id') . ' = ' . (int) $id);
+                ->where($db->qn('code') . ' = ' . $db->q($code));
         }
 
 		return $db->setQuery($query)->loadObject();
