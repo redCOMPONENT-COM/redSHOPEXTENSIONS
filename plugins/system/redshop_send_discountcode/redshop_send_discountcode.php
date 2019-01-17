@@ -104,11 +104,18 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 			return true;
 		}
 
-		$value = RedshopHelperProductPrice::formattedPrice($discountDetail->value);
+		$discountValue = $discountDetail->value;
+
+		if ($view == 'voucher')
+		{
+			$discountValue = $discountDetail->amount;
+		}
+
+		$value = RedshopHelperProductPrice::formattedPrice($discountValue);
 
 		if ($discountDetail->type == '1' || $discountDetail->type == 'Percentage')
 		{
-			$value = number_format($discountDetail->value) . "%";
+			$value = number_format($discountValue) . "%";
 		}
 
 		$mailBody = str_replace('{discount_code}', $discountDetail->code, $mailBody);
