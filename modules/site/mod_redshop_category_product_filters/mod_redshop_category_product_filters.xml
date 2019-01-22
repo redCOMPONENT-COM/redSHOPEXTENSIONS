@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.0" client="site" method="upgrade">
+    <name>MOD_REDSHOP_CATEGORY_PRODUCT_FILTERS</name>
+    <version>1.0.0</version>
+    <redshop>2.1.2</redshop>
+    <creationDate>Jan 2019</creationDate>
+    <author>redCOMPONENT.com</author>
+    <authorEmail>email@redcomponent.com</authorEmail>
+    <copyright>redCOMPONENT.com</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <description>MOD_REDSHOP_CATEGORY_PRODUCT_FILTERS_DESC</description>
+    <files>
+        <filename>helper.php</filename>
+        <filename module="mod_redshop_category_product_filters">mod_redshop_category_product_filters.php</filename>
+        <folder>lib</folder>
+        <folder>tmpl</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.mod_redshop_category_product_filters.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.mod_redshop_category_product_filters.sys.ini</language>
+    </languages>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field 
+                    name="moduleclass_sfx" 
+                    type="text" default="" 
+                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                    description="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"/>
+            </fieldset>
+        </fields>
+    </config>
+</extension>
