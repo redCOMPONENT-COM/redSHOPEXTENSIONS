@@ -19,9 +19,9 @@ $mainCategory = RedshopEntityCategory::getInstance($cid)->getItem();
 // retrieve product filter parameters from main category
 $registry     = new JRegistry;
 $filterParams = $registry->loadString($mainCategory->product_filter_params);
-$flag         = $filterParams->get('enable') && !empty($cid);
+$flag         = $filterParams->get('enable') && ($input->getCmd('option') === 'com_redshop') && ($input->getCmd('view') === 'category') && !empty($cid);
 
-if ((bool) $flag === false)
+if ($flag === false)
 {
 	return;
 }
