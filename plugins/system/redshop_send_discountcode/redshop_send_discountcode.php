@@ -67,7 +67,8 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 			return false;
 		}
 
-		$mailBcc  = null;
+		$mailBcc     = null;
+		$productName = null;
 
 		$mailInfo = RedshopHelperMail::getMailTemplate(0, "send_discount_code_mail", '');
 
@@ -109,6 +110,15 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 		if ($view == 'voucher')
 		{
 			$discountValue = $discountDetail->amount;
+			$productIds = $this->getProductsVoucher($discountDetail->id);
+			$arrName = array();
+
+			foreach ($productIds as $productId)
+			{
+				$arrName[] = RedshopEntityProduct::getInstance($productId)->getItem()->product_name;
+			}
+
+			$productName = implode(',',$arrName);
 		}
 
 		$value = RedshopHelperProductPrice::formattedPrice($discountValue);
@@ -120,6 +130,9 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 
 		$mailBody = str_replace('{discount_code}', $discountDetail->code, $mailBody);
 		$mailBody = str_replace('{discount_value}', $value, $mailBody);
+		$mailBody = str_replace('{discount_start_date}', $discountDetail->start_date, $mailBody);
+		$mailBody = str_replace('{discount_end_date}', $discountDetail->end_date, $mailBody);
+		$mailBody = str_replace('{discount_voucher_product}', $productName, $mailBody);
 
 		if (!RedshopHelperMail::sendEmail($from, $fromName, $email, $subject, $mailBody, true, null, $mailBcc))
 		{
@@ -203,9 +216,12 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
             $query->select(
                 array
                 (
+                    $db->qn('id'),
                     $db->qn('code'),
                     $db->qn('amount'),
                     $db->qn('type'),
+                    $db->qn('start_date'),
+                    $db->qn('end_date'),
                 )
             )
                 ->from($db->qn($table))
@@ -221,6 +237,8 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
                     $db->qn('code'),
                     $db->qn('value'),
                     $db->qn('type'),
+                    $db->qn('start_date'),
+                    $db->qn('end_date'),
                 )
             )
                 ->from($db->qn($table))
@@ -228,6 +246,26 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
         }
 
 		return $db->setQuery($query)->loadObject();
+	}
+
+	/**
+	 * Get Products by id voucher
+	 *
+	 * @param   integer  $id  id voucher
+	 *
+	 * @return array
+	 */
+	private function getProductsVoucher($id)
+	{
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true)
+			->select('vf.product_id')
+			->from($db->qn('#__redshop_product_voucher_xref') . ' AS vf')
+			->leftJoin($db->qn('#__redshop_voucher') . ' AS v ON vf.voucher_id = v.id')
+			->where($db->qn('vf.voucher_id') . ' = ' . $db->q($id));
+
+		return $db->setQuery($query)->loadColumn();
 	}
 }
 
