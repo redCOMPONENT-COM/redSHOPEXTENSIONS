@@ -135,8 +135,7 @@ class ModRedshopCategoryProductFiltersHelper
 		{
 			$query->where($db->qn('p.manufacturer_id') . ' = ' . $db->q($manufacturerId));
 		}
-		$query->group($db->qn('fv.field_value'))
-			// ->order($db->qn('fv.value_id'));
+		$query->group('fv.field_value, fv.field_id')
 			->order('f.ordering, fv.field_value');
 
 		$data   = $db->setQuery($query)->loadObjectList();
