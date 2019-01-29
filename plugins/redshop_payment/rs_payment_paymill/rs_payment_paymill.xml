@@ -22,6 +22,10 @@
         <folder>images</folder>
         <folder>js</folder>
     </media>
+     <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_rs_payment_paymill.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_rs_payment_paymill.sys.ini</language>
+    </languages>
     <config addfieldpath="/libraries/redshop/form/fields">
         <fields name="params">
             <fieldset name="basic">
