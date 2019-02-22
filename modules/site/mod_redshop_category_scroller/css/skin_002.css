@@ -10,12 +10,11 @@
 
 .red_product-skin-produkter .red_product-clip-horizontal {
 
-    height: 150px;
 }
 
 .red_product-skin-produkter .red_product-item {
     width: 195px;
-    height: 132px;
+    height: auto;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 12px;
@@ -25,7 +24,7 @@
 }
 
 .red_product-skin-produkter .red_product-item-horizontal {
-    margin-right: 20px;
+    margin: 0 10px;
 
 }
 
@@ -68,18 +67,19 @@
 .red_product-skin-produkter .red_product-next-horizontal {
     position: absolute;
     top: -20px;
+    right: -30px;
     width: 25px;
     height: 150px;
     cursor: pointer;
-    background: transparent url(../images/next-horizontal.png) no-repeat -50px 0;
+    background: transparent url(../images/next-horizontal.png) no-repeat -50px 10px;
 }
 
 .red_product-skin-produkter .red_product-next-horizontal:hover {
-    background-position: -25px 0;
+    background-position: -25px 10px;
 }
 
 .red_product-skin-produkter .red_product-next-horizontal:active {
-    background-position: -25px 0;
+    background-position: -25px 10px;
 }
 
 .red_product-skin-produkter .red_product-next-disabled-horizontal,
@@ -92,19 +92,19 @@
 .red_product-skin-produkter .red_product-prev-horizontal {
     position: absolute;
     top: -20px;
-    left: 0px;
+    left: -30px;
     width: 25px;
     height: 150px;
     cursor: pointer;
-    background: transparent url(../images/prev-horizontal.png) no-repeat 0 0;
+    background: transparent url(../images/prev-horizontal.png) no-repeat 0 10px;
 }
 
 .red_product-skin-produkter .red_product-prev-horizontal:hover {
-    background-position: -25px 0;
+    background-position: -25px 10px;
 }
 
 .red_product-skin-produkter .red_product-prev-horizontal:active {
-    background-position: -25px 0;
+    background-position: -25px 10px;
 }
 
 .red_product-skin-produkter .red_product-prev-disabled-horizontal,

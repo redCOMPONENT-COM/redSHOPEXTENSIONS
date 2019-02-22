@@ -36,6 +36,7 @@ $module_id = "mod_" . $module->id;
 $document = JFactory::getDocument();
 $document->addStyleSheet("modules/mod_redshop_category_scroller/css/jquery.css");
 $document->addStyleSheet("modules/mod_redshop_category_scroller/css/skin_002.css");
+$document->addStyleSheet("modules/mod_redshop_category_scroller/css/slick.css");
 
 
 if ($view == 'category')
@@ -50,25 +51,25 @@ else
 	JHtml::script('com_redshop/jquery.tools.min.js', false, true);
 }
 
-JHTML::script('com_redshop/carousel.js', false, true);
+$document->addScript('modules/mod_redshop_category_scroller/js/slick.min.js');
+
 $document->addScriptDeclaration("jQuery(document).ready(function () {
-    jQuery('#rs_category_scroller_" . $module->id . "').red_product({
-        wrap: 'last',
-        scroll: 1,
-        auto: 6,
-        animation: 'slow',
-        easing: 'swing',
-        itemLoadCallback: jQuery.noConflict()
+    jQuery('#rs_category_scroller_" . $module->id . "').slick({
+		slidesToShow: 3,
+		slidesToScroll: 1,
+		autoplay: 0,
+		autoplaySpeed: 2000,
+		prevArrow: '<div class=\"red_product-prev red_product-prev-horizontal\"></div>',
+		nextArrow: '<div class=\"red_product-next red_product-next-horizontal\"></div>'
+		
     });
 });");
 
 echo $pretext;
-echo "<div style='height:" . $scrollerheight . "px;'>";
+echo "<div>";
 echo "<div>
 		<div class='red_product-skin-produkter'>
 		<div style='display: block;' class='red_product-container red_product-container-horizontal'>
-		<div style='display: block;' class='red_product-prev red_product-prev-horizontal'></div>
-		<div style='display: block;left: " . ($scrollerwidth + 20) . "px;' class='red_product-next red_product-next-horizontal'></div>
 		<div class='red_product-clip red_product-clip-horizontal' style='width: " . $scrollerwidth . "px;'>
 		<ul id='rs_category_scroller_" . $module->id . "' class='red_product-list red_product-list-horizontal'>";
 
