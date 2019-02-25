@@ -14,6 +14,7 @@
         <filename>index.html</filename>
         <folder module="mod_redshop_category_scroller">tmpl</folder>
         <folder module="mod_redshop_category_scroller">css</folder>
+        <folder module="mod_redshop_category_scroller">js</folder>
         <folder module="mod_redshop_category_scroller">images</folder>
     </files>
     <languages>

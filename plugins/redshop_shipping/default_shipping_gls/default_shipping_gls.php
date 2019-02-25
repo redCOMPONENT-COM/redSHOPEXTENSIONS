@@ -207,7 +207,8 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 		{
 			if ($exception->getMessage())
 			{
-				return "<p><i>" . $exception->getMessage() . "</i></p>";
+				return "<p><i>" . $exception->getMessage() . "</i></p>
+						<p><i>Not support your country code: ". $countryCode ."</i></p>";
 			}
 
 			return false;

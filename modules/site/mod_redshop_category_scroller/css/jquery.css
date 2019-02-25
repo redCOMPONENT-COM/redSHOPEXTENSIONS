@@ -10,13 +10,11 @@
     z-index: 2;
     padding: 0;
     margin: 0;
-    overflow: hidden;
     position: relative;
 }
 
 .red_product-list {
     z-index: 1;
-    overflow: hidden;
     position: relative;
     top: 0;
     left: 0;
