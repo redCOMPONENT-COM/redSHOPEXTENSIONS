@@ -27,13 +27,13 @@ class PlgLogmanRedshoporder extends ComLogmanPluginJoomla
 	{
 		$name = JText::_('COM_REDSHOP_REDSHOP');
 		$type = 'category';
-		$url  = 'option=com_redshop&view=order_detail&task=edit&cid=' . $data->order_id;
+		$url  = 'option=com_redshop&view=order_detail&task=edit&cid=' . $data['order_id'];
 		$megaData = array(
 			'data' => $data,
 			'type' => 'billingAddress',
 		);
 
-		$this->setLog($type, $data->order_id, $megaData, 'changed', $data->order_id, $url);
+		$this->setLog($type, $data['order_id'], $megaData, 'changed', $data['order_id'], $url);
 	}
 
 	public function onAfterUpdateShippingRates($data)
@@ -75,13 +75,13 @@ class PlgLogmanRedshoporder extends ComLogmanPluginJoomla
 	public function onAfterUpdateOrderItem($data)
 	{
 		$type = 'category';
-		$url  = 'option=com_redshop&view=order_detail&task=edit&cid=' . $data['order_item_id'];
+		$url  = 'option=com_redshop&view=order_detail&task=edit&cid=' . $data->order_id;
 		$megaData = array(
 			'data' => $data,
 			'type' => 'updateOrderItem',
 		);
 
-		$this->setLog($type, $data['order_item_id'], $megaData, 'changed', $data['order_item_id'], $url);
+		$this->setLog($type, $data->order_id, $megaData, 'changed', $data->order_id, $url);
 	}
 
 	public function onAfterUpdateDiscount($data)
