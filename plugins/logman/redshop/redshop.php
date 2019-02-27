@@ -27,21 +27,9 @@ class PlgLogmanRedshop extends ComLogmanPluginJoomla
 	{
 		$name = JText::_('COM_REDSHOP_REDSHOP');
 		$type = 'configuration';
+		$id   = $this->_getUniqueId($config);
 
-		$user = JFactory::getUser();
-		$this->log(
-			array(
-				'object' => array(
-					'package' => $this->_getPackage(),
-					'type'    => $type,
-					'id'      => $this->_getUniqueId($config),
-					'name'    => $name,
-				),
-				'verb'   => 'save',
-				'actor'  => $user->id,
-				'result' => 'changed'
-			)
-		);
+		$this->setLog($type, $name, '', 'changed', $id);
 	}
 
 	/**
@@ -57,7 +45,6 @@ class PlgLogmanRedshop extends ComLogmanPluginJoomla
 	 */
 	public function onAfterProductFullSave($data, $product_id)
 	{
-		$name   = JText::_('COM_REDSHOP_REDSHOP');
 		$type   = 'product';
 		$result = 'changed';
 
@@ -66,21 +53,8 @@ class PlgLogmanRedshop extends ComLogmanPluginJoomla
 			$result = 'addad';
 		}
 
-		$user   = JFactory::getUser();
-		$this->log(
-			array(
-				'object' => array(
-					'package' => $this->_getPackage(),
-					'type'    => $type,
-					'id'      => $this->_getUniqueId($data->product_id),
-					'name'    => $data->product_name,
-					'metadata'=> $data,
-				),
-				'verb'   => 'save',
-				'actor'  => $user->id,
-				'result' => $result
-			)
-		);
+		$url = 'option=com_redshop&view=product_detail&task=edit&cid[]=' . $data->product_id;
+		$this->setLog($type, $data->product_name, $data, $result, $data->product_id, $url);
 	}
 
 	/**
@@ -96,7 +70,6 @@ class PlgLogmanRedshop extends ComLogmanPluginJoomla
 	 */
 	public function onAfterCategorySave($data, $catID)
 	{
-		$name   = JText::_('COM_REDSHOP_REDSHOP');
 		$type   = 'category';
 		$result = 'changed';
 
@@ -105,21 +78,9 @@ class PlgLogmanRedshop extends ComLogmanPluginJoomla
 			$result = 'addad';
 		}
 
-		$user   = JFactory::getUser();
-		$this->log(
-			array(
-				'object' => array(
-					'package' => $this->_getPackage(),
-					'type'    => $type,
-					'id'      => $this->_getUniqueId($data->id),
-					'name'    => $data->name,
-					'metadata'=> $data,
-				),
-				'verb'   => 'save',
-				'actor'  => $user->id,
-				'result' => $result
-			)
-		);
+		$url = 'option=com_redshop&view=category&layout=edit&id=' . $data->id;
+
+		$this->setLog($type, $data->name, $data, $result, $data->id, $url);
 	}
 
 	/**
@@ -146,5 +107,42 @@ class PlgLogmanRedshop extends ComLogmanPluginJoomla
 	private function _getUniqueId ($args)
 	{
 		return md5(serialize($args) . serialize(JFactory::getUser()));
+	}
+
+	/**
+	 * Get set log
+	 *
+	 * @param   string  $type
+	 * @param   string  $name
+	 * @param   array   $data
+	 * @param   string  $resultt
+	 * @param   string  $uid
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0.0
+	 */
+	private function setLog($type, $name, $data, $result, $id, $url = '')
+	{
+		$user = JFactory::getUser();
+		$this->getObject('com://admin/logman.controller.activity')
+			->log(
+				array(
+					'object' => array(
+						'package' => $this->_getPackage(),
+						'type'    => $type,
+						'id'      => $id,
+						'name'    => $name,
+						'url' => array(
+							'admin' =>  $url,
+						),
+						'metadata'=> array('data' => $data),
+
+					),
+					'verb'   => 'save',
+					'actor'  => $user->id,
+					'result' => $result
+				)
+			);
 	}
 }
