@@ -23,7 +23,7 @@ class PlgLogmanRedshoporder extends ComLogmanPluginJoomla
 	 *
 	 * @since   1.0.0
 	 */
-	public function onAfterUpdateBillingAdd($data)
+	public function onAfterUpdateBillingAddress($data)
 	{
 		$name = JText::_('COM_REDSHOP_REDSHOP');
 		$type = 'category';
@@ -60,7 +60,7 @@ class PlgLogmanRedshoporder extends ComLogmanPluginJoomla
 		$this->setLog($type, $data->order_id, $megaData, 'changed', $data->order_id, $url);
 	}
 
-	public function onAfterUpdateShippingAdd($data)
+	public function onAfterUpdateShippingAddress($data)
 	{
 		$type = 'category';
 		$url  = 'option=com_redshop&view=order_detail&task=edit&cid=' . $data['order_id'];
