@@ -57,4 +57,4 @@ if ($productId)
 	$rows = $producthelper->getRelatedProduct($productId);
 }
 
-require JModuleHelper::getLayoutPath('mod_redshop_products', $params->get('layout', 'default'));
+require JModuleHelper::getLayoutPath('mod_redshop_related_products', $params->get('layout', 'default'));
