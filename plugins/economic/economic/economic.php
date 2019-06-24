@@ -301,6 +301,40 @@ class PlgEconomicEconomic extends JPlugin
 	}
 
 	/**
+	 * Method to find debtor by VAT number in economic.
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function Debtor_FindByVAT($d)
+	{
+		if ($this->error)
+		{
+			return $this->errorMsg;
+		}
+
+		try
+		{
+			$Handle = $this->client->Debtor_FindByCINumber(array('ciNumber' => $d ['vatnumber']))->Debtor_FindByCINumberResult;
+
+			return $Handle;
+		}
+		catch (Exception $exception)
+		{
+			print("<p><i>Debtor_FindByCINumber:" . $exception->getMessage() . "</i></p>");
+
+			if (DETAIL_ERROR_MESSAGE_ON)
+			{
+				JError::raiseWarning(21, "Debtor_FindByCINumber:" . $exception->getMessage());
+			}
+			else
+			{
+				JError::raiseWarning(21, JText::_('DETAIL_ERROR_MESSAGE_LBL'));
+			}
+		}
+	}
+
+	/**
 	 * Method to get debtor group in economic.
 	 *
 	 * @param   array $data Data
