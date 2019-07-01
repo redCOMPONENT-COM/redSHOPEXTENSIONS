@@ -12,17 +12,13 @@
 	<description>PLG_RS_PAYMENT_ONEPAY_DESCRIPTION</description>
 	<files>
 		<filename plugin="rs_payment_onepay">rs_payment_onepay.php</filename>
-		<folder>fields</folder>
 	</files>
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_rs_payment_onepay.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_rs_payment_onepay.sys.ini</language>
 	</languages>
 	<config addfieldpath="/libraries/redshop/form/fields">
-		<fields
-			name="params"
-			addfieldpath="/plugins/redshop_payment/rs_payment_onepay/fields"
-		>
+		<fields name="params">
 			<fieldset name="basic">
 				<field
 						name="debug_mode"
