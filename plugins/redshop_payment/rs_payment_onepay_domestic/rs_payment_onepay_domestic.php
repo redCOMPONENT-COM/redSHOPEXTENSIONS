@@ -14,7 +14,7 @@ JLoader::import('redshop.library');
 /**
  * Onepay Payment gateway for redSHOP Payments
  */
-class PlgRedshop_Paymentrs_Payment_Onepay extends JPlugin
+class PlgRedshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
 {
 
 	/**
@@ -26,7 +26,7 @@ class PlgRedshop_Paymentrs_Payment_Onepay extends JPlugin
 	 */
 	public function onPrePayment($element, $data)
 	{
-		if ($element != 'rs_payment_onepay')
+		if ($element != 'rs_payment_onepay_domestic')
 		{
 			return;
 		}
@@ -39,7 +39,6 @@ class PlgRedshop_Paymentrs_Payment_Onepay extends JPlugin
 		}
 
 		$secureSecret     = $this->params->get("secure_secret_key");
-		$user             = JFactory::getUser();
 		$app              = JFactory::getApplication();
 		$itemId           = $app->input->getInt('Itemid', 0);
 		$vpcURL           = $virtualPaymentClientURL . "?";
@@ -47,9 +46,9 @@ class PlgRedshop_Paymentrs_Payment_Onepay extends JPlugin
 		$addressShip      = $data['shippinginfo']->address;
 		$cityShip         = $data['shippinginfo']->city;
 		$countryCodeShip  = $data['shippinginfo']->country_code;
-		$phoneBill        = $data['billinginfo']->phone;
-		$userEmailBill    = $data['billinginfo']->user_email;
-		$userName         = $user->username;
+		$phoneShip        = $data['shippinginfo']->phone;
+		$userEmailShip    = $data['shippinginfo']->user_email;
+		$userIdShip       = $data['shippinginfo']->user_id;
 
 		$arrayData = [
 			'Title'              => $this->params->get("portal_title"),
@@ -58,7 +57,7 @@ class PlgRedshop_Paymentrs_Payment_Onepay extends JPlugin
 			'vpc_MerchTxnRef'    => date ( 'YmdHis' ) . rand (),
 			'vpc_OrderInfo'      => $data['order_id'],
 			'vpc_Amount'         => (int) round($data['carttotal'] * 100, 2),
-			'vpc_ReturnURL'      => JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_onepay&accept=1&Itemid=' . $itemId,
+			'vpc_ReturnURL'      => JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_onepay_domestic&accept=1&Itemid=' . $itemId,
 			'vpc_Version'        => $this->params->get("portal_version"),
 			'vpc_Command'        => $this->params->get("command_type"),
 			'vpc_Locale'         => $this->params->get("language"),
@@ -68,9 +67,9 @@ class PlgRedshop_Paymentrs_Payment_Onepay extends JPlugin
 			'vpc_SHIP_Provice'   => '',
 			'vpc_SHIP_City'      => substr($cityShip, 0, 50),
 			'vpc_SHIP_Country'   => substr($countryCodeShip, 0, 50),
-			'vpc_Customer_Phone' => substr($phoneBill, 0, 50),
-			'vpc_Customer_Email' => substr($userEmailBill, 0, 50),
-			'vpc_Customer_Id'    => substr($userName, 0, 50)
+			'vpc_Customer_Phone' => substr($phoneShip, 0, 50),
+			'vpc_Customer_Email' => substr($userEmailShip, 0, 50),
+			'vpc_Customer_Id'    => substr($userIdShip, 0, 50)
 		];
 
 		ksort ($arrayData);
@@ -110,9 +109,9 @@ class PlgRedshop_Paymentrs_Payment_Onepay extends JPlugin
 	 *
 	 * @return  object  Status Object
 	 */
-	public function onNotifyPaymentrs_payment_onepay($element, $request)
+	public function onNotifyPaymentrs_payment_onepay_domestic($element, $request)
 	{
-		if ($element != 'rs_payment_onepay')
+		if ($element != 'rs_payment_onepay_domestic')
 		{
 			return false;
 		}
