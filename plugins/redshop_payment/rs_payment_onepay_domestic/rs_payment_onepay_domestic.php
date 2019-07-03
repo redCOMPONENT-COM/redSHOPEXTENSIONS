@@ -32,9 +32,13 @@ class PlgRedshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
 		}
 
 		$debugMode = $this->params->get("debug_mode");
-		if ($debugMode ==  1) {
+
+		if ($debugMode ==  1)
+		{
 			$virtualPaymentClientURL = 'https://mtf.onepay.vn/onecomm-pay/vpc.op';
-		} else {
+		}
+		else
+		{
 			$virtualPaymentClientURL = 'https://onepay.vn/onecomm-pay/vpc.op';
 		}
 
@@ -75,18 +79,24 @@ class PlgRedshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
 		ksort ($arrayData);
 		$appendAmp = 0;
 
-		foreach($arrayData as $key => $value) {
+		foreach($arrayData as $key => $value)
+		{
 
-			if (strlen($value) > 0) {
+			if (strlen($value) > 0)
+			{
 
-				if ($appendAmp == 0) {
+				if ($appendAmp == 0)
+				{
 					$vpcURL .= urlencode($key) . '=' . urlencode($value);
 					$appendAmp = 1;
-				} else {
+				}
+				else
+				{
 					$vpcURL .= '&' . urlencode($key) . "=" . urlencode($value);
 				}
 
-				if ((strlen($value) > 0) && ((substr($key, 0,4)=="vpc_") || (substr($key,0,5) =="user_"))) {
+				if ((strlen($value) > 0) && ((substr($key, 0,4)=="vpc_") || (substr($key,0,5) =="user_")))
+				{
 					$stringHashData .= $key . "=" . $value . "&";
 				}
 			}
@@ -94,7 +104,8 @@ class PlgRedshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
 
 		$stringHashData = rtrim($stringHashData, "&");
 
-		if (strlen($secureSecret) > 0) {
+		if (strlen($secureSecret) > 0)
+		{
 			$vpcURL .= "&vpc_SecureHash=" . strtoupper(hash_hmac('SHA256', $stringHashData, pack('H*',$secureSecret)));
 		}
 
@@ -122,24 +133,32 @@ class PlgRedshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
 		unset ( $request["vpc_SecureHash"] );
 		ksort ($request);
 
-		if (strlen ( $secureSecret ) > 0 && $request["vpc_TxnResponseCode"] != "7" && $request["vpc_TxnResponseCode"] != "No Value Returned") {
+		if (strlen ( $secureSecret ) > 0 && $request["vpc_TxnResponseCode"] != "7" && $request["vpc_TxnResponseCode"] != "No Value Returned")
+		{
 
 			$stringHashData = "";
 
-			foreach ( $request as $key => $value ) {
-				if ($key != "vpc_SecureHash" && (strlen($value) > 0) && ((substr($key, 0,4)=="vpc_") || (substr($key,0,5) =="user_"))) {
+			foreach ( $request as $key => $value )
+			{
+				if ($key != "vpc_SecureHash" && (strlen($value) > 0) && ((substr($key, 0,4)=="vpc_") || (substr($key,0,5) =="user_")))
+				{
 					$stringHashData .= $key . "=" . $value . "&";
 				}
 			}
 
 			$stringHashData = rtrim($stringHashData, "&");
 
-			if (strtoupper ( $txnSecureHash ) == strtoupper(hash_hmac('SHA256', $stringHashData, pack('H*',$secureSecret)))) {
+			if (strtoupper ( $txnSecureHash ) == strtoupper(hash_hmac('SHA256', $stringHashData, pack('H*',$secureSecret))))
+			{
 				$hashValidated = "CORRECT";
-			} else {
+			}
+			else
+			{
 				$hashValidated = "INVALID HASH";
 			}
-		} else {
+		}
+		else
+		{
 			$hashValidated = "INVALID HASH";
 		}
 
