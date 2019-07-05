@@ -88,6 +88,8 @@
       "rs_payment_imglobal",
       "rs_payment_moneris",
       "rs_payment_moneybooker",
+      "rs_payment_onepay_domestic",
+      "rs_payment_onepay_international",
       "rs_payment_payflowpro",
       "rs_payment_payment_express",
       "rs_payment_paymill",
