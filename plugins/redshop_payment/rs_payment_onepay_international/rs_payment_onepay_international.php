@@ -141,6 +141,7 @@ class PlgRedshop_Paymentrs_Payment_Onepay_International extends JPlugin
 		$secureSecret   = $this->params->get("secure_secret_key");
 		$txnSecureHash  = $request["vpc_SecureHash"];
 		unset ( $request["vpc_SecureHash"] );
+		$request["vpc_VerToken"] = str_replace(' ','+', $request["vpc_VerToken"] );
 		ksort ($request);
 
 		if (strlen ( $secureSecret ) > 0 && $request["vpc_TxnResponseCode"] != "7" && $request["vpc_TxnResponseCode"] != "No Value Returned")
