@@ -43,6 +43,7 @@
                     <option value="5">COM_REDSHOP_PRODUCT_ON_SALE_AND_DATE_TIME_CHECK</option>
                     <option value="6">COM_REDSHOP_WATCHED_PRODUCT</option>
                     <option value="7">MOD_REDSHOP_PRODUCTS_TYPE_OPTION_SPECIFIC_PRODUCTS</option>
+                    <option value="8">MOD_REDSHOP_PRODUCTS_CATEGORY_ORDERING</option>
                 </field>
                 <field
                         name="specific_products"

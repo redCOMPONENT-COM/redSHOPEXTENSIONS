@@ -127,6 +127,11 @@ switch ($type)
 
 		$query->where($db->qn('p.product_id') . ' IN (' . implode(',', $specificProducts) . ')');
 		break;
+		
+	// Ordering
+	case 8:
+		$query->order($db->qn('pc.ordering'));
+		break;
 }
 
 // Only Display Feature Product
