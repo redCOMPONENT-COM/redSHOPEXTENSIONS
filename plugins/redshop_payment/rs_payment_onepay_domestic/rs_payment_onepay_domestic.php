@@ -189,6 +189,7 @@ class PlgRedshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
 				$values->order_payment_status_code = 'Unpaid';
 				$values->log                       = JText::_('COM_REDSHOP_ORDER_NOT_PLACED.');
 				$values->msg                       = JText::_('COM_REDSHOP_ORDER_NOT_PLACED');
+				$values->type                      = 'error';
 			}
 		}
 		else
@@ -197,6 +198,7 @@ class PlgRedshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
 			$values->order_payment_status_code = 'Unpaid';
 			$values->log                       = JText::_('COM_REDSHOP_ORDER_NOT_PLACED');
 			$values->msg                       = JText::_('COM_REDSHOP_ORDER_NOT_PLACED');
+			$values->type                      = 'error';
 		}
 
 		$values->transaction_id = $txnId;
