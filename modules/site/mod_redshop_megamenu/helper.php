@@ -82,7 +82,7 @@ class ModRedshopMegaMenuHelper
 			$category->name = str_replace('- ', '', $category->name);
 			$category->link = JRoute::_('index.php?option=com_redshop&view=category&layout=detail&cid='
 				. $category->id . '&manufacturer_id=0&Itemid='
-				. (!empty($categoryMenuItem)) ? $categoryMenuItem->id : 0);
+				. (!empty($categoryMenuItem) ? $categoryMenuItem->id : 0));
 			$subCategories[] = $category;
 		}
 
@@ -208,7 +208,7 @@ class ModRedshopMegaMenuHelper
 				$subItem[$key]->category_id = $item->id;
 				$subItem[$key]->link = JRoute::_('index.php?option=com_redshop&view=category&layout=detail&cid='
 				. $item->id . '&manufacturer_id=0&Itemid='
-				. (!empty($categoryMenuItem)) ? $categoryMenuItem->id : 0);
+				. (!empty($categoryMenuItem) ? $categoryMenuItem->id : 0));
 				$subItem[$key]->image = Redshop::getConfig()->get('CATEGORY_DEFAULT_IMAGE');
 				$subItem[$key]->level = $level;
 				$subItem[$key]->sub_cat = array();
