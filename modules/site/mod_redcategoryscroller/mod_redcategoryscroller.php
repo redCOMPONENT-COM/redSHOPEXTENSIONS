@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 JLoader::import('redshop.library');
-JLoader::import('helper', __DIR__);
+JLoader::register('ModRedCategoryScrollerHelper', __DIR__ . '/helper.php');
 
 // Standard parameters
 $show_category_name = $params->get('show_category_name', "yes");
