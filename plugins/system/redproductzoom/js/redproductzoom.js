@@ -23,44 +23,47 @@ function preloadSlimbox (parameters) {
 
 function redproductzoom (elevateZoomParams) {
     (function ($) {
-        var $mainImage = $($('div[id*=productImageWrapID_]').find('img')[0])
-        var m = getImageName($mainImage.attr('src'))
-        var newxsize = m[3]
-        var newysize = m[4]
+        var $mainImage = $($('div[id*=productImageWrapID_]').find('img')[0]);
+        var m = getImageName($mainImage.attr('src'));
+        var newxsize = m[3];
+        var newysize = m[4];
         var urlfull = redSHOP.RSConfig._('SITE_URL') +
-            'components/com_redshop/assets/images/' + m[1] + '/' + m[2] + m[6]
+            'components/com_redshop/assets/images/' + m[1] + '/' + m[2] + m[6];
 
-        $mainImage.attr('data-zoom-image', urlfull)
+        $mainImage.attr('data-zoom-image', urlfull);
+        $('div[id*=additional_images]').children().attr('id', 'galary_' + $mainImage.attr('id'));
 
         //more image
-        $('span[id*=additional_images]').
+        $('div[id*=additional_images]').
             find('.additional_image').
             each(function () {
-                $(this).attr('onmouseout', '')
-                $(this).attr('onmouseover', '')
+            $(this).attr('onmouseout', '');
+            $(this).attr('onmouseover', '');
 
-                gl = $(this).attr('id')
+            gl = $(this).attr('class');
 
-                var urlimg = $(this).find('img').attr('data-src')
+            var urlimg = $(this).find('img').attr('data-src');
                 if (typeof urlimg === 'undefined' || urlimg === false) {
                     urlimg = $(this).find('img').attr('src')
                 }
 
-                var m = getImageName(urlimg)
+            var m = getImageName(urlimg);
 
                 var urlthumb = redSHOP.RSConfig._('SITE_URL') +
                     'components/com_redshop/assets/images/' + m[1] +
                     '/thumb/' + m[2] + '_w' + newxsize + '_h' +
-                    newysize + m[5] + m[6]
+                newysize + m[5] + m[6];
                 var urlfull = redSHOP.RSConfig._('SITE_URL') +
                     'components/com_redshop/assets/images/' + m[1] +
-                    '/' + m[2] + m[6]
+                '/' + m[2] + m[6];
 
-                $(this).find('a').attr('data-image', urlthumb)
-                $(this).find('a').attr('data-zoom-image', urlfull)
+            $(this).find('a').attr('data-image', urlthumb);
+            $(this).find('a').attr('data-zoom-image', urlfull);
 
-                $(this).find('a').attr('class', 'elevatezoom-gallery')
-            })
+            $(this).find('a').attr('class', 'elevatezoom-gallery');
+            $(this).find('a').attr('href', '#');
+            $(this).find('img').attr('id', $mainImage.attr('id'));
+        });
 
         if ($mainImage.data('elevateZoom')) {
             var ez = $mainImage.data('elevateZoom')
@@ -98,7 +101,9 @@ function redproductzoom (elevateZoomParams) {
 
         }
         else {
-            var gl = $('.redhoverImagebox').attr('id')
+            console.log(elevateZoomParams);
+            var gl = $('.redhoverImagebox').attr('id');
+            elevateZoomParams.gallery = 'galary_' + $mainImage.attr('id');
             $mainImage.elevateZoom(elevateZoomParams)
         }
     })(jQuery)
