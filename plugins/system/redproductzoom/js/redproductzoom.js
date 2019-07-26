@@ -101,7 +101,6 @@ function redproductzoom (elevateZoomParams) {
 
         }
         else {
-            console.log(elevateZoomParams);
             var gl = $('.redhoverImagebox').attr('id');
             elevateZoomParams.gallery = 'galary_' + $mainImage.attr('id');
             $mainImage.elevateZoom(elevateZoomParams)
