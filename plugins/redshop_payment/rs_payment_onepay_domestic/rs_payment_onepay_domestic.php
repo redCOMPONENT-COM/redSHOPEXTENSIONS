@@ -47,9 +47,6 @@ class PlgRedshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
 		$itemId           = $app->input->getInt('Itemid', 0);
 		$vpcURL           = $virtualPaymentClientURL . "?";
 		$stringHashData   = "";
-		$addressShip      = $data['shippinginfo']->address;
-		$cityShip         = $data['shippinginfo']->city;
-		$countryCodeShip  = $data['shippinginfo']->country_code;
 		$phoneShip        = $data['shippinginfo']->phone;
 		$userEmailShip    = $data['shippinginfo']->user_email;
 		$userIdShip       = $data['shippinginfo']->user_id;
@@ -67,13 +64,9 @@ class PlgRedshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
 			'vpc_Locale'         => $this->params->get("language"),
 			'vpc_Currency'       => $this->params->get("currency_code"),
 			'vpc_TicketNo'       => $_SERVER ['REMOTE_ADDR'],
-			'vpc_SHIP_Street01'  => substr($addressShip, 0, 500),
-			'vpc_SHIP_Provice'   => '',
-			'vpc_SHIP_City'      => substr($cityShip, 0, 50),
-			'vpc_SHIP_Country'   => substr($countryCodeShip, 0, 50),
-			'vpc_Customer_Phone' => substr($phoneShip, 0, 50),
-			'vpc_Customer_Email' => substr($userEmailShip, 0, 50),
-			'vpc_Customer_Id'    => substr($userIdShip, 0, 50)
+			'vpc_Customer_Phone' => $this->convertUnicodeToNonUnicode(substr($phoneShip, 0, 50)),
+			'vpc_Customer_Email' => $this->convertUnicodeToNonUnicode(substr($userEmailShip, 0, 50)),
+			'vpc_Customer_Id'    => $this->convertUnicodeToNonUnicode(substr($userIdShip, 0, 50))
 		];
 
 		ksort ($arrayData);
@@ -247,5 +240,32 @@ class PlgRedshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
 		}
 
 		return $res;
+	}
+
+	function convertUnicodeToNonUnicode ($str){
+		$unicode = array(
+			'a'=>'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
+			'd'=>'đ',
+			'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',
+			'i'=>'í|ì|ỉ|ĩ|ị',
+			'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',
+			'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',
+			'y'=>'ý|ỳ|ỷ|ỹ|ỵ',
+			'A'=>'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+			'D'=>'Đ',
+			'E'=>'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+			'I'=>'Í|Ì|Ỉ|Ĩ|Ị',
+			'O'=>'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+			'U'=>'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+			'Y'=>'Ý|Ỳ|Ỷ|Ỹ|Ỵ',
+		);
+
+		foreach($unicode as $nonUnicode => $uni){
+
+			$str = preg_replace("/($uni)/i", $nonUnicode, $str);
+
+		}
+
+		return $str;
 	}
 }
