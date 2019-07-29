@@ -74,6 +74,7 @@ $redHelper = redhelper::getInstance();
 									$alt   = " alt='" . $row->name . "' ";
 
 									$linkImage = REDSHOP_FRONT_IMAGES_ABSPATH . "noimage.jpg";
+									$categoryImage = REDSHOP_FRONT_IMAGES_ABSPATH . "noimage.jpg";
 
 									if ($row->category_full_image
                                         && file_exists(REDSHOP_FRONT_IMAGES_RELPATH . 'category/' . $row->category_full_image))
