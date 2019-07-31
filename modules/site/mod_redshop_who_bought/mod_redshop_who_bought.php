@@ -31,6 +31,7 @@ $show_addtocart_button  = trim($params->get('show_addtocart_button', 1));
 $show_product_name      = trim($params->get('show_product_name', 1));
 $product_title_linkable = trim($params->get('product_title_linkable', 1));
 $show_product_price     = trim($params->get('show_product_price', 1));
+$scroll                 = trim($params->get('number_of_products_one_scroll',2));
 
 $db = JFactory::getDbo();
 $query = $db->getQuery(true)
