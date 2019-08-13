@@ -19,7 +19,7 @@ $document->addStyleDeclaration('
 		width:' . $sliderwidth . 'px;
 	}
 	.jcarousel-skin-tango .jcarousel-item {
-		width:' . ($sliderwidth / 2 - 8) . 'px;
+		width:' . ($sliderwidth / $scroll - 8) . 'px;
 	}
 ');
 
@@ -37,7 +37,7 @@ JHtml::script('com_redshop/redbox.js', false, true);
 
 JFactory::getDocument()->addScriptDeclaration('
 	jQuery(document).ready(function () {
-		jQuery(\'#mycarousel_' . $module->id . '\').jcarousel();
+		jQuery(\'#mycarousel_' . $module->id . '\').jcarousel({scroll:'.$scroll.'});
 	});');
 
 echo '<ul id="mycarousel_' . $module->id . '" class="jcarousel-skin-tango">';

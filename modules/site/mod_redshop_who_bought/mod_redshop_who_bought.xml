@@ -29,6 +29,8 @@
                        description="COM_REDSHOP_ENTER_CATEGORY"/>
                 <field name="number_of_items" type="text" default="5" label="COM_REDSHOP_NUMBER_OF_PRODUCT"
                        description="COM_REDSHOP_NUMBER_OF_PRODUCT_DESC"/>
+                <field name="number_of_products_one_scroll" type="number" default="2" label="COM_REDSHOP_NUMBER_PRODUCT_ONE_SCROLL"
+                       description="COM_REDSHOP_NUMBER_PRODUCT_ONE_SCROLL_DESC"/>
                 <field name="sliderwidth" type="text" size="10" label="COM_REDSHOP_SLIDER_IMAGE_WIDTH"
                        default="440"/>
                 <field name="thumbwidth" type="text" size="10" label="COM_REDSHOP_THUMB_IMAGE_WIDTH"
