@@ -13,9 +13,7 @@
 
     <files>
         <filename plugin="baokim">baokim.php</filename>
-        <folder>layouts</folder>
         <folder>library</folder>
-        <folder>media</folder>
     </files>
 
     <languages>
