@@ -94,11 +94,24 @@ class plgRedshop_PaymentBaokim extends JPlugin
 
 
 		$response = $client->request("POST", $link . "order/send", $options);
-		$result = json_decode($response->getBody()->getContents())->data;
 
-		if (!empty($result))
+		$result = json_decode($response->getBody()->getContents());
+
+		if (!empty($result->message))
 		{
-			$this->app->redirect($result->payment_url);
+			foreach ($result->message as $key => $value)
+			{
+				$this->app->enqueueMessage($value[0], 'error');
+			}
+
+			$link = JRoute::_('index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Baokim&accept=0&mrc_order_id='. $orderInfo->order_id .'&Itemid=' . $itemId);
+
+			$this->app->redirect($link);
+		}
+
+		if (!empty($result->data))
+		{
+			$this->app->redirect($result->data->payment_url);
 		}
 	}
 

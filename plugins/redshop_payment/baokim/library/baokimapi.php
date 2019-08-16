@@ -64,7 +64,7 @@ class BaoKimAPI {
 	 */
 	public static function refreshToken(){
 
-		$tokenId    = base64_encode(mcrypt_create_iv(32));
+		$tokenId    = base64_encode(random_bytes(32));
 		$issuedAt   = time();
 		$notBefore  = $issuedAt;
 		$expire     = $notBefore + self::TOKEN_EXPIRE;
