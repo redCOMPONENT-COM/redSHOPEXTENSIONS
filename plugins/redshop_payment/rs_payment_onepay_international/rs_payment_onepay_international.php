@@ -130,6 +130,12 @@ class PlgRedshop_Paymentrs_Payment_Onepay_International extends JPlugin
 			return false;
 		}
 
+		$ipnStatus = $request["ipn"];
+
+		if (!empty($ipnStatus)) {
+			JFactory::getSession()->set('ipn_status', $ipnStatus);
+		}
+
 		$values         = new stdClass;
 		$secureSecret   = $this->params->get("secure_secret_key");
 		$txnSecureHash  = $request["vpc_SecureHash"];
@@ -278,5 +284,62 @@ class PlgRedshop_Paymentrs_Payment_Onepay_International extends JPlugin
 		}
 
 		return $str;
+	}
+
+	/**
+	 * IPN Update API (Instant Payment Notification)
+	 *
+	 * @param   string  $element  Plugin Name
+	 * @param   integer  $orderId Order Id
+	 *
+	 * @return  string  $res response
+	 */
+	public function onAfterNotifyPaymentrs_payment_onepay_international($element, $orderId)
+	{
+
+		if ($element != 'rs_payment_onepay_international')
+		{
+			return false;
+		}
+
+		$ipnStatus = JFactory::getSession()->get('ipn_status');
+
+		if ($ipnStatus != 1) {
+			return false;
+		}
+
+		$res = 'responsecode=1&desc=confirm-success';
+
+		// Initialiase variables.
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('count(*)')
+			->from($db->qn('#__redshop_orders'))
+			->where($db->qn('order_id') . ' = ' . (int) $orderId)
+			->where($db->qn('order_status') . ' = "C"' )
+			->where($db->qn('order_payment_status') . ' = "Paid"' );
+
+		// Set the query and load the result.
+		$db->setQuery($query);
+
+		try
+		{
+			$order = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			$res = 'responsecode=0&desc=confirm-fail';
+		}
+
+		if ($order == 0)
+		{
+			$res = 'responsecode=0&desc=confirm-fail';
+		}
+
+		JFactory::getSession()->set('ipn_status', null);
+
+		echo $res; exit;
 	}
 }
