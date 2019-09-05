@@ -136,7 +136,7 @@ class plgRedshop_PaymentBaokim extends JPlugin
 		$values           = new stdClass;
 		$values->order_id = $orderId;
 
-		if (isset($request['stat']) && $request['stat'] == 'c' && $request['accept'] == 1)
+		if (isset($request['stat']) && $request['stat'] == 'c' && $request['accept'] == 1 && $this->checkSum($request))
 		{
 			$values->order_status_code         = $this->params->get('verify_status', 'C');
 			$values->order_payment_status_code = 'Paid';
@@ -153,6 +153,30 @@ class plgRedshop_PaymentBaokim extends JPlugin
 		}
 
 		return $values;
+	}
+
+	public function checkSum($query)
+	{
+		if (empty($query))
+		{
+			return false;
+		}
+
+		$checksum = $query['checksum'];
+		unset($query['checksum']);
+		unset($query['tmpl']);
+		unset($query['view']);
+		unset($query['controller']);
+		unset($query['task']);
+		unset($query['payment_plugin']);
+		unset($query['accept']);
+		unset($query['Itemid']);
+		unset($query['option']);
+		ksort($query);
+
+		$myChecksum = hash_hmac('sha256', http_build_query($query), $this->params->get('secret_key'));
+
+		return ($checksum == $myChecksum) ? true : false;
 	}
 
 	/**
