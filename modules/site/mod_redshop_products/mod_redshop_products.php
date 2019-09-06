@@ -37,6 +37,7 @@ $showLoadmore            = trim($params->get('show_loadmore', 0));
 $loadmoreCount           = trim($params->get('loadmore_count', 9));
 $loadmoreBtnText         = trim($params->get('loadmore_text', 'Se flere tilbud'));
 $specificProducts        = $params->get('specific_products', array());
+$includeSubCategory      = (int) $params->get('includeSubCategory', 0);
 
 $isLoadmore       = $app->input->getInt('loadmore', 0);
 $loadedProductIds = $session->get('mod_redshop_products.' . $module->id . '.loadedpids', array());
@@ -146,39 +147,43 @@ if ($showChildProducts != 1)
 	$query->where($db->qn('p.product_parent_id') . ' = 0');
 }
 
-$category = $params->get('category', '');
-
-if (is_array($category))
-{
-	$category = implode(',', $category);
-}
-else
-{
-	$category = trim($category);
-}
+$categories = $params->get('category', array());
 
 if ($isUrlCategoryId)
 {
 	// Get Category id from menu params if not found in URL
 	$urlCategoryId = (int) $app->input->getInt('cid', $app->getParams('com_redshop')->get('cid', ''));
 
-	if ($category)
+	if ($urlCategoryId)
 	{
-		$categoryArray   = explode(",", $category);
-		$categoryArray[] = $urlCategoryId;
-		$categoryArray   = \Joomla\Utilities\ArrayHelper::toInteger($categoryArray);
-		$category        = implode(',', $categoryArray);
+		$categories[] = $urlCategoryId;
 	}
-	else
+}
+
+$finalCategories = $categories;
+
+if ($includeSubCategory && count($categories) > 0)
+{
+	foreach ($categories as $category) 
 	{
-		$category = $urlCategoryId;
+		$subCategories = RedshopHelperCategory::getCategoryListArray($category);
+
+		if ($subCategories)
+		{
+			foreach ($subCategories as $subCategory) 
+			{
+				$finalCategories[] = $subCategory->id;
+			}
+		}
 	}
 }
 
 // If category is found
-if ($category)
+if ($finalCategories)
 {
-	$query->where($db->qn('pc.category_id') . ' IN (' . $category . ')');
+	$finalCategories   = \Joomla\Utilities\ArrayHelper::toInteger($finalCategories);
+
+	$query->where($db->qn('pc.category_id') . ' IN (' . implode(',', $finalCategories) . ')');
 }
 else
 {

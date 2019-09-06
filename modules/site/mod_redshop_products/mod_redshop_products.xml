@@ -74,6 +74,18 @@
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
+
+                <field
+                        name="includeSubCategory"
+                        type="radio"
+                        default="0"
+                        label="MOD_REDSHOP_PRODUCTS_INCLUDE_SUBCATEGORY"
+                        description="MOD_REDSHOP_PRODUCTS_INCLUDE_SUBCATEGORY"
+                        class="btn-group btn-group-yesno">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+
                 <field
                         name="count"
                         type="text"
