@@ -5,29 +5,17 @@ use \Firebase\JWT\JWT;
 class BaoKimAPI {
 	/**
 	 * @var    string   $apiKey
-	 * @since  __DEPLOY_VERSION__
 	 */
 	private static $apiKey;
 
 	/**
 	 * @var    string   $secretKey
-	 * @since  __DEPLOY_VERSION__
 	 */
 	private static $secretKey;
 	const TOKEN_EXPIRE = 60;
 	const ENCODE_ALG = 'HS256';
 
 	private static $_jwt = null;
-
-	/**
-	 * Get Api Key
-	 *
-	 * @return  string
-	 */
-	public static function getApiKey()
-	{
-		return self::$apiKey;
-	}
 
 	/**
 	 * Set Api Key
@@ -37,16 +25,6 @@ class BaoKimAPI {
 	public static function setApiKey($apiKey)
 	{
 		self::$apiKey = $apiKey;
-	}
-
-	/**
-	 * Get Secret Key
-	 *
-	 * @return  string
-	 */
-	public static function getSecretKey()
-	{
-		return self::$secretKey;
 	}
 
 	/**
@@ -75,7 +53,7 @@ class BaoKimAPI {
 		$data = [
 			'iat'  => $issuedAt,         // Issued at: time when the token was generated
 			'jti'  => $tokenId,          // Json Token Id: an unique identifier for the token
-			'iss'  => self::getApiKey(),     // Issuer
+			'iss'  => self::$apiKey,     // Issuer
 			'nbf'  => $notBefore,        // Not before
 			'exp'  => $expire,           // Expire
 			'form_params' => [                  // request body (dữ liệu post)
@@ -92,7 +70,7 @@ class BaoKimAPI {
 		 */
 		self::$_jwt = JWT::encode(
 			$data,      //Data to be encoded in the JWT
-			self::getSecretKey(), // The signing key
+			self::$secretKey, // The signing key
 			'HS256'     // Algorithm used to sign the token, see https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40#section-3
 		);
 
@@ -107,7 +85,7 @@ class BaoKimAPI {
 			self::refreshToken();
 
 		try {
-			JWT::decode(self::$_jwt, self::getSecretKey(), array('HS256'));
+			JWT::decode(self::$_jwt, self::$secretKey, array('HS256'));
 		}catch(Exception $e){
 			self::refreshToken();
 		}
