@@ -28,7 +28,7 @@ class BaoKimAPI {
 	}
 
 	/**
-	 * Set Api Key
+	 * Set Secret Key
 	 *
 	 * @return  void
 	 */
