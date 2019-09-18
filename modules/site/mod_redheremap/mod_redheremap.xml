@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+    <name>MOD_REDHEREMAP</name>
+    <version>1.0.0</version>
+    <creationDate>2018</creationDate>
+    <author>redCOMPONENT</author>
+    <authorEmail>email@redcomponent.com</authorEmail>
+    <authorUrl>www.redcomponent.com</authorUrl>
+    <copyright>Copyright (C) 2015 - 2018 redCOMPONENT.com. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later, see LICENSE.</license>
+    <description>MOD_REDHEREMAP_DESCRIPTION</description>
+    <files>
+        <folder>assets</folder>
+        <folder>fields</folder>
+        <folder>language</folder>
+        <folder>tmpl</folder>
+        <filename module="mod_redheremap">mod_redheremap.php</filename>
+        <filename>mod_redheremap.xml</filename>
+    </files>
+    <config>
+        <fields name="params">
+            <fieldset name="basic" addfieldpath="/modules/mod_redheremap/fields">
+                <field name="api" type="text" label="MOD_REDHEREMAP_APP_API" description="MOD_REDHEREMAP_APP_API_DESC" required="true" />
+                <field name="code" type="text" label="MOD_REDHEREMAP_APP_CODE" description="MOD_REDHEREMAP_APP_CODE_DESC" required="true" />
+                <field name="noteapi" type="note" label="MOD_REDHEREMAP_APP_CODE_NOTE" />
+                <field name="address" type="text" default="" label="MOD_REDHEREMAP_ADDRESS" description="MOD_REDHEREMAP_ADDRESS_DESC" />
+                <field name="lat" type="text" default="" label="MOD_REDHEREMAP_LATTITUDE" description="MOD_REDHEREMAP_LATTITUDE_DESC" />
+                <field name="lng" type="text" default="" label="MOD_REDHEREMAP_LONGTITUDE" description="MOD_REDHEREMAP_LONGTITUDE_DESC" />
+                <field name="zoom" type="number" default="18" min="0" max="20" step="1" label="MOD_REDHEREMAP_ZOOM" description="MOD_REDHEREMAP_ZOOM_DESC" />
+                <field name="width" type="text" default="100%" label="MOD_REDHEREMAP_WIDTH" description="MOD_REDHEREMAP_WIDTH_DESC" />
+                <field name="height" type="text" default="300px" label="MOD_REDHEREMAP_HEIGHT" description="MOD_REDHEREMAP_HEIGHT_DESC" />
+                <field name="scheme" type="list" default="" label="MOD_REDHEREMAP_SCHEME" description="">
+                    <option value="normal.day">normal.day</option>
+                    <option value="normal.day.grey">normal.day.grey</option>
+                    <option value="normal.day.transit">normal.day.transit</option>
+                    <option value="normal.day.custom">normal.day.custom</option>
+                    <option value="normal.night">normal.night</option>
+                    <option value="normal.night.grey">normal.night.grey</option>
+                    <option value="pedestrian.day">pedestrian.day</option>
+                    <option value="pedestrian.day.mobile">pedestrian.day.mobile</option>
+                    <option value="pedestrian.night">pedestrian.night</option>
+                    <option value="pedestrian.night.mobile">pedestrian.night.mobile</option>
+                    <option value="carnav.day.grey">carnav.day.grey</option>
+                    <option value="normal.day.mobile">normal.day.mobile</option>
+                    <option value="normal.day.grey.mobile">normal.day.grey.mobile</option>
+                    <option value="normal.day.transit.mobile">normal.day.transit.mobile</option>
+                    <option value="normal.night.mobile">normal.night.mobile</option>
+                    <option value="normal.night.grey.mobile">normal.night.grey.mobile</option>
+                    <option value="reduced.day">reduced.day</option>
+                    <option value="reduced.night">reduced.night</option>
+                    <option value="normal.traffic.day">normal.traffic.day</option>
+                    <option value="normal.traffic.night">normal.traffic.night</option>
+                    <option value="normal.night.transit">normal.night.transit</option>
+                    <option value="normal.night.transit.mobile">normal.night.transit.mobile</option>
+                </field>
+                <field name="tiletype" type="list" default="" label="MOD_REDHEREMAP_TILETYPES" description="">
+                    <option value="maptile">maptile</option>
+                    <option value="basetile">basetile</option>
+                    <option value="xbasetile">xbasetile</option>
+                    <option value="alabeltile">alabeltile</option>
+                    <option value="labeltile">labeltile</option>
+                    <option value="linetile">linetile</option>
+                    <option value="streettile">streettile</option>
+                    <option value="lltile">lltile</option>
+                    <option value="trucktile">trucktile</option>
+                    <option value="truckonlytile">truckonlytile</option>
+                    <option value="blinetile">blinetile</option>
+                    <option value="mapnopttile">mapnopttile</option>
+                    <option value="trucknopttile">trucknopttile</option>
+                </field>
+                <field name="disablemousewheel" type="radio" default="0" label="MOD_REDHEREMAP_DISABLE_MOUSEWHEEL" description="MOD_REDHEREMAP_DISABLE_MOUSEWHEEL_DESC" class="btn-group btn-group-yesno">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field name="icon" type="media" label="MOD_REDHEREMAP_ICON" description="MOD_REDHEREMAP_ICON_DESC" />
+                <field name="info" type="textarea" default="" label="MOD_REDHEREMAP_INFO" description="MOD_REDHEREMAP_INFO_DESC" rows="10" cols="5" filter="raw" />
+                <field name="map" rel="testestrel" labelclass="test" type="heremap" label="MOD_REDHEREMAP_MAP" description="MOD_REDHEREMAP_MAP" />
+            </fieldset>
+            <fieldset name="advanced">
+                <field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+                <field name="moduleclass_sfx" type="textarea" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" rows="3" />
+                <field name="cache" type="list" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC" default="1" filter="integer">
+                    <option value="1">JGLOBAL_USE_GLOBAL</option>
+                    <option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+                </field>
+                <field name="cache_time" type="number" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" default="900" filter="integer" />
+                <field name="cachemode" type="hidden" default="static">
+                    <option value="static"></option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+</extension>
