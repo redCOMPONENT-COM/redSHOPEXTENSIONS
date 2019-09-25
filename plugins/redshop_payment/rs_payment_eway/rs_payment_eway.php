@@ -93,7 +93,7 @@ class PlgRedshop_PaymentRs_Payment_Eway extends JPlugin
 		$eway->setCustomerAddress($addressBill);
 		$eway->setCustomerPostcode($zipcodeBill);
 		$eway->setCustomerInvoiceDescription('Testing');
-		$eway->setCustomerInvoiceRef($data['orderNumber']);
+		$eway->setCustomerInvoiceRef($data['order_number']);
 		$eway->setCardHoldersName($orderPaymentName);
 		$eway->setCardNumber($orderPaymentNumber);
 		$eway->setCardExpiryMonth($orderPaymentExpireMonth);
