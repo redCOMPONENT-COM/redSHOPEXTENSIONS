@@ -65,6 +65,12 @@
                         description="MOD_REDSHOP_PRODUCTS_CATEGORY_DESC"
                 />
                 <field
+                        name="read_more_itemid"
+                        type="menuitem"
+                        size="40"
+                        label="MOD_REDSHOP_PRODUCTS_READ_MORE_LINK"
+                />
+                <field
                         name="urlCategoryId"
                         type="radio"
                         default="0"
