@@ -38,7 +38,7 @@
                     <option value="0">JNO</option>
                 </field>
                 <field name="product_template" type="sql"
-                       query="SELECT template_id AS tm_value, template_name AS tm_title FROM #__redshop_template WHERE template_section='product_content_template'"
+                       query="SELECT id AS tm_value, name AS tm_title FROM #__redshop_template WHERE section='product_content_template'"
                        key_field="tm_value" value_field="tm_title" default="product"
                        label="PLG_CONTENT_REDSHOP_PRODUCT_PRODUCT_TEMPLATE">
                 </field>

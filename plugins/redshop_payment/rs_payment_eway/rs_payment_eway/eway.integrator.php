@@ -432,7 +432,8 @@ class EwayPayment
 	function doPayment($orderId)
 	{
 		$app = JFactory::getApplication();
-		$debugMode = $this->params->get('debugMode');
+		$debugMode = $this->params->get('debug_mode');
+		$values = new stdClass();
 
 		$xmlRequest = "<ewaygateway>" .
 			"<ewayCustomerID>" . htmlentities($this->myCustomerID) . "</ewayCustomerID>" .
