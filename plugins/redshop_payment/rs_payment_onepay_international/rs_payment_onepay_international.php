@@ -47,9 +47,6 @@ class PlgRedshop_Paymentrs_Payment_Onepay_International extends JPlugin
 		$itemId            = $app->input->getInt('Itemid', 0);
 		$vpcURL            = $virtualPaymentClientURL . "?";
 		$stringHashData    = "";
-		$addressShip       = $data['shippinginfo']->address;
-		$cityShip          = $data['shippinginfo']->city;
-		$countryCodeShip   = $data['shippinginfo']->country_code;
 		$phoneShip         = $data['shippinginfo']->phone;
 		$userEmailShip     = $data['shippinginfo']->user_email;
 		$userIdShip        = $data['shippinginfo']->user_id;
@@ -70,18 +67,14 @@ class PlgRedshop_Paymentrs_Payment_Onepay_International extends JPlugin
 			'vpc_Command'        => $this->params->get("command_type"),
 			'vpc_Locale'         => $this->params->get("language"),
 			'vpc_TicketNo'       => $_SERVER ['REMOTE_ADDR'],
-			'vpc_SHIP_Street01'  => substr($addressShip, 0, 500),
-			'vpc_SHIP_Provice'   => '',
-			'vpc_SHIP_City'      => substr($cityShip, 0, 50),
-			'vpc_SHIP_Country'   => substr($countryCodeShip, 0, 50),
-			'vpc_Customer_Phone' => substr($phoneShip, 0, 50),
-			'vpc_Customer_Email' => substr($userEmailShip, 0, 50),
-			'vpc_Customer_Id'    => substr($userIdShip, 0, 50),
-			'AVS_Street01'       => substr($addressBill, 0, 500),
-			'AVS_City'           => substr($cityBill, 0, 50),
+			'vpc_Customer_Phone' => $this->convertUnicodeToNonUnicode(substr($phoneShip, 0, 50)),
+			'vpc_Customer_Email' => $this->convertUnicodeToNonUnicode(substr($userEmailShip, 0, 50)),
+			'vpc_Customer_Id'    => $this->convertUnicodeToNonUnicode(substr($userIdShip, 0, 50)),
+			'AVS_Street01'       => $this->convertUnicodeToNonUnicode(substr($addressBill, 0, 500)),
+			'AVS_City'           => $this->convertUnicodeToNonUnicode(substr($cityBill, 0, 50)),
 			'AVS_StateProv'      => '',
-			'AVS_PostCode'       => substr($zipCodeBill, 0, 50),
-			'AVS_Country'        => substr($country2CodeBill, 0, 50),
+			'AVS_PostCode'       => $this->convertUnicodeToNonUnicode(substr($zipCodeBill, 0, 50)),
+			'AVS_Country'        => $this->convertUnicodeToNonUnicode(substr($country2CodeBill, 0, 50)),
 			'display'            => '',
 			'AgainLink'          => urlencode($_SERVER['HTTP_REFERER'])
 		];
@@ -135,6 +128,12 @@ class PlgRedshop_Paymentrs_Payment_Onepay_International extends JPlugin
 		if ($element != 'rs_payment_onepay_international')
 		{
 			return false;
+		}
+
+		$ipnStatus = $request["ipn"];
+
+		if (!empty($ipnStatus)) {
+			JFactory::getSession()->set('ipn_status', $ipnStatus);
 		}
 
 		$values         = new stdClass;
@@ -258,5 +257,89 @@ class PlgRedshop_Paymentrs_Payment_Onepay_International extends JPlugin
 		}
 
 		return $res;
+	}
+
+	function convertUnicodeToNonUnicode ($str){
+		$unicode = array(
+			'a'=>'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
+			'd'=>'đ',
+			'e'=>'é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ',
+			'i'=>'í|ì|ỉ|ĩ|ị',
+			'o'=>'ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ',
+			'u'=>'ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự',
+			'y'=>'ý|ỳ|ỷ|ỹ|ỵ',
+			'A'=>'Á|À|Ả|Ã|Ạ|Ă|Ắ|Ặ|Ằ|Ẳ|Ẵ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ',
+			'D'=>'Đ',
+			'E'=>'É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ',
+			'I'=>'Í|Ì|Ỉ|Ĩ|Ị',
+			'O'=>'Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ',
+			'U'=>'Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự',
+			'Y'=>'Ý|Ỳ|Ỷ|Ỹ|Ỵ',
+		);
+
+		foreach($unicode as $nonUnicode => $uni){
+
+			$str = preg_replace("/($uni)/i", $nonUnicode, $str);
+
+		}
+
+		return $str;
+	}
+
+	/**
+	 * IPN Update API (Instant Payment Notification)
+	 *
+	 * @param   string  $element  Plugin Name
+	 * @param   integer  $orderId Order Id
+	 *
+	 * @return  string  $res response
+	 */
+	public function onAfterNotifyPaymentrs_payment_onepay_international($element, $orderId)
+	{
+
+		if ($element != 'rs_payment_onepay_international')
+		{
+			return false;
+		}
+
+		$ipnStatus = JFactory::getSession()->get('ipn_status');
+
+		if ($ipnStatus != 1) {
+			return false;
+		}
+
+		$res = 'responsecode=1&desc=confirm-success';
+
+		// Initialiase variables.
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('count(*)')
+			->from($db->qn('#__redshop_orders'))
+			->where($db->qn('order_id') . ' = ' . (int) $orderId)
+			->where($db->qn('order_status') . ' = "C"' )
+			->where($db->qn('order_payment_status') . ' = "Paid"' );
+
+		// Set the query and load the result.
+		$db->setQuery($query);
+
+		try
+		{
+			$order = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			$res = 'responsecode=0&desc=confirm-fail';
+		}
+
+		if ($order == 0)
+		{
+			$res = 'responsecode=0&desc=confirm-fail';
+		}
+
+		JFactory::getSession()->set('ipn_status', null);
+
+		echo $res; exit;
 	}
 }
