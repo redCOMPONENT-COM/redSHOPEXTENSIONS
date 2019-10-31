@@ -254,12 +254,18 @@ $moduleId        = 'mod_' . $module->id;
 			</div>
 		<?php endforeach; ?>
 	</div>
-	<?php if ($showLoadmore): ?>
+	<?php if ($showLoadmore && $totalProduct > $count): ?>
 		<div id="<?php echo $moduleId ?>_loadmorewrapper" class="text-center">
 			<div id="<?php echo $moduleId ?>_loadmorebtn"
 				 class="btn btn-primary"><?php echo $loadmoreBtnText ?></div>
 			<img id="<?php echo $moduleId ?>_loadmoreloading"
 				 src="<?php echo $url ?>/components/com_redshop/assets/images/loading.gif"/>
+		</div>
+	<?php endif; ?>
+	<?php if ($readMoreItemid): ?>
+		<div class="readmorecategory" id="<?php echo $moduleId ?>readmorecategory">
+			<?php $linkReadMore = JRoute::_(JFactory::getApplication()->getMenu()->getItem($readMoreItemid)->link . '&Itemid=' . $readMoreItemid)?>
+			<a class="btn btn-primary" href="<?php echo $linkReadMore ?>"><?php echo JText::_('MOD_REDSHOP_PRODUCT_READ_MORE_CATEGORY_LBL') ?>&nbsp;<i class="fas fa-angle-right"></i></a>
 		</div>
 	<?php endif; ?>
 </div>
