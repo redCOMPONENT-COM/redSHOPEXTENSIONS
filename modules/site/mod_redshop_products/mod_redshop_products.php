@@ -38,6 +38,8 @@ $loadmoreCount           = trim($params->get('loadmore_count', 9));
 $loadmoreBtnText         = trim($params->get('loadmore_text', 'Se flere tilbud'));
 $specificProducts        = $params->get('specific_products', array());
 $includeSubCategory      = (int) $params->get('includeSubCategory', 0);
+$readMoreItemid          = $params->get('read_more_itemid', 0);
+$view                    = $app->input->getInt('view');
 
 $isLoadmore       = $app->input->getInt('loadmore', 0);
 $loadedProductIds = $session->get('mod_redshop_products.' . $module->id . '.loadedpids', array());
@@ -50,6 +52,12 @@ $query = $db->getQuery(true)
 	->leftJoin($db->qn('#__redshop_product_category_xref', 'pc') . ' ON ' . $db->qn('pc.product_id') . ' = ' . $db->qn('p.product_id'))
 	->where($db->qn('p.published') . ' = 1')
 	->group($db->qn('p.product_id'));
+
+if ($view == 'product')
+{
+	$pid = $app->input->getInt('pid');
+	$query->where($db->qn('p.product_id') . ' != ' . $db->q($pid));
+}
 
 switch ($type)
 {
@@ -222,6 +230,11 @@ if ($isLoadmore)
 }
 
 $productIds = $db->setQuery($query, 0, $count)->loadColumn();
+
+$countProduct = clone $query;
+$countProduct->clear('limit');
+
+$totalProduct = count($db->setQuery($countProduct)->loadColumn());
 
 if (!empty($productIds))
 {
