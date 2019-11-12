@@ -28,6 +28,8 @@ class ModRedshopShopperGroupProduct
 		$user = JFactory::getUser();
 		$db   = JFactory::getDbo();
 		$shopperGroupId = RedshopHelperUser::getShopperGroup($user->id);
+		$shopperGroupData = Redshop\Helper\ShopperGroup::generateList($shopperGroupId);
+		$shopperGroupCategories = $shopperGroupData[0]->shopper_group_categories;
 		$rows = array();
 
 		$subQuery = $db->getQuery(true)
@@ -40,8 +42,14 @@ class ModRedshopShopperGroupProduct
 			->from($db->qn('#__redshop_product', 'p'))
 			->leftJoin('(' . $subQuery . ') orderItems ON orderItems.product_id = p.product_id')
 			->leftJoin($db->qn('#__redshop_orders', 'o') . ' ON o.order_id = orderItems.order_id')
-			->leftJoin($db->qn('#__redshop_users_info', 'ui') . ' ON ui.user_id = o.user_id')
-			->where('ui.shopper_group_id = ' . (int) $shopperGroupId)
+			->leftJoin($db->qn('#__redshop_users_info', 'ui') . ' ON ui.user_id = o.user_id');
+
+		if (!empty($shopperGroupCategories)) {
+			$query->leftJoin($db->qn('#__redshop_product_category_xref', 'pcx') . ' ON pcx.product_id = p.product_id')
+				->where('pcx.category_id IN (' .  $shopperGroupCategories . ')');
+		}
+
+		$query->where('ui.shopper_group_id = ' . (int) $shopperGroupId)
 			->where('p.published = 1')
 			->group('p.product_id')
 			->order('orderItems.qty DESC');
