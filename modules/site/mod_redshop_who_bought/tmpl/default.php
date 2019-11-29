@@ -9,6 +9,9 @@
 
 defined('_JEXEC') or die;
 
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
+
 $Itemid = JRequest::getInt('Itemid');
 $user = JFactory::getUser();
 
@@ -32,8 +35,9 @@ $redTemplate = Redtemplate::getInstance();
 $extraField = extraField::getInstance();
 $module_id = "mod_" . $module->id;
 
-JHtml::script('com_redshop/common.js', false, true);
-JHtml::script('com_redshop/redbox.js', false, true);
+JHtml::script('com_redshop/redshop.attribute.min.js', false, true);
+JHtml::script('com_redshop/redshop.common.min.js', false, true);
+JHtml::script('com_redshop/redshop.redbox.min.js', false, true);
 
 JFactory::getDocument()->addScriptDeclaration('
 	jQuery(document).ready(function () {
