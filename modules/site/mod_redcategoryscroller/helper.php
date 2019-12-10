@@ -48,7 +48,8 @@ class ModRedCategoryScrollerHelper
 		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__redshop_category'))
-			->where($db->qn('published') . ' = 1');
+			->where($db->qn('published') . ' = 1')
+			->where($db->qn('parent_id') . ' != 0');
 
 		switch ($sortMethod)
 		{
