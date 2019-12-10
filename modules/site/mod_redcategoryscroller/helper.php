@@ -57,10 +57,10 @@ class ModRedCategoryScrollerHelper
 				$query->order('RAND()');
 				break;
 			case 'oldest':
-				$query->order($db->qn('category_pdate') . ' ASC');
+				$query->order($db->qn('created_date') . ' ASC');
 				break;
 			default:
-				$query->order($db->qn('category_pdate') . ' DESC');
+				$query->order($db->qn('created_date') . ' DESC');
 				break;
 		}
 
