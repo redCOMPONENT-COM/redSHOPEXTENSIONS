@@ -46,6 +46,11 @@ $boxWidth                 = $params->get('boxwidth', 100);
 
 $data = ModRedCategoryScrollerHelper::getList($params);
 
+if ($scrollDirection == 'down' || $scrollDirection == 'right')
+{
+	$data = array_reverse($data);
+}
+
 if ($data)
 {
 	require JModuleHelper::getLayoutPath('mod_redcategoryscroller', $params->get('layout', 'default'));

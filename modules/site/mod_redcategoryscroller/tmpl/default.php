@@ -22,6 +22,11 @@ $redHelper = redhelper::getInstance();
     <p><?php echo $params->get('pretext', '') ?></p>
     <div style="text-align: <?php echo $scrollAlign ?>;background-color: <?php echo $scrollBackgroundColor ?>; width: <?php echo $scrollWidth ?>px;
             margin: <?php echo $scrollMargin ?>px;">
+		<style>
+			marquee a{
+				color: <?php echo $scrollTextColor ?>;
+			}
+		</style>
         <marquee
                 behavior="<?php echo $scrollBehavior ?>"
                 direction="<?php echo $scrollDirection ?>"
@@ -114,9 +119,9 @@ $redHelper = redhelper::getInstance();
                                         </table>
                                     </td>
 								<?php else: ?>
-									<?php foreach ($scrollLineCharTimes as $scrollLineCharTime): ?>
+									<?php for ($i = 0; $i < $scrollLineCharTimes; $i++): ?>
 										<?php echo $scrollLineChar ?>
-									<?php endforeach; ?>
+									<?php endfor; ?>
 								<?php endif; ?>
 
 								<?php $i++; ?>

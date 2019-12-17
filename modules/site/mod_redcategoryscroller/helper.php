@@ -48,7 +48,8 @@ class ModRedCategoryScrollerHelper
 		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__redshop_category'))
-			->where($db->qn('published') . ' = 1');
+			->where($db->qn('published') . ' = 1')
+			->where($db->qn('parent_id') . ' != 0');
 
 		switch ($sortMethod)
 		{
@@ -56,10 +57,10 @@ class ModRedCategoryScrollerHelper
 				$query->order('RAND()');
 				break;
 			case 'oldest':
-				$query->order($db->qn('category_pdate') . ' ASC');
+				$query->order($db->qn('created_date') . ' ASC');
 				break;
 			default:
-				$query->order($db->qn('category_pdate') . ' DESC');
+				$query->order($db->qn('created_date') . ' DESC');
 				break;
 		}
 
