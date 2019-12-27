@@ -65,6 +65,9 @@ class plgredshop_shippingself_pickup extends JPlugin
 				$shippingrate[$rate]->value = $shipping_rate_id;
 				$shippingrate[$rate]->rate = 0;
 				$shippingrate[$rate]->vat = 0;
+				$shippingrate[$rate]->shipping_rate_country = $rs->shipping_rate_country;
+				$shippingrate[$rate]->shipping_rate_state = $rs->shipping_rate_state;
+
 				$rate++;
 			}
 		}
