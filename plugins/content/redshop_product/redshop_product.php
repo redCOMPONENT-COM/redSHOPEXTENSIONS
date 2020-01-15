@@ -39,7 +39,6 @@ class plgContentredshop_product extends JPlugin
 
 			$module_id     = "plg_";
 			$producthelper = productHelper::getInstance();
-			$extraField    = extraField::getInstance();
 			$objhelper     = redhelper::getInstance();
 			$lang          = JFactory::getLanguage();
 
@@ -246,7 +245,7 @@ class plgContentredshop_product extends JPlugin
 							$cart_id = "";
 						}
 
-						$productUserFields = $extraField->list_all_user_fields($userfieldArr[$ui], 12, '', $cart_id, 0, $this->data->product_id);
+						$productUserFields = RedshopHelperExtrafields::listAllUserFields($userfieldArr[$ui], 12, '', $cart_id, 0, $this->data->product_id);
 
 						$ufield .= $productUserFields[1];
 

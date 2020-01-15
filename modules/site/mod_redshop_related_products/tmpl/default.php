@@ -24,7 +24,6 @@ JHtml::script('com_redshop/redshop.common.min.js', false, true);
 JHtml::script('com_redshop/redshop.redbox.min.js', false, true);
 
 $producthelper   = productHelper::getInstance();
-$extraField      = extraField::getInstance();
 $stockroomhelper = rsstockroomhelper::getInstance();
 $moduleId        = 'mod_' . $module->id;
 ?>
@@ -219,7 +218,7 @@ $moduleId        = 'mod_' . $module->id;
 
 							foreach ($userfieldArr as $item)
 							{
-								$productUserfields = $extraField->list_all_user_fields($item, 12, '', '', 0, $row->product_id);
+								$productUserfields = RedshopHelperExtrafields::listAllUserFields($item, 12, '', '', 0, $row->product_id);
 								$ufield            .= $productUserfields[1];
 
 								if (!empty($productUserfields[1]))

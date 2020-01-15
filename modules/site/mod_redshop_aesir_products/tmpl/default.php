@@ -31,7 +31,6 @@ JHtml::script('com_redshop/redbox.js', false, true);
 $producthelper   = new producthelper;
 $redhelper       = new redhelper;
 $redTemplate     = new Redtemplate;
-$extraField      = new extraField;
 $stockroomhelper = new rsstockroomhelper;
 
 
@@ -248,7 +247,7 @@ for ($i = 0; $i < count($rows); $i++)
 
 				for ($ui = 0; $ui < count($userfieldArr); $ui++)
 				{
-					$productUserfileds = $extraField->list_all_user_fields($userfieldArr[$ui], 12, '', '', 0, $row->product_id);
+					$productUserfileds = RedshopHelperExtrafields::listAllUserFields($userfieldArr[$ui], 12, '', '', 0, $row->product_id);
 					$ufield .= $productUserfileds[1];
 
 					if ($productUserfileds[1] != "")
