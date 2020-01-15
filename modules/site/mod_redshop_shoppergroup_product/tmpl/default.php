@@ -29,7 +29,6 @@ JHTML::script('com_redshop/redbox.js', false, true);
 $producthelper = productHelper::getInstance();
 $redhelper     = redhelper::getInstance();
 $redTemplate   = Redtemplate::getInstance();
-$extraField    = extraField::getInstance();
 
 echo "<div class='mod_redshop_shoppergroup_product_wrapper'>";
 
@@ -75,7 +74,7 @@ foreach ($rows as $row)
 
 			for ($ui = 0; $ui < count($userfieldArr); $ui++)
 			{
-				$productUserFields = $extraField->list_all_user_fields($userfieldArr[$ui], 12, '', '', 0, $row->product_id);
+				$productUserFields = RedshopHelperExtrafields::listAllUserFields($userfieldArr[$ui], 12, '', '', 0, $row->product_id);
 				$ufield .= $productUserFields[1];
 
 				if ($productUserFields[1] != "")

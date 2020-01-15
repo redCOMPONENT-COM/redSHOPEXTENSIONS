@@ -32,7 +32,6 @@ JHtml::script('modules/mod_redshop_who_bought/assets/js/jquery.jcarousel.min.js'
 $producthelper = productHelper::getInstance();
 $redhelper = redhelper::getInstance();
 $redTemplate = Redtemplate::getInstance();
-$extraField = extraField::getInstance();
 $module_id = "mod_" . $module->id;
 
 JHtml::script('com_redshop/redshop.attribute.min.js', false, true);
@@ -93,7 +92,7 @@ if (count($rows))
 
 				for ($ui = 0; $ui < count($userfieldArr); $ui++)
 				{
-					$productUserFields = $extraField->list_all_user_fields($userfieldArr[$ui], 12, '', '', 0, $product->product_id);
+					$productUserFields = RedshopHelperExtrafields::listAllUserFields($userfieldArr[$ui], 12, '', '', 0, $product->product_id);
 					$ufield .= $productUserFields[1];
 
 					if ($productUserFields[1] != "")
