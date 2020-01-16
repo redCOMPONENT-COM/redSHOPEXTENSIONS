@@ -271,7 +271,6 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 			$currencyID = "USD";
 		}
 
-		$currencyClass = CurrencyHelper::getInstance();
 		$order_amount  = RedshopHelperCurrency::convert($data['order_amount'], '', $currencyID);
 		$order_amount  = urlencode(number_format($order_amount, 2));
 
