@@ -23,7 +23,7 @@ PHP Version: **>= 5.6**
 - [Composer] redSHOP Payment - Paypal Credit Card - v1.13.0
 - [Composer] redSHOP Payment - Braintree - v3.29.0
 - [Composer] redSHOP Payment - Stripe - v6.4.1
-- [Composer] redSHOP PDF - mPDF - v7.0.3
+- [Composer] redSHOP PDF - mPDF - v8.0.4
 
 **01st March 2018**
 
