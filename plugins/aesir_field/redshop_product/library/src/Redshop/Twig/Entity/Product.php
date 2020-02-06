@@ -89,12 +89,12 @@ class Product extends AbstractTwigEntity
 			$template = $individualAttribute ? $attributeCartTemplate : $attributeTemplate;
 			$content  = $individualAttribute ? '' : $content;
 
-			$content = \productHelper::getInstance()->getAttributeTemplate('{' . $section . ':' . $template . '}');
+			$content = \Redshop\Template\Helper::getAttribute('{' . $section . ':' . $template . '}');
 			$content = \RedshopHelperAttribute::replaceAttributeData(
 				$this->entity->getId(), 0, 0, array_values($attributes), '{' . $section . ':' . $template . '}', $content
 			);
 		}
 
-		return \productHelper::getInstance()->replaceCartTemplate($this->entity->getId(), 0, 0, 0, $content);
+		return \Redshop\Cart\Render::replace($this->entity->getId(), 0, 0, 0, $content);
 	}
 }

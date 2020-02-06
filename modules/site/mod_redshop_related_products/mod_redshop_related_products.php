@@ -27,7 +27,6 @@ $showDescription         = trim($params->get('show_desc', 1));
 $showVat                 = trim($params->get('show_vat', 1));
 $showStockroomStatus     = trim($params->get('show_stockroom_status', 1));
 $productId               = JFactory::getApplication()->input->get('pid');
-$producthelper           = productHelper::getInstance();
 
 $user = JFactory::getUser();
 
@@ -54,7 +53,7 @@ $rows = array();
 
 if ($productId)
 {
-	$rows = $producthelper->getRelatedProduct($productId);
+	$rows = RedshopHelperProduct::getRelatedProduct($productId);
 }
 
 require JModuleHelper::getLayoutPath('mod_redshop_related_products', $params->get('layout', 'default'));

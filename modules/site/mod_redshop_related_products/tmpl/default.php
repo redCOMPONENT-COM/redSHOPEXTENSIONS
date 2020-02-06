@@ -23,7 +23,6 @@ JHtml::script('com_redshop/redshop.attribute.min.js', false, true);
 JHtml::script('com_redshop/redshop.common.min.js', false, true);
 JHtml::script('com_redshop/redshop.redbox.min.js', false, true);
 
-$producthelper   = productHelper::getInstance();
 $stockroomhelper = rsstockroomhelper::getInstance();
 $moduleId        = 'mod_' . $module->id;
 ?>
@@ -66,8 +65,8 @@ $moduleId        = 'mod_' . $module->id;
 				}
 			}
 
-			$categoryId = $producthelper->getCategoryProduct($row->product_id);
-			$ItemData   = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+			$categoryId = RedshopHelperProduct::getCategoryProduct($row->product_id);
+			$ItemData   = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
 			if (count($ItemData) > 0)
 			{
@@ -82,7 +81,7 @@ $moduleId        = 'mod_' . $module->id;
 			$wrapperClass = isset($verticalProduct) && $verticalProduct ? 'mod_redshop_products' : 'mod_redshop_products_horizontal';
 			?>
 			<div class="<?php echo $wrapperClass ?>">
-				<?php $productInfo = $producthelper->getProductById($row->product_id); ?>
+				<?php $productInfo = RedshopHelperProduct::getProductById($row->product_id); ?>
 				<?php if ($image): ?>
 					<?php $thumb = Redshop\Product\Image\Image::getImage(
 						$row->product_id,
@@ -108,7 +107,7 @@ $moduleId        = 'mod_' . $module->id;
 				<?php
 				if (!$row->not_for_sale && $showPrice)
 				{
-					$productArr = $producthelper->getProductNetPrice($row->product_id);
+					$productArr = RedshopHelperProductPrice::getNetPrice($row->product_id);
 
 					if ($showVat != '0')
 					{
@@ -127,11 +126,11 @@ $moduleId        = 'mod_' . $module->id;
 					{
 						if (!$productPrice)
 						{
-							$productDiscountPrice = $producthelper->getPriceReplacement($productPrice);
+							$productDiscountPrice = RedshopHelperProductPrice::priceReplacement($productPrice);
 						}
 						else
 						{
-							$productDiscountPrice = $producthelper->getProductFormattedPrice($productPrice);
+							$productDiscountPrice = RedshopHelperProductPrice::formattedPrice($productPrice);
 						}
 
 						$displyText = '<div class=\"mod_redshop_products_price\">' . $productDiscountPrice . '</div>';
@@ -146,14 +145,14 @@ $moduleId        = 'mod_' . $module->id;
 								<?php if ($showDiscountPriceLayout): ?>
 								<?php $productPrice = $productPriceDiscount; ?>
 								<div id="mod_redoldprice"
-									 class="mod_redoldprice"><?php echo $producthelper->getProductFormattedPrice($productOldPrice) ?></div>
+									 class="mod_redoldprice"><?php echo RedshopHelperProductPrice::formattedPrice($productOldPrice) ?></div>
 								<div id="mod_redmainprice"
-									 class="mod_redmainprice"><?php echo $producthelper->getProductFormattedPrice($productPriceDiscount) ?></div>
+									 class="mod_redmainprice"><?php echo RedshopHelperProductPrice::formattedPrice($productPriceDiscount) ?></div>
 								<div id="mod_redsavedprice"
-									 class="mod_redsavedprice"><?php echo JText::_('COM_REDSHOP_PRODCUT_PRICE_YOU_SAVED') . ' ' . $producthelper->getProductFormattedPrice($savingPrice) ?></div>
+									 class="mod_redsavedprice"><?php echo JText::_('COM_REDSHOP_PRODCUT_PRICE_YOU_SAVED') . ' ' . RedshopHelperProductPrice::formattedPrice($savingPrice) ?></div>
 							<?php else: ?>
 								<?php $productPrice = $productPriceDiscount; ?>
-								<div class="mod_redshop_products_price"><?php echo $producthelper->getProductFormattedPrice($productPrice) ?></div>
+								<div class="mod_redshop_products_price"><?php echo RedshopHelperProductPrice::formattedPrice($productPrice) ?></div>
 							<?php endif; ?>
 								<?php
 							}
@@ -164,7 +163,7 @@ $moduleId        = 'mod_' . $module->id;
 				}
 				?>
 				<?php if ($showWishlist): ?>
-					<div class="wishlist"><?php echo $producthelper->replaceWishlistButton($row->product_id, '{wishlist_link}') ?></div>
+					<div class="wishlist"><?php echo RedshopHelperWishlist::replaceWishlistTag($row->product_id, '{wishlist_link}') ?></div>
 				<?php endif; ?>
 				<?php if ($showReadmore): ?>
 					<div class="mod_redshop_products_readmore">
@@ -178,16 +177,16 @@ $moduleId        = 'mod_' . $module->id;
 
 					if ($row->attribute_set_id > 0)
 					{
-						$attributesSet = $producthelper->getProductAttribute(0, $row->attribute_set_id, 0, 1);
+						$attributesSet = RedshopHelperProduct_Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
 					}
 
-					$attributes = $producthelper->getProductAttribute($row->product_id);
+					$attributes = RedshopHelperProduct_Attribute::getProductAttribute($row->product_id);
 					$attributes = array_merge($attributes, $attributesSet);
 					$totalatt   = count($attributes);
 					// Product attribute  End
 
 					// Product accessory Start
-					$accessory      = $producthelper->getProductAccessory(0, $row->product_id);
+					$accessory      = RedshopHelperAccessory::getProductAccessories(0, $row->product_id);
 					$totalAccessory = count($accessory);
 					// Product accessory End
 
@@ -201,14 +200,14 @@ $moduleId        = 'mod_' . $module->id;
 					if (Redshop::getConfig()->getBool('AJAX_CART_BOX'))
 					{
 						$ajaxDetailTemplateDesc = "";
-						$ajaxDetailTemplate     = $producthelper->getAjaxDetailboxTemplate($row);
+						$ajaxDetailTemplate     = \Redshop\Template\Helper::getAjaxDetailBox($row);
 
 						if (count($ajaxDetailTemplate) > 0)
 						{
 							$ajaxDetailTemplateDesc = $ajaxDetailTemplate->template_desc;
 						}
 
-						$returnArr         = $producthelper->getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
+						$returnArr         = RedshopHelperProduct::getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
 						$templateUserfield = $returnArr[0];
 						$userfieldArr      = $returnArr[1];
 
@@ -239,7 +238,7 @@ $moduleId        = 'mod_' . $module->id;
 						}
 					}
 					// End
-					$addtocart = $producthelper->replaceCartTemplate(
+					$addtocart = Redshop\Cart\Render::replace(
 						$row->product_id, $categoryId, 0, 0, "", false,
 						$userfieldArr, $totalatt, $totalAccessory, $countNoUserField, $moduleId
 					);

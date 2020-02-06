@@ -40,7 +40,6 @@ class Plgredshop_ProductCreateColorImage extends JPlugin
 			return;
 		}
 
-		$producthelper     = productHelper::getInstance();
 		$product_id        = $productArr['product_id'];
 		$main_imgwidth     = $productArr['main_imgwidth'];
 		$main_imgheight    = $productArr['main_imgheight'];
@@ -50,7 +49,7 @@ class Plgredshop_ProductCreateColorImage extends JPlugin
 		$subproperty_id    = urldecode($productArr['subproperty_id']);
 		$url               = JURI::base();
 		$imagePath         = $url . "components/com_redshop/assets/images";
-		$arrpReturn        = $producthelper->getdisplaymainImage($product_id);
+		$arrpReturn        = Redshop\Product\Image\Image::getDisplayMain($product_id);
 		$productImage      = $arrpReturn['imagename'];
 		$arrproperty_id    = explode('##', $property_data);
 		$arrsubproperty_id = explode('##', $subproperty_data);
@@ -69,7 +68,7 @@ class Plgredshop_ProductCreateColorImage extends JPlugin
 		{
 			if (!empty($arrproperty_id[$i]))
 			{
-				$Arrresult   = $producthelper->getProperty($arrproperty_id[$i], 'property');
+				$Arrresult   = RedshopHelperProduct::getProperty($arrproperty_id[$i], 'property');
 				$extra_field = $Arrresult->extra_field;
 
 				if ($extra_field && $extra_field != 'reverse')
