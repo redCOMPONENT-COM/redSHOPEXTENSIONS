@@ -27,6 +27,7 @@ JHtml::script('com_redshop/attribute.js', false, true);
 JHtml::script('com_redshop/common.js', false, true);
 
 $config = Redconfiguration::getInstance();
+$producthelper = productHelper::getInstance();
 $redhelper     = redhelper::getInstance();
 
 $view      = JRequest::getCmd('view', 'category');
@@ -76,7 +77,7 @@ for ($i = 0, $countRows = count($rows); $i < $countRows; $i++)
 {
 	$row = $rows[$i];
 
-	$ItemData = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+	$ItemData = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
 	if (count($ItemData) > 0)
 	{
@@ -106,10 +107,10 @@ for ($i = 0, $countRows = count($rows); $i < $countRows; $i++)
 
 	if (Redshop::getConfig()->get('SHOW_PRICE') && !Redshop::getConfig()->get('USE_AS_CATALOG') && !Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && $show_price && !$row->not_for_sale)
 	{
-		$productArr           = RedshopHelperProductPrice::getNetPrice($row->product_id);
-		$product_price        = RedshopHelperProductPrice::priceReplacement($productArr['product_price']);
-		$product_price_saving = RedshopHelperProductPrice::priceReplacement($productArr['product_price_saving']);
-		$product_old_price    = RedshopHelperProductPrice::priceReplacement($productArr['product_old_price']);
+		$productArr           = $producthelper->getProductNetPrice($row->product_id);
+		$product_price        = $producthelper->getPriceReplacement($productArr['product_price']);
+		$product_price_saving = $producthelper->getPriceReplacement($productArr['product_price_saving']);
+		$product_old_price    = $producthelper->getPriceReplacement($productArr['product_old_price']);
 
 		if ($show_discountpricelayout)
 		{
@@ -174,18 +175,18 @@ for ($i = 0, $countRows = count($rows); $i < $countRows; $i++)
 
 		if ($row->attribute_set_id > 0)
 		{
-			$attributes_set = RedshopHelperProduct_Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
+			$attributes_set = $producthelper->getProductAttribute(0, $row->attribute_set_id, 0, 1);
 		}
 
-		$attributes = RedshopHelperProduct_Attribute::getProductAttribute($row->product_id);
+		$attributes = $producthelper->getProductAttribute($row->product_id);
 		$attributes = array_merge($attributes, $attributes_set);
 		$totalatt   = count($attributes);
 
 		// Product accessory Start
-		$accessory      = RedshopHelperAccessory::getProductAccessories(0, $row->product_id);
+		$accessory      = $producthelper->getProductAccessory(0, $row->product_id);
 		$totalAccessory = count($accessory);
 
-		$addtocart_data = Redshop\Cart\Render::replace($row->product_id, 0, 0, 0, "", false, array(), $totalatt, $totalAccessory, 0, $module_id);
+		$addtocart_data = $producthelper->replaceCartTemplate($row->product_id, 0, 0, 0, "", false, array(), $totalatt, $totalAccessory, 0, $module_id);
 		echo "<div class='form-button'>" . $addtocart_data . "<div>";
 	}
 

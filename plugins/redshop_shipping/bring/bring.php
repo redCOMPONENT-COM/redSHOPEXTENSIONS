@@ -139,10 +139,11 @@ class PlgRedshop_ShippingBring extends JPlugin
 		}
 
 		include_once JPATH_ROOT . '/plugins/redshop_shipping/' . $this->_name . '/config/' . $this->_name . '.cfg.php';
+		$productHelper = productHelper::getInstance();
 
 		// Conversation of weight ( ration )
-		$unitRatio       = \Redshop\Helper\Utility::getUnitConversation('gram', Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT'));
-		$unitRatioVolume = \Redshop\Helper\Utility::getUnitConversation('inch', Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
+		$unitRatio       = $productHelper->getUnitConversation('gram', Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT'));
+		$unitRatioVolume = $productHelper->getUnitConversation('inch', Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
 		$totalDimension  = RedshopHelperShipping::getCartItemDimension();
 
 		// Converting weight in pounds

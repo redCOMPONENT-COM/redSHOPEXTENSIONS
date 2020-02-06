@@ -72,15 +72,17 @@ class PlgRedshop_ProductDiscount_Affect_Attribute extends JPlugin
 	 */
 	private function getPropertyDiscountPrice($sectionId, $section, $userId)
 	{
-		$property = RedshopHelperProduct::getProperty($sectionId, $section);
+		$producthelper   = productHelper::getInstance();
+
+		$property = $producthelper->getProperty($sectionId, $section);
 
 		if ($property)
 		{
 			// Get discount eligibal ids
-			$productSpecialIds = RedshopHelperProduct::getProductSpecialId($userId);
+			$productSpecialIds = $producthelper->getProductSpecialId($userId);
 
 			// Get apllicable discount price
-			$specialPrice      = RedshopHelperProductPrice::getProductSpecialPrice($property->product_price, $productSpecialIds, $property->product_id);
+			$specialPrice      = $producthelper->getProductSpecialPrice($property->product_price, $productSpecialIds, $property->product_id);
 
 			if (!empty($specialPrice))
 			{
@@ -93,7 +95,7 @@ class PlgRedshop_ProductDiscount_Affect_Attribute extends JPlugin
 			}
 			else
 			{
-				$p = RedshopHelperProductPrice::getNetPrice($property->product_id);
+				$p = $producthelper->getProductNetPrice($property->product_id);
 
 				$discount = ($property->product_price * $p['product_price_saving_percentage']) / 100;
 			}

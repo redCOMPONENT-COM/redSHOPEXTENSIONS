@@ -65,7 +65,7 @@ class Wss_DataFeedApplicationCli extends JApplicationCli
 			$productPrice  = RedshopHelperProductPrice::formattedPrice($product->product_price);
 			$discountPrice = RedshopHelperProductPrice::formattedPrice($product->discount_price);
 
-			$itemData = RedshopHelperProduct::getMenuInformation(
+			$itemData = producthelper::getInstance()->getMenuInformation(
 				0,
 				0,
 				'',
