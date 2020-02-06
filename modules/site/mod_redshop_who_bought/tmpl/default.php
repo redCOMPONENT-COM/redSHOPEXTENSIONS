@@ -29,6 +29,7 @@ $document->addStyleDeclaration('
 JHtml::_('redshopjquery.framework');
 JHtml::script('modules/mod_redshop_who_bought/assets/js/jquery.jcarousel.min.js');
 
+$producthelper = productHelper::getInstance();
 $redhelper = redhelper::getInstance();
 $redTemplate = Redtemplate::getInstance();
 $module_id = "mod_" . $module->id;
@@ -48,20 +49,20 @@ if (count($rows))
 {
 	foreach ($rows as $product)
 	{
-		$category_id = RedshopHelperProduct::getCategoryProduct($product->product_id);
+		$category_id = $producthelper->getCategoryProduct($product->product_id);
 
 		$attributes_set = array();
 
 		if ($product->attribute_set_id > 0)
 		{
-			$attributes_set = RedshopHelperProduct_Attribute::getProductAttribute(0, $product->attribute_set_id, 0, 1);
+			$attributes_set = $producthelper->getProductAttribute(0, $product->attribute_set_id, 0, 1);
 		}
 
-		$attributes = RedshopHelperProduct_Attribute::getProductAttribute($product->product_id);
+		$attributes = $producthelper->getProductAttribute($product->product_id);
 		$attributes = array_merge($attributes, $attributes_set);
 		$totalatt   = count($attributes);
 
-		$accessory      = RedshopHelperAccessory::getProductAccessories(0, $product->product_id);
+		$accessory      = $producthelper->getProductAccessory(0, $product->product_id);
 		$totalAccessory = count($accessory);
 
 		/*
@@ -74,14 +75,14 @@ if (count($rows))
 		if (Redshop::getConfig()->get('AJAX_CART_BOX'))
 		{
 			$ajax_detail_template_desc = "";
-			$ajax_detail_template      = \Redshop\Template\Helper::getAjaxDetailBox($product);
+			$ajax_detail_template      = $producthelper->getAjaxDetailboxTemplate($product);
 
 			if (count($ajax_detail_template) > 0)
 			{
 				$ajax_detail_template_desc = $ajax_detail_template->template_desc;
 			}
 
-			$returnArr          = RedshopHelperProduct::getProductUserfieldFromTemplate($ajax_detail_template_desc);
+			$returnArr          = $producthelper->getProductUserfieldFromTemplate($ajax_detail_template_desc);
 			$template_userfield = $returnArr[0];
 			$userfieldArr       = $returnArr[1];
 
@@ -147,7 +148,7 @@ if (count($rows))
 		if ($show_addtocart_button)
 		{
 			echo "<div>&nbsp;</div>";
-			$addtocart = Redshop\Cart\Render::replace($product->product_id, $category_id, 0, 0, "", false, $userfieldArr, $totalatt, $totalAccessory, $count_no_user_field, $module_id);
+			$addtocart = $producthelper->replaceCartTemplate($product->product_id, $category_id, 0, 0, "", false, $userfieldArr, $totalatt, $totalAccessory, $count_no_user_field, $module_id);
 			echo "<div class='mod_redshop_products_addtocart addToCartWhoBought'>" . $addtocart . $hidden_userfield . "</div>";
 		}
 
@@ -178,7 +179,7 @@ if (count($rows))
 		{
 			if (Redshop::getConfig()->get('SHOW_PRICE') && (!Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') || (Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && SHOW_QUOTATION_PRICE)))
 			{
-				echo "<div class=\"priceWhoBought\">" . RedshopHelperProductPrice::formattedPrice($product->product_price) . "</div>";
+				echo "<div class=\"priceWhoBought\">" . $producthelper->getProductFormattedPrice($product->product_price) . "</div>";
 			}
 		}
 	}

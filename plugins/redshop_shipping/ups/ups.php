@@ -135,6 +135,7 @@ class PlgRedshop_ShippingUps extends JPlugin
 	 */
 	public function onListRates(&$data)
 	{
+		$productHelper = productHelper::getInstance();
 		$shipping      = RedshopHelperShipping::getShippingMethodByClass($this->_name);
 
 		$shippingParams = new Registry($shipping->params);
@@ -142,8 +143,8 @@ class PlgRedshop_ShippingUps extends JPlugin
 		include_once JPATH_ROOT . '/plugins/' . $this->_type . '/' . $this->_name . '/config/' . $this->_name . '.cfg.php';
 
 		// Conversation of weight ( ration )
-		$unitRatio       = \Redshop\Helper\Utility::getUnitConversation('pounds', Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT'));
-		$unitRatioVolume = \Redshop\Helper\Utility::getUnitConversation('inch', Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
+		$unitRatio       = $productHelper->getUnitConversation('pounds', Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT'));
+		$unitRatioVolume = $productHelper->getUnitConversation('inch', Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
 
 		$cartTotalDimension = RedshopHelperShipping::getCartItemDimension();
 		$orderWeight        = $cartTotalDimension['totalweight'];

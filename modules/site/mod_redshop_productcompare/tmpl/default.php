@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 $uri = JURI::getInstance();
 $url = $uri->root();
 
+$producthelper = productHelper::getInstance();
 $redhelper = redhelper::getInstance();
 
 $Itemid = JRequest::getInt('Itemid');
@@ -29,16 +30,16 @@ if (Redshop::getConfig()->get('COMPARE_PRODUCTS') == 1)
 			{
 				foreach ($compare->getItems() as $item)
 				{
-					$row = RedshopHelperProduct::getProductById($item['item']->productId);
+					$row = $producthelper->getProductById($item['item']->productId);
 
 					$cid = $item['item']->categoryId;
 
 					if (!$cid)
 					{
-						$cid = RedshopHelperProduct::getCategoryProduct($row->product_id);
+						$cid = $producthelper->getCategoryProduct($row->product_id);
 					}
 
-					$ItemData = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+					$ItemData = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
 					if (count($ItemData) > 0)
 					{
