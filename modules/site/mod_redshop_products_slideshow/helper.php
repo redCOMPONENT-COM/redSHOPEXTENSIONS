@@ -208,14 +208,13 @@ class RedshopProductSlideshow
 			}
 		}
 
-		$producthelper = productHelper::getInstance();
 		$redhelper     = redhelper::getInstance();
 
 		for ($k = 0, $countRows = count($rows);$k < $countRows;$k++)
 		{
 			$ret_array['flag'] = true;
 			$price_txt         = '';
-			$ItemData          = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $rows[$k]->product_id);
+			$ItemData          =  RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $rows[$k]->product_id);
 
 			if (count($ItemData) > 0)
 			{
@@ -229,7 +228,7 @@ class RedshopProductSlideshow
 			if ($params->get('show_price') == "yes")
 			{
 				// Without vat price
-				$productArr        = $producthelper->getProductNetPrice($rows[$k]->product_id, 0, 1);
+				$productArr        = RedshopHelperProductPrice::getNetPrice($rows[$k]->product_id, 0, 1);
 				$product_price     = $productArr['productPrice'];
 				$productVat        = $productArr['productVat'];
 
@@ -249,7 +248,7 @@ class RedshopProductSlideshow
 					$abs_price = $product_price;
 				}
 
-				$abs_price = $producthelper->getProductFormattedPrice($abs_price);
+				$abs_price = RedshopHelperProductPrice::formattedPrice($abs_price);
 				$price_txt .= $abs_price;
 			}
 

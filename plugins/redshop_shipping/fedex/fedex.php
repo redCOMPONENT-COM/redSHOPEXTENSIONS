@@ -116,7 +116,6 @@ class PlgRedshop_ShippingFedex extends JPlugin
 	{
 		include_once JPATH_ROOT . '/plugins/redshop_shipping/fedex/config/fedex.cfg.php';
 
-		$productHelper = productHelper::getInstance();
 		$shipping      = RedshopHelperShipping::getShippingMethodByClass($this->_name);
 
 		$fedexAccountNumber = FEDEX_ACCOUNT_NUMBER;
@@ -130,10 +129,10 @@ class PlgRedshop_ShippingFedex extends JPlugin
 		$fedexPass          = FEDEX_PASSWORD;
 		$shippingRates      = array();
 
-		$unitRatio        = $productHelper->getUnitConversation($fedexWeightUnits, strtolower(Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT')));
+		$unitRatio        = \Redshop\Helper\Utility::getUnitConversation($fedexWeightUnits, strtolower(Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT')));
 		$fedexWeightUnits = $fedexWeightUnits == 'lbs' ? 'LB' : 'KG';
 
-		$unitRatioVolume   = $productHelper->getUnitConversation('inch', Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
+		$unitRatioVolume   = \Redshop\Helper\Utility::getUnitConversation('inch', Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
 		$totalDimension    = RedshopHelperShipping::getCartItemDimension();
 		$cartTotalQuantity = $totalDimension['totalquantity'];
 		$cartTotalWeight   = $totalDimension['totalweight'];

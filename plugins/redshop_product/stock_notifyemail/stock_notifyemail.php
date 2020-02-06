@@ -136,11 +136,10 @@ class Plgredshop_Productstock_Notifyemail extends JPlugin
 			if ($product_data = RedshopHelperProduct::getProductById($userData->product_id))
 			{
 				$productDetail = $product_data->product_name;
-				$producthelper = productHelper::getInstance();
 
 				if ($userData->property_id)
 				{
-					if ($property_data = $producthelper->getAttibuteProperty($userData->property_id))
+					if ($property_data = RedshopHelperProduct_Attribute::getAttributeProperties($userData->property_id))
 					{
 						$productDetail .= "<br/>" . $property_data->property_name;
 					}
@@ -148,7 +147,7 @@ class Plgredshop_Productstock_Notifyemail extends JPlugin
 
 				if ($userData->subproperty_id)
 				{
-					if ($subproperty_data = $producthelper->getAttibuteSubProperty($userData->subproperty_id))
+					if ($subproperty_data = RedshopHelperProduct_Attribute::getAttributeSubProperties($userData->subproperty_id))
 					{
 						$productDetail .= "<br/>" . $subproperty_data->subattribute_color_name;
 					}

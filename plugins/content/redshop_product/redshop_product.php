@@ -38,7 +38,6 @@ class plgContentredshop_product extends JPlugin
 			}
 
 			$module_id     = "plg_";
-			$producthelper = productHelper::getInstance();
 			$objhelper     = redhelper::getInstance();
 			$lang          = JFactory::getLanguage();
 
@@ -70,7 +69,7 @@ class plgContentredshop_product extends JPlugin
 				$prtemplate = $prtemplate_default;
 				$match = explode(":", $matches[$i]);
 				$product_id = (int) (trim($match[1], '}'));
-				$product = $producthelper->getProductById($product_id);
+				$product = RedshopHelperProduct::getProductById($product_id);
 				$url = JURI::root();
 
 				if (!$product->product_id)
@@ -82,8 +81,8 @@ class plgContentredshop_product extends JPlugin
 				$dispatcher->trigger('onPrepareProduct', array(&$prtemplate, &$red_params, $product));
 
 				// Changes for sh404sef duplicating url
-				$catid = $producthelper->getCategoryProduct($product->product_id);
-				$ItemData = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $product->product_id);
+				$catid = RedshopHelperProduct::getCategoryProduct($product->product_id);
+				$ItemData = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $product->product_id);
 
 				if (count($ItemData) > 0)
 				{
@@ -127,7 +126,7 @@ class plgContentredshop_product extends JPlugin
 				$hidden_thumb_image = "<input type='hidden' name='prd_main_imgwidth' id='prd_main_imgwidth' value='"
 						. $pw_thumb . "'><input type='hidden' name='prd_main_imgheight' id='prd_main_imgheight' value='"
 						. $ph_thumb . "'>";
-				$thum_image = $producthelper->getProductImage($product_id, $link, $pw_thumb, $ph_thumb, 2, 1);
+				$thum_image = Redshop\Product\Image\Image::getImage($product_id, $link, $pw_thumb, $ph_thumb, 2, 1);
 				$prtemplate = str_replace($pimg_tag, $thum_image . $hidden_thumb_image, $prtemplate);
 				$product_name = "<a href='" . $link . "' title=''>" . $product->product_name . "</a>";
 				$prtemplate = str_replace("{product_name}", $product_name, $prtemplate);
@@ -143,8 +142,8 @@ class plgContentredshop_product extends JPlugin
 
 					if ($show_price && Redshop::getConfig()->get('SHOW_PRICE'))
 					{
-						$product_price = $producthelper->getProductPrice($product->product_id, $show_price_with_vat);
-						$productArr = $producthelper->getProductNetPrice($product->product_id, 0, 1);
+						$product_price = Redshop\Product\Price::getPrice($product->product_id, $show_price_with_vat);
+						$productArr = RedshopHelperProductPrice::getNetPrice($product->product_id, 0, 1);
 						$product_price_discount = $productArr['productPrice'];
 						$product_price_discountVat = $productArr['productVat'];
 
@@ -163,22 +162,22 @@ class plgContentredshop_product extends JPlugin
 								{
 									$pr_price = "<div id='mod_redsavedprice' class='mod_redsavedprice'>"
 										. JText::_('COM_REDSHOP_PRODCUT_PRICE_YOU_SAVED') . ' '
-										. $producthelper->getProductFormattedPrice($s_price) . "</div>";
+										. RedshopHelperProductPrice::formattedPrice($s_price) . "</div>";
 								}
 								else
 								{
 									$product_price = $product_price_discount;
-									$pr_price = $producthelper->getProductFormattedPrice($product_price);
+									$pr_price = RedshopHelperProductPrice::formattedPrice($product_price);
 								}
 							}
 							else
 							{
-								$pr_price = $producthelper->getProductFormattedPrice($product_price);
+								$pr_price = RedshopHelperProductPrice::formattedPrice($product_price);
 							}
 						}
 						else
 						{
-							$pr_price = $producthelper->getProductFormattedPrice($product_price);
+							$pr_price = RedshopHelperProductPrice::formattedPrice($product_price);
 						}
 					}
 
@@ -198,22 +197,22 @@ class plgContentredshop_product extends JPlugin
 
 				if ($product->attribute_set_id > 0)
 				{
-					$attributes_set = $producthelper->getProductAttribute(0, $product->attribute_set_id, 0, 1);
+					$attributes_set = RedshopHelperProduct_Attribute::getProductAttribute(0, $product->attribute_set_id, 0, 1);
 				}
 
-				$attributes = $producthelper->getProductAttribute($product->product_id);
+				$attributes = RedshopHelperProduct_Attribute::getProductAttribute($product->product_id);
 				$attributes = array_merge($attributes, $attributes_set);
 				$totalatt = count($attributes);
 
 				/*
 				 * Product accessory Start
 				 */
-				$accessory = $producthelper->getProductAccessory(0, $product->product_id);
+				$accessory = RedshopHelperAccessory::getProductAccessories(0, $product->product_id);
 				$totalAccessory = count($accessory);
 
 				// Product User Field Start
 				$count_no_user_field = 0;
-				$returnArr = $producthelper->getProductUserfieldFromTemplate($prtemplate);
+				$returnArr = RedshopHelperProduct::getProductUserfieldFromTemplate($prtemplate);
 				$template_userfield = $returnArr[0];
 				$userfieldArr = $returnArr[1];
 
@@ -274,7 +273,7 @@ class plgContentredshop_product extends JPlugin
 
 				// Product User Field End
 
-				$childproduct = $producthelper->getChildProduct($product->product_id);
+				$childproduct = RedshopHelperProduct::getChildProduct($product->product_id);
 
 				if (count($childproduct) > 0)
 				{
@@ -290,14 +289,14 @@ class plgContentredshop_product extends JPlugin
 
 					if ($product->attribute_set_id > 0)
 					{
-						$attributes_set = $producthelper->getProductAttribute(0, $product->attribute_set_id, 0, 1);
+						$attributes_set = RedshopHelperProduct_Attribute::getProductAttribute(0, $product->attribute_set_id, 0, 1);
 					}
 
-					$attributes = $producthelper->getProductAttribute($product->product_id);
+					$attributes = RedshopHelperProduct_Attribute::getProductAttribute($product->product_id);
 					$attributes = array_merge($attributes, $attributes_set);
 				}
 
-				$prtemplate = $producthelper->replaceCartTemplate(
+				$prtemplate = Redshop\Cart\Render::replace(
 					$product->product_id,
 					0,
 					0,
@@ -311,8 +310,8 @@ class plgContentredshop_product extends JPlugin
 					$module_id
 				);
 
-				$attribute_template = $producthelper->getAttributeTemplate($prtemplate);
-				$prtemplate = $producthelper->replaceAttributeData($product->product_id, 0, 0, $attributes, $prtemplate, $attribute_template, $isChilds);
+				$attribute_template = \Redshop\Template\Helper::getAttribute($prtemplate);
+				$prtemplate = RedshopHelperAttribute::replaceAttributeData($product->product_id, 0, 0, $attributes, $prtemplate, $attribute_template, $isChilds);
 
 				$dispatcher->trigger('onAfterDisplayProduct', array(&$prtemplate, &$red_params, $product));
 

@@ -59,7 +59,6 @@ class plgRedshop_PaymentBaokim extends JPlugin
 		}
 
 
-		$producthelper  = productHelper::getInstance();
 		$uri            = JURI::getInstance();
 		$url            = $uri->root();
 		$user           = JFactory::getUser();

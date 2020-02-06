@@ -11,7 +11,6 @@ defined('_JEXEC') or die;
 
 JLoader::import('redshop.library');
 JLoader::import('helper', __DIR__);
-$productHelper = productHelper::getInstance();
 
 $data = ModRedshopDiscountHelper::getList($params);
 
