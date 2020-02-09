@@ -30,7 +30,6 @@ JHtml::_('redshopjquery.framework');
 JHtml::script('modules/mod_redshop_who_bought/assets/js/jquery.jcarousel.min.js');
 
 $producthelper = productHelper::getInstance();
-$redhelper = redhelper::getInstance();
 $redTemplate = Redtemplate::getInstance();
 $module_id = "mod_" . $module->id;
 

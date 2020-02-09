@@ -12,7 +12,6 @@ $uri = JURI::getInstance();
 $url = $uri->root();
 
 $producthelper = productHelper::getInstance();
-$redhelper = redhelper::getInstance();
 
 $Itemid = JRequest::getInt('Itemid');
 $cid = JRequest::getInt('cid');

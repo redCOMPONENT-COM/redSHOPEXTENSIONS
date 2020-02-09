@@ -65,7 +65,6 @@ if (!class_exists('redCategoryMenu'))
 
 			$db->setQuery($query);
 			$traverse_results = $db->loadObjectList();
-			$objhelper        = redhelper::getInstance();
 			$Itemid           = JRequest::getInt('Itemid');
 
 			foreach ($traverse_results as $traverse_result)

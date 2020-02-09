@@ -13,8 +13,6 @@ JHtml::script('com_redshop/redbox.js', false, true);
 JHtml::script('com_redshop/attribute.js', false, true);
 JHtml::script('com_redshop/common.js', false, true);
 
-$redHelper = redhelper::getInstance();
-
 ?>
 
 <div class="mod_redcategoryscroller" id="mod_redcategoryscroller_<?php echo $module->id ?>">

@@ -17,7 +17,6 @@ JHTML::script('com_redshop/redbox.js', false, true);
 $module_id = "mod_" . $module->id;
 
 $producthelper = productHelper::getInstance();
-$redhelper     = redhelper::getInstance();
 
 // Create Pane
 echo JHtml::_('tabs.start', 'pane', array('startOffset' => 0));

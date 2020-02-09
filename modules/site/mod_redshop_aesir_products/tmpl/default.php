@@ -29,7 +29,6 @@ JHtml::script('com_redshop/common.js', false, true);
 JHtml::script('com_redshop/redbox.js', false, true);
 
 $producthelper   = new producthelper;
-$redhelper       = new redhelper;
 $redTemplate     = new Redtemplate;
 $stockroomhelper = new rsstockroomhelper;
 
