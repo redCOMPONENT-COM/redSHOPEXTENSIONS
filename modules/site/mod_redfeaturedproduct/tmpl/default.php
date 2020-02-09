@@ -14,7 +14,6 @@ $uri = JURI::getInstance();
 $url = $uri->root();
 $user = JFactory::getUser();
 $producthelper = productHelper::getInstance();
-$redhelper = redhelper::getInstance();
 $app = JFactory::getApplication();
 $Itemid = $app->input->getInt('Itemid', 0);
 $view = $app->input->getCmd('view', 'category');
