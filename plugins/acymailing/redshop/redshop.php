@@ -198,23 +198,22 @@ class plgAcymailingRedshop extends JPlugin
 	public function getProduct($productId, $tag)
 	{
 		$template      = Redtemplate::getInstance();
-		$productHelper = productHelper::getInstance();
 
 		$templateId = trim($this->params->get('product_template', 1));
 		$templateDetail = $template->getTemplate('product_content_template', $templateId);
 		$product    = RedshopHelperProduct::getProductById($productId);
 
 		// Get Product Formatted price as per redshop configuration
-		$productPrices = $productHelper->getProductNetPrice($productId);
+		$productPrices = RedshopHelperProductPrice::getNetPrice($productId);
 		$price         = $productPrices['productPrice'] + $productPrices['productVat'];
-		$price         = $productHelper->getProductFormattedPrice($price);
+		$price         = RedshopHelperProductPrice::formattedPrice($price);
 
 		$link = JUri::root()
 			. 'index.php?option=com_redshop&view=product&pid=' . $productId
 			. '&Itemid=' . RedshopHelperRouter::getItemId($productId);
 
 		// Get product Image
-		$productImage = $productHelper->getProductImage(
+		$productImage = Redshop\Product\Image\Image::getImage(
 							$productId,
 							$link,
 							Redshop::getConfig()->get('PRODUCT_MAIN_IMAGE'),

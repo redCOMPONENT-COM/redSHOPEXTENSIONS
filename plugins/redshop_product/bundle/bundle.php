@@ -172,7 +172,6 @@ class PlgRedshop_ProductBundle extends JPlugin
 	 */
 	private function replaceBundleData(&$templateContent, $product)
 	{
-		$productHelper   = productHelper::getInstance();
 		$bundleTemplates = RedshopHelperTemplate::getTemplate('bundle_template');
 
 		if (empty($bundleTemplates))
