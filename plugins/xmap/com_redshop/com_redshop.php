@@ -151,7 +151,6 @@ class Xmap_Com_Redshop
 	static protected function getCategoryTree($xmap, $parent, &$params, $catid = 0)
 	{
 		$db      = JFactory::getDbo();
-		$producthelper = productHelper::getInstance();
 
 		$query = $db->getQuery(true)
 			->select('a.id, a.name, a.created_date')
@@ -222,7 +221,7 @@ class Xmap_Com_Redshop
 				foreach ($rows as $row)
 				{
 					// Get Product Menu Itemid
-					$ItemData = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+					$ItemData = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
 					if (count($ItemData) > 0)
 					{
@@ -275,7 +274,6 @@ class Xmap_Com_Redshop
 		}
 
 		$db = JFactory::getDbo();
-		$producthelper = productHelper::getInstance();
 
 		$query = $db->getQuery(true)
 			->select('prod.*, cpx.category_id')
@@ -313,7 +311,7 @@ class Xmap_Com_Redshop
 			foreach ($childproducts as $row)
 			{
 				// Get Product Menu Itemid
-				$ItemData = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+				$ItemData = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
 				if (count($ItemData) > 0)
 				{

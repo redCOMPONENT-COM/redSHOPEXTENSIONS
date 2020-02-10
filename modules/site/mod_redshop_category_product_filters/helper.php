@@ -28,7 +28,6 @@ class ModRedshopCategoryProductFiltersHelper
 	{
 		$max              = 0;
 		$min              = 0;
-		$producthelper    = new producthelper;
 		$allProductPrices = array();
 
 		if (!empty($pids))
@@ -36,7 +35,7 @@ class ModRedshopCategoryProductFiltersHelper
 			// Get product price
 			foreach ($pids as $k => $id)
 			{
-				$productprices      = $producthelper->getProductNetPrice($id, JFactory::getUser()->id);
+				$productprices      = RedshopHelperProductPrice::getNetPrice($id, JFactory::getUser()->id);
 				$allProductPrices[] = $productprices['productPrice'];
 			}
 

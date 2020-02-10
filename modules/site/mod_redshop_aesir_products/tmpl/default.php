@@ -28,7 +28,6 @@ JHtml::script('com_redshop/attribute.js', false, true);
 JHtml::script('com_redshop/common.js', false, true);
 JHtml::script('com_redshop/redbox.js', false, true);
 
-$producthelper   = new producthelper;
 $redTemplate     = new Redtemplate;
 $stockroomhelper = new rsstockroomhelper;
 
@@ -76,9 +75,9 @@ for ($i = 0; $i < count($rows); $i++)
 		}
 	}
 
-	$categoryId = $producthelper->getCategoryProduct($row->product_id);
+	$categoryId = RedshopHelperProduct::getCategoryProduct($row->product_id);
 
-	$ItemData = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+	$ItemData = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
 	if (count($ItemData) > 0)
 	{
@@ -96,7 +95,7 @@ for ($i = 0; $i < count($rows); $i++)
 	else
 		echo "<div class=\"mod_redshop_products_horizontal\">";
 
-	$productInfo = $producthelper->getProductById($row->product_id);
+	$productInfo = RedshopHelperProduct::getProductById($row->product_id);
 
 	if ($image)
 	{
@@ -136,7 +135,7 @@ for ($i = 0; $i < count($rows); $i++)
 
 	if (!$row->not_for_sale && $showPrice)
 	{
-		$productArr = $producthelper->getProductNetPrice($row->product_id);
+		$productArr = RedshopHelperProductPrice::getNetPrice($row->product_id);
 
 		if ($showVat != '0')
 		{
@@ -155,11 +154,11 @@ for ($i = 0; $i < count($rows); $i++)
 		{
 			if (!$productPrice)
 			{
-				$productDiscountPrice = $producthelper->getPriceReplacement($productPrice);
+				$productDiscountPrice = RedshopHelperProductPrice::priceReplacement($productPrice);
 			}
 			else
 			{
-				$productDiscountPrice = $producthelper->getProductFormattedPrice($productPrice);
+				$productDiscountPrice = RedshopHelperProductPrice::formattedPrice($productPrice);
 			}
 
 			$displyText = "<div class=\"mod_redshop_products_price\">" . $productDiscountPrice . "</div>";
@@ -173,15 +172,15 @@ for ($i = 0; $i < count($rows); $i++)
 
 					if ($showDiscountPriceLayout)
 					{
-						echo "<div id=\"mod_redoldprice\" class=\"mod_redoldprice\">" . $producthelper->getProductFormattedPrice($productOldPrice) . "</div>";
+						echo "<div id=\"mod_redoldprice\" class=\"mod_redoldprice\">" . RedshopHelperProductPrice::formattedPrice($productOldPrice) . "</div>";
 						$productPrice = $productPriceDiscount;
-						echo "<div id=\"mod_redmainprice\" class=\"mod_redmainprice\">" . $producthelper->getProductFormattedPrice($productPriceDiscount) . "</div>";
-						echo "<div id=\"mod_redsavedprice\" class=\"mod_redsavedprice\">" . JText::_('COM_REDSHOP_PRODCUT_PRICE_YOU_SAVED') . ' ' . $producthelper->getProductFormattedPrice($savingPrice) . "</div>";
+						echo "<div id=\"mod_redmainprice\" class=\"mod_redmainprice\">" . RedshopHelperProductPrice::formattedPrice($productPriceDiscount) . "</div>";
+						echo "<div id=\"mod_redsavedprice\" class=\"mod_redsavedprice\">" . JText::_('COM_REDSHOP_PRODCUT_PRICE_YOU_SAVED') . ' ' . RedshopHelperProductPrice::formattedPrice($savingPrice) . "</div>";
 					}
 					else
 					{
 						$productPrice = $productPriceDiscount;
-						echo "<div class=\"mod_redshop_products_price\">" . $producthelper->getProductFormattedPrice($productPrice) . "</div>";
+						echo "<div class=\"mod_redshop_products_price\">" . RedshopHelperProductPrice::formattedPrice($productPrice) . "</div>";
 					}
 				}
 			}
@@ -202,10 +201,10 @@ for ($i = 0; $i < count($rows); $i++)
 
 		if ($row->attribute_set_id > 0)
 		{
-			$attributesSet = $producthelper->getProductAttribute(0, $row->attribute_set_id, 0, 1);
+			$attributesSet = RedshopHelperProduct_Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
 		}
 
-		$attributes = $producthelper->getProductAttribute($row->product_id);
+		$attributes = RedshopHelperProduct_Attribute::getProductAttribute($row->product_id);
 		$attributes = array_merge($attributes, $attributesSet);
 		$totalatt   = count($attributes);
 
@@ -213,7 +212,7 @@ for ($i = 0; $i < count($rows); $i++)
 
 
 		// Product accessory Start
-		$accessory      = $producthelper->getProductAccessory(0, $row->product_id);
+		$accessory      = RedshopHelperAccessory::getProductAccessories(0, $row->product_id);
 		$totalAccessory = count($accessory);
 
 		// Product accessory End
@@ -229,14 +228,14 @@ for ($i = 0; $i < count($rows); $i++)
 		if (Redshop::getConfig()->get('AJAX_CART_BOX'))
 		{
 			$ajaxDetailTemplateDesc = "";
-			$ajaxDetailTemplate      = $producthelper->getAjaxDetailboxTemplate($row);
+			$ajaxDetailTemplate      = \Redshop\Template\Helper::getAjaxDetailBox($row);
 
 			if (count($ajaxDetailTemplate) > 0)
 			{
 				$ajaxDetailTemplateDesc = $ajaxDetailTemplate->template_desc;
 			}
 
-			$returnArr          = $producthelper->getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
+			$returnArr          = RedshopHelperProduct::getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
 			$templateUserfield = $returnArr[0];
 			$userfieldArr       = $returnArr[1];
 
@@ -267,7 +266,7 @@ for ($i = 0; $i < count($rows); $i++)
 
 		// End
 
-		$addtocart = $producthelper->replaceCartTemplate($row->product_id, $categoryId, 0, 0, "", false, $userfieldArr, $totalatt, $totalAccessory, $countNoUserField, $moduleId);
+		$addtocart = Redshop\Cart\Render::replace($row->product_id, $categoryId, 0, 0, "", false, $userfieldArr, $totalatt, $totalAccessory, $countNoUserField, $moduleId);
 		echo "<div class=\"mod_redshop_products_addtocart\">" . $addtocart . $hiddenUserField . "</div>";
 	}
 
