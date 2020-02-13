@@ -116,8 +116,6 @@ class PlgRedshop_PdfDomPDF extends JPlugin
 			return '';
 		}
 
-		$cartHelper = rsCarthelper::getInstance();
-
 		// Changed font to support Unicode Characters - Specially Polish Characters
 		$pdfObj   = new PlgRedshop_PdfDomPDFHelper;
 		$messages = array();
@@ -134,7 +132,7 @@ class PlgRedshop_PdfDomPDF extends JPlugin
 			$message = str_replace("{print}", $printTag, $message);
 			$message = str_replace("{order_mail_intro_text_title}", JText::_('COM_REDSHOP_ORDER_MAIL_INTRO_TEXT_TITLE'), $message);
 			$message = str_replace("{order_mail_intro_text}", JText::_('COM_REDSHOP_ORDER_MAIL_INTRO_TEXT'), $message);
-			$message = $cartHelper->replaceOrderTemplate($ordersDetail, $message, true);
+			$message = Redshop\Order\Template::replaceTemplate($ordersDetail, $message, true);
 			$message .= '<div class="dom-pdf-page-break"></div>';
 
 			$message = RedshopHelperMail::imgInMail($message);
