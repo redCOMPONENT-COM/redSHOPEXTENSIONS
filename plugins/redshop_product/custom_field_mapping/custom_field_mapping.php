@@ -41,7 +41,6 @@ class PlgRedshop_ProductCustom_Field_Mapping extends JPlugin
 	 */
 	public function onBeforeAddProductToCart($data)
 	{
-		$userHelper = rsUserHelper::getInstance();
 		$mapping    = $this->mappedName($data);
 		$result     = array();
 
@@ -63,7 +62,7 @@ class PlgRedshop_ProductCustom_Field_Mapping extends JPlugin
 		$result['groups'] = array(2);
 		$result['shopper_group_id'] = 1;
 
-		return $userHelper->storeRedshopUser($result, 0);
+		return \RedshopHelperUser::storeRedshopUser($result, 0);
 	}
 
 	/**
