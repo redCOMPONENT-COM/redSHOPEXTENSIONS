@@ -117,7 +117,6 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 
 	public function createShippedInvoicePdf($orderId)
 	{
-		$cartHelper   = rsCarthelper::getInstance();
 		$redshopMail  = redshopMail::getInstance();
 		$row          = RedshopHelperOrder::getOrderDetails($orderId);
 		$discounts    = explode('@', $row->discount_type);
@@ -153,7 +152,7 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 		$billingaddresses = RedshopHelperOrder::getOrderBillingUserInfo($orderId);
 		$email            = $billingaddresses->user_email;
 		$userfullname     = $billingaddresses->firstname . " " . $billingaddresses->lastname;
-		$body             = $cartHelper->replaceOrderTemplate($row, $body);
+		$body             = Redshop\Order\Template::replaceTemplate($row, $body);
 
 		return $body;
 	}
