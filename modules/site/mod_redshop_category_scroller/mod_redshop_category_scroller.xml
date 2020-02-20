@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="1.6.0" client="site" method="upgrade">
     <name>COM_REDSHOP_REDSHOP_CATEGORY_SCROLLER</name>
-    <version>2.0.0</version>
-    <redshop>2.1.0</redshop>
+    <version>2.0.1</version>
+    <redshop>2.1.6</redshop>
     <creationDate>November 2017</creationDate>
     <author>redCOMPONENT.com</author>
     <authorEmail>email@redcomponent.com</authorEmail>

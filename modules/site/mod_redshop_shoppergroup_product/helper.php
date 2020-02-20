@@ -61,7 +61,7 @@ class ModRedshopShopperGroupProduct
 				->where('p.product_id IN (' . implode(',', $productIds) . ')')
 				->order('FIELD(p.product_id, ' . implode(',', $productIds) . ')');
 
-			$query = RedshopHelperProduct::getMainProductQuery($query, $user->id)
+			$query = \Redshop\Product\Product::getMainProductQuery($query, $user->id)
 				->select('CONCAT_WS(' . $db->q('.') . ', p.product_id, ' . (int) $user->id . ') AS concat_id');
 
 			if ($rows = $db->setQuery($query)->loadObjectList('concat_id'))
