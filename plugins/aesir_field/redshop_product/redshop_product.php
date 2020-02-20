@@ -85,7 +85,7 @@ final class PlgAesir_FieldRedshop_Product extends AbstractFieldPlugin
 
 		foreach ($data AS $val)
 		{
-			$tmp[$val] = RedshopHelperProduct::getProductById($val);
+			$tmp[$val] = \Redshop\Product\Product::getProductById($val);
 		}
 
 		return $tmp;

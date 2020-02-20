@@ -188,7 +188,7 @@ if (count($list) > 0)
 							<?php
 							if ($params->get('show_addtocart', 1))
 							{
-								$attributes = RedshopHelperProduct_Attribute::getProductAttribute($row->product_id);
+								$attributes = \Redshop\Product\Attribute::getProductAttribute($row->product_id);
 								$totalatt   = count($attributes);
 								$addtocart_data = Redshop\Cart\Render::replace($row->product_id, 0, 0, 0, "", false, array(), $totalatt, 0, 0, $module->id);
 								echo "<div class=\"form-button\">" . $addtocart_data . "</div>";

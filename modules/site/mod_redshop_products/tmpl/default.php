@@ -16,7 +16,7 @@ $url         = JUri::root();
 $fullUrl     = JUri::getInstance()->toString();
 $loadmoreUrl = $fullUrl . (strpos($fullUrl, '?') === false ? '?' : '&') . 'loadmore=1';
 
-$Itemid = JFactory::getApplication()->input->getInt('Itemid');
+$itemid = JFactory::getApplication()->input->getInt('Itemid');
 $user   = JFactory::getUser();
 
 $document = JFactory::getDocument();
@@ -70,22 +70,22 @@ $moduleId        = 'mod_' . $module->id;
 			}
 
 			$categoryId = RedshopHelperProduct::getCategoryProduct($row->product_id);
-			$ItemData   = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+			$itemData   = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
-			if (count($ItemData) > 0)
+			if (isset($itemData->id))
 			{
-				$Itemid = $ItemData->id;
+				$itemid = $itemData->id;
 			}
 			else
 			{
-				$Itemid = RedshopHelperRouter::getItemId($row->product_id, $categoryId);
+				$itemid = RedshopHelperRouter::getItemId($row->product_id, $categoryId);
 			}
 
-			$link         = JRoute::_('index.php?option=com_redshop&view=product&pid=' . $row->product_id . '&cid=' . $categoryId . '&Itemid=' . $Itemid);
+			$link         = JRoute::_('index.php?option=com_redshop&view=product&pid=' . $row->product_id . '&cid=' . $categoryId . '&Itemid=' . $itemid);
 			$wrapperClass = isset($verticalProduct) && $verticalProduct ? 'mod_redshop_products' : 'mod_redshop_products_horizontal';
 			?>
 			<div class="<?php echo $wrapperClass ?>">
-				<?php $productInfo = RedshopHelperProduct::getProductById($row->product_id); ?>
+				<?php $productInfo = \Redshop\Product\Product::getProductById($row->product_id); ?>
 				<?php if ($image): ?>
 					<?php $thumb = Redshop\Product\Image\Image::getImage(
 						$row->product_id,
@@ -181,10 +181,10 @@ $moduleId        = 'mod_' . $module->id;
 
 					if ($row->attribute_set_id > 0)
 					{
-						$attributesSet = RedshopHelperProduct_Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
+						$attributesSet = \Redshop\Product\Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
 					}
 
-					$attributes = RedshopHelperProduct_Attribute::getProductAttribute($row->product_id);
+					$attributes = \Redshop\Product\Attribute::getProductAttribute($row->product_id);
 					$attributes = array_merge($attributes, $attributesSet);
 					$totalatt   = count($attributes);
 					// Product attribute  End

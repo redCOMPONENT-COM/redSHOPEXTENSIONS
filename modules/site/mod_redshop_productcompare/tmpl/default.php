@@ -28,7 +28,7 @@ if (Redshop::getConfig()->get('COMPARE_PRODUCTS') == 1)
 			{
 				foreach ($compare->getItems() as $item)
 				{
-					$row = RedshopHelperProduct::getProductById($item['item']->productId);
+					$row = \Redshop\Product\Product::getProductById($item['item']->productId);
 
 					$cid = $item['item']->categoryId;
 

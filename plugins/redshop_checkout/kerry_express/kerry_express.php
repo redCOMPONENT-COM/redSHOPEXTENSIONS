@@ -375,7 +375,7 @@ class PlgRedshop_CheckoutKerry_Express extends JPlugin
 
 		foreach ($items as $item)
 		{
-			$productData                       = RedshopHelperProduct::getProductById($item->product_id);
+			$productData                       = \Redshop\Product\Product::getProductById($item->product_id);
 			$weight                            += $productData->weight;
 			$itemList[$i]['product_name']      = $productData->product_name;
 			$itemList[$i]['package_weight']    = $productData->weight;

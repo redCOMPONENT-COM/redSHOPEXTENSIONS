@@ -64,7 +64,7 @@ class PlgRedshop_PaymentCielo extends JPlugin
 		for ($i = 0; $i < $cart['idx']; $i++)
 		{
 			$itemId = $cart[$i]['product_id'];
-			$item = RedshopHelperProduct::getProductById($itemId);
+			$item = \Redshop\Product\Product::getProductById($itemId);
 
 			$order->Cart->Items[$i]              = new stdClass;
 			$order->Cart->Items[$i]->Name        = $item->product_name;

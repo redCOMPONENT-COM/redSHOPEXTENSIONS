@@ -201,7 +201,7 @@ class plgAcymailingRedshop extends JPlugin
 
 		$templateId = trim($this->params->get('product_template', 1));
 		$templateDetail = $template->getTemplate('product_content_template', $templateId);
-		$product    = RedshopHelperProduct::getProductById($productId);
+		$product    = \Redshop\Product\Product::getProductById($productId);
 
 		// Get Product Formatted price as per redshop configuration
 		$productPrices = RedshopHelperProductPrice::getNetPrice($productId);

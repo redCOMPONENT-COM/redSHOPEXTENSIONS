@@ -107,7 +107,7 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 				continue;
 			}
 
-			$productData = RedshopHelperProduct::getProductById($value['product_id']);
+			$productData = \Redshop\Product\Product::getProductById($value['product_id']);
 
 			$weight += $productData->weight;
 			$height += $productData->product_height;
@@ -554,7 +554,7 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 
 		foreach ($items as $item)
 		{
-			$productData = RedshopHelperProduct::getProductById($item->product_id);
+			$productData = \Redshop\Product\Product::getProductById($item->product_id);
 			$weight += $productData->weight;
 		}
 

@@ -81,7 +81,7 @@ $moduleId        = 'mod_' . $module->id;
 			$wrapperClass = isset($verticalProduct) && $verticalProduct ? 'mod_redshop_products' : 'mod_redshop_products_horizontal';
 			?>
 			<div class="<?php echo $wrapperClass ?>">
-				<?php $productInfo = RedshopHelperProduct::getProductById($row->product_id); ?>
+				<?php $productInfo = \Redshop\Product\Product::getProductById($row->product_id); ?>
 				<?php if ($image): ?>
 					<?php $thumb = Redshop\Product\Image\Image::getImage(
 						$row->product_id,
@@ -177,10 +177,10 @@ $moduleId        = 'mod_' . $module->id;
 
 					if ($row->attribute_set_id > 0)
 					{
-						$attributesSet = RedshopHelperProduct_Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
+						$attributesSet = \Redshop\Product\Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
 					}
 
-					$attributes = RedshopHelperProduct_Attribute::getProductAttribute($row->product_id);
+					$attributes = \Redshop\Product\Attribute::getProductAttribute($row->product_id);
 					$attributes = array_merge($attributes, $attributesSet);
 					$totalatt   = count($attributes);
 					// Product attribute  End
