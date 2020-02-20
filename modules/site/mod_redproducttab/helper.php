@@ -3,7 +3,7 @@
  * @package     RedSHOP.module
  * @subpackage  mod_redfeaturedproduct
  *
- * @copyright   Copyright (C) 2008 - 2017 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2008 - 2020 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -89,9 +89,12 @@ abstract class ModRedProductTabHelper
 
 		if ($categories = self::getCategories($params, $moduleId))
 		{
-			$query->leftJoin($db->qn('#__redshop_product_category_xref', 'cpx') . ' ON cpx.product_id = p.product_id')
-				->leftJoin($db->qn('#__redshop_category', 'c') . ' ON c.id = cpx.category_id')
-				->where($db->qn('c.published') . ' = 1')
+			$query->leftJoin($db->qn('#__redshop_product_category_xref', 'cpx')
+                                . ' ON ' .
+                                $db->qn('cpx.product_id') . ' = ' . $db->qn('p.product_id'))
+				->leftJoin($db->qn('#__redshop_category', 'c')
+                    . ' ON ' . $db->qn('c.id') . ' = ' . $db->qn('cpx.category_id'))
+				->where($db->qn('c.published') . ' = ' . $db->q('1'))
 				->where('cpx.category_id IN (' . $categories . ')');
 		}
 
@@ -103,10 +106,12 @@ abstract class ModRedProductTabHelper
 				break;
 			case 'most_sold':
 				$subQuery = $db->getQuery(true)
-					->select('SUM(' . $db->qn('oi.product_quantity') . ') AS qty, oi.product_id')
+					->select('SUM(' . $db->qn('oi.product_quantity') . ') AS ' . $db->qn('qty') . ','
+                                . $db->qn('oi.product_id'))
 					->from($db->qn('#__redshop_order_item', 'oi'))
 					->group('oi.product_id');
-				$query->leftJoin('(' . $subQuery . ') orderItems ON orderItems.product_id = p.product_id')
+				$query->leftJoin('(' . $subQuery . ') orderItems ON ' .
+                        $db->qn('orderItems.product_id') .' = ' . $db->qn('p.product_id'))
 					->order($db->qn('orderItems.qty') . ' DESC');
 				break;
 			case 'latest':
@@ -118,7 +123,7 @@ abstract class ModRedProductTabHelper
 				break;
 		}
 
-		$rows = array();
+		$rows = [];
 
 		if ($productIds = $db->setQuery($query, 0, (int) $params->get('count', 1))->loadColumn())
 		{
@@ -127,13 +132,13 @@ abstract class ModRedProductTabHelper
 				->where('p.product_id IN (' . implode(',', $productIds) . ')')
 				->order('FIELD(p.product_id, ' . implode(',', $productIds) . ')');
 
-			$user = JFactory::getUser();
-			$query = RedshopHelperProduct::getMainProductQuery($query, $user->id)
+			$user = \JFactory::getUser();
+			$query = \Redshop\Product\Product::getMainProductQuery($query, $user->id)
 				->select('CONCAT_WS(' . $db->q('.') . ', p.product_id, ' . (int) $user->id . ') AS concat_id');
 
 			if ($rows = $db->setQuery($query)->loadObjectList('concat_id'))
 			{
-				RedshopHelperProduct::setProduct($rows);
+				\Redshop\Product\Product::setProduct($rows);
 				$rows = array_values($rows);
 			}
 		}

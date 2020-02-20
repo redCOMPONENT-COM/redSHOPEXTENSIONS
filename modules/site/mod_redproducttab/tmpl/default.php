@@ -21,7 +21,7 @@ $module_id = "mod_" . $module->id;
 echo JHtml::_('tabs.start', 'pane', array('startOffset' => 0));
 
 // Create 1st Tab
-if ($newprd)
+if ($newProduct)
 {
 	$rows = ModRedProductTabHelper::getList($params, 'newest', $module->id);
 
@@ -34,7 +34,7 @@ if ($newprd)
 }
 
 // Create 2nd Tab
-if ($ltsprd)
+if ($listProduct)
 {
 	$rows = ModRedProductTabHelper::getList($params, 'latest', $module->id);
 
@@ -47,7 +47,7 @@ if ($ltsprd)
 }
 
 // Create 3nd Tab
-if ($soldprd)
+if ($soldProduct)
 {
 	$rows = ModRedProductTabHelper::getList($params, 'most_sold', $module->id);
 
@@ -60,7 +60,7 @@ if ($soldprd)
 }
 
 // Create 4nd Tab
-if ($splprd)
+if ($specialProduct)
 {
 	$rows = ModRedProductTabHelper::getList($params, 'special', $module->id);
 

@@ -29,11 +29,11 @@ $j     = 0;
 	<div class="col-md-<?php echo (12/$productPerRow); ?> <?php echo $itemClass; ?>">
 	<?php
 		$category_id = $row->category_id;
-		$ItemData = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+		$itemData = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
-		if (count($ItemData) > 0)
+		if (is_array($itemData) && count($itemData) > 0)
 		{
-			$Itemid = $ItemData->id;
+			$Itemid = $itemData->id;
 		}
 		else
 		{
@@ -45,7 +45,7 @@ $j     = 0;
 		?>
 		<?php if ($image) : ?>
 			<div>
-				<?php echo Redshop\Product\Image\Image::getImage($row->product_id, $link, $thumbwidth, $thumbheight); ?>
+				<?php echo Redshop\Product\Image\Image::getImage($row->product_id, $link, $thumbWidth, $thumbHeight); ?>
 			</div>
 		<?php endif; ?>
 
@@ -54,124 +54,129 @@ $j     = 0;
 		</p>
 
 		<?php
-		if (!$row->not_for_sale && $show_price && !Redshop::getConfig()->get('USE_AS_CATALOG'))
+		if (!$row->not_for_sale && $isShowPrice && !Redshop::getConfig()->get('USE_AS_CATALOG'))
 		{
-			$product_price          = Redshop\Product\Price::getPrice($row->product_id);
-			$productArr             = RedshopHelperProductPrice::getNetPrice($row->product_id);
-			$product_price_discount = $productArr['productPrice'] + $productArr['productVat'];
+			$productPrice          = \Redshop\Product\Price::getPrice($row->product_id);
+			$products              = \RedshopHelperProductPrice::getNetPrice($row->product_id);
+			$productPriceDiscountcount = $products['productPrice'] + $products['productVat'];
 
 			if (Redshop::getConfig()->get('SHOW_PRICE') && (!Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') || (Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && SHOW_QUOTATION_PRICE)))
 			{
-				if (!$product_price)
+				if (!$productPrice)
 				{
-					$product_price_dis = RedshopHelperProductPrice::priceReplacement($product_price);
+					$productPriceDiscount = RedshopHelperProductPrice::priceReplacement($productPrice);
 				}
 				else
 				{
-					$product_price_dis = RedshopHelperProductPrice::formattedPrice($product_price);
+					$productPriceDiscount = RedshopHelperProductPrice::formattedPrice($productPrice);
 				}
 
 				if ($row->product_on_sale
-					&& ($product_price_discount > 0 && $product_price > $product_price_discount))
+					&& ($productPriceDiscountcount > 0 && $productPrice > $productPriceDiscountcount))
 				{
 					if ($show_discountpricelayout)
 					{
 						echo '<div id="mod_redoldprice" class="mod_redoldprice">'
 								. '<span style="text-decoration:line-through">'
-									. RedshopHelperProductPrice::formattedPrice($product_price)
+									. RedshopHelperProductPrice::formattedPrice($productPrice)
 								. '</span>'
 							. '</div>';
 
 						echo '<div id="mod_redmainprice" class="mod_redmainprice">'
-								. RedshopHelperProductPrice::formattedPrice($product_price_discount)
+								. RedshopHelperProductPrice::formattedPrice($productPriceDiscountcount)
 							. '</div>';
 
 						echo '<div id="mod_redsavedprice" class="mod_redsavedprice">'
 								. JText::_('COM_REDSHOP_PRODCUT_PRICE_YOU_SAVED')
 								. ' '
-								. RedshopHelperProductPrice::formattedPrice($product_price - $product_price_discount)
+								. RedshopHelperProductPrice::formattedPrice($productPrice - $productPriceDiscountcount)
 							. '</div>';
 					}
 					else
 					{
 						echo '<div class="mod_redshop_products_price">'
-								. RedshopHelperProductPrice::formattedPrice($product_price_discount)
+								. RedshopHelperProductPrice::formattedPrice($productPriceDiscountcount)
 							. '</div>';
 					}
 				}
 				else
 				{
-					echo '<div class="mod_redshop_products_price">' . $product_price_dis . '</div>';
+					echo '<div class="mod_redshop_products_price">' . $productPriceDiscount . '</div>';
 				}
 			}
 		}
 
-		if ($show_readmore)
+        if ($isShowDesc)
+        {
+            echo '<div class="mod_redshop_products_desc">' . $row->product_s_desc . '</div>';
+        }
+
+		if ($isShowReadmore)
 		{
 			echo "<br><a href=\"" . $link . "\">" . JText::_('MOD_REDPRODUCTTAB_SHOW_READ_MORE') . "</a>&nbsp;";
 		}
 
-		if ($show_addtocart)
+		if ($isShowAddToCart)
 		{
-			$attributes_set = array();
+			$setOfAttribute = [];
 
 			if ($row->attribute_set_id > 0)
 			{
-				$attributes_set = RedshopHelperProduct_Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
+				$setOfAttribute = \Redshop\Product\Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
 			}
 
-			$attributes = RedshopHelperProduct_Attribute::getProductAttribute($row->product_id);
-			$attributes = array_merge($attributes, $attributes_set);
-			$totalatt   = count($attributes);
+			$attributes = \Redshop\Product\Attribute::getProductAttribute($row->product_id);
+			$attributes = array_merge($attributes, $setOfAttribute);
+			$totalAttribute   = count($attributes);
 
 			$accessory      = RedshopHelperAccessory::getProductAccessories(0, $row->product_id);
 			$totalAccessory = count($accessory);
 
-			$count_no_user_field = 0;
-			$hidden_userfield    = "";
-			$userfieldArr        = array();
+			$numberUserField = 0;
+			$hiddenUserField    = "";
+			$userFieldArr        = array();
 
 			if (Redshop::getConfig()->get('AJAX_CART_BOX'))
 			{
-				$ajax_detail_template_desc = "";
+				$ajaxDetailTemplateDesc = "";
 				$ajax_detail_template      = \Redshop\Template\Helper::getAjaxDetailBox($row);
 
 				if (count($ajax_detail_template) > 0)
 				{
-					$ajax_detail_template_desc = $ajax_detail_template->template_desc;
+					$ajaxDetailTemplateDesc = $ajax_detail_template->template_desc;
 				}
 
-				$returnArr          = RedshopHelperProduct::getProductUserfieldFromTemplate($ajax_detail_template_desc);
-				$template_userfield = $returnArr[0];
-				$userfieldArr       = $returnArr[1];
+				$returnArr          = \RedshopHelperProduct::getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
+				$templateUserField  = $returnArr[0];
+				$userFieldArr       = $returnArr[1];
 
-				if ($template_userfield != "")
+				if ($templateUserField != "")
 				{
-					$ufield = "";
+					$userField = "";
 
-					for ($ui = 0, $countUserFieldArr = count($userfieldArr); $ui < $countUserFieldArr; $ui++)
+					for ($ui = 0, $countUserFieldArr = count($userFieldArr); $ui < $countUserFieldArr; $ui++)
 					{
-						$productUserFields = RedshopHelperExtrafields::listAllUserFields($userfieldArr[$ui], 12, '', '', 0, $row->product_id);
-						$ufield .= $productUserFields[1];
+						$productUserFields = \RedshopHelperExtrafields::listAllUserFields($userFieldArr[$ui], 12, '', '', 0, $row->product_id);
+						$userField .= $productUserFields[1];
 
 						if ($productUserFields[1] != "")
 						{
-							$count_no_user_field++;
+							$numberUserField++;
 						}
 
-						$template_userfield = str_replace('{' . $userfieldArr[$ui] . '_lbl}', $productUserFields[0], $template_userfield);
-						$template_userfield = str_replace('{' . $userfieldArr[$ui] . '}', $productUserFields[1], $template_userfield);
+						$templateUserField = str_replace('{' . $userFieldArr[$ui] . '_lbl}', $productUserFields[0], $templateUserField);
+						$templateUserField = str_replace('{' . $userFieldArr[$ui] . '}', $productUserFields[1], $templateUserField);
 					}
 
-					if ($ufield != "")
+					if ($userField != "")
 					{
-						$hidden_userfield = "<div style=\"display:none;\"><form method=\"post\" action=\"\" id=\"user_fields_form_" . $row->product_id . "\" name=\"user_fields_form_" . $row->product_id . "\">" . $template_userfield . "</form></div>";
+						$hiddenUserField = "<div style=\"display:none;\"><form method=\"post\" action=\"\" id=\"user_fields_form_" . $row->product_id . "\" name=\"user_fields_form_" . $row->product_id . "\">" . $templateUserField . "</form></div>";
 					}
 				}
 			}
 
-			$addtocart = Redshop\Cart\Render::replace($row->product_id, $category_id, 0, 0, "", false, $userfieldArr, $totalatt, $totalAccessory, $count_no_user_field, $moduleId);
-			echo "<div class=\"mod_redshop_products_addtocart\">" . $addtocart . $hidden_userfield . "</div>";
+			$addToCart = \Redshop\Cart\Render::replace($row->product_id, $category_id, 0, 0, "", false, $userFieldArr, $totalAttribute, $totalAccessory, $numberUserField, $module->id);
+			echo "<div class=\"mod_redshop_products_addtocart\">" . $addToCart . $hiddenUserField . "</div>";
 		}
 
 		?>
