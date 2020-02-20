@@ -250,7 +250,7 @@ if (!empty($productIds))
 
 	if (!empty($rows))
 	{
-		RedshopHelperProduct::setProduct($rows);
+		\Redshop\Product\Product::setProduct($rows);
 		$rows = array_values($rows);
 	}
 

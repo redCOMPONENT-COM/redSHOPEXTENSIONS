@@ -84,7 +84,7 @@ if ($productIds = $db->setQuery($query, 0, (int) $NumberOfProducts)->loadColumn(
 
 	if ($rows = $db->setQuery($query)->loadObjectList('concat_id'))
 	{
-		RedshopHelperProduct::setProduct($rows);
+		\Redshop\Product\Product::setProduct($rows);
 		$rows = array_values($rows);
 	}
 }
