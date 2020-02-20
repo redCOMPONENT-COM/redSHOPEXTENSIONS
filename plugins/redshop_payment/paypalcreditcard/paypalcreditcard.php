@@ -139,7 +139,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 		for ($i = 0; $i < $cart['idx']; $i++)
 		{
 			$cartItem    = $cart[$i];
-			$product     = RedshopHelperProduct::getProductById($cartItem['product_id']);
+			$product     = \Redshop\Product\Product::getProductById($cartItem['product_id']);
 			$tax         = ($cartItem['product_vat'] < 0) ? 0 : $cartItem['product_vat'];
 			$item        = new Item();
 			$cartItems[] = $item->setName($product->product_name)

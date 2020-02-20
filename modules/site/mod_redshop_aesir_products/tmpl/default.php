@@ -95,7 +95,7 @@ for ($i = 0; $i < count($rows); $i++)
 	else
 		echo "<div class=\"mod_redshop_products_horizontal\">";
 
-	$productInfo = RedshopHelperProduct::getProductById($row->product_id);
+	$productInfo = \Redshop\Product\Product::getProductById($row->product_id);
 
 	if ($image)
 	{
@@ -201,10 +201,10 @@ for ($i = 0; $i < count($rows); $i++)
 
 		if ($row->attribute_set_id > 0)
 		{
-			$attributesSet = RedshopHelperProduct_Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
+			$attributesSet = \Redshop\Product\Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
 		}
 
-		$attributes = RedshopHelperProduct_Attribute::getProductAttribute($row->product_id);
+		$attributes = \Redshop\Product\Attribute::getProductAttribute($row->product_id);
 		$attributes = array_merge($attributes, $attributesSet);
 		$totalatt   = count($attributes);
 

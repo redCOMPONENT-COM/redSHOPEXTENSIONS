@@ -68,7 +68,7 @@ class plgContentredshop_product extends JPlugin
 				$prtemplate = $prtemplate_default;
 				$match = explode(":", $matches[$i]);
 				$product_id = (int) (trim($match[1], '}'));
-				$product = RedshopHelperProduct::getProductById($product_id);
+				$product = \Redshop\Product\Product::getProductById($product_id);
 				$url = JURI::root();
 
 				if (!$product->product_id)
@@ -196,10 +196,10 @@ class plgContentredshop_product extends JPlugin
 
 				if ($product->attribute_set_id > 0)
 				{
-					$attributes_set = RedshopHelperProduct_Attribute::getProductAttribute(0, $product->attribute_set_id, 0, 1);
+					$attributes_set = \Redshop\Product\Attribute::getProductAttribute(0, $product->attribute_set_id, 0, 1);
 				}
 
-				$attributes = RedshopHelperProduct_Attribute::getProductAttribute($product->product_id);
+				$attributes = \Redshop\Product\Attribute::getProductAttribute($product->product_id);
 				$attributes = array_merge($attributes, $attributes_set);
 				$totalatt = count($attributes);
 
@@ -288,10 +288,10 @@ class plgContentredshop_product extends JPlugin
 
 					if ($product->attribute_set_id > 0)
 					{
-						$attributes_set = RedshopHelperProduct_Attribute::getProductAttribute(0, $product->attribute_set_id, 0, 1);
+						$attributes_set = \Redshop\Product\Attribute::getProductAttribute(0, $product->attribute_set_id, 0, 1);
 					}
 
-					$attributes = RedshopHelperProduct_Attribute::getProductAttribute($product->product_id);
+					$attributes = \Redshop\Product\Attribute::getProductAttribute($product->product_id);
 					$attributes = array_merge($attributes, $attributes_set);
 				}
 

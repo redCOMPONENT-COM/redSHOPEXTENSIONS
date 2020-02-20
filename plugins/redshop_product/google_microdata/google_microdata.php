@@ -135,7 +135,7 @@ class PlgRedshop_ProductGoogle_Microdata extends JPlugin
 			);
 		}
 
-		$productData = RedshopHelperProduct::getProductById($product->product_id);
+		$productData = \Redshop\Product\Product::getProductById($product->product_id);
 
 		if (!empty($productData->count_rating))
 		{

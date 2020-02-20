@@ -197,7 +197,7 @@ class PlgRedshop_ProductStockroom_Status extends JPlugin
 								break;
 							case 'product':
 							default:
-								$sectionDetail = RedshopHelperProduct::getProductById($sectionId);
+								$sectionDetail = \Redshop\Product\Product::getProductById($sectionId);
 							break;
 						}
 

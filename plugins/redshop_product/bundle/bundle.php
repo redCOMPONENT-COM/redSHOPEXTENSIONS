@@ -194,7 +194,7 @@ class PlgRedshop_ProductBundle extends JPlugin
 
 		foreach ($this->bundleData as $bundleDetail)
 		{
-			$productDetail = RedshopHelperProduct::getProductById($bundleDetail->bundle_id);
+			$productDetail = \Redshop\Product\Product::getProductById($bundleDetail->bundle_id);
 
 			$content = $bundleTemplate->template_desc;
 

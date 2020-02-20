@@ -173,10 +173,10 @@ for ($i = 0, $countRows = count($rows); $i < $countRows; $i++)
 
 		if ($row->attribute_set_id > 0)
 		{
-			$attributes_set = RedshopHelperProduct_Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
+			$attributes_set = \Redshop\Product\Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
 		}
 
-		$attributes = RedshopHelperProduct_Attribute::getProductAttribute($row->product_id);
+		$attributes = \Redshop\Product\Attribute::getProductAttribute($row->product_id);
 		$attributes = array_merge($attributes, $attributes_set);
 		$totalatt   = count($attributes);
 

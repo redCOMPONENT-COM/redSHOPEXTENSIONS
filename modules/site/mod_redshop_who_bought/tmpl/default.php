@@ -53,10 +53,10 @@ if (count($rows))
 
 		if ($product->attribute_set_id > 0)
 		{
-			$attributes_set = RedshopHelperProduct_Attribute::getProductAttribute(0, $product->attribute_set_id, 0, 1);
+			$attributes_set = \Redshop\Product\Attribute::getProductAttribute(0, $product->attribute_set_id, 0, 1);
 		}
 
-		$attributes = RedshopHelperProduct_Attribute::getProductAttribute($product->product_id);
+		$attributes = \Redshop\Product\Attribute::getProductAttribute($product->product_id);
 		$attributes = array_merge($attributes, $attributes_set);
 		$totalatt   = count($attributes);
 
