@@ -9,24 +9,24 @@
 
 defined('_JEXEC') or die;
 
-$newprd  = trim($params->get('show_newprd', 1));
-$ltsprd  = trim($params->get('show_ltsprd', 1));
-$soldprd = trim($params->get('show_soldprd', 1));
-$splprd  = trim($params->get('show_splprd', 1));
+$newProduct   = trim($params->get('show_newprd', 1));
+$listProduct  = trim($params->get('show_ltsprd', 1));
+$soldProduct = trim($params->get('show_soldprd', 1));
+$specialProduct       = trim($params->get('show_splprd', 1));
 
-$image          = trim($params->get('image', 0));
-$show_price     = trim($params->get('show_price', 0));
-$show_readmore  = trim($params->get('show_readmore', 1));
-$show_addtocart = trim($params->get('show_addtocart', 1));
-$show_desc      = trim($params->get('show_desc', 1));
-$thumbwidth     = trim($params->get('thumbwidth', 100));
-$thumbheight    = trim($params->get('thumbheight', 100));
-$layout         = $params->get('layout', 'default');
-$productPerRow  = $params->get('number_of_row');
+$image           = trim($params->get('image', 0));
+$isShowPrice     = trim($params->get('show_price', 0));
+$isShowReadmore  = trim($params->get('show_readmore', 1));
+$isShowAddToCart = trim($params->get('show_addtocart', 1));
+$isShowDesc      = trim($params->get('show_desc', 1));
+$thumbWidth      = trim($params->get('thumbwidth', 100));
+$thumbHeight     = trim($params->get('thumbheight', 100));
+$layout          = $params->get('layout', 'default');
+$productPerRow   = $params->get('number_of_row');
 
-JFactory::getDocument()->addStyleSheet("modules/mod_redproducttab/css/style.css");
+\JFactory::getDocument()->addStyleSheet("modules/mod_redproducttab/css/style.css");
 
-JLoader::import('redshop.library');
+\JLoader::import('redshop.library');
 
 require_once __DIR__ . '/helper.php';
 
