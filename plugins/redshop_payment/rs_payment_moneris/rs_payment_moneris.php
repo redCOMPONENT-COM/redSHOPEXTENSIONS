@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-class plg\Redshop_paymentrs_payment_moneris extends JPlugin
+class plgRedshop_paymentrs_payment_moneris extends JPlugin
 {
 	/**
 	 * Constructor

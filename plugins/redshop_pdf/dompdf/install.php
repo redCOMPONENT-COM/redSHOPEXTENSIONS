@@ -9,12 +9,12 @@
 defined('_JEXEC') or die();
 
 /**
- * Plg\Redshop_PdfDomPDF installer class.
+ * PlgRedshop_PdfDomPDF installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    2.0.0
  */
-class Plg\Redshop_PdfDomPDFInstallerScript
+class PlgRedshop_PdfDomPDFInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

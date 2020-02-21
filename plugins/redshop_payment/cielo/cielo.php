@@ -10,12 +10,12 @@
 defined('_JEXEC') or die;
 
 /**
- *  Plg\Redshop_PaymentCielo class.
+ *  PlgRedshop_PaymentCielo class.
  *
  * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
-class Plg\Redshop_PaymentCielo extends JPlugin
+class PlgRedshop_PaymentCielo extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.

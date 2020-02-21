@@ -14,11 +14,11 @@ jimport('joomla.plugin.plugin');
 JLoader::import('redshop.library');
 
 /**
- * Plg\Redshop_ProductCustom_Field_Mapping Class
+ * PlgRedshop_ProductCustom_Field_Mapping Class
  *
  * @since  1.5
  */
-class Plg\Redshop_ProductCustom_Field_Mapping extends JPlugin
+class PlgRedshop_ProductCustom_Field_Mapping extends JPlugin
 {
 	/**
 	 * constructor

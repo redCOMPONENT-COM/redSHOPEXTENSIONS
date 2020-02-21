@@ -17,7 +17,7 @@ JLoader::import('redshop.library');
  *
  * @since 1.0.0
  */
-class Plg\Redshop_ProductBundle extends JPlugin
+class PlgRedshop_ProductBundle extends JPlugin
 {
 	/**
 	 * Bundle Data

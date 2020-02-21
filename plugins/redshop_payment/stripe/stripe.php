@@ -21,7 +21,7 @@ JLoader::import('redshop.library');
  *
  * @since    2.0.0
  */
-class Plg\Redshop_PaymentStripe extends JPlugin
+class PlgRedshop_PaymentStripe extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.

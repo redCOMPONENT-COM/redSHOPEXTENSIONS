@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  *
  * @since    1.0.0
  */
-class Plg\Redshop_Paymentrs_Payment_Payoo extends JPlugin
+class PlgRedshop_Paymentrs_Payment_Payoo extends JPlugin
 {
 	/**
 	 * Constructor

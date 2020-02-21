@@ -16,7 +16,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.1.20
  */
-class Plg\Redshop_ProductShopperGroup_Tags extends JPlugin
+class PlgRedshop_ProductShopperGroup_Tags extends JPlugin
 {
 	/**
 	 * Example prepare redSHOP Product method

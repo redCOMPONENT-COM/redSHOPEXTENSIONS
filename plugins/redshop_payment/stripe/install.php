@@ -9,12 +9,12 @@
 defined('_JEXEC') or die();
 
 /**
- * Plg\Redshop_PaymentStripe installer class.
+ * PlgRedshop_PaymentStripe installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    2.0.0
  */
-class Plg\Redshop_PaymentStripeInstallerScript
+class PlgRedshop_PaymentStripeInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

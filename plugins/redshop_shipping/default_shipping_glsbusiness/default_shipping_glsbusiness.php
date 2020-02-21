@@ -16,7 +16,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.2
  */
-class Plg\Redshop_ShippingDefault_Shipping_GLSBusiness extends JPlugin
+class PlgRedshop_ShippingDefault_Shipping_GLSBusiness extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.

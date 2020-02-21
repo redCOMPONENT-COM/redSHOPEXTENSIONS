@@ -10,11 +10,11 @@
 defined('_JEXEC') or die;
 
 /**
- * Class Plg\Redshop_Paymentrs_Payment_Sagepay_Vps
+ * Class PlgRedshop_Paymentrs_Payment_Sagepay_Vps
  *
  * @since  1.5
  */
-class Plg\Redshop_Paymentrs_Payment_Sagepay_Vps extends JPlugin
+class PlgRedshop_Paymentrs_Payment_Sagepay_Vps extends JPlugin
 {
 	protected $autoloadLanguage = true;
 

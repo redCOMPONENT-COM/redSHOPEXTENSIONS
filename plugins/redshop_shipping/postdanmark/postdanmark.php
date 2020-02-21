@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.4
  */
-class Plg\Redshop_ShippingPostdanmark extends JPlugin
+class PlgRedshop_ShippingPostdanmark extends JPlugin
 {
 	/**
 	 * @var  boolean

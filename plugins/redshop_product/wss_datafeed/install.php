@@ -9,12 +9,12 @@
 defined('_JEXEC') or die();
 
 /**
- * Plg\Redshop_ProductWss_Datafeed installer class.
+ * PlgRedshop_ProductWss_Datafeed installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    1.6.0
  */
-class Plg\Redshop_ProductWss_DatafeedInstallerScript
+class PlgRedshop_ProductWss_DatafeedInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

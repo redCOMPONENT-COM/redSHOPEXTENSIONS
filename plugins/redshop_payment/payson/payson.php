@@ -17,7 +17,7 @@ JLoader::import('redshop.library');
  *
  * @since    1.7.0
  */
-class Plg\Redshop_PaymentPayson extends JPlugin
+class PlgRedshop_PaymentPayson extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.

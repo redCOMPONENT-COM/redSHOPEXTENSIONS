@@ -17,7 +17,7 @@ JLoader::import('redshop.library');
  *
  * @since 1.0.0
  */
-class Plg\Redshop_ProductGift extends JPlugin
+class PlgRedshop_ProductGift extends JPlugin
 {
 	/**
 	 * Gift Data

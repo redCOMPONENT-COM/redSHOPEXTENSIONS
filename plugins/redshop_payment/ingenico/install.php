@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     \Redshop.Plugins
- * @subpackage  Plg\Redshop_PaymentIngenico
+ * @subpackage  PlgRedshop_PaymentIngenico
  *
  * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later, see LICENSE.
@@ -10,12 +10,12 @@ defined('_JEXEC') or die();
 use Joomla\Registry\Registry;
 
 /**
- *  Plg\Redshop_PaymentIngenico installer class.
+ *  PlgRedshop_PaymentIngenico installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
-class Plg\Redshop_PaymentIngenicoInstallerScript
+class PlgRedshop_PaymentIngenicoInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

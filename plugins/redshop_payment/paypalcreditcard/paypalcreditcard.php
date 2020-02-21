@@ -32,7 +32,7 @@ use PayPal\Rest\ApiContext;
  *
  * @since    2.0.0
  */
-class Plg\Redshop_PaymentPaypalCreditcard extends JPlugin
+class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.

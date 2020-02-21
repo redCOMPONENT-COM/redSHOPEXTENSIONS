@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     \Redshop.Plugins
- * @subpackage  Plg\Redshop_UserRegistration_Acymailing
+ * @subpackage  PlgRedshop_UserRegistration_Acymailing
  *
  * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later, see LICENSE.
@@ -11,12 +11,12 @@ defined('_JEXEC') or die();
 use Joomla\Registry\Registry;
 
 /**
- *  Plg\Redshop_UserRegistration_Acymailing installer class.
+ *  PlgRedshop_UserRegistration_Acymailing installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
-class Plg\Redshop_UserRegistration_AcymailingInstallerScript
+class PlgRedshop_UserRegistration_AcymailingInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

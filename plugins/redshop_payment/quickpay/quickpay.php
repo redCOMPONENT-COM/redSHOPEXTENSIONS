@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  * @subpackage  QuickPay
  * @since       1.5
  */
-class Plg\Redshop_PaymentQuickpay extends \RedshopPayment
+class PlgRedshop_PaymentQuickpay extends \RedshopPayment
 {
 	/**
 	 * Method to setup the payment form and send to gateway

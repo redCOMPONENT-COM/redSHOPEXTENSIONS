@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     \Redshop.Plugins
- * @subpackage  Plg\Redshop_PaymentRs_Payment_BankTransfer2
+ * @subpackage  PlgRedshop_PaymentRs_Payment_BankTransfer2
  *
  * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later, see LICENSE.
@@ -10,12 +10,12 @@ defined('_JEXEC') or die();
 use Joomla\Registry\Registry;
 
 /**
- *  Plg\Redshop_PaymentRs_Payment_BankTransfer2 installer class.
+ *  PlgRedshop_PaymentRs_Payment_BankTransfer2 installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
-class Plg\Redshop_PaymentRs_Payment_BankTransfer2InstallerScript
+class PlgRedshop_PaymentRs_Payment_BankTransfer2InstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

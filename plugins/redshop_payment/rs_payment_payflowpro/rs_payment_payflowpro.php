@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 JLoader::import('redshop.library');
 
-class plg\Redshop_Paymentrs_Payment_Payflowpro extends JPlugin
+class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 {
 	/**
 	 * Plugin method with the same name as the event will be called automatically.

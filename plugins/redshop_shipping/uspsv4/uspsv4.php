@@ -18,7 +18,7 @@ JLoader::import('redshop.library');
  * @subpackage  System
  * @since       1.5
  */
-class Plg\Redshop_ShippingUspsv4 extends JPlugin
+class PlgRedshop_ShippingUspsv4 extends JPlugin
 {
 	/**
 	 * Auto load language

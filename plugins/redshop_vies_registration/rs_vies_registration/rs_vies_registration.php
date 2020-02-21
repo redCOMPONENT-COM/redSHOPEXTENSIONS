@@ -10,11 +10,11 @@
 defined('_JEXEC') or die;
 
 /**
- * Class Plg\Redshop_Vies_RegistrationRs_Vies_Registration
+ * Class PlgRedshop_Vies_RegistrationRs_Vies_Registration
  *
  * @since  1.5
  */
-class Plg\Redshop_Vies_RegistrationRs_Vies_Registration extends JPlugin
+class PlgRedshop_Vies_RegistrationRs_Vies_Registration extends JPlugin
 {
 	protected $autoloadLanguage = true;
 

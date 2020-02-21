@@ -17,7 +17,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.0.0
  */
-class Plg\Redshop_ProductSync_B2bHelper
+class PlgRedshop_ProductSync_B2bHelper
 {
 	const WS_PRO_IMG     = '/index.php?webserviceClient=site&webserviceVersion=1.2.0&option=redshopb&view=product_image&api=Hal';
 	const WS_PRO_ATT     = '/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=redshopb&view=product_attribute&api=Hal';

@@ -20,7 +20,7 @@ use Aesir\App;
  *
  * @since 1.0.0
  */
-class Plg\Redshop_ProductDiscount_Rule extends JPlugin
+class PlgRedshop_ProductDiscount_Rule extends JPlugin
 {
 	/**
 	 * Constructor

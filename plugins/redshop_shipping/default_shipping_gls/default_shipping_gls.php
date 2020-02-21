@@ -17,7 +17,7 @@ JLoader::import('redshop.library');
  *
  * @since 1.0.0
  */
-class Plg\Redshop_ShippingDefault_Shipping_Gls extends JPlugin
+class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 {
 	/**
 	 * Shipping name

@@ -19,7 +19,7 @@ JLoader::import('redshop.library');
  *
  * @since       1.0
  */
-class Plg\Redshop_PaymentRs_Payment_2checkout extends JPlugin
+class PlgRedshop_PaymentRs_Payment_2checkout extends JPlugin
 {
 	/**
 	 * Plugin method with the same name as the event will be called automatically.

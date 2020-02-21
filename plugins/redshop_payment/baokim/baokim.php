@@ -8,7 +8,7 @@
  */
 defined('_JEXEC') or die;
 
-class plg\Redshop_PaymentBaokim extends JPlugin
+class plgRedshop_PaymentBaokim extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.

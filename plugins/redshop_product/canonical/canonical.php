@@ -17,7 +17,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.3.3.1
  */
-class Plg\Redshop_ProductCanonical extends JPlugin
+class PlgRedshop_ProductCanonical extends JPlugin
 {
 	/**
 	 * Example prepare redSHOP Product method

@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.0
  */
-class Plg\Redshop_ProductGls extends JPlugin
+class PlgRedshop_ProductGls extends JPlugin
 {
 	/**
 	 * Method will trigger on After redSHOP Order Place to update GLS shipping info

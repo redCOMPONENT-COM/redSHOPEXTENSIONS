@@ -16,7 +16,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.1.20
  */
-class Plg\Redshop_ProductWss_Datafeed extends JPlugin
+class PlgRedshop_ProductWss_Datafeed extends JPlugin
 {
 	/**
 	 * Constructor
