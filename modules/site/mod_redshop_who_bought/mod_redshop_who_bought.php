@@ -48,8 +48,8 @@ if ($category != "")
 }
 
 $rows = [];
-$productIds = $db->setQuery($query, 0, $countItems);
-$db->loadColumn();
+$db->setQuery($query, 0, $countItems);
+$productIds = $db->loadColumn();
 
 if (isset($productIds) && count($productIds) > 0)
 {
