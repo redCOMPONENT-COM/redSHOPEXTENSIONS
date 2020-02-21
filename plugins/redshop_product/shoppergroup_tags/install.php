@@ -11,12 +11,12 @@ defined('_JEXEC') or die();
 use Joomla\Registry\Registry;
 
 /**
- * Plg\Redshop_ProductShoppergroup_Tags installer class.
+ * PlgRedshop_ProductShoppergroup_Tags installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    1.6.0
  */
-class Plg\Redshop_ProductShoppergroup_TagsInstallerScript
+class PlgRedshop_ProductShoppergroup_TagsInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

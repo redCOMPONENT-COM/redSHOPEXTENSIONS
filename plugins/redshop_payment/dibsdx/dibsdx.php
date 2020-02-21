@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.5
  */
-class Plg\Redshop_PaymentDibsDx extends JPlugin
+class PlgRedshop_PaymentDibsDx extends JPlugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.

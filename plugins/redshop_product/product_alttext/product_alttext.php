@@ -10,12 +10,12 @@
 defined('_JEXEC') or die;
 
 /**
- *  Plg\Redshop_ProductProduct_AltText installer class.
+ *  PlgRedshop_ProductProduct_AltText installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    1.0
  */
-class Plg\Redshop_ProductProduct_AltText extends JPlugin
+class PlgRedshop_ProductProduct_AltText extends JPlugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.

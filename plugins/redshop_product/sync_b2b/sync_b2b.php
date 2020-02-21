@@ -15,7 +15,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.0.0
  */
-class Plg\Redshop_ProductSync_B2b extends JPlugin
+class PlgRedshop_ProductSync_B2b extends JPlugin
 {
 	/**
 	 * @var integer

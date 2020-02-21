@@ -16,7 +16,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.4
  */
-class Plg\Redshop_Paymentrs_Payment_Epayv2 extends JPlugin
+class PlgRedshop_Paymentrs_Payment_Epayv2 extends JPlugin
 {
 	/**
 	 * Epay SOAP Client Object

@@ -12,12 +12,12 @@ use Joomla\Registry\Registry;
 defined('_JEXEC') or die();
 
 /**
- * Plg\Redshop_PaymentMollieideal installer class.
+ * PlgRedshop_PaymentMollieideal installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    2.0.0
  */
-class Plg\Redshop_PaymentMollieidealInstallerScript
+class PlgRedshop_PaymentMollieidealInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

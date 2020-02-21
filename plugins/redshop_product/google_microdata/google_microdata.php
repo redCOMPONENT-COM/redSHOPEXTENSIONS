@@ -17,11 +17,11 @@ jimport('joomla.plugin.plugin');
 JLoader::import('redshop.library');
 
 /**
- * Plg\Redshop_ProductGoogle_Microdata Class
+ * PlgRedshop_ProductGoogle_Microdata Class
  *
  * @since  1.0
  */
-class Plg\Redshop_ProductGoogle_Microdata extends JPlugin
+class PlgRedshop_ProductGoogle_Microdata extends JPlugin
 {
 	/**
 	 * @var  boolean

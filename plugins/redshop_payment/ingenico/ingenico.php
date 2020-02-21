@@ -18,7 +18,7 @@ use \Redshop\Currency\Currency;
  * @subpackage  Ingenico
  * @since       1.6.1
  */
-class Plg\Redshop_PaymentIngenico extends \RedshopPayment
+class PlgRedshop_PaymentIngenico extends \RedshopPayment
 {
 	/**
 	 * Set transaction status

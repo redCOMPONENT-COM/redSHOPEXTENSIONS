@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
  * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
-class Plg\Redshop_PaymentPaysonInstallerScript
+class PlgRedshop_PaymentPaysonInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

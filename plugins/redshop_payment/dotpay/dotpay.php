@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  * @subpackage  DotPay
  * @since       1.5
  */
-class Plg\Redshop_PaymentDotpay extends \RedshopPayment
+class PlgRedshop_PaymentDotpay extends \RedshopPayment
 {
 	/**
 	 * Method to setup the payment form and send to gateway

@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 JLoader::import('redshop.library');
 require_once JPATH_SITE . '/plugins/redshop_payment/rs_payment_payment_express/rs_payment_payment_express/PxPay_Curl.inc.php';
 
-class plg\Redshop_paymentrs_payment_payment_express extends JPlugin
+class plgRedshop_paymentrs_payment_payment_express extends JPlugin
 {
 	/**
 	 * onNotify Payment rs_payment_payment_express

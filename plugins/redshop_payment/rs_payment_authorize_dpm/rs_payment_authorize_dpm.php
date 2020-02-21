@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
 require_once JPATH_SITE . '/plugins/redshop_payment/rs_payment_authorize_dpm/rs_payment_authorize_dpm/authorize_lib/AuthorizeNet.php';
 
 /**
- * Class plg\Redshop_paymentrs_payment_authorize_dpm
+ * Class plgRedshop_paymentrs_payment_authorize_dpm
  *
  * @since  1.5
  */
-class Plg\Redshop_Paymentrs_Payment_Authorize_Dpm extends JPlugin
+class PlgRedshop_Paymentrs_Payment_Authorize_Dpm extends JPlugin
 {
 	/**
 	 * Constructor

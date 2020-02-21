@@ -10,11 +10,11 @@
 defined('_JEXEC') or die;
 
 /**
- * Class Plg\Redshop_Paymentrs_Payment_Rapid_Eway
+ * Class PlgRedshop_Paymentrs_Payment_Rapid_Eway
  *
  * @since  1.5
  */
-class Plg\Redshop_Paymentrs_Payment_Rapid_Eway extends JPlugin
+class PlgRedshop_Paymentrs_Payment_Rapid_Eway extends JPlugin
 {
 	/**
 	 * Constructor

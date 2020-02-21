@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-class plg\Redshop_PaymentPaygate extends JPlugin
+class plgRedshop_PaymentPaygate extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.

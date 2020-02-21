@@ -16,12 +16,12 @@ jimport('redshop.library');
 JLoader::import('helper', __DIR__ . '/helper');
 
 /**
- * Plg\Redshop_PdfDomPDF class.
+ * PlgRedshop_PdfDomPDF class.
  *
  * @package  \Redshopb.Plugin
  * @since    1.0.0
  */
-class Plg\Redshop_PdfDomPDF extends JPlugin
+class PlgRedshop_PdfDomPDF extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.
@@ -53,7 +53,7 @@ class Plg\Redshop_PdfDomPDF extends JPlugin
 		\RedshopHelperPayment::loadLanguages();
 
 		// Changed font to support Unicode Characters - Specially Polish Characters
-		$pdfObj = new Plg\Redshop_PdfDomPDFHelper;
+		$pdfObj = new PlgRedshop_PdfDomPDFHelper;
 		$pdfObj->loadHtml($pdfHtml, 'utf-8');
 		$pdfObj->render();
 		$invoiceFolder = JPATH_SITE . '/components/com_redshop/assets/document/invoice/';
@@ -117,7 +117,7 @@ class Plg\Redshop_PdfDomPDF extends JPlugin
 		}
 
 		// Changed font to support Unicode Characters - Specially Polish Characters
-		$pdfObj   = new Plg\Redshop_PdfDomPDFHelper;
+		$pdfObj   = new PlgRedshop_PdfDomPDFHelper;
 		$messages = [];
 
 		foreach ($orderIds as $orderId)
@@ -178,7 +178,7 @@ class Plg\Redshop_PdfDomPDF extends JPlugin
 			return '';
 		}
 
-		$pdf = new Plg\Redshop_PdfDomPDFHelper;
+		$pdf = new PlgRedshop_PdfDomPDFHelper;
 		$pdf->loadHtml($template, 'utf-8');
 		$pdf->render();
 		$pdfName = time();
@@ -209,7 +209,7 @@ class Plg\Redshop_PdfDomPDF extends JPlugin
 		\RedshopHelperPayment::loadLanguages();
 
 		// Changed font to support Unicode Characters - Specially Polish Characters
-		$pdfObj = new Plg\Redshop_PdfDomPDFHelper;
+		$pdfObj = new PlgRedshop_PdfDomPDFHelper;
 		$pdfObj->loadHtml($pdfHtml, 'utf-8');
 		$pdfObj->render();
 
@@ -241,7 +241,7 @@ class Plg\Redshop_PdfDomPDF extends JPlugin
 		\RedshopHelperPayment::loadLanguages();
 
 		// Changed font to support Unicode Characters - Specially Polish Characters
-		$pdfObj = new Plg\Redshop_PdfDomPDFHelper;
+		$pdfObj = new PlgRedshop_PdfDomPDFHelper;
 		$pdfObj->loadHtml($pdfHtml, 'utf-8');
 		$pdfObj->render();
 
@@ -271,7 +271,7 @@ class Plg\Redshop_PdfDomPDF extends JPlugin
 		\RedshopHelperPayment::loadLanguages();
 
 		// Changed font to support Unicode Characters - Specially Polish Characters
-		$pdfObj = new Plg\Redshop_PdfDomPDFHelper;
+		$pdfObj = new PlgRedshop_PdfDomPDFHelper;
 		$pdfObj->loadHtml($pdfHtml, 'utf-8');
 		$pdfObj->render();
 

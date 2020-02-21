@@ -17,7 +17,7 @@ jimport('joomla.plugin.plugin');
  *
  * @since  1.0
  */
-class Plg\Redshop_ShippingGiaohangnhanh extends JPlugin
+class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 {
 	/**
 	 * Constructor - note in Joomla 2.5 PHP4.x is no longer supported so we can use this.

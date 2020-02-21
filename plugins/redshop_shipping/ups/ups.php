@@ -18,7 +18,7 @@ JLoader::import('redshop.library');
  *
  * @since  2.0
  */
-class Plg\Redshop_ShippingUps extends JPlugin
+class PlgRedshop_ShippingUps extends JPlugin
 {
 	/**
 	 * @var string

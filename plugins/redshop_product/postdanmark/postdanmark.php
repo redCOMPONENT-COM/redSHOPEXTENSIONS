@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.3.3.1
  */
-class Plg\Redshop_ProductPostDanmark extends JPlugin
+class PlgRedshop_ProductPostDanmark extends JPlugin
 {
 	/**
 	 * This event will trigger while order place and before generate Economic invoice

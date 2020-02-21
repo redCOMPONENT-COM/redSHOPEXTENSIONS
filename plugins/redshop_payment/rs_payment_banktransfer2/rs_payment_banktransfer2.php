@@ -10,12 +10,12 @@
 defined('_JEXEC') or die;
 
 /**
- *  Plg\Redshop_PaymentRs_Payment_BankTransfer2 installer class.
+ *  PlgRedshop_PaymentRs_Payment_BankTransfer2 installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
-class Plg\Redshop_PaymentRs_Payment_BankTransfer2 extends JPlugin
+class PlgRedshop_PaymentRs_Payment_BankTransfer2 extends JPlugin
 {
 	/**
 	 * [onPrePayment]

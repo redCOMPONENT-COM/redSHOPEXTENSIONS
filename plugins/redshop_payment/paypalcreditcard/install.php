@@ -9,12 +9,12 @@
 defined('_JEXEC') or die();
 
 /**
- * Plg\Redshop_PdfMPdf installer class.
+ * PlgRedshop_PdfMPdf installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    1.0.0
  */
-class Plg\Redshop_PaymentPaypalCreditcardInstallerScript
+class PlgRedshop_PaymentPaypalCreditcardInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

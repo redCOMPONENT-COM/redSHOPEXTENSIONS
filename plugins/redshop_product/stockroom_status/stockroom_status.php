@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
 JLoader::import('redshop.library');
 
 /**
- * Class Plg\Redshop_ProductStockroom_Status
+ * Class PlgRedshop_ProductStockroom_Status
  *
  * @since  1.5
  */
-class Plg\Redshop_ProductStockroom_Status extends JPlugin
+class PlgRedshop_ProductStockroom_Status extends JPlugin
 {
 	protected $autoloadLanguage = true;
 

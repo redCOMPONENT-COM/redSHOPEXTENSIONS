@@ -18,7 +18,7 @@ JLoader::import('redshop.library');
  *
  * @since    2.0.0
  */
-class Plg\Redshop_Paymentrs_Payment_Braintree extends JPlugin
+class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 {
 	/**
 	 * Constructor

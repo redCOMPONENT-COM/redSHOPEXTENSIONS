@@ -18,7 +18,7 @@ use Klarna\XMLRPC\PClass;
 
 JLoader::import('redshop.library');
 
-class plg\Redshop_PaymentKlarna extends \RedshopPayment
+class plgRedshop_PaymentKlarna extends \RedshopPayment
 {
 	/**
 	 * Constructor

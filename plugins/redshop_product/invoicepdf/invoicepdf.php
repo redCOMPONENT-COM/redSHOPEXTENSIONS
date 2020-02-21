@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.3.3.1
  */
-class Plg\Redshop_ProductInvoicePdf extends JPlugin
+class PlgRedshop_ProductInvoicePdf extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.

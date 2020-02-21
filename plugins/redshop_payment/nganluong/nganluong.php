@@ -18,7 +18,7 @@ require_once dirname(__DIR__) . '/nganluong/library/init.php';
  *
  * @since    1.0.0
  */
-class plg\Redshop_PaymentNganluong extends JPlugin
+class plgRedshop_PaymentNganluong extends JPlugin
 {
 	/**
 	 * Constructor - note in Joomla 2.5 PHP4.x is no longer supported so we can use this.

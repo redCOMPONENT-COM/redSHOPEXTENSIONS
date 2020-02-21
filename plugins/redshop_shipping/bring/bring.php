@@ -18,7 +18,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.5
  */
-class Plg\Redshop_ShippingBring extends JPlugin
+class PlgRedshop_ShippingBring extends JPlugin
 {
 	/**
 	 * Constructor

@@ -20,7 +20,7 @@ use Joomla\Registry\Registry;
  *
  * @since  1.0.0
  */
-class Plg\Redshop_UserCmc_Integrate extends JPlugin
+class PlgRedshop_UserCmc_Integrate extends JPlugin
 {
 	/**
 	 * @var  bool  True for auto-load language

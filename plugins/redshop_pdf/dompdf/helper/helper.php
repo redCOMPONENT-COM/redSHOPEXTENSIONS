@@ -20,10 +20,10 @@ use Dompdf\Options;
  *
  * @since  1.0.0
  */
-class Plg\Redshop_PdfDomPDFHelper extends Dompdf
+class PlgRedshop_PdfDomPDFHelper extends Dompdf
 {
 	/**
-	 * Plg\Redshop_PdfMPDFHelper constructor.
+	 * PlgRedshop_PdfMPDFHelper constructor.
 	 *
 	 * @param   string  $format       Page size
 	 * @param   string  $font         Font family

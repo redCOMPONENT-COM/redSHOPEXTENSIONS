@@ -12,12 +12,12 @@ use Joomla\Registry\Registry;
 defined('_JEXEC') or die();
 
 /**
- * Plg\Redshop_ShippingUspsv4 installer class.
+ * PlgRedshop_ShippingUspsv4 installer class.
  *
  * @package  \Redshopb.Plugin
  * @since    2.0.0
  */
-class Plg\Redshop_ShippingUspsv4InstallerScript
+class PlgRedshop_ShippingUspsv4InstallerScript
 {
 	/**
 	 * @var string
