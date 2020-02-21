@@ -150,9 +150,13 @@ if (count($rows))
 
 		if ($isShowAddToCartButton)
 		{
+            $addToCartTemplates = \RedshopHelperTemplate::getTemplate('add_to_cart');
+            $templateName = $addToCartTemplates[0]->name ?? 'add_to_cart1';
+            $addToCartTemplate = '{form_addtocart:' . $templateName . '}';
+
 			echo "<div>&nbsp;</div>";
 			$addToCart = \Redshop\Cart\Render::replace($product->product_id, $categoryId, 0, 0,
-                "", false, $userFields, $totalAttributes, $totalAccessory, $countUserFields, $module_id);
+                $addToCartTemplate, false, $userFields, $totalAttributes, $totalAccessory, $countUserFields, $module_id);
 			echo "<div class='mod_redshop_products_addtocart addToCartWhoBought'>" . $addToCart . $hiddenUserField . "</div>";
 		}
 
