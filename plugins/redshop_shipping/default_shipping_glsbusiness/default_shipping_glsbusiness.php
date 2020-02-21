@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     RedSHOP.Plugin
- * @subpackage  Redshop.Shipping
+ * @subpackage  \Redshop.Shipping
  *
  * @copyright   Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
 JLoader::import('redshop.library');
 
 /**
- * Redshop shipping gateway for GLS Business rates.
+ * \Redshop shipping gateway for GLS Business rates.
  *
  * @since  1.2
  */
-class PlgRedshop_ShippingDefault_Shipping_GLSBusiness extends JPlugin
+class Plg\Redshop_ShippingDefault_Shipping_GLSBusiness extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.
@@ -36,7 +36,7 @@ class PlgRedshop_ShippingDefault_Shipping_GLSBusiness extends JPlugin
 	 *                             Recognized key values include 'name', 'group', 'params', 'language'
 	 *                             (this list is not meant to be comprehensive).
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_shipping_default_shipping_glsbusiness', JPATH_ADMINISTRATOR);
@@ -54,7 +54,7 @@ class PlgRedshop_ShippingDefault_Shipping_GLSBusiness extends JPlugin
 	public function onListRates(&$d)
 	{
 		$shippinghelper = shipping::getInstance();
-		$shippingrate   = array();
+		$shippingrate   = [];
 		$rate           = 0;
 		$shipping       = $shippinghelper->getShippingMethodByClass($this->classname);
 
@@ -68,7 +68,7 @@ class PlgRedshop_ShippingDefault_Shipping_GLSBusiness extends JPlugin
 			$rs->shipping_rate_value 	= $shippinghelper->applyVatOnShippingRate($rs, $d);
 			$shippingVatRate		 	= $rs->shipping_rate_value - $shippingRate;
 			$economic_displaynumber		= $rs->economic_displaynumber;
-			$shipping_rate_id 			= RedshopShippingRate::encrypt(
+			$shipping_rate_id 			= \RedshopShippingRate::encrypt(
 											array(
 												__CLASS__,
 												$shipping->name,

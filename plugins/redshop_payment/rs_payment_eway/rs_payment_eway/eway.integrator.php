@@ -10,7 +10,7 @@
 /**
  * EwayPayment class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
 class EwayPayment
@@ -34,14 +34,14 @@ class EwayPayment
 	 *
 	 * @var  array
 	 */
-	var $myTransactionData = array();
+	var $myTransactionData = [];
 
 	/**
 	 * [$myCurlPreferences description]
 	 *
 	 * @var  array
 	 */
-	var $myCurlPreferences = array();
+	var $myCurlPreferences = [];
 
 	/**
 	 * [$params description]
@@ -545,7 +545,7 @@ class EwayPayment
 	{
 		$xmlParser = xml_parser_create();
 		xml_parse_into_struct($xmlParser, $xmlResponse, $xmlData, $index);
-		$responseFields = array();
+		$responseFields = [];
 
 		foreach ($xmlData as $data)
 		{

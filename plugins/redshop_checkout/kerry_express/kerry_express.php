@@ -17,7 +17,7 @@ jimport('joomla.plugin.plugin');
  *
  * @since  1.0
  */
-class PlgRedshop_CheckoutKerry_Express extends JPlugin
+class Plg\Redshop_CheckoutKerry_Express extends JPlugin
 {
 	/**
 	 * Constructor - note in Joomla 2.5 PHP4.x is no longer supported so we can use this.
@@ -40,7 +40,7 @@ class PlgRedshop_CheckoutKerry_Express extends JPlugin
 	 */
 	public function onRenderCustomField($infoId = 0)
 	{
-		echo RedshopLayoutHelper::render(
+		echo \RedshopLayoutHelper::render(
 			'template',
 			array(
 				'id'      => $infoId,
@@ -60,15 +60,15 @@ class PlgRedshop_CheckoutKerry_Express extends JPlugin
 		$app          = JFactory::getApplication();
 		$input        = $app->input;
 		$id           = $input->post->getInt('id', 0);
-		$selectedCity = RedshopHelperExtrafields::getDataByName('rs_kerry_city', 14, $id);
+		$selectedCity = \RedshopHelperExtrafields::getDataByName('rs_kerry_city', 14, $id);
 
 		if (empty($selectedCity))
 		{
-			$selectedCity = RedshopHelperExtrafields::getDataByName('rs_kerry_billing_city', 7, $id);
+			$selectedCity = \RedshopHelperExtrafields::getDataByName('rs_kerry_billing_city', 7, $id);
 		}
 
 		$handle = $this->getDistrictProvinceData();
-		$data   = array();
+		$data   = [];
 
 		while ($result = fgetcsv($handle, null, ',', '"'))
 		{
@@ -128,15 +128,15 @@ class PlgRedshop_CheckoutKerry_Express extends JPlugin
 		$input            = $app->input;
 		$city             = $input->post->getString('city', '');
 		$id               = $input->post->getInt('id', 0);
-		$selectedDistrict = RedshopHelperExtrafields::getDataByName('rs_kerry_district', 14, $id);
+		$selectedDistrict = \RedshopHelperExtrafields::getDataByName('rs_kerry_district', 14, $id);
 
 		if (empty($selectedDistrict))
 		{
-			$selectedDistrict = RedshopHelperExtrafields::getDataByName('rs_kerry_billing_district', 7, $id);
+			$selectedDistrict = \RedshopHelperExtrafields::getDataByName('rs_kerry_billing_district', 7, $id);
 		}
 
 		$handle = $this->getDistrictProvinceData();
-		$data   = array();
+		$data   = [];
 
 		while ($result = fgetcsv($handle, null, ',', '"'))
 		{
@@ -190,15 +190,15 @@ class PlgRedshop_CheckoutKerry_Express extends JPlugin
 		$input        = $app->input;
 		$district     = $input->post->getString('district', '');
 		$id           = $input->post->getInt('id', 0);
-		$selectedWard = RedshopHelperExtrafields::getDataByName('rs_kerry_ward', 14, $id);
+		$selectedWard = \RedshopHelperExtrafields::getDataByName('rs_kerry_ward', 14, $id);
 
 		if (empty($selectedWard))
 		{
-			$selectedWard = RedshopHelperExtrafields::getDataByName('rs_kerry_billing_ward', 7, $id);
+			$selectedWard = \RedshopHelperExtrafields::getDataByName('rs_kerry_billing_ward', 7, $id);
 		}
 
 		$handle = $this->getDistrictProvinceData();
-		$data   = array();
+		$data   = [];
 
 		while ($result = fgetcsv($handle, null, ',', '"'))
 		{
@@ -267,18 +267,18 @@ class PlgRedshop_CheckoutKerry_Express extends JPlugin
 	 */
 	public function getBillingExtraFields($userInfoId)
 	{
-		$cityField     = RedshopHelperExtrafields::getDataByName('rs_kerry_billing_city', 7, $userInfoId);
-		$districtField = RedshopHelperExtrafields::getDataByName('rs_kerry_billing_district', 7, $userInfoId);
-		$wardField     = RedshopHelperExtrafields::getDataByName('rs_kerry_billing_ward', 7, $userInfoId);
+		$cityField     = \RedshopHelperExtrafields::getDataByName('rs_kerry_billing_city', 7, $userInfoId);
+		$districtField = \RedshopHelperExtrafields::getDataByName('rs_kerry_billing_district', 7, $userInfoId);
+		$wardField     = \RedshopHelperExtrafields::getDataByName('rs_kerry_billing_ward', 7, $userInfoId);
 
 		if (empty($cityField) && empty($districtField) && empty($wardField))
 		{
-			return array();
+			return [];
 		}
 
-		$cities    = array();
-		$districts = array();
-		$wards     = array();
+		$cities    = [];
+		$districts = [];
+		$wards     = [];
 
 		$handle = $this->getDistrictProvinceData();
 
@@ -314,20 +314,20 @@ class PlgRedshop_CheckoutKerry_Express extends JPlugin
 	 */
 	public function onBeforeUserShippingStore(&$data)
 	{
-		$cityField     = RedshopHelperExtrafields::getDataByName('rs_kerry_city', 14, $data->users_info_id);
-		$districtField = RedshopHelperExtrafields::getDataByName('rs_kerry_district', 14, $data->users_info_id);
-		$wardField     = RedshopHelperExtrafields::getDataByName('rs_kerry_ward', 14, $data->users_info_id);
+		$cityField     = \RedshopHelperExtrafields::getDataByName('rs_kerry_city', 14, $data->users_info_id);
+		$districtField = \RedshopHelperExtrafields::getDataByName('rs_kerry_district', 14, $data->users_info_id);
+		$wardField     = \RedshopHelperExtrafields::getDataByName('rs_kerry_ward', 14, $data->users_info_id);
 
 		if (empty($cityField) && empty($districtField) && empty($wardField))
 		{
-			$cityField     = RedshopHelperExtrafields::getDataByName('rs_kerry_billing_city', 7, $data->users_info_id);
-			$districtField = RedshopHelperExtrafields::getDataByName('rs_kerry_billing_district', 7, $data->users_info_id);
-			$wardField     = RedshopHelperExtrafields::getDataByName('rs_kerry_billing_ward', 7, $data->users_info_id);
+			$cityField     = \RedshopHelperExtrafields::getDataByName('rs_kerry_billing_city', 7, $data->users_info_id);
+			$districtField = \RedshopHelperExtrafields::getDataByName('rs_kerry_billing_district', 7, $data->users_info_id);
+			$wardField     = \RedshopHelperExtrafields::getDataByName('rs_kerry_billing_ward', 7, $data->users_info_id);
 		}
 
-		$cities    = array();
-		$districts = array();
-		$wards     = array();
+		$cities    = [];
+		$districts = [];
+		$wards     = [];
 
 		$handle = $this->getDistrictProvinceData();
 
@@ -365,12 +365,12 @@ class PlgRedshop_CheckoutKerry_Express extends JPlugin
 	public function createShippingOrder($data)
 	{
 		$orderId       = $data->order_id;
-		$cityField     = RedshopHelperExtrafields::getDataByName('rs_kerry_city', 14, $data->users_info_id);
-		$districtField = RedshopHelperExtrafields::getDataByName('rs_kerry_district', 14, $data->users_info_id);
-		$wardField     = RedshopHelperExtrafields::getDataByName('rs_kerry_ward', 14, $data->users_info_id);
-		$items         = RedshopHelperOrder::getItems($orderId);
+		$cityField     = \RedshopHelperExtrafields::getDataByName('rs_kerry_city', 14, $data->users_info_id);
+		$districtField = \RedshopHelperExtrafields::getDataByName('rs_kerry_district', 14, $data->users_info_id);
+		$wardField     = \RedshopHelperExtrafields::getDataByName('rs_kerry_ward', 14, $data->users_info_id);
+		$items         = \RedshopHelperOrder::getItems($orderId);
 		$weight        = 0;
-		$itemList      = array();
+		$itemList      = [];
 		$i             = 0;
 
 		foreach ($items as $item)
@@ -433,9 +433,9 @@ class PlgRedshop_CheckoutKerry_Express extends JPlugin
 	 *
 	 * @return void
 	 */
-	public function onBeforeCreateRedshopUser(&$data, $isNew)
+	public function onBeforeCreate\RedshopUser(&$data, $isNew)
 	{
-		$cities = array();
+		$cities = [];
 
 		$handle = $this->getDistrictProvinceData();
 
@@ -502,18 +502,18 @@ class PlgRedshop_CheckoutKerry_Express extends JPlugin
 	 */
 	public function getShippingExtraFields($userInfoId)
 	{
-		$cityField     = RedshopHelperExtrafields::getDataByName('rs_kerry_city', 14, $userInfoId);
-		$districtField = RedshopHelperExtrafields::getDataByName('rs_kerry_district', 14, $userInfoId);
-		$wardField     = RedshopHelperExtrafields::getDataByName('rs_kerry_ward', 14, $userInfoId);
+		$cityField     = \RedshopHelperExtrafields::getDataByName('rs_kerry_city', 14, $userInfoId);
+		$districtField = \RedshopHelperExtrafields::getDataByName('rs_kerry_district', 14, $userInfoId);
+		$wardField     = \RedshopHelperExtrafields::getDataByName('rs_kerry_ward', 14, $userInfoId);
 
 		if (empty($cityField) && empty($districtField) && empty($wardField))
 		{
-			return array();
+			return [];
 		}
 
-		$cities    = array();
-		$districts = array();
-		$wards     = array();
+		$cities    = [];
+		$districts = [];
+		$wards     = [];
 
 		$handle = $this->getDistrictProvinceData();
 

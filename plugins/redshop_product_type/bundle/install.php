@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Modules
+ * @package     \Redshop.Modules
  * @subpackage  plg_system_redgoogleanalytics
  *
  * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.
@@ -11,12 +11,12 @@ defined('_JEXEC') or die();
 use Joomla\Registry\Registry;
 
 /**
- * PlgRedshop_Product_TypeBundleInstallerScript installer class.
+ * Plg\Redshop_Product_TypeBundleInstallerScript installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    2.0
  */
-class PlgRedshop_Product_TypeBundleInstallerScript
+class Plg\Redshop_Product_TypeBundleInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

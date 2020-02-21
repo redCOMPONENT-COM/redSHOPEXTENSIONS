@@ -132,7 +132,7 @@ defined('_JEXEC') or die;
 			<?php echo JText::_('PLG_REDSHOP_SHIPPING_USPSV4_USPS_MACHINABLE') ?>
         </label>
         <div class="col-md-9">
-			<?php echo JHTML::_('redshopselect.booleanlist', 'USPS_MACHINABLE', array(), USPS_MACHINABLE) ?>
+			<?php echo JHTML::_('redshopselect.booleanlist', 'USPS_MACHINABLE', [], USPS_MACHINABLE) ?>
         </div>
     </div>
     <div class="form-group row-fluid">
@@ -141,7 +141,7 @@ defined('_JEXEC') or die;
 			<?php echo JText::_('PLG_REDSHOP_SHIPPING_USPSV4_USPS_QUOTE') ?>
         </label>
         <div class="col-md-9">
-			<?php echo JHTML::_('redshopselect.booleanlist', 'USPS_SHOW_DELIVERY_QUOTE', array(), USPS_SHOW_DELIVERY_QUOTE) ?>
+			<?php echo JHTML::_('redshopselect.booleanlist', 'USPS_SHOW_DELIVERY_QUOTE', [], USPS_SHOW_DELIVERY_QUOTE) ?>
         </div>
     </div>
     <div class="form-group row-fluid">
@@ -150,7 +150,7 @@ defined('_JEXEC') or die;
 			<?php echo JText::_('PLG_REDSHOP_SHIPPING_USPSV4_USPS_REPORTERRORS') ?>
         </label>
         <div class="col-md-9">
-			<?php echo JHTML::_('redshopselect.booleanlist', 'USPS_REPORTERRORS', array(), USPS_REPORTERRORS) ?>
+			<?php echo JHTML::_('redshopselect.booleanlist', 'USPS_REPORTERRORS', [], USPS_REPORTERRORS) ?>
         </div>
     </div>
     <div class="form-group row-fluid">
@@ -159,7 +159,7 @@ defined('_JEXEC') or die;
 			<?php echo JText::_('PLG_REDSHOP_SHIPPING_USPSV4_USPS_STANDARDSHIPPING') ?>
         </label>
         <div class="col-md-9">
-			<?php echo JHTML::_('redshopselect.booleanlist', 'USPS_STANDARDSHIPPING', array(), USPS_STANDARDSHIPPING) ?>
+			<?php echo JHTML::_('redshopselect.booleanlist', 'USPS_STANDARDSHIPPING', [], USPS_STANDARDSHIPPING) ?>
         </div>
     </div>
     <div class="form-group row-fluid">
@@ -188,7 +188,7 @@ defined('_JEXEC') or die;
 							<?php echo constant($shipName . '_TEXT'); ?>
                         </label>
                         <div class="col-md-6">
-							<?php echo JHtml::_('redshopselect.booleanlist', $shipName, array(), constant($shipName)) ?>
+							<?php echo JHtml::_('redshopselect.booleanlist', $shipName, [], constant($shipName)) ?>
                         </div>
                     </div>
 					<?php $i++; ?>
@@ -210,7 +210,7 @@ defined('_JEXEC') or die;
 							<?php echo constant($shipName . '_TEXT'); ?>
                         </label>
                         <div class="col-md-5">
-							<?php echo JHtml::_('redshopselect.booleanlist', $shipName, array(), constant($shipName)) ?>
+							<?php echo JHtml::_('redshopselect.booleanlist', $shipName, [], constant($shipName)) ?>
                         </div>
                     </div>
 					<?php $i++; ?>

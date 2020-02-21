@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshopb.Site
+ * @package     \Redshopb.Site
  * @subpackage  mod_redshopb_megamenu
  *
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.

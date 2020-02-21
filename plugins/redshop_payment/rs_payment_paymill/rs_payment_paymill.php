@@ -18,11 +18,11 @@ JLoader::import('redshop.library');
 /**
  * Paymill payment class
  *
- * @package  Redshop.Plugin
+ * @package  \Redshop.Plugin
  *
  * @since    2.0.0
  */
-class PlgRedshop_Paymentrs_Payment_Paymill extends JPlugin
+class Plg\Redshop_Paymentrs_Payment_Paymill extends JPlugin
 {
 	/**
 	 * @var   boolean
@@ -39,7 +39,7 @@ class PlgRedshop_Paymentrs_Payment_Paymill extends JPlugin
 	 *
 	 * @since   1.5
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_payment_rs_payment_paymill', JPATH_ADMINISTRATOR);
@@ -80,7 +80,7 @@ class PlgRedshop_Paymentrs_Payment_Paymill extends JPlugin
 
 		JHtml::script('rs_payment_paymill/BrandDetection.js', false, true);
 		JHtml::script('rs_payment_paymill/paymill.js', false, true);
-		JHtml::stylesheet('rs_payment_paymill/paymill_styles.css', array(), true);
+		JHtml::stylesheet('rs_payment_paymill/paymill_styles.css', [], true);
 
 		$app = JFactory::getApplication();
 
@@ -112,7 +112,7 @@ class PlgRedshop_Paymentrs_Payment_Paymill extends JPlugin
 	{
 		$this->loadFramework();
 
-		echo RedshopLayoutHelper::render(
+		echo \RedshopLayoutHelper::render(
 			'form',
 			array(
 				'element' => $element,
@@ -144,7 +144,7 @@ class PlgRedshop_Paymentrs_Payment_Paymill extends JPlugin
 
 		$paymillPrivateKey = $this->params->get('paymill_private_key', '0');
 		$environment       = $this->params->get('environment', 'sandbox');
-		$orderDetails      = RedshopHelperOrder::getOrderDetail($data['order_id']);
+		$orderDetails      = \RedshopHelperOrder::getOrderDetail($data['order_id']);
 		$orderAmount       = number_format($orderDetails->order_total, 2, '.', '') * 100;
 		$itemId            = $app->input->getInt('Itemid', 0);
 		$redirectUrl       = "index.php?option=com_redshop&view=order_detail&layout=receipt&Itemid=" . $itemId . "&oid=" . $data['order_id'];
@@ -168,7 +168,7 @@ class PlgRedshop_Paymentrs_Payment_Paymill extends JPlugin
 
 			$transaction->setPayment($response->getId());
 			$transaction->setAmount($orderAmount);
-			$transaction->setCurrency(Redshop::getConfig()->get('CURRENCY_CODE'));
+			$transaction->setCurrency(\Redshop::getConfig()->get('CURRENCY_CODE'));
 			$transaction->setDescription('Order: ' . $data['order_id']);
 
 			$response      = $request->create($transaction);

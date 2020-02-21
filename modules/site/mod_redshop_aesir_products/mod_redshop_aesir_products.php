@@ -88,7 +88,7 @@ if ($showChildProducts != 1)
 	$query->where($db->qn('p.product_parent_id') . ' = 0');
 }
 
-$rows = array();
+$rows = [];
 
 if ($productIds = $db->setQuery($query, 0, $count)->loadColumn())
 {

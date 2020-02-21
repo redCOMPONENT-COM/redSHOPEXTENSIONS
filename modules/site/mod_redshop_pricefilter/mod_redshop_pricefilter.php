@@ -28,8 +28,8 @@ else
 
 $count                    = trim($params->get('count', 5));
 $image                    = trim($params->get('image', 0));
-$thumbwidth               = trim($params->get('thumbwidth', 100));
-$thumbheight              = trim($params->get('thumbheight', 100));
+$thumbWidth               = trim($params->get('thumbwidth', 100));
+$thumbHeight              = trim($params->get('thumbheight', 100));
 $show_price               = trim($params->get('show_price', 0));
 $show_readmore            = trim($params->get('show_readmore', 1));
 $show_addtocart           = trim($params->get('show_addtocart', 1));

@@ -22,41 +22,46 @@ else
 	$category = trim($category);
 }
 
-$number_of_items        = trim($params->get('number_of_items', 5));
-$thumbwidth             = trim($params->get('thumbwidth', 100));
-$thumbheight            = trim($params->get('thumbheight', 100));
-$sliderwidth            = trim($params->get('sliderwidth', 500));
-$show_product_image     = trim($params->get('show_product_image', 1));
-$show_addtocart_button  = trim($params->get('show_addtocart_button', 1));
-$show_product_name      = trim($params->get('show_product_name', 1));
-$product_title_linkable = trim($params->get('product_title_linkable', 1));
-$show_product_price     = trim($params->get('show_product_price', 1));
+$countItems             = trim($params->get('number_of_items', 5));
+$thumbWidth             = trim($params->get('thumbwidth', 100));
+$thumbHeight            = trim($params->get('thumbheight', 100));
+$sliderWidth            = trim($params->get('sliderwidth', 500));
+$isShowProductImage     = trim($params->get('show_product_image', 1));
+$isShowAddToCartButton  = trim($params->get('show_addtocart_button', 1));
+$isShowProductName      = trim($params->get('show_product_name', 1));
+$productTitleLinkable   = trim($params->get('product_title_linkable', 1));
+$isShowProductPrice     = trim($params->get('show_product_price', 1));
 $scroll                 = $params->get('number_of_products_one_scroll',2);
 
 $db = JFactory::getDbo();
 $query = $db->getQuery(true)
 	->select('p.product_id')
 	->from($db->qn('#__redshop_product', 'p'))
-	->where($db->qn('p.published') . ' = 1')
+	->where($db->qn('p.published') . ' = ' . $db->q(1))
 	->group('p.product_id');
 
 if ($category != "")
 {
-	$query->leftJoin('#__redshop_product_category_xref AS pc ON pc.product_id = p.product_id')
-		->where('pc.category_id IN (' . $category . ')');
+	$query->leftJoin($db->qn('#__redshop_product_category_xref', 'pc') . ' ON ' .
+                        $db->qn('pc.product_id') . ' = ' . $db->qn('p.product_id'))
+		->where($db->qn('pc.category_id') . ' IN (' . $db->q($category) . ')');
 }
 
-$rows = array();
+$rows = [];
+$productIds = $db->setQuery($query, 0, $countItems);
+$db->loadColumn();
 
-if ($productIds = $db->setQuery($query, 0, $number_of_items)->loadColumn())
+if (isset($productIds) && count($productIds) > 0)
 {
 	$query->clear()
-		->where('p.product_id IN (' . implode(',', $productIds) . ')')
-		->order('FIELD(p.product_id, ' . implode(',', $productIds) . ')');
+		->where($db->qn('p.product_id') . ' IN (' . $db->q(implode(',', $productIds)) . ')')
+		->order('FIELD(' . $db->qn('p.product_id') . ', '
+            . $db->q(implode(',', $productIds)) . ')');
 
-	$user = JFactory::getUser();
+	$user = \JFactory::getUser();
 	$query = \Redshop\Product\Product::getMainProductQuery($query, $user->id)
-		->select('CONCAT_WS(' . $db->q('.') . ', p.product_id, ' . (int) $user->id . ') AS concat_id');
+		->select('CONCAT_WS(' . $db->q('.') . ', ' . $db->qn('p.product_id') . ', '
+            . $db->q((int) $user->id) . ') AS concat_id');
 
 	if ($rows = $db->setQuery($query)->loadObjectList('concat_id'))
 	{

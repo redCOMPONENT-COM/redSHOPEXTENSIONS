@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Joomla.User
- * @subpackage  Plugin.RedshopHighrise
+ * @subpackage  Plugin.\RedshopHighrise
  *
  * @copyright   Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
  * Create Highrise user after creating redSHOP User
  *
  * @package     Joomla.User
- * @subpackage  Plugin.RedshopHighrise
+ * @subpackage  Plugin.\RedshopHighrise
  */
 class PlgUserHighrise extends JPlugin
 {
@@ -49,7 +49,7 @@ class PlgUserHighrise extends JPlugin
 	 *
 	 * @since   1.5
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang          = JFactory::getLanguage();
 		$lang->load('plg_user_highrise', JPATH_ADMINISTRATOR);
@@ -65,7 +65,7 @@ class PlgUserHighrise extends JPlugin
 	 *
 	 * @return  void
 	 */
-	public function onAfterCreateRedshopUser($data, $isNew)
+	public function onAfterCreate\RedshopUser($data, $isNew)
 	{
 		if (!$isNew)
 		{

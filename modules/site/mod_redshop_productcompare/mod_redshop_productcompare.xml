@@ -8,7 +8,7 @@
     <authorEmail>email@redcomponent.com</authorEmail>
     <copyright>redCOMPONENT.com</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-    <description>Redshop Products Compare Module</description>
+    <description>\Redshop Products Compare Module</description>
     <files>
         <filename module="mod_redshop_productcompare">mod_redshop_productcompare.php</filename>
         <filename module="mod_redshop_productcompare">index.html</filename>

@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 JLoader::import('redshop.library');
 require_once JPATH_SITE . '/plugins/redshop_payment/rs_payment_payment_express/rs_payment_payment_express/PxPay_Curl.inc.php';
 
-class plgRedshop_paymentrs_payment_payment_express extends JPlugin
+class plg\Redshop_paymentrs_payment_payment_express extends JPlugin
 {
 	/**
 	 * onNotify Payment rs_payment_payment_express
@@ -143,7 +143,7 @@ class plgRedshop_paymentrs_payment_payment_express extends JPlugin
 			// Convert .8 to .80
 			$amount = sprintf("%9.2f", $amount);
 
-			$currency = Redshop::getConfig()->get('CURRENCY_CODE');
+			$currency = \Redshop::getConfig()->get('CURRENCY_CODE');
 			$merchRef = substr($data['billinginfo']->firstname, 0, 50) . " " . substr($data['billinginfo']->lastname, 0, 50);
 			$cmdDoTxnTransaction .= "<Txn>";
 
@@ -223,8 +223,8 @@ class plgRedshop_paymentrs_payment_payment_express extends JPlugin
 		xml_parse_into_struct($xml_parser, $data, $vals, $index);
 		xml_parser_free($xml_parser);
 
-		$params = array();
-		$level = array();
+		$params = [];
+		$level = [];
 
 		foreach ($vals as $xml_elem)
 		{
@@ -270,7 +270,7 @@ class plgRedshop_paymentrs_payment_payment_express extends JPlugin
 		$db = JFactory::getDbo();
 		JPlugin::loadLanguage('com_redshop');
 		$order_id = $data['order_id'];
-		$Itemid = $_REQUEST['Itemid'];
+		$itemId = $_REQUEST['Itemid'];
 
 		if ($this->params->get("px_post_txntype") == 'Auth')
 		{
@@ -286,7 +286,7 @@ class plgRedshop_paymentrs_payment_payment_express extends JPlugin
 			$order_payment_amount = $orderDetail[0]->order_payment_amount;
 			$order_payment_trans_id = $orderDetail[0]->order_payment_trans_id;
 
-			$currency = Redshop::getConfig()->get('CURRENCY_CODE');
+			$currency = \Redshop::getConfig()->get('CURRENCY_CODE');
 			$cmdDoTxnTransaction .= "<Txn>";
 
 			// Insert your DPS Username here

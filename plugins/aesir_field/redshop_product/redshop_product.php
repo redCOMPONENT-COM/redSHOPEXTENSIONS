@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Aesir.Plugin
- * @subpackage  Aesir_Field.Redshop_Product
+ * @subpackage  Aesir_Field.\Redshop_Product
  *
  * @copyright   Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 JLoader::import('reditem.library');
-JLoader::registerPrefix('PlgAesir_FieldRedshop_Product', __DIR__);
+JLoader::registerPrefix('PlgAesir_Field\Redshop_Product', __DIR__);
 
 use Aesir\Plugin\AbstractFieldPlugin;
 use Aesir\Entity\FieldInterface;
@@ -21,14 +21,14 @@ use Aesir\Twig\Enviroment;
  *
  * @since  1.0.0
  */
-final class PlgAesir_FieldRedshop_Product extends AbstractFieldPlugin
+final class PlgAesir_Field\Redshop_Product extends AbstractFieldPlugin
 {
 	/**
-	 * Type for the form type="Redshop_Product" tag
+	 * Type for the form type="\Redshop_Product" tag
 	 *
 	 * @var  string
 	 */
-	protected $formFieldType = 'PlgAesir_FieldRedshop_Product.Redshop_Product';
+	protected $formFieldType = 'PlgAesir_Field\Redshop_Product.\Redshop_Product';
 
 	/**
 	 * Template section
@@ -81,7 +81,7 @@ final class PlgAesir_FieldRedshop_Product extends AbstractFieldPlugin
 		}
 
 		$data = array_filter(array_values(json_decode($value, true)));
-		$tmp  = array();
+		$tmp  = [];
 
 		foreach ($data AS $val)
 		{
@@ -120,7 +120,7 @@ final class PlgAesir_FieldRedshop_Product extends AbstractFieldPlugin
 	 *
 	 * @return  void
 	 */
-	public function onAesirAfterTwigLoad(Enviroment $environment, Twig_LoaderInterface $loader = null, $options = array())
+	public function onAesirAfterTwigLoad(Enviroment $environment, Twig_LoaderInterface $loader = null, $options = [])
 	{
 		// Require our Composer libraries
 		if (!$this->loadLibrary())
@@ -128,7 +128,7 @@ final class PlgAesir_FieldRedshop_Product extends AbstractFieldPlugin
 			return;
 		}
 
-		$environment->addExtension(new Redshop\Twig\Product);
+		$environment->addExtension(new \Redshop\Twig\Product);
 	}
 
 	/**
@@ -138,7 +138,7 @@ final class PlgAesir_FieldRedshop_Product extends AbstractFieldPlugin
 	 */
 	protected function loadLibrary()
 	{
-		if (class_exists('Redshop\\Twig\\Product'))
+		if (class_exists('\Redshop\\Twig\\Product'))
 		{
 			return true;
 		}

@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
 require_once JPATH_SITE . '/plugins/redshop_payment/rs_payment_authorize_dpm/rs_payment_authorize_dpm/authorize_lib/AuthorizeNet.php';
 
 /**
- * Class plgRedshop_paymentrs_payment_authorize_dpm
+ * Class plg\Redshop_paymentrs_payment_authorize_dpm
  *
  * @since  1.5
  */
-class PlgRedshop_Paymentrs_Payment_Authorize_Dpm extends JPlugin
+class Plg\Redshop_Paymentrs_Payment_Authorize_Dpm extends JPlugin
 {
 	/**
 	 * Constructor
@@ -26,7 +26,7 @@ class PlgRedshop_Paymentrs_Payment_Authorize_Dpm extends JPlugin
 	 *                             Recognized key values include 'name', 'group', 'params', 'language'
 	 *                             (this list is not meant to be comprehensive).
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		JPlugin::loadLanguage('plg_redshop_payment_rs_payment_authorize_dpm');
 		parent::__construct($subject, $config);
@@ -77,11 +77,11 @@ class PlgRedshop_Paymentrs_Payment_Authorize_Dpm extends JPlugin
 		}
 
 		$app      = JFactory::getApplication();
-		$Itemid   = $app->input->getInt('Itemid', 0);
+		$itemId   = $app->input->getInt('Itemid', 0);
 
 		// Where the user will end up.
 		$redirect_url = JURI::base()
-			. "index.php?option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_authorize_dpm&Itemid=$Itemid&orderid="
+			. "index.php?option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_authorize_dpm&Itemid=$itemId&orderid="
 			. $data['order_id'];
 		$api_login_id = $this->params->get("access_id");
 

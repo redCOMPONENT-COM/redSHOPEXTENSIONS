@@ -35,7 +35,7 @@ class JFormFieldPickhub extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$list = array();
+		$list = [];
 		$data = $this->getPickHubsData();
 		$i = 0;
 

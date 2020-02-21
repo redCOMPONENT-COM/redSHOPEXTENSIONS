@@ -51,7 +51,7 @@ abstract class ModRedFeaturedProductHelper
 				break;
 		}
 
-		$rows = array();
+		$rows = [];
 
 		if ($productIds = $db->setQuery($query, 0, (int) $params->get('NumberOfProducts', 5))->loadColumn())
 		{

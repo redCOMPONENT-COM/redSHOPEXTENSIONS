@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Plugin
+ * @package     \Redshop.Plugin
  * @subpackage  domPDF
  *
  * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.
@@ -9,12 +9,12 @@
 defined('_JEXEC') or die();
 
 /**
- * PlgRedshop_PdfDomPDF installer class.
+ * Plg\Redshop_PdfDomPDF installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    2.0.0
  */
-class PlgRedshop_PdfDomPDFInstallerScript
+class Plg\Redshop_PdfDomPDFInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

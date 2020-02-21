@@ -1,7 +1,7 @@
 <?php
 /**
- * @package     Redshop.Plugins
- * @subpackage  PlgRedshop_PaymentRs_Payment_Eway
+ * @package     \Redshop.Plugins
+ * @subpackage  Plg\Redshop_PaymentRs_Payment_Eway
  *
  * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later, see LICENSE.
@@ -10,12 +10,12 @@ defined('_JEXEC') or die();
 use Joomla\Registry\Registry;
 
 /**
- * PlgRedshop_PaymentRs_Payment_Eway installer class.
+ * Plg\Redshop_PaymentRs_Payment_Eway installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
-class PlgRedshop_PaymentRs_Payment_EwayInstallerScript
+class Plg\Redshop_PaymentRs_Payment_EwayInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-class plgRedshop_paymentrs_payment_eantransfer extends JPlugin
+class plg\Redshop_paymentrs_payment_eantransfer extends JPlugin
 {
 	/**
 	 * Plugin method with the same name as the event will be called automatically.
@@ -27,7 +27,7 @@ class plgRedshop_paymentrs_payment_eantransfer extends JPlugin
 		}
 
 		// Send the Order mail
-		if (Redshop::getConfig()->get('ORDER_MAIL_AFTER'))
+		if (\Redshop::getConfig()->get('ORDER_MAIL_AFTER'))
 		{
 						$redshopMail = redshopMail::getInstance();
 			$redshopMail->sendOrderMail($data['order_id']);

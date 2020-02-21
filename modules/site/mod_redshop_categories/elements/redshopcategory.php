@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 
 JLoader::import('redshop.library');
 
-class JFormFieldRedshopcategory extends JFormField
+class JFormField\Redshopcategory extends JFormField
 {
 
 	/**
@@ -25,7 +25,7 @@ class JFormFieldRedshopcategory extends JFormField
 	protected function getInput()
 	{
 		$name         = $this->name;
-		$categories = RedshopHelperCategory::getCategoryListArray();
+		$categories = \RedshopHelperCategory::getCategoryListArray();
 		array_unshift($categories, JHTML::_('select.option', '0', JText::_('MOD_REDSHOP_CATEGORIES_SELECT_CATEGORY'), 'category_id', 'category_name'));
 		ob_start();
 		$output = JHTML::_('select.genericlist', $categories, $name, 'class="inputbox"', 'category_id', 'category_name', $this->value, $name);

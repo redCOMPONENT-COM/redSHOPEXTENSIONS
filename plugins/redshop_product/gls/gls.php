@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.0
  */
-class PlgRedshop_ProductGls extends JPlugin
+class Plg\Redshop_ProductGls extends JPlugin
 {
 	/**
 	 * Method will trigger on After redSHOP Order Place to update GLS shipping info
@@ -31,7 +31,7 @@ class PlgRedshop_ProductGls extends JPlugin
 			return;
 		}
 
-		$orderShippingInfo = RedshopShippingRate::decrypt($orderResult->ship_method_id);
+		$orderShippingInfo = \RedshopShippingRate::decrypt($orderResult->ship_method_id);
 
 		if ('plgredshop_shippingdefault_shipping_gls' != strtolower($orderShippingInfo[0]))
 		{

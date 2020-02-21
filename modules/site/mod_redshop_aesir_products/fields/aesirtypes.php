@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 JFormHelper::loadFieldClass('list');
 
 /**
- * Class JFormFieldRedshopCategoryRemove
+ * Class JFormField\RedshopCategoryRemove
  *
  * @since  1.5
  */
@@ -38,7 +38,7 @@ class JFormFieldAesirTypes extends JFormFieldList
 			->from($db->qn('#__reditem_types'));
 
 		$items = $db->setQuery($query)->loadObjectList();
-		$options = array();
+		$options = [];
 
 		if (!$this->element['multiple'])
 		{

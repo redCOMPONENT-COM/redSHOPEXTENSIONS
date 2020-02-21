@@ -40,7 +40,7 @@ class plgredshop_shippingself_pickup extends JPlugin
 		$shipping = $shippinghelper->getShippingMethodByClass($this->classname);
 		$shipping_location = $shippinghelper->getShippingRates($shipping->element);
 
-		$shippingrate = array();
+		$shippingrate = [];
 		$rate = 0;
 
 		if (count($shipping_location) > 0)
@@ -48,7 +48,7 @@ class plgredshop_shippingself_pickup extends JPlugin
 			for ($i = 0, $in = count($shipping_location); $i < $in; $i++)
 			{
 				$rs = $shipping_location[$i];
-				$shipping_rate_id = RedshopShippingRate::encrypt(
+				$shipping_rate_id = \RedshopShippingRate::encrypt(
 									array(
 										__CLASS__,
 										$shipping->name,
@@ -73,7 +73,7 @@ class plgredshop_shippingself_pickup extends JPlugin
 		}
 		else
 		{
-			$shipping_rate_id = RedshopShippingRate::encrypt(
+			$shipping_rate_id = \RedshopShippingRate::encrypt(
 									array(
 										__CLASS__,
 										$shipping->name,

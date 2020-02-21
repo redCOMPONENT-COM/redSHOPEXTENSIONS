@@ -102,7 +102,7 @@ class AuthorizeNetCP extends AuthorizeNetAIM
  */
 class AuthorizeNetCP_Response extends AuthorizeNetResponse
 {
-	private $_response_array = array(); // An array with the split response.
+	private $_response_array = []; // An array with the split response.
 
 	/**
 	 * Constructor. Parses the AuthorizeNet response string.

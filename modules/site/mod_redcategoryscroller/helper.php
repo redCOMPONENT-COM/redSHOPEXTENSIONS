@@ -35,9 +35,9 @@ class ModRedCategoryScrollerHelper
 		$sortMethod = $params->get('ScrollSortMethod', 'random');
 		$isFeatured = (boolean) $params->get('featuredCategory', false);
 		$categoryId = JFactory::getApplication()->input->getInt('cid', 0);
-		$hierarchyTree = RedshopHelperCategory::getCategoryListArray($categoryId, $categoryId);
+		$hierarchyTree = \RedshopHelperCategory::getCategoryListArray($categoryId, $categoryId);
 
-		$cid = array();
+		$cid = [];
 
 		for ($i = 0, $in = count($hierarchyTree); $i < $in; $i++)
 		{

@@ -17,8 +17,8 @@ class AuthorizeNetCustomer
 	public $merchantCustomerId;
 	public $description;
 	public $email;
-	public $paymentProfiles = array();
-	public $shipToList = array();
+	public $paymentProfiles = [];
+	public $shipToList = [];
 	public $customerProfileId;
 }
 
@@ -94,7 +94,7 @@ class AuthorizeNetTransaction
 	public $tax;
 	public $shipping;
 	public $duty;
-	public $lineItems = array();
+	public $lineItems = [];
 	public $customerProfileId;
 	public $customerPaymentProfileId;
 	public $customerShippingAddressId;
@@ -111,24 +111,24 @@ class AuthorizeNetTransaction
 
 	public function __construct()
 	{
-		$this->tax = (object) array();
+		$this->tax = (object) [];
 		$this->tax->amount = "";
 		$this->tax->name = "";
 		$this->tax->description = "";
 
-		$this->shipping = (object) array();
+		$this->shipping = (object) [];
 		$this->shipping->amount = "";
 		$this->shipping->name = "";
 		$this->shipping->description = "";
 
-		$this->duty = (object) array();
+		$this->duty = (object) [];
 		$this->duty->amount = "";
 		$this->duty->name = "";
 		$this->duty->description = "";
 
 		// line items
 
-		$this->order = (object) array();
+		$this->order = (object) [];
 		$this->order->invoiceNumber = "";
 		$this->order->description = "";
 		$this->order->purchaseOrderNumber = "";

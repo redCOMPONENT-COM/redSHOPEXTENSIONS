@@ -18,7 +18,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.0
  */
-class PlgRedshop_OrderESms extends JPlugin
+class Plg\Redshop_OrderESms extends JPlugin
 {
 	/**
 	 * Constructor - note in Joomla 2.5 PHP4.x is no longer supported so we can use this.
@@ -42,15 +42,15 @@ class PlgRedshop_OrderESms extends JPlugin
 	 */
 	public function onAfterOrderStatusUpdate($data, $newStatus)
 	{
-		$statusContent = $this->params->get('status_content', array());
+		$statusContent = $this->params->get('status_content', []);
 
 		if (empty($statusContent))
 		{
 			return;
 		}
 
-		$statusList  = array();
-		$contentList = array();
+		$statusList  = [];
+		$contentList = [];
 
 		foreach ($statusContent as $key => $value)
 		{
@@ -68,8 +68,8 @@ class PlgRedshop_OrderESms extends JPlugin
 		$type      = $this->params->get('type', '6');
 		$content   = $contentList[$newStatus];
 		$shopName  = RedShop::getConfig()->get('SHOP_NAME');
-		$billing   = RedshopHelperOrder::getOrderBillingUserInfo($data->order_id);
-		$status    = RedshopHelperOrder::getOrderStatusTitle($newStatus);
+		$billing   = \RedshopHelperOrder::getOrderBillingUserInfo($data->order_id);
+		$status    = \RedshopHelperOrder::getOrderStatusTitle($newStatus);
 
 		if (strpos($content, "{order_id}") !== false)
 		{

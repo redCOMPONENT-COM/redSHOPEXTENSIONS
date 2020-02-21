@@ -11,11 +11,11 @@ defined('_JEXEC') or die;
 JLoader::import('redshop.library');
 
 /**
- * Class PlgRedshop_PaymentQuickbook
+ * Class Plg\Redshop_PaymentQuickbook
  *
  * @since  1.5
  */
-class PlgRedshop_PaymentQuickbook extends JPlugin
+class Plg\Redshop_PaymentQuickbook extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Plugin
+ * @package     \Redshop.Plugin
  * @subpackage  Paypal
  *
  * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.
@@ -9,12 +9,12 @@
 defined('_JEXEC') or die();
 
 /**
- * PlgRedshop_PdfMPdf installer class.
+ * Plg\Redshop_PdfMPdf installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.0.0
  */
-class PlgRedshop_PaymentPaypalCreditcardInstallerScript
+class Plg\Redshop_PaymentPaypalCreditcardInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

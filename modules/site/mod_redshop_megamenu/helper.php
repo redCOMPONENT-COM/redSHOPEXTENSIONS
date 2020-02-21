@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Site
+ * @package     \Redshop.Site
  * @subpackage  mod_redshop_megamenu
  *
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
@@ -12,13 +12,13 @@ defined('_JEXEC') or die;
 /**
  * Helper for mod_redshop_megamenu
  *
- * @package     Redshopb.Site
+ * @package     \Redshopb.Site
  * @subpackage  mod_redshop_megamenu
  * @since       1.6.21
  */
-class ModRedshopMegaMenuHelper
+class Mod\RedshopMegaMenuHelper
 {
-	protected static $categories = array();
+	protected static $categories = [];
 
 	/**
 	 * Get a list of parents categories items.
@@ -29,7 +29,7 @@ class ModRedshopMegaMenuHelper
 	 */
 	public static function getCategories($params)
 	{
-		$categoryId = $params->get('category', RedshopHelperCategory::getRootId());
+		$categoryId = $params->get('category', \RedshopHelperCategory::getRootId());
 		$end = $params->get('endLevel', 2);
 
 		if (isset(static::$categories[$categoryId]))
@@ -39,7 +39,7 @@ class ModRedshopMegaMenuHelper
 
 		$menu  = JFactory::getApplication()->getMenu();
 		$items = $menu->getItems('menutype', $params->get('menutype'));
-		$firstItem = array();
+		$firstItem = [];
 
 		foreach ($items as $i => $item)
 		{
@@ -56,18 +56,18 @@ class ModRedshopMegaMenuHelper
 			}
 		}
 
-		$firstItem = array_merge(array(), $firstItem);
+		$firstItem = array_merge([], $firstItem);
 	
-		$categories = RedshopHelperCategory::getCategoryListArray($categoryId);
+		$categories = \RedshopHelperCategory::getCategoryListArray($categoryId);
 
 		if (empty($categories))
 		{
-			static::$categories[$categoryId] = array();
+			static::$categories[$categoryId] = [];
 
 			return static::$categories[$categoryId];
 		}
 
-		$subCategories = array();
+		$subCategories = [];
 
 		// Get first sub-categories of parent category
 		foreach ($categories as $category)
@@ -100,11 +100,11 @@ class ModRedshopMegaMenuHelper
 
 		foreach ($firstItem as $subCategory)
 		{
-			$subCategory->sub_cat = array();
+			$subCategory->sub_cat = [];
 
 			if ($subCategory->category_id != 0)
 			{
-				$subCategory->sub_cat = self::getListForRedshopMegamenu($categories, $subCategory->category_id, 1, $end);
+				$subCategory->sub_cat = self::getListFor\RedshopMegamenu($categories, $subCategory->category_id, 1, $end);
 			}
 			else
 			{
@@ -136,7 +136,7 @@ class ModRedshopMegaMenuHelper
 		}
 
 		$menu  = JFactory::getApplication()->getMenu();
-		$subItem = array();
+		$subItem = [];
 		$key = 0;
 		$level++;
 
@@ -155,7 +155,7 @@ class ModRedshopMegaMenuHelper
         		$subItem[$key]->category_id = $item->id;
 				$subItem[$key]->category_name = $item->title;
 				$subItem[$key]->link = JRoute::_($item->link . '&Itemid=' . $item->id);
-				$subItem[$key]->image = Redshop::getConfig()->get('CATEGORY_DEFAULT_IMAGE');
+				$subItem[$key]->image = \Redshop::getConfig()->get('CATEGORY_DEFAULT_IMAGE');
 				$subItem[$key]->menu_parent_id = $item->id;
 				$subItem[$key]->level = $level;
 				$childMenu = $menu->getItems('parent_id', $item->id);
@@ -178,7 +178,7 @@ class ModRedshopMegaMenuHelper
 	 *
 	 * @return  array
 	 */
-	public static function getListForRedshopMegamenu($items, $parentId, $level, $end)
+	public static function getListFor\RedshopMegamenu($items, $parentId, $level, $end)
 	{
 		if (empty($items))
 		{
@@ -186,7 +186,7 @@ class ModRedshopMegaMenuHelper
 		}
 
 		$menu  = JFactory::getApplication()->getMenu();
-		$subItem = array();
+		$subItem = [];
 		$key = 0;
 		$level++;
 
@@ -209,9 +209,9 @@ class ModRedshopMegaMenuHelper
 				$subItem[$key]->link = JRoute::_('index.php?option=com_redshop&view=category&layout=detail&cid='
 				. $item->id . '&manufacturer_id=0&Itemid='
 				. (!empty($categoryMenuItem) ? $categoryMenuItem->id : 0));
-				$subItem[$key]->image = Redshop::getConfig()->get('CATEGORY_DEFAULT_IMAGE');
+				$subItem[$key]->image = \Redshop::getConfig()->get('CATEGORY_DEFAULT_IMAGE');
 				$subItem[$key]->level = $level;
-				$subItem[$key]->sub_cat = array();
+				$subItem[$key]->sub_cat = [];
 
 				if (!empty($item->category_full_image)
 					&& (strpos($item->category_full_image, '.jpg') == true
@@ -221,7 +221,7 @@ class ModRedshopMegaMenuHelper
 					$subItem[$key]->image = $item->category_full_image;
 				}
 
-				$subItem[$key]->sub_cat = self::getListForRedshopMegamenu($items, $item->id, $level, $end);
+				$subItem[$key]->sub_cat = self::getListFor\RedshopMegamenu($items, $item->id, $level, $end);
 				$key++;
         	}
         }
@@ -232,7 +232,7 @@ class ModRedshopMegaMenuHelper
 	/**
 	 * Display one redshop level
 	 *
-	 * @param   array   &$items      Redshop list items
+	 * @param   array   &$items      \Redshop list items
 	 * @param   object  $parentItem  Joomla parent item
 	 * @param   int     $level       Current level display
 	 *
@@ -345,7 +345,7 @@ class ModRedshopMegaMenuHelper
 	 *
 	 * @return  void
 	 */
-	public static function sortCategories(&$categories = array(), $sortBy = 'name', $sortDestination = 'asc')
+	public static function sortCategories(&$categories = [], $sortBy = 'name', $sortDestination = 'asc')
 	{
 		if (empty($categories))
 		{

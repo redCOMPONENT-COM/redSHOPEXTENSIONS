@@ -16,6 +16,6 @@ $user        = JFactory::getUser();
 $maintext    = $params->def('greeting_text', 1);
 $classSuffix = htmlspecialchars($params->get('moduleclass_sfx'));
 
-JHtml::stylesheet('mod_redshop_logingreeting/logingreeting.css', array(), true);
+JHtml::stylesheet('mod_redshop_logingreeting/logingreeting.css', [], true);
 
 require JModuleHelper::getLayoutPath('mod_redshop_logingreeting');

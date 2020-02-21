@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  */
 abstract class ModRedProductTabHelper
 {
-	public static $categories = array();
+	public static $categories = [];
 
 	/**
 	 * Get categories
@@ -51,7 +51,7 @@ abstract class ModRedProductTabHelper
 
 				if ($input->getCmd('option', '') == 'com_redshop' && $input->getCmd('view', '') == 'category' && $cid)
 				{
-					if ($categories = RedshopHelperCategory::getCategoryListArray('', $cid))
+					if ($categories = \RedshopHelperCategory::getCategoryListArray('', $cid))
 					{
 						foreach ($categories as $oneCategory)
 						{

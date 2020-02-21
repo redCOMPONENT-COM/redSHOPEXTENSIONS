@@ -14,7 +14,7 @@ JLoader::import('redshop.library');
 JFormHelper::loadFieldClass('list');
 
 /**
- * Class JFormFieldRedshopCategoryRemove
+ * Class JFormField\RedshopCategoryRemove
  *
  * @since  1.5
  */
@@ -42,7 +42,7 @@ class JFormFieldAesirItems extends JFormFieldList
 			->order($db->qn('i.ordering'));
 
 		$items = $db->setQuery($query)->loadObjectList();
-		$options = array();
+		$options = [];
 
 		if (!$this->element['multiple'])
 		{

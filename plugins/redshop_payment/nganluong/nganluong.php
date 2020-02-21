@@ -14,11 +14,11 @@ require_once dirname(__DIR__) . '/nganluong/library/init.php';
 /**
  * Nganluong payment class
  *
- * @package  Redshop.Plugin
+ * @package  \Redshop.Plugin
  *
  * @since    1.0.0
  */
-class plgRedshop_PaymentNganluong extends JPlugin
+class plg\Redshop_PaymentNganluong extends JPlugin
 {
 	/**
 	 * Constructor - note in Joomla 2.5 PHP4.x is no longer supported so we can use this.
@@ -95,7 +95,7 @@ class plgRedshop_PaymentNganluong extends JPlugin
 
 		$orderId          = $data['order']->order_id;
 		$totalAmount      = $data['order']->order_total;
-		$items            = array();
+		$items            = [];
 		$orderCode        = $orderId;
 		$orderQuantity    = $data['order_quantity'];
 		$orderDescription = $data['order']->customer_message;
@@ -113,7 +113,7 @@ class plgRedshop_PaymentNganluong extends JPlugin
 			'',
 			$orderCode,
 			$totalAmount,
-			Redshop::getConfig()->get('CURRENCY_CODE'),
+			\Redshop::getConfig()->get('CURRENCY_CODE'),
 			$orderQuantity,
 			0,
 			0,

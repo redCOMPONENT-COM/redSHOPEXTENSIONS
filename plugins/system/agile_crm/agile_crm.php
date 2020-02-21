@@ -160,7 +160,7 @@ class PlgSystemAgile_Crm extends JPlugin
 		$orderFunctions = order_functions::getInstance();
 		$orderDetail    = $orderFunctions->getOrderDetails($data->order_id);
 		$itemDetail     = $orderFunctions->getOrderItemDetail($data->order_id);
-		$product        = array();
+		$product        = [];
 
 		foreach ($itemDetail as $key => $item)
 		{

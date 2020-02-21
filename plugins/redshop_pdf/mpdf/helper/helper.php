@@ -17,10 +17,10 @@ require __DIR__ . '/vendor/autoload.php';
  *
  * @since  1.0.0
  */
-class PlgRedshop_PdfMPDFHelper extends mPDF
+class Plg\Redshop_PdfMPDFHelper extends mPDF
 {
 	/**
-	 * PlgRedshop_PdfMPDFHelper constructor.
+	 * Plg\Redshop_PdfMPDFHelper constructor.
 	 *
 	 * @param   string  $mode          Mode
 	 * @param   string  $format        Page size

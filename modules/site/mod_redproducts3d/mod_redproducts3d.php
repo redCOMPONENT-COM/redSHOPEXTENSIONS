@@ -9,13 +9,13 @@
 
 defined('_JEXEC') or die;
 
-$category = $params->get('category', array());
+$category = $params->get('category', []);
 
 $count                  = trim($params->get('count', 2));
 $stageWidth             = trim($params->get('stageWidth', 600));
 $stageHeight            = trim($params->get('stageHeight', 400));
-$thumbwidth             = trim($params->get('thumbwidth', 100));
-$thumbheight            = trim($params->get('thumbheight', 100));
+$thumbWidth             = trim($params->get('thumbwidth', 100));
+$thumbHeight            = trim($params->get('thumbheight', 100));
 $radius                 = trim($params->get('radius', 230));
 $focalBlur              = trim($params->get('focalBlur', 5));
 $elevation              = trim($params->get('elevation', -50));

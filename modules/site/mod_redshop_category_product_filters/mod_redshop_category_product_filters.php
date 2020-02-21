@@ -9,12 +9,12 @@
 
 defined('_JEXEC') or die;
 
-JLoader::register('ModRedshopCategoryProductFiltersHelper', __DIR__ . '/helper.php');
+JLoader::register('Mod\RedshopCategoryProductFiltersHelper', __DIR__ . '/helper.php');
 JLoader::import('redshop.library');
 
 $input        = JFactory::getApplication()->input;
 $cid          = $input->getInt('cid', 0);
-$mainCategory = RedshopEntityCategory::getInstance($cid)->getItem();
+$mainCategory = \RedshopEntityCategory::getInstance($cid)->getItem();
 
 // retrieve product filter parameters from main category
 $registry     = new JRegistry;
@@ -39,13 +39,13 @@ $view               = $input->getString('view', '');
 $layout             = $input->getString('layout', '');
 $action             = JRoute::_("index.php?option=com_redshop&view=category&layout=detail&cid=" . $cid);
 
-$categoryModel = JModelLegacy::getInstance('Category', 'RedshopModel');
-$filterInput = $categoryModel->getState('filterform', array());
+$categoryModel = JModelLegacy::getInstance('Category', '\RedshopModel');
+$filterInput = $categoryModel->getState('filterform', []);
 
 
-$productList = RedshopHelperCategory::getCategoryProductList($cid, true);
-$manuList    = array();
-$pids        = array();
+$productList = \RedshopHelperCategory::getCategoryProductList($cid, true);
+$manuList    = [];
+$pids        = [];
 
 foreach ($productList as $k => $value)
 {
@@ -62,11 +62,11 @@ if (empty($pids))
 	return;
 }
 
-$manufacturers   = ModRedshopCategoryProductFiltersHelper::getManufacturers(array_unique($manuList));
-$categories      = RedshopHelperCategory::getCategoryListArray($cid);
-$customFields    = ModRedshopCategoryProductFiltersHelper::getCustomFields($pids, $productFields);
-$rangePrice      = ModRedshopCategoryProductFiltersHelper::getPriceRange($pids);
-$attributesGroup = ModRedshopCategoryProductFiltersHelper::getAttributeFiltersList($attributeFilters, $pids);
+$manufacturers   = Mod\RedshopCategoryProductFiltersHelper::getManufacturers(array_unique($manuList));
+$categories      = \RedshopHelperCategory::getCategoryListArray($cid);
+$customFields    = Mod\RedshopCategoryProductFiltersHelper::getCustomFields($pids, $productFields);
+$rangePrice      = Mod\RedshopCategoryProductFiltersHelper::getPriceRange($pids);
+$attributesGroup = Mod\RedshopCategoryProductFiltersHelper::getAttributeFiltersList($attributeFilters, $pids);
 
 $rangeMin = $rangePrice['min'];
 $rangeMax = $rangePrice['max'];

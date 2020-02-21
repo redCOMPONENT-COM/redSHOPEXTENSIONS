@@ -61,17 +61,17 @@ if (count($list) > 0) {
                     <?php $i = 0;
 
                     foreach ($list as $row) {
-                        $itemData = RedshopHelperProduct::getMenuInformation(0, 0, '',
+                        $itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '',
                             'product&pid=' . $row->product_id);
 
                         if (count($itemData) > 0) {
                             $itemId = $itemData->id;
                         } else {
-                            $itemId = RedshopHelperRouter::getItemId($row->product_id);
+                            $itemId = \RedshopHelperRouter::getItemId($row->product_id);
                         }
 
                         if (!$cid) {
-                            $cid = RedshopHelperProduct::getCategoryProduct($row->product_id);
+                            $cid = \RedshopHelperProduct::getCategoryProduct($row->product_id);
                         }
 
                         $link = JRoute::_('index.php?option=com_redshop&view=product&pid=' . $row->product_id . '&cid=' . $cid . '&Itemid=' . $itemId);
@@ -85,7 +85,7 @@ if (count($list) > 0) {
                                 'product',
                                 $thumbWidth,
                                 $thumbHeight,
-                                Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
+                                \Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
                             );
                         } elseif (JFile::exists(REDSHOP_FRONT_IMAGES_RELPATH . "product/" . $row->product_thumb_image)) {
                             $productImage = RedShopHelperImages::getImagePath(
@@ -95,7 +95,7 @@ if (count($list) > 0) {
                                 'product',
                                 $thumbWidth,
                                 $thumbHeight,
-                                Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
+                                \Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
                             );
                         } else {
                             $productImage = REDSHOP_FRONT_IMAGES_ABSPATH . 'noimage.jpg';
@@ -114,7 +114,7 @@ if (count($list) > 0) {
                                     }
 
                                     if (!$row->not_for_sale && $params->get('show_price', 1)) {
-                                        $products = RedshopHelperProductPrice::getNetPrice($row->product_id);
+                                        $products = \RedshopHelperProductPrice::getNetPrice($row->product_id);
 
                                         if ($params->get('show_vatprice', "0")) {
                                             $productPrice = $products['product_main_price'];
@@ -124,11 +124,11 @@ if (count($list) > 0) {
                                             $productPriceDiscount = $products['productPrice'];
                                         }
 
-                                        if (Redshop::getConfig()->get('SHOW_PRICE') && !Redshop::getConfig()->get('USE_AS_CATALOG') && (!Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') || (Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && Redshop::getConfig()->get('SHOW_QUOTATION_PRICE')))) {
+                                        if (\Redshop::getConfig()->get('SHOW_PRICE') && !\Redshop::getConfig()->get('USE_AS_CATALOG') && (!\Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') || (\Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && \Redshop::getConfig()->get('SHOW_QUOTATION_PRICE')))) {
                                             if (!$productPrice) {
-                                                $productPriceDis = RedshopHelperProductPrice::priceReplacement($productPrice);
+                                                $productPriceDis = \RedshopHelperProductPrice::priceReplacement($productPrice);
                                             } else {
-                                                $productPriceDis = RedshopHelperProductPrice::formattedPrice($productPrice);
+                                                $productPriceDis = \RedshopHelperProductPrice::formattedPrice($productPrice);
                                             }
 
                                             $displayText = "<div class=\"mod_redproducts_price\">" . $productPriceDis . "</div>";
@@ -139,11 +139,11 @@ if (count($list) > 0) {
                                                     $s_price = $productPrice - $productPriceDiscount;
 
                                                     if ($params->get('show_discountpricelayout', "100")) {
-                                                        echo "<div id=\"mod_redoldprice\" class=\"mod_redoldprice\"><span>" . RedshopHelperProductPrice::formattedPrice($productPrice) . "</span></div>";
-                                                        echo "<div id=\"mod_redmainprice\" class=\"mod_redmainprice\">" . RedshopHelperProductPrice::formattedPrice($productPriceDiscount) . "</div>";
-                                                        echo "<div id=\"mod_redsavedprice\" class=\"mod_redsavedprice\">" . JText::_('MOD_REDFEATUREDPRODUCT_PRODUCT_PRICE_YOU_SAVED') . ' ' . RedshopHelperProductPrice::formattedPrice($s_price) . "</div>";
+                                                        echo "<div id=\"mod_redoldprice\" class=\"mod_redoldprice\"><span>" . \RedshopHelperProductPrice::formattedPrice($productPrice) . "</span></div>";
+                                                        echo "<div id=\"mod_redmainprice\" class=\"mod_redmainprice\">" . \RedshopHelperProductPrice::formattedPrice($productPriceDiscount) . "</div>";
+                                                        echo "<div id=\"mod_redsavedprice\" class=\"mod_redsavedprice\">" . JText::_('MOD_REDFEATUREDPRODUCT_PRODUCT_PRICE_YOU_SAVED') . ' ' . \RedshopHelperProductPrice::formattedPrice($s_price) . "</div>";
                                                     } else {
-                                                        echo "<div class=\"mod_redproducts_price\">" . RedshopHelperProductPrice::formattedPrice($productPriceDiscount) . "</div>";
+                                                        echo "<div class=\"mod_redproducts_price\">" . \RedshopHelperProductPrice::formattedPrice($productPriceDiscount) . "</div>";
                                                     }
                                                 }
                                             }
@@ -161,9 +161,9 @@ if (count($list) > 0) {
                             <?php
                             if ($params->get('show_addtocart', 1)) {
                                 $attributes = \Redshop\Product\Attribute::getProductAttribute($row->product_id);
-                                $totalatt = count($attributes);
-                                $addtocart_data = Redshop\Cart\Render::replace($row->product_id, 0, 0, 0, "", false, array(), $totalatt, 0, 0, $module->id);
-                                echo "<div class=\"form-button\">" . $addtocart_data . "</div>";
+                                $totalAttributes = count($attributes);
+                                $addToCart_data = \Redshop\Cart\Render::replace($row->product_id, 0, 0, 0, "", false, [], $totalAttributes, 0, 0, $module->id);
+                                echo "<div class=\"form-button\">" . $addToCart_data . "</div>";
                             }
                             ?>
                         </li>

@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-class plgRedshop_paymentrs_payment_moneris extends JPlugin
+class plg\Redshop_paymentrs_payment_moneris extends JPlugin
 {
 	/**
 	 * Constructor
@@ -101,7 +101,7 @@ class plgRedshop_paymentrs_payment_moneris extends JPlugin
 			$storeid    = $moneris_store_id;
 			$apitoken   = $moneris_api_token;
 			$tot_amount = $order_total = $data['order_total'];
-			$amount     = RedshopHelperCurrency::convert($tot_amount, '', 'USD');
+			$amount     = \RedshopHelperCurrency::convert($tot_amount, '', 'USD');
 		}
 
 		$avs_street_number = substr($data['billinginfo']->address, 0, 60);

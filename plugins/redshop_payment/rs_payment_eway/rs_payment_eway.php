@@ -10,12 +10,12 @@
 defined('_JEXEC') or die;
 
 /**
- * PlgRedshop_PaymentRs_Payment_Eway class.
+ * Plg\Redshop_PaymentRs_Payment_Eway class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
-class PlgRedshop_PaymentRs_Payment_Eway extends JPlugin
+class Plg\Redshop_PaymentRs_Payment_Eway extends JPlugin
 {
 	/**
 	 * [onPrePayment_rs_payment_eway]

@@ -15,7 +15,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.0.0
  */
-class PlgRedshop_ProductSync_B2b extends JPlugin
+class Plg\Redshop_ProductSync_B2b extends JPlugin
 {
 	/**
 	 * @var integer
@@ -50,7 +50,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$this->maxExecutionTime = ini_get("max_execution_time");
 		$this->maxExecutionTime = empty($this->maxExecutionTime) ? 9999999 : $this->maxExecutionTime;
@@ -74,7 +74,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 		$url         = $this->params->get('url', '');
 		$accessToken = $this->getAccessToken();
 		$params      = '/index.php?webserviceClient=site&webserviceVersion=1.2.0&option=redshopb&view=product&api=hal';
-		$result      = array();
+		$result      = [];
 		$type        = 'POST';
 		$insert      = true;
 
@@ -90,7 +90,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 
 		if (!$isNew)
 		{
-			$redshopBId = $this->getRedshopBId($data->product_id);
+			$redshopBId = $this->get\RedshopBId($data->product_id);
 
 			if ($redshopBId)
 			{
@@ -180,7 +180,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 	 *
 	 * @return  interger
 	 */
-	public function getRedshopBId($productId)
+	public function get\RedshopBId($productId)
 	{
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
@@ -207,7 +207,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 
 		foreach ($ids as $id)
 		{
-			$redshopBId = $this->getRedshopBId($id);
+			$redshopBId = $this->get\RedshopBId($id);
 
 			if (!$redshopBId)
 			{
@@ -253,7 +253,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 		$url         = $this->params->get('url', '');
 		$accessToken = $this->getAccessToken();
 		$params      = '/index.php?webserviceClient=site&webserviceVersion=1.1.0&option=redshopb&view=manufacturer&api=hal';
-		$result      = array();
+		$result      = [];
 		$type        = 'POST';
 		$insert      = true;
 
@@ -269,7 +269,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 
 		if (!$isNew)
 		{
-			$redshopBId = $this->getRedshopBManufacturerId($data->id);
+			$redshopBId = $this->get\RedshopBManufacturerId($data->id);
 
 			if ($redshopBId)
 			{
@@ -318,7 +318,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 	 *
 	 * @return  integer
 	 */
-	public function getRedshopBManufacturerId($manufacturerId)
+	public function get\RedshopBManufacturerId($manufacturerId)
 	{
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
@@ -345,7 +345,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 
 		foreach ($ids as $id)
 		{
-			$redshopBId = $this->getRedshopBManufacturerId($id);
+			$redshopBId = $this->get\RedshopBManufacturerId($id);
 
 			if (!$redshopBId)
 			{
@@ -501,11 +501,11 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 			{
 				if (!$recursive)
 				{
-					$this->syncCategories = array();
+					$this->syncCategories = [];
 				}
 				else
 				{
-					$this->syncCategories = RedshopEntityCategory::getInstance(RedshopHelperCategory::getRootId())->getChildCategories()->ids();
+					$this->syncCategories = \RedshopEntityCategory::getInstance(\RedshopHelperCategory::getRootId())->getChildCategories()->ids();
 				}
 			}
 			else
@@ -516,7 +516,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 				{
 					foreach ($categories as $categoryId)
 					{
-						$ids = array_merge($ids, RedshopEntityCategory::getInstance($categoryId)->getChildCategories()->ids());
+						$ids = array_merge($ids, \RedshopEntityCategory::getInstance($categoryId)->getChildCategories()->ids());
 					}
 				}
 
@@ -562,7 +562,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 		$url         = $this->params->get('url', '');
 		$accessToken = $this->getAccessToken();
 		$params      = '/index.php?webserviceClient=site&webserviceVersion=1.3.0&option=redshopb&view=product&api=hal';
-		$result      = array();
+		$result      = [];
 		$type        = 'POST';
 		$insert      = true;
 
@@ -576,7 +576,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 			return true;
 		}
 
-		$redshopBId = $this->getRedshopBId($product->product_id);
+		$redshopBId = $this->get\RedshopBId($product->product_id);
 
 		if ($redshopBId)
 		{
@@ -644,7 +644,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 		$url         = $this->params->get('url', '');
 		$accessToken = $this->getAccessToken();
 		$params      = '/index.php?webserviceClient=site&webserviceVersion=1.2.0&option=redshopb&view=product_image&api=Hal';
-		$result      = array();
+		$result      = [];
 		$type        = 'POST';
 
 		if (empty($url))
@@ -693,7 +693,7 @@ class PlgRedshop_ProductSync_B2b extends JPlugin
 		$url         = $this->params->get('url', '');
 		$accessToken = $this->getAccessToken();
 		$params      = '/index.php?webserviceClient=site&webserviceVersion=1.0.0&option=redshopb&view=product_description&api=Hal';
-		$result      = array();
+		$result      = [];
 		$type        = 'POST';
 
 		if (empty($url))

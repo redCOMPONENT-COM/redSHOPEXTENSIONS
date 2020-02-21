@@ -10,11 +10,11 @@
 defined('_JEXEC') or die;
 
 /**
- * Redshop Payment - DIBSDX
+ * \Redshop Payment - DIBSDX
  *
  * @since  1.5
  */
-class PlgRedshop_PaymentDibsDx extends JPlugin
+class Plg\Redshop_PaymentDibsDx extends JPlugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -32,7 +32,7 @@ class PlgRedshop_PaymentDibsDx extends JPlugin
 	 *                            Recognized key values include 'name', 'group', 'params', 'language'
 	 *                            (this list is not meant to be comprehensive).
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		JPlugin::loadLanguage('plg_redshop_payment_dibsdx');
 		parent::__construct($subject, $config);

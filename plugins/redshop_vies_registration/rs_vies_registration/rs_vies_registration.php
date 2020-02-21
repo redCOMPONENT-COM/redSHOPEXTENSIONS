@@ -10,11 +10,11 @@
 defined('_JEXEC') or die;
 
 /**
- * Class PlgRedshop_Vies_RegistrationRs_Vies_Registration
+ * Class Plg\Redshop_Vies_RegistrationRs_Vies_Registration
  *
  * @since  1.5
  */
-class PlgRedshop_Vies_RegistrationRs_Vies_Registration extends JPlugin
+class Plg\Redshop_Vies_RegistrationRs_Vies_Registration extends JPlugin
 {
 	protected $autoloadLanguage = true;
 
@@ -28,7 +28,7 @@ class PlgRedshop_Vies_RegistrationRs_Vies_Registration extends JPlugin
 	 *
 	 * @since   1.5
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		JHtml::_('redshopjquery.framework');
 		$lang = JFactory::getLanguage();

@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-class plgRedshop_paymentrs_payment_giropay extends JPlugin
+class plg\Redshop_paymentrs_payment_giropay extends JPlugin
 {
 	/**
 	 * Plugin method with the same name as the event will be called automatically.

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshopb.Site
+ * @package     \Redshopb.Site
  * @subpackage  mod_redshopb_megamenu
  *
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
@@ -18,9 +18,9 @@ $lang->load('mod_redshop_megamenu', __DIR__);
 // Include the syndicate functions only once
 require_once __DIR__ . '/helper.php';
 
-$categories = ModRedshopMegaMenuHelper::getCategories($params);
+$categories = Mod\RedshopMegaMenuHelper::getCategories($params);
 
-ModRedshopMegaMenuHelper::sortCategories($categories, $params->get('ordering', 'name'), $params->get('destination', 'asc'));
+Mod\RedshopMegaMenuHelper::sortCategories($categories, $params->get('ordering', 'name'), $params->get('destination', 'asc'));
 
 if (count($categories))
 {

@@ -17,7 +17,7 @@ jimport('joomla.plugin.plugin');
  *
  * @since  1.0
  */
-class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
+class Plg\Redshop_ShippingGiaohangnhanh extends JPlugin
 {
 	/**
 	 * Constructor - note in Joomla 2.5 PHP4.x is no longer supported so we can use this.
@@ -41,20 +41,20 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	public function onListRates(&$data)
 	{
 		$data['state_code'] = $data['post']['ghnCity'];
-		$shipping = RedshopHelperShipping::getShippingMethodByClass('giaohangnhanh');
-		$rateList = RedshopHelperShipping::listShippingRates($shipping->element, $data['users_info_id'], $data);
+		$shipping = \RedshopHelperShipping::getShippingMethodByClass('giaohangnhanh');
+		$rateList = \RedshopHelperShipping::listShippingRates($shipping->element, $data['users_info_id'], $data);
 
-		$shippingRate = array();
+		$shippingRate = [];
 
 		if (!empty($rateList))
 		{
 			foreach ($rateList as $key => $rate)
 			{
 				$shippingRateValue         = $rate->shipping_rate_value;
-				$rate->shipping_rate_value = RedshopHelperShipping::applyVatOnShippingRate($rate, $data);
+				$rate->shipping_rate_value = \RedshopHelperShipping::applyVatOnShippingRate($rate, $data);
 				$shippingVatRate           = $rate->shipping_rate_value - $shippingRateValue;
 
-				$shippingRateId = RedshopShippingRate::encrypt(
+				$shippingRateId = \RedshopShippingRate::encrypt(
 					array(
 						__CLASS__ ,
 						$shipping->name,
@@ -80,11 +80,11 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 
 		$cart          = JFactory::getSession()->get('cart');
 		$userInfoId    = $data['users_info_id'];
-		$districtField = RedshopHelperExtrafields::getDataByName('rs_ghn_district', 14, $userInfoId);
+		$districtField = \RedshopHelperExtrafields::getDataByName('rs_ghn_district', 14, $userInfoId);
 
 		if (empty($districtField))
 		{
-			$districtField = RedshopHelperExtrafields::getDataByName('rs_ghn_billing_district', 7, $userInfoId);
+			$districtField = \RedshopHelperExtrafields::getDataByName('rs_ghn_billing_district', 7, $userInfoId);
 		}
 
 		$district = $districtField->data_txt;
@@ -115,7 +115,7 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 			$width  += $productData->product_width;
 		}
 
-		$items                        = array();
+		$items                        = [];
 		$items[0]['Weight']           = $weight;
 		$items[0]['Length']           = $length;
 		$items[0]['Width']            = $width;
@@ -128,14 +128,14 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 
 		if (empty($result['Items']) || !empty($result['ErrorMessage']))
 		{
-			return array();
+			return [];
 		}
 
-		$shippingRate = array();
+		$shippingRate = [];
 
 		foreach ($result['Items'] as $key => $rate)
 		{
-			$shippingRateId = RedshopShippingRate::encrypt(
+			$shippingRateId = \RedshopShippingRate::encrypt(
 				array(
 					__CLASS__ ,
 					$shipping->name,
@@ -168,7 +168,7 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	 */
 	public function onRenderCustomField($infoId = 0)
 	{
-		echo RedshopLayoutHelper::render(
+		echo \RedshopLayoutHelper::render(
 			'template',
 			array(
 				'id'      => $infoId,
@@ -188,15 +188,15 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 		$app          = JFactory::getApplication();
 		$input        = $app->input;
 		$id           = $input->post->getInt('id', 0);
-		$selectedCity = RedshopHelperExtrafields::getDataByName('rs_ghn_city', 14, $id);
+		$selectedCity = \RedshopHelperExtrafields::getDataByName('rs_ghn_city', 14, $id);
 
 		if (empty($selectedCity))
 		{
-			$selectedCity = RedshopHelperExtrafields::getDataByName('rs_ghn_billing_city', 7, $id);
+			$selectedCity = \RedshopHelperExtrafields::getDataByName('rs_ghn_billing_city', 7, $id);
 		}
 
 		$data   = $this->getDistrictProvinceData();
-		$cities = array();
+		$cities = [];
 
 		if (empty($data['Data']))
 		{
@@ -238,15 +238,15 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 		$input            = $app->input;
 		$city             = $input->post->getInt('city', 0);
 		$id               = $input->post->getInt('id', 0);
-		$selectedDistrict = RedshopHelperExtrafields::getDataByName('rs_ghn_district', 14, $id);
+		$selectedDistrict = \RedshopHelperExtrafields::getDataByName('rs_ghn_district', 14, $id);
 
 		if (empty($selectedDistrict))
 		{
-			$selectedDistrict = RedshopHelperExtrafields::getDataByName('rs_ghn_billing_district', 7, $id);
+			$selectedDistrict = \RedshopHelperExtrafields::getDataByName('rs_ghn_billing_district', 7, $id);
 		}
 
 		$data      = $this->getDistrictProvinceData();
-		$districts = array();
+		$districts = [];
 
 		if (empty($data['Data']))
 		{
@@ -332,7 +332,7 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	public function sendOrderShipping($orderId, $paymentStatus, $orderStatus)
 	{
 		$createOrder = $this->params->get('order_status_to_create', '');
-		$orderData = RedshopHelperOrder::getOrderDetail($orderId);
+		$orderData = \RedshopHelperOrder::getOrderDetail($orderId);
 		$trackingId = $orderData->track_no;
 
 		if ($orderStatus != $createOrder && $trackingId != "")
@@ -340,20 +340,20 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 			return;
 		}
 
-		$paymentData = RedshopHelperOrder::getOrderPaymentDetail($orderId);
+		$paymentData = \RedshopHelperOrder::getOrderPaymentDetail($orderId);
 
 		if ($paymentData->payment_method_class != 'rs_payment_banktransfer' && $paymentStatus != 'Paid')
 		{
 			return;
 		}
 
-		$shippingData  = RedshopHelperOrder::getOrderShippingUserInfo($orderId);
+		$shippingData  = \RedshopHelperOrder::getOrderShippingUserInfo($orderId);
 		$userInfoId    = $shippingData->users_info_id;
-		$districtField = RedshopHelperExtrafields::getDataByName('rs_ghn_district', 14, $userInfoId);
+		$districtField = \RedshopHelperExtrafields::getDataByName('rs_ghn_district', 14, $userInfoId);
 
 		if (empty($districtField))
 		{
-			$districtField = RedshopHelperExtrafields::getDataByName('rs_ghn_billing_district', 7, $userInfoId);
+			$districtField = \RedshopHelperExtrafields::getDataByName('rs_ghn_billing_district', 7, $userInfoId);
 		}
 
 		$district = $districtField->data_txt;
@@ -392,14 +392,14 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 			return;
 		}
 
-		$cities = array();
+		$cities = [];
 
 		foreach ($result['Data'] as $key => $city)
 		{
 			$cities[$city['ProvinceCode']] = $city['ProvinceName'];
 		}
 
-		$data       = array();
+		$data       = [];
 		$key        = 0;
 		$data[$key] = new stdClass;
 
@@ -548,7 +548,7 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	 */
 	public function createShippingOrder($orderId, $serviceId, $districtCode, $orderShipping, $orderData)
 	{
-		$items     = RedshopHelperOrder::getItems($orderId);
+		$items     = \RedshopHelperOrder::getItems($orderId);
 		$weight    = 0;
 		$codAmount = $orderData->order_total;
 
@@ -613,9 +613,9 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	 *
 	 * @return void
 	 */
-	public function onBeforeCreateRedshopUser(&$data, $isNew)
+	public function onBeforeCreate\RedshopUser(&$data, $isNew)
 	{
-		$cities = array();
+		$cities = [];
 		$result = $this->getDistrictProvinceData();
 
 		foreach ($result['Data'] as $key => $city)
@@ -635,9 +635,9 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	 *
 	 * @return void
 	 */
-	public function onBeforeStoreRedshopUserShipping(&$data)
+	public function onBeforeStore\RedshopUserShipping(&$data)
 	{
-		$cities = array();
+		$cities = [];
 		$result = $this->getDistrictProvinceData();
 
 		foreach ($result['Data'] as $key => $city)
@@ -693,20 +693,20 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	 */
 	public function getBillingExtraFields($userInfoId)
 	{
-		$cityField = RedshopHelperExtrafields::getDataByName('rs_ghn_billing_city', 7, $userInfoId);
-		$districtField = RedshopHelperExtrafields::getDataByName('rs_ghn_billing_district', 7, $userInfoId);
+		$cityField = \RedshopHelperExtrafields::getDataByName('rs_ghn_billing_city', 7, $userInfoId);
+		$districtField = \RedshopHelperExtrafields::getDataByName('rs_ghn_billing_district', 7, $userInfoId);
 
 		if (empty($cityField) && empty($districtField))
 		{
-			return array();
+			return [];
 		}
 
 		$result = $this->getDistrictProvinceData();
 
 		$userCity     = "";
 		$userDistrict = "";
-		$cities       = array();
-		$districts    = array();
+		$cities       = [];
+		$districts    = [];
 
 		foreach ($result['Data'] as $key => $city)
 		{
@@ -743,20 +743,20 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	 */
 	public function getShippingExtraFields($userInfoId)
 	{
-		$cityField = RedshopHelperExtrafields::getDataByName('rs_ghn_city', 14, $userInfoId);
-		$districtField = RedshopHelperExtrafields::getDataByName('rs_ghn_district', 14, $userInfoId);
+		$cityField = \RedshopHelperExtrafields::getDataByName('rs_ghn_city', 14, $userInfoId);
+		$districtField = \RedshopHelperExtrafields::getDataByName('rs_ghn_district', 14, $userInfoId);
 
 		if (empty($cityField) && empty($districtField))
 		{
-			return array();
+			return [];
 		}
 
 		$result = $this->getDistrictProvinceData();
 
 		$userCity     = "";
 		$userDistrict = "";
-		$cities       = array();
-		$districts    = array();
+		$cities       = [];
+		$districts    = [];
 
 		foreach ($result['Data'] as $key => $city)
 		{
@@ -846,7 +846,7 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	 */
 	public function onReplaceTrackingUrl($orderId, &$trackingUrl)
 	{
-		$orderData = RedshopHelperOrder::getOrderDetail($orderId);
+		$orderData = \RedshopHelperOrder::getOrderDetail($orderId);
 		$trackingUrl = 'https://5sao.ghn.vn/Tracking/ViewTracking/' . $orderData->track_no;
 	}
 

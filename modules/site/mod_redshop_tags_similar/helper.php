@@ -16,7 +16,7 @@ use Joomla\Registry\Registry;
  *
  * @since  3.1
  */
-abstract class ModRedshopTagsHelper
+abstract class Mod\RedshopTagsHelper
 {
 	/**
 	 * Get a list of tags
@@ -146,7 +146,7 @@ abstract class ModRedshopTagsHelper
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
-			return array();
+			return [];
 		}
 
 		foreach ($results as $result)

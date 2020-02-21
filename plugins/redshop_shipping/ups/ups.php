@@ -18,7 +18,7 @@ JLoader::import('redshop.library');
  *
  * @since  2.0
  */
-class PlgRedshop_ShippingUps extends JPlugin
+class Plg\Redshop_ShippingUps extends JPlugin
 {
 	/**
 	 * @var string
@@ -48,7 +48,7 @@ class PlgRedshop_ShippingUps extends JPlugin
 
 		include_once JPATH_ROOT . '/plugins/' . $this->_type . '/' . $this->_name . '/config/' . $this->_name . '.cfg.php';
 
-		echo RedshopLayoutHelper::render('config', array(), __DIR__ . '/layouts');
+		echo \RedshopLayoutHelper::render('config', [], __DIR__ . '/layouts');
 
 		return true;
 	}
@@ -135,17 +135,17 @@ class PlgRedshop_ShippingUps extends JPlugin
 	 */
 	public function onListRates(&$data)
 	{
-		$shipping      = RedshopHelperShipping::getShippingMethodByClass($this->_name);
+		$shipping      = \RedshopHelperShipping::getShippingMethodByClass($this->_name);
 
 		$shippingParams = new Registry($shipping->params);
 
 		include_once JPATH_ROOT . '/plugins/' . $this->_type . '/' . $this->_name . '/config/' . $this->_name . '.cfg.php';
 
 		// Conversation of weight ( ration )
-		$unitRatio       = \Redshop\Helper\Utility::getUnitConversation('pounds', Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT'));
-		$unitRatioVolume = \Redshop\Helper\Utility::getUnitConversation('inch', Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
+		$unitRatio       = \Redshop\Helper\Utility::getUnitConversation('pounds', \Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT'));
+		$unitRatioVolume = \Redshop\Helper\Utility::getUnitConversation('inch', \Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
 
-		$cartTotalDimension = RedshopHelperShipping::getCartItemDimension();
+		$cartTotalDimension = \RedshopHelperShipping::getCartItemDimension();
 		$orderWeight        = $cartTotalDimension['totalweight'];
 
 		if ($unitRatio != 0)
@@ -154,21 +154,21 @@ class PlgRedshop_ShippingUps extends JPlugin
 			$orderWeight = $orderWeight * $unitRatio;
 		}
 
-		$shippingInformation = RedshopHelperShipping::getShippingAddress($data['users_info_id']);
+		$shippingInformation = \RedshopHelperShipping::getShippingAddress($data['users_info_id']);
 
 		if (is_null($shippingInformation))
 		{
-			return array();
+			return [];
 		}
 
 		if (isset($data['shipping_box_id']) && $data['shipping_box_id'])
 		{
-			$whereShippingBoxes = RedshopHelperShipping::getBoxDimensions($data['shipping_box_id']);
+			$whereShippingBoxes = \RedshopHelperShipping::getBoxDimensions($data['shipping_box_id']);
 		}
 		else
 		{
-			$whereShippingBoxes               = array();
-			$productData                      = RedshopHelperShipping::getProductVolumeShipping();
+			$whereShippingBoxes               = [];
+			$productData                      = \RedshopHelperShipping::getProductVolumeShipping();
 			$whereShippingBoxes['box_length'] = $productData[2]['length'];
 			$whereShippingBoxes['box_width']  = $productData[1]['width'];
 			$whereShippingBoxes['box_height'] = $productData[0]['height'];
@@ -176,7 +176,7 @@ class PlgRedshop_ShippingUps extends JPlugin
 
 		if (!is_array($whereShippingBoxes) || empty($whereShippingBoxes) || $unitRatioVolume <= 0)
 		{
-			return array();
+			return [];
 		}
 
 		$shippingLength = (int) ($whereShippingBoxes['box_length'] * $unitRatioVolume);
@@ -187,7 +187,7 @@ class PlgRedshop_ShippingUps extends JPlugin
 
 		if (isset($shippingInformation->country_code))
 		{
-			$shippingInformation->country_2_code = RedshopHelperWorld::getCountryCode2($shippingInformation->country_code);
+			$shippingInformation->country_2_code = \RedshopHelperWorld::getCountryCode2($shippingInformation->country_code);
 		}
 
 		/*
@@ -195,7 +195,7 @@ class PlgRedshop_ShippingUps extends JPlugin
 		 * KGS  = Kilograms
 		 * If change than change conversation base unit also
 		 */
-		$weightMeasure = (Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT') == "gram") ? "KGS" : "LBS";
+		$weightMeasure = (\Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT') == "gram") ? "KGS" : "LBS";
 
 		$xmlData = array(
 			'shipping'      => $shippingInformation,
@@ -216,7 +216,7 @@ class PlgRedshop_ShippingUps extends JPlugin
 		// Let's check whether the response from UPS is Success or Failure !
 		if ($xmlResult && strpos($xmlResult, "Failure") !== false)
 		{
-			return array();
+			return [];
 		}
 
 		// XML Parsing
@@ -251,7 +251,7 @@ class PlgRedshop_ShippingUps extends JPlugin
 			"na"
 		);
 
-		$myServiceCodes = array();
+		$myServiceCodes = [];
 
 		foreach ($allServiceCodes as $serviceCode)
 		{
@@ -265,7 +265,7 @@ class PlgRedshop_ShippingUps extends JPlugin
 
 		// UPS returns Charges in USD ONLY.
 		// So we have to convert from USD to Vendor Currency if necessary
-		$convert = Redshop::getConfig()->get('CURRENCY_CODE') != "USD" ? true : false;
+		$convert = \Redshop::getConfig()->get('CURRENCY_CODE') != "USD" ? true : false;
 
 		return $this->processShippingRate($shippingPostage, $convert, $shipping->name);
 	}
@@ -282,11 +282,11 @@ class PlgRedshop_ShippingUps extends JPlugin
 	protected function generateXML($data)
 	{
 		// The zip that you are shipping to
-		$vendorCountry2Code = Redshop::getConfig()->get('DEFAULT_SHIPPING_COUNTRY');
+		$vendorCountry2Code = \Redshop::getConfig()->get('DEFAULT_SHIPPING_COUNTRY');
 
-		if (Redshop::getConfig()->get('DEFAULT_SHIPPING_COUNTRY'))
+		if (\Redshop::getConfig()->get('DEFAULT_SHIPPING_COUNTRY'))
 		{
-			$vendorCountry2Code = RedshopHelperWorld::getCountryCode2(Redshop::getConfig()->get('DEFAULT_SHIPPING_COUNTRY'));
+			$vendorCountry2Code = \RedshopHelperWorld::getCountryCode2(\Redshop::getConfig()->get('DEFAULT_SHIPPING_COUNTRY'));
 		}
 
 		// The XML that will be posted to UPS
@@ -413,15 +413,15 @@ class PlgRedshop_ShippingUps extends JPlugin
 	 *
 	 * @since   2.0.0
 	 */
-	protected function processMatchesData($matchesChild = array(), $myServiceCodes = array())
+	protected function processMatchesData($matchesChild = [], $myServiceCodes = [])
 	{
 		if (empty($matchesChild))
 		{
-			return array();
+			return [];
 		}
 
 		$count = 0;
-		$result = array();
+		$result = [];
 
 		foreach ($matchesChild as $currNode)
 		{
@@ -439,7 +439,7 @@ class PlgRedshop_ShippingUps extends JPlugin
 
 			if (isset($result[$count]['Ratedshipmentwarning']))
 			{
-				$result[$count]['Ratedshipmentwarning'] = array();
+				$result[$count]['Ratedshipmentwarning'] = [];
 			}
 
 			foreach ($currNode->RatedShipmentWarning as $ratedShippingWarning)
@@ -527,15 +527,15 @@ class PlgRedshop_ShippingUps extends JPlugin
 	 *
 	 * @since   2.0.0
 	 */
-	protected function processShippingRate($shippingPostage = array(), $convert = false, $shippingName = '')
+	protected function processShippingRate($shippingPostage = [], $convert = false, $shippingName = '')
 	{
 		if (empty($shippingPostage))
 		{
-			return array();
+			return [];
 		}
 
 		$index = 0;
-		$rates = array();
+		$rates = [];
 
 		foreach ($shippingPostage as $postage)
 		{
@@ -552,7 +552,7 @@ class PlgRedshop_ShippingUps extends JPlugin
 
 			if ($convert)
 			{
-				$charge = RedshopHelperCurrency::convert($rateValue, "USD", Redshop::getConfig()->get('CURRENCY_CODE'));
+				$charge = \RedshopHelperCurrency::convert($rateValue, "USD", \Redshop::getConfig()->get('CURRENCY_CODE'));
 				$charge = !empty($charge) ? $charge : $rateValue;
 			}
 			else
@@ -563,7 +563,7 @@ class PlgRedshop_ShippingUps extends JPlugin
 			$chargeFee = ($serviceFSC == 0) ? 0 : ($charge * $serviceFSC) / 100;
 			$charge    += (int) UPS_HANDLING_FEE + $chargeFee;
 
-			$shippingRateId = RedshopShippingRate::encrypt(
+			$shippingRateId = \RedshopShippingRate::encrypt(
 				array(
 					__CLASS__,
 					$shippingName,

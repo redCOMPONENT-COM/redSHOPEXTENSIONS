@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 JLoader::import('redshop.library');
 JLoader::import('helper', __DIR__);
 
-$data = ModRedshopDiscountHelper::getList($params);
+$data = Mod\RedshopDiscountHelper::getList($params);
 
 if ($data)
 {

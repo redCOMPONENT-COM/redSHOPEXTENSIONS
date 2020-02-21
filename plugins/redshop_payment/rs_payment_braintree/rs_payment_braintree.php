@@ -14,11 +14,11 @@ JLoader::import('redshop.library');
 /**
  * BrainTree payment class
  *
- * @package  Redshop.Plugin
+ * @package  \Redshop.Plugin
  *
  * @since    2.0.0
  */
-class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
+class Plg\Redshop_Paymentrs_Payment_Braintree extends JPlugin
 {
 	/**
 	 * Constructor
@@ -30,7 +30,7 @@ class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 	 *
 	 * @since   1.5
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_payment_rs_payment_braintree', JPATH_ADMINISTRATOR);
@@ -94,7 +94,7 @@ class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 
 			$creditCardSession = JFactory::getSession()->get('ccdata');
 
-			$availableCreditCards                  = array();
+			$availableCreditCards                  = [];
 			$availableCreditCards['VISA']          = new stdClass;
 			$availableCreditCards['VISA']->img     = 'visa.jpg';
 			$availableCreditCards['MC']            = new stdClass;
@@ -110,7 +110,7 @@ class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 			$availableCreditCards['discover']      = new stdClass;
 			$availableCreditCards['discover']->img = 'discover.jpg';
 
-			$months   = array();
+			$months   = [];
 			$months[] = JHtml::_('select.option', '0', JText::_('PLG_RS_PAYMENT_BRAINTREE_MONTH'));
 			$months[] = JHtml::_('select.option', '01', 1);
 			$months[] = JHtml::_('select.option', '02', 2);
@@ -125,7 +125,7 @@ class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 			$months[] = JHtml::_('select.option', '11', 11);
 			$months[] = JHtml::_('select.option', '12', 12);
 
-			$creditCard         = array();
+			$creditCard         = [];
 			$acceptedCreditCard = $this->params->get("accepted_credict_card");
 
 			if ($acceptedCreditCard != "")
@@ -249,14 +249,14 @@ class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 		}
 
 		$session = JFactory::getSession();
-		$ccdata  = $session->get('ccdata', array());
+		$ccdata  = $session->get('ccdata', []);
 		$input   = JFactory::getApplication()->input;
 
 		$menuItemId = $input->getInt('Itemid');
 		$orderId    = $input->getInt('order_id');
 
-		$order      = RedshopHelperOrder::getOrderDetails($orderId);
-		$orderItems = RedshopHelperOrder::getOrderItemDetail($orderId);
+		$order      = \RedshopHelperOrder::getOrderDetails($orderId);
+		$orderItems = \RedshopHelperOrder::getOrderItemDetail($orderId);
 
 		if ($input->getInt('ccinfo', 0) == 1)
 		{
@@ -271,13 +271,13 @@ class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 		}
 
 		// Send the order_id and orderpayment_id to the payment plugin so it knows which DB record to update upon successful payment
-		$billingAddress = RedshopHelperOrder::getBillingAddress($order->user_id);
+		$billingAddress = \RedshopHelperOrder::getBillingAddress($order->user_id);
 
 		if (!empty($billingAddress))
 		{
 			if (!empty($billingAddress->country_code))
 			{
-				$billingAddress->country_2_code = RedshopHelperWorld::getCountryCode2($billingAddress->country_code);
+				$billingAddress->country_2_code = \RedshopHelperWorld::getCountryCode2($billingAddress->country_code);
 			}
 
 			if (!empty($billingAddress->state_code))
@@ -286,13 +286,13 @@ class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 			}
 		}
 
-		$shippingAddress = RedshopHelperOrder::getOrderShippingUserInfo($orderId);
+		$shippingAddress = \RedshopHelperOrder::getOrderShippingUserInfo($orderId);
 
 		if (!empty($shippingAddress))
 		{
 			if (!empty($shippingAddress->country_code))
 			{
-				$shippingAddress->country_2_code = RedshopHelperWorld::getCountryCode2($shippingAddress->country_code);
+				$shippingAddress->country_2_code = \RedshopHelperWorld::getCountryCode2($shippingAddress->country_code);
 			}
 
 			if (!empty($shippingAddress->state_code))
@@ -381,7 +381,7 @@ class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 		}
 
 		// For total amount
-		$priceDecimal = (Redshop::getConfig()->get('PRICE_DECIMAL') != '') ? Redshop::getConfig()->get('PRICE_DECIMAL') : 2;
+		$priceDecimal = (\Redshop::getConfig()->get('PRICE_DECIMAL') != '') ? \Redshop::getConfig()->get('PRICE_DECIMAL') : 2;
 
 		$orderTotal = number_format($data['order']->order_total, $priceDecimal, '.', '');
 
@@ -565,7 +565,7 @@ class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 		$orderId = $data['order_id'];
 		$tid     = $data['order_transactionid'];
 
-		$priceDecimal = (Redshop::getConfig()->get('PRICE_DECIMAL') != '') ? Redshop::getConfig()->get('PRICE_DECIMAL') : 2;
+		$priceDecimal = (\Redshop::getConfig()->get('PRICE_DECIMAL') != '') ? \Redshop::getConfig()->get('PRICE_DECIMAL') : 2;
 
 		$orderAmount = number_format($data['order_amount'], $priceDecimal);
 

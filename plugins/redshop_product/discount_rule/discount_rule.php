@@ -20,7 +20,7 @@ use Aesir\App;
  *
  * @since 1.0.0
  */
-class PlgRedshop_ProductDiscount_Rule extends JPlugin
+class Plg\Redshop_ProductDiscount_Rule extends JPlugin
 {
 	/**
 	 * Constructor
@@ -30,7 +30,7 @@ class PlgRedshop_ProductDiscount_Rule extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_product_discount_rule', JPATH_ADMINISTRATOR);
@@ -66,8 +66,8 @@ class PlgRedshop_ProductDiscount_Rule extends JPlugin
 	{
 		$oprand     = $this->params->get("oprand", '-');
 		$amount     = $this->params->get("amount", 0);
-		$domain     = $this->params->get('domain', array());
-		$domainList = array();
+		$domain     = $this->params->get('domain', []);
+		$domainList = [];
 
 		foreach ($domain as $value)
 		{

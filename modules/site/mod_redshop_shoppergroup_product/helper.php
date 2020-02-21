@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.5
  */
-class ModRedshopShopperGroupProduct
+class Mod\RedshopShopperGroupProduct
 {
 	/**
 	 * Get a list of the products.
@@ -27,10 +27,10 @@ class ModRedshopShopperGroupProduct
 	{
 		$user = JFactory::getUser();
 		$db   = JFactory::getDbo();
-		$shopperGroupId = RedshopHelperUser::getShopperGroup($user->id);
-		$shopperGroupData = Redshop\Helper\ShopperGroup::generateList($shopperGroupId);
+		$shopperGroupId = \RedshopHelperUser::getShopperGroup($user->id);
+		$shopperGroupData = \Redshop\Helper\ShopperGroup::generateList($shopperGroupId);
 		$shopperGroupCategories = $shopperGroupData[0]->shopper_group_categories;
-		$rows = array();
+		$rows = [];
 
 		$subQuery = $db->getQuery(true)
 			->select('SUM(' . $db->qn('oi.product_quantity') . ') AS qty, oi.product_id, oi.order_id')

@@ -17,7 +17,7 @@ JLoader::import('redshop.library');
  *
  * @since 1.0.0
  */
-class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
+class Plg\Redshop_ShippingDefault_Shipping_Gls extends JPlugin
 {
 	/**
 	 * Shipping name
@@ -63,7 +63,7 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		parent::__construct($subject, $config);
 	}
@@ -79,7 +79,7 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 	 */
 	public function getGLSLocation($usersInfoId, $className, $shopId = 0)
 	{
-		$shippingGLS    = RedshopHelperOrder::getParameters('default_shipping_gls');
+		$shippingGLS    = \RedshopHelperOrder::getParameters('default_shipping_gls');
 		$selectedShopId = null;
 
 		if (empty($shippingGLS) || !$shippingGLS[0]->enabled || $className != $this->_name)
@@ -87,7 +87,7 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 			return '';
 		}
 
-		$values = RedshopHelperUser::getUserInformation(0, '', $usersInfoId, false);
+		$values = \RedshopHelperUser::getUserInformation(0, '', $usersInfoId, false);
 
 		if ($shopId)
 		{
@@ -106,7 +106,7 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 			}
 		}
 
-		$shopList      = array();
+		$shopList      = [];
 		$shopResponses = $this->GetNearstParcelShops($values);
 
 		if (!empty($shopResponses) && is_array($shopResponses))
@@ -133,7 +133,7 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 			}
 		}
 
-		return RedshopLayoutHelper::render(
+		return \RedshopLayoutHelper::render(
 			'glslocation',
 			array(
 				'values'         => $values,
@@ -189,14 +189,14 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 
 			if (!$countryCode)
 			{
-				$countryCode = Redshop::getConfig()->get('DEFAULT_VAT_COUNTRY');
+				$countryCode = \Redshop::getConfig()->get('DEFAULT_VAT_COUNTRY');
 			}
 
 			$handle = $this->client->SearchNearestParcelShops(
 				array(
 					'street'           => (string) $values->address,
 					'zipcode'          => (string) $values->zipcode,
-					'countryIso3166A2' => RedshopHelperWorld::getCountryCode2($countryCode),
+					'countryIso3166A2' => \RedshopHelperWorld::getCountryCode2($countryCode),
 					'Amount'           => $this->params->get('amount_shop', 10)
 				)
 			)->SearchNearestParcelShopsResult;
@@ -226,11 +226,11 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 	{
 		if (empty($pakkeshopData))
 		{
-			return array();
+			return [];
 		}
 
 		$i         = 0;
-		$returnArr = array();
+		$returns = [];
 
 		foreach ($pakkeshopData as $key => $data)
 		{
@@ -248,21 +248,21 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 				. "|" . $telephone . "|" . $stropeningTime
 				. "|" . $cityName;
 
-			$returnArr[$i]                       = new stdClass;
-			$returnArr[$i]->shop_id              = $shopId;
-			$returnArr[$i]->Number               = $shopNumber;
-			$returnArr[$i]->CompanyName          = $companyName;
-			$returnArr[$i]->Streetname           = $streetName;
-			$returnArr[$i]->ZipCode              = $zipCode;
-			$returnArr[$i]->Telephone            = $telephone;
-			$returnArr[$i]->openingTime          = $stropeningTime;
-			$returnArr[$i]->CityName             = $cityName;
-			$returnArr[$i]->CountryCodeISO3166A2 = $countryCodeISO3166A2;
+			$returns[$i]                       = new stdClass;
+			$returns[$i]->shop_id              = $shopId;
+			$returns[$i]->Number               = $shopNumber;
+			$returns[$i]->CompanyName          = $companyName;
+			$returns[$i]->Streetname           = $streetName;
+			$returns[$i]->ZipCode              = $zipCode;
+			$returns[$i]->Telephone            = $telephone;
+			$returns[$i]->openingTime          = $stropeningTime;
+			$returns[$i]->CityName             = $cityName;
+			$returns[$i]->CountryCodeISO3166A2 = $countryCodeISO3166A2;
 
 			$i++;
 		}
 
-		return $returnArr;
+		return $returns;
 	}
 
 	/**
@@ -329,20 +329,20 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 	 */
 	public function onListRates(&$data)
 	{
-		$shippingRate = array();
+		$shippingRate = [];
 		$rate         = 0;
-		$shipping     = RedshopHelperShipping::getShippingMethodByClass($this->_name);
-		$rates        = RedshopHelperShipping::listShippingRates($shipping->element, $data['users_info_id'], $data);
+		$shipping     = \RedshopHelperShipping::getShippingMethodByClass($this->_name);
+		$rates        = \RedshopHelperShipping::listShippingRates($shipping->element, $data['users_info_id'], $data);
 		$countRate    = count($rates) >= 1 ? 1 : 0;
 
 		for ($i = 0; $i < $countRate; $i++)
 		{
 			$rs                      = $rates[$i];
 			$shippingRateValue       = $rs->shipping_rate_value;
-			$rs->shipping_rate_value = RedshopHelperShipping::applyVatOnShippingRate($rs, $data);
+			$rs->shipping_rate_value = \RedshopHelperShipping::applyVatOnShippingRate($rs, $data);
 			$shippingVatRate         = $rs->shipping_rate_value - $shippingRateValue;
 			$economicDisplayNumber   = $rs->economic_displaynumber;
-			$shippingRateId          = RedshopShippingRate::encrypt(
+			$shippingRateId          = \RedshopShippingRate::encrypt(
 				array(
 					__CLASS__,
 					$shipping->name,
