@@ -27,11 +27,11 @@ abstract class ModRedFeaturedProductHelper
 	 */
 	public static function getList(&$params)
 	{
-		$db = JFactory::getDbo();
+		$db = \JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select('p.product_id')
 			->from($db->qn('#__redshop_product', 'p'))
-			->where($db->qn('p.published') . ' = 1')
+			->where($db->qn('p.published') . ' = ' . $db->q(1))
 			->where('product_special = 1')
 			->group('p.product_id');
 
