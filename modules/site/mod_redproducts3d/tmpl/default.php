@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 $uri = JURI::getInstance();
 $url = $uri->root();
-$Itemid = JRequest::getInt('Itemid');
+$itemId = JRequest::getInt('Itemid');
 
 $document = JFactory::getDocument();
 JHTML::script('modules/mod_redproducts3d/js/redproduct360.js');
@@ -60,7 +60,7 @@ $document->addScriptDeclaration('
 	var jxtc4bff6dcf168a9flashvars = {
 		stageW:"' . $stageWidth . '",
 		stageH:"' . $stageHeight . '",
-		menuSettings:"pictureWidth=' . $thumbwidth . ' | pictureHeight=' . $thumbheight . ' | radius=' . $radius . ' | focalBlur=' . $focalBlur . ' | elevation=' . $elevation . ' | enableImageReflection=' . $enableImageReflection . ' | enableimageStroke=' . $enableimageStroke . ' | enableMouseOverToolTip=' . $enableMouseOverToolTip . ' | enableMouseOverEffects=' . $enableMouseOverEffects . ' ",
+		menuSettings:"pictureWidth=' . $thumbWidth . ' | pictureHeight=' . $thumbHeight . ' | radius=' . $radius . ' | focalBlur=' . $focalBlur . ' | elevation=' . $elevation . ' | enableImageReflection=' . $enableImageReflection . ' | enableimageStroke=' . $enableimageStroke . ' | enableMouseOverToolTip=' . $enableMouseOverToolTip . ' | enableMouseOverEffects=' . $enableMouseOverEffects . ' ",
 		menuItems:"' . $data . '"
 		};
 		swfobject.embedSWF("modules/mod_redproducts3d/js/3Dcarousel.swf", "jxtc4bff6dcf168a9", ' . $stageWidth . ', ' . $stageHeight . ', "9.0.124", null, jxtc4bff6dcf168a9flashvars, jxtc4bff6dcf168a9params);

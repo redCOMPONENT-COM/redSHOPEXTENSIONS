@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Plugin
+ * @package     \Redshop.Plugin
  * @subpackage  Wss_Datafeed
  *
  * @copyright   Copyright (C) 2008 - 2017 redCOMPONENT.com. All rights reserved.
@@ -9,12 +9,12 @@
 defined('_JEXEC') or die();
 
 /**
- * PlgRedshop_ProductWss_Datafeed installer class.
+ * Plg\Redshop_ProductWss_Datafeed installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.6.0
  */
-class PlgRedshop_ProductWss_DatafeedInstallerScript
+class Plg\Redshop_ProductWss_DatafeedInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

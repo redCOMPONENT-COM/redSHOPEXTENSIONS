@@ -28,7 +28,7 @@ class PlgSystemRedSHOP_Product_Bundle extends JPlugin
 	 *                             (this list is not meant to be comprehensive).
 	 * @since  1.0.0
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		JPlugin::loadLanguage('plg_system_redshop_product_bundle');
 

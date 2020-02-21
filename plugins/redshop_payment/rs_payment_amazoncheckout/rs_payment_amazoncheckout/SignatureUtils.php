@@ -122,7 +122,7 @@ class SignatureUtils
 	 */
 	public static function _getParametersAsString(array $parameters)
 	{
-		$queryParameters = array();
+		$queryParameters = [];
 
 		foreach ($parameters as $key => $value)
 		{

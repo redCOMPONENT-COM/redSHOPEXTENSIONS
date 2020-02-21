@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.3.3.1
  */
-class PlgRedshop_ProductPostDanmark extends JPlugin
+class Plg\Redshop_ProductPostDanmark extends JPlugin
 {
 	/**
 	 * This event will trigger while order place and before generate Economic invoice
@@ -45,7 +45,7 @@ class PlgRedshop_ProductPostDanmark extends JPlugin
 			return;
 		}
 
-		$orderShippingInfo = RedshopHelperShipping::decryptShipping($orderResult->ship_method_id);
+		$orderShippingInfo = \RedshopHelperShipping::decryptShipping($orderResult->ship_method_id);
 
 		if ('plgredshop_shippingpostdanmark' != strtolower($orderShippingInfo[0]))
 		{

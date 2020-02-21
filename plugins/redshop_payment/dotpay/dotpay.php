@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
 /**
  * DotPay payment gateway
  *
- * @package     Redshop.Plugins
+ * @package     \Redshop.Plugins
  * @subpackage  DotPay
  * @since       1.5
  */
-class PlgRedshop_PaymentDotpay extends RedshopPayment
+class Plg\Redshop_PaymentDotpay extends \RedshopPayment
 {
 	/**
 	 * Method to setup the payment form and send to gateway
@@ -48,7 +48,7 @@ class PlgRedshop_PaymentDotpay extends RedshopPayment
 		$inputs = array(
 				'id'          => $this->params->get("customerId"),
 				'amount'      => $orderInfo['carttotal'],
-				'currency'    => Redshop::getConfig()->get('CURRENCY_CODE'),
+				'currency'    => \Redshop::getConfig()->get('CURRENCY_CODE'),
 				'description' => 'Payment for order ' . $orderInfo['order_id'],
 				'lang'        => $this->getLang(),
 				'type'        => 0,

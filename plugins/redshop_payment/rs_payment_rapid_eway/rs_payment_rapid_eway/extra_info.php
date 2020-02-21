@@ -15,7 +15,7 @@ $order_items      = $order_functions->getOrderItemDetail($data['order_id']);
 $session          = JFactory::getSession();
 $ccdata           = $session->get('ccdata');
 $app              = JFactory::getApplication();
-$Itemid           = $app->input->getInt('Itemid');
+$itemId           = $app->input->getInt('Itemid');
 
 include JPATH_SITE . '/plugins/redshop_payment/' . $plugin . '/' . $plugin . '/RapidAPI.php';
 
@@ -43,7 +43,7 @@ else
 
 $currency_main = "GBP";
 
-$order_subtotal = RedshopHelperCurrency::convert($data['order']->order_total, '', $currency_main);
+$order_subtotal = \RedshopHelperCurrency::convert($data['order']->order_total, '', $currency_main);
 
 // Create DirectPayment Request Object
 $request = new eWAY\CreateDirectPaymentRequest;
@@ -109,7 +109,7 @@ if (isset($result->Errors))
 		$lblError .= $error . "<br />\n";
 	}
 
-	$link = 'index.php?option=com_redshop&view=order_detail&Itemid=' . $Itemid . '&oid=' . $data['order_id'];
+	$link = 'index.php?option=com_redshop&view=order_detail&Itemid=' . $itemId . '&oid=' . $data['order_id'];
 	$app->redirect($link, $lblError);
 }
 

@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-class plgRedshop_paymentrs_payment_sagepay extends JPlugin
+class plg\Redshop_paymentrs_payment_sagepay extends JPlugin
 {
 	/**
 	 * Plugin method with the same name as the event will be called automatically.
@@ -166,7 +166,7 @@ class plgRedshop_paymentrs_payment_sagepay extends JPlugin
 		set_time_limit(60);
 
 		// Initialise output variable
-		$output = array();
+		$output = [];
 
 		// Open the cURL session
 		$curlSession = curl_init();
@@ -251,8 +251,8 @@ class plgRedshop_paymentrs_payment_sagepay extends JPlugin
 			"PayerStatus", "CardType");
 
 		// Initialize arrays
-		$output = array();
-		$resultArray = array();
+		$output = [];
+		$resultArray = [];
 
 		// Get the next token in the sequence
 		for ($i = count($Tokens) - 1; $i >= 0; $i--)

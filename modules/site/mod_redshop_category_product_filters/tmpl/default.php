@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-$group = array();
+$group = [];
 
 
 ?>
@@ -160,14 +160,14 @@ $group = array();
 
 								?>
                                 <div id="amount-min">
-                                    <div><?php echo Redshop::getConfig()->get('CURRENCY_CODE') ?></div>
+                                    <div><?php echo \Redshop::getConfig()->get('CURRENCY_CODE') ?></div>
                                     <input type="text" pattern="^\d*(\.\d{2}$)?" class="span12"
                                            name="filterform[filterprice][min]" value="<?php echo $minPriceInput; ?>"
                                            min="0"
                                            max="<?php echo $rangeMax; ?>"/>
                                 </div>
                                 <div id="amount-max">
-                                    <div><?php echo Redshop::getConfig()->get('CURRENCY_CODE') ?></div>
+                                    <div><?php echo \Redshop::getConfig()->get('CURRENCY_CODE') ?></div>
                                     <input type="text" pattern="^\d*(\.\d{2}$)?" class="span12"
                                            name="filterform[filterprice][max]" value="<?php echo $maxPriceInput; ?>"
                                            min="0"

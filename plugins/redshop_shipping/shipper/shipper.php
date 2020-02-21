@@ -57,7 +57,7 @@ class Plgredshop_Shippingshipper extends JPlugin
 		$shippinghelper = shipping::getInstance();
 		$shipping = $shippinghelper->getShippingMethodByClass($this->classname);
 
-		$shippingrate = array();
+		$shippingrate = [];
 
 		$ratelist = $shippinghelper->listshippingrates($shipping->element, $d['users_info_id'], $d);
 
@@ -69,7 +69,7 @@ class Plgredshop_Shippingshipper extends JPlugin
 				$rs->shipping_rate_value = $shippinghelper->applyVatOnShippingRate($rs, $d);
 				$shippingVatRate = $rs->shipping_rate_value - $shippingRateInt;
 				$economic_displaynumber = $rs->economic_displaynumber;
-				$shipping_rate_id = RedshopShippingRate::encrypt(
+				$shipping_rate_id = \RedshopShippingRate::encrypt(
 										array(
 											__CLASS__,
 											$shipping->name,

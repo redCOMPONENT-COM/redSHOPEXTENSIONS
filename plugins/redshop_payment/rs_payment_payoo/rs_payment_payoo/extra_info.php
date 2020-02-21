@@ -12,11 +12,11 @@ JLoader::import('redshop.library');
 $today = date('d/m/Y', strtotime('+2 day', time()));
 $validity = date('YmdHis', strtotime('+1 day', time()));
 
-$amount = RedshopHelperCurrency::convert($data['order']->order_total, '', 'VND');
+$amount = \RedshopHelperCurrency::convert($data['order']->order_total, '', 'VND');
 
 $name = $data['billinginfo']->lastname . ' ' . $data['billinginfo']->firstname;
 
-$items = RedshopHelperOrder::getItems($data['order_id']);
+$items = \RedshopHelperOrder::getItems($data['order_id']);
 $description = "";
 
 foreach ($items as $item)

@@ -283,20 +283,20 @@ if (!class_exists('redproductScroller'))
 		/**
 		 * Helper DB function
 		 */
-		public function getredProductSKU($limit = 0, $how = null, $category_id = 0)
+		public function getredProductSKU($limit = 0, $how = null, $categoryId = 0)
 		{
 			$category_array = new product_category;
 
-			$hierachy = $category_array->getCategoryListArray($category_id, $category_id);
+			$hierachy = $category_array->getCategoryListArray($categoryId, $categoryId);
 
-			$cid = array();
+			$cid = [];
 
 			for ($i = 0, $in = count($hierachy); $i < $in; $i++)
 			{
 				$cid[] = $hierachy[$i]->category_id;
 			}
 
-			$cid      = array_merge((array) $category_id, $cid);
+			$cid      = array_merge((array) $categoryId, $cid);
 			$database = JFactory::getDbo();
 
 			if ($limit > 0)
@@ -347,16 +347,16 @@ if (!class_exists('redproductScroller'))
 
 		public function ShowProducts($row)
 		{
-			$category_id   = RedshopHelperProduct::getCategoryProduct($row->product_id);
-			$ItemData      = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+			$categoryId   = \RedshopHelperProduct::getCategoryProduct($row->product_id);
+			$ItemData      = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
 			if (count($ItemData) > 0)
 			{
-				$Itemid = $ItemData->id;
+				$itemId = $ItemData->id;
 			}
 			else
 			{
-				$Itemid = RedshopHelperRouter::getItemId($row->product_id);
+				$itemId = \RedshopHelperRouter::getItemId($row->product_id);
 			}
 
 			$data_add   = '';
@@ -364,7 +364,7 @@ if (!class_exists('redproductScroller'))
 
 			$pname = $row->product_name;
 
-			$link = JRoute::_('index.php?option=com_redshop&view=product&pid=' . $row->product_id . '&cid=' . $category_id . '&Itemid=' . $Itemid);
+			$link = JRoute::_('index.php?option=com_redshop&view=product&pid=' . $row->product_id . '&cid=' . $categoryId . '&Itemid=' . $itemId);
 
 			$pname = $row->product_name;
 
@@ -383,7 +383,7 @@ if (!class_exists('redproductScroller'))
 								'product',
 								$this->thumbwidth,
 								$this->thumbheight,
-								Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
+								\Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
 							);
 				$thum_image = "<div style='width:" . $this->thumbwidth . "px;height:" . $this->thumbheight . "px;'>
 									<a href='" . $link . "' title=''>
@@ -400,22 +400,22 @@ if (!class_exists('redproductScroller'))
 				$data_add .= $pname;
 			}
 
-			if (Redshop::getConfig()->get('SHOW_PRICE') == 1 && !$row->not_for_sale && !Redshop::getConfig()->get('USE_AS_CATALOG') && (!Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') || (Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && Redshop::getConfig()->get('SHOW_QUOTATION_PRICE'))))
+			if (\Redshop::getConfig()->get('SHOW_PRICE') == 1 && !$row->not_for_sale && !\Redshop::getConfig()->get('USE_AS_CATALOG') && (!\Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') || (\Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && \Redshop::getConfig()->get('SHOW_QUOTATION_PRICE'))))
 			{
 				if ($this->show_price == 'yes')
 				{
-					$product_price = Redshop\Product\Price::getPrice($row->product_id);
+					$product_price = \Redshop\Product\Price::getPrice($row->product_id);
 
-					$productArr             = RedshopHelperProductPrice::getNetPrice($row->product_id);
+					$productArr             = \RedshopHelperProductPrice::getNetPrice($row->product_id);
 					$product_price_discount = $productArr['productPrice'] + $productArr['productVat'];
 
 					if (!$product_price)
 					{
-						$product_price_dis = RedshopHelperProductPrice::priceReplacement($product_price);
+						$product_price_dis = \RedshopHelperProductPrice::priceReplacement($product_price);
 					}
 					else
 					{
-						$product_price_dis = RedshopHelperProductPrice::formattedPrice($product_price);
+						$product_price_dis = \RedshopHelperProductPrice::formattedPrice($product_price);
 					}
 
 					$display_text = "<tr><td class='mod_redproducts_price' style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'>" . $product_price_dis . "</td></tr>";
@@ -429,15 +429,15 @@ if (!class_exists('redproductScroller'))
 
 							if ($this->show_discountpricelayout)
 							{
-								$data_add .= "<tr><td id='mod_redoldprice' class='mod_redoldprice' style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'><span style='text-decoration:line-through;'>" . RedshopHelperProductPrice::formattedPrice($product_price) . "</span></td></tr>";
+								$data_add .= "<tr><td id='mod_redoldprice' class='mod_redoldprice' style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'><span style='text-decoration:line-through;'>" . \RedshopHelperProductPrice::formattedPrice($product_price) . "</span></td></tr>";
 								$product_price = $product_price_discount;
-								$data_add .= "<tr><td id='mod_redmainprice' class='mod_redmainprice' style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'>" . RedshopHelperProductPrice::formattedPrice($product_price_discount) . "</td></tr>";
-								$data_add .= "<tr><td id='mod_redsavedprice' class='mod_redsavedprice' style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'>" . JText::_('COM_REDSHOP_PRODCUT_PRICE_YOU_SAVED') . ' ' . RedshopHelperProductPrice::formattedPrice($s_price) . "</td></tr>";
+								$data_add .= "<tr><td id='mod_redmainprice' class='mod_redmainprice' style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'>" . \RedshopHelperProductPrice::formattedPrice($product_price_discount) . "</td></tr>";
+								$data_add .= "<tr><td id='mod_redsavedprice' class='mod_redsavedprice' style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'>" . JText::_('COM_REDSHOP_PRODCUT_PRICE_YOU_SAVED') . ' ' . \RedshopHelperProductPrice::formattedPrice($s_price) . "</td></tr>";
 							}
 							else
 							{
 								$product_price = $product_price_discount;
-								$data_add .= "<tr><td class='mod_redproducts_price' style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'>" . RedshopHelperProductPrice::formattedPrice($product_price) . "</td></tr>";
+								$data_add .= "<tr><td class='mod_redproducts_price' style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'>" . \RedshopHelperProductPrice::formattedPrice($product_price) . "</td></tr>";
 							}
 						}
 					}
@@ -449,8 +449,8 @@ if (!class_exists('redproductScroller'))
 			// Start cart
 			if ($this->show_addtocart == 'yes')
 			{
-				$addtocart_data = Redshop\Cart\Render::replace($row->product_id, $category_id, 0, 0, "", false, array(), 0, 0, 0, $this->module_id);
-				$data_add .= "<tr><td style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'>" . $addtocart_data . "</td></tr>";
+				$addToCart_data = \Redshop\Cart\Render::replace($row->product_id, $categoryId, 0, 0, "", false, [], 0, 0, 0, $this->module_id);
+				$data_add .= "<tr><td style='text-align:" . $this->ScrollTextAlign . ";font-weight:" . $this->ScrollTextWeight . ";font-size:" . $this->ScrollTextSize . "px;'>" . $addToCart_data . "</td></tr>";
 			}
 
 			return $data_add;

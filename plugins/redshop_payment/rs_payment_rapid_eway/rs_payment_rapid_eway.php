@@ -10,11 +10,11 @@
 defined('_JEXEC') or die;
 
 /**
- * Class PlgRedshop_Paymentrs_Payment_Rapid_Eway
+ * Class Plg\Redshop_Paymentrs_Payment_Rapid_Eway
  *
  * @since  1.5
  */
-class PlgRedshop_Paymentrs_Payment_Rapid_Eway extends JPlugin
+class Plg\Redshop_Paymentrs_Payment_Rapid_Eway extends JPlugin
 {
 	/**
 	 * Constructor
@@ -24,7 +24,7 @@ class PlgRedshop_Paymentrs_Payment_Rapid_Eway extends JPlugin
 	 *                             Recognized key values include 'name', 'group', 'params', 'language'
 	 *                             (this list is not meant to be comprehensive).
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_payment_rs_payment_rapid_eway', JPATH_ADMINISTRATOR);

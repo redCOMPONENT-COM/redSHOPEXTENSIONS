@@ -19,7 +19,7 @@ JLoader::import('redshop.library');
  *
  * @since       1.0
  */
-class PlgRedshop_PaymentRs_Payment_2checkout extends JPlugin
+class Plg\Redshop_PaymentRs_Payment_2checkout extends JPlugin
 {
 	/**
 	 * Plugin method with the same name as the event will be called automatically.
@@ -44,7 +44,7 @@ class PlgRedshop_PaymentRs_Payment_2checkout extends JPlugin
 		$app         = JFactory::getApplication();
 		$orderHelper = order_functions::getInstance();
 		$orderItems  = $orderHelper->getOrderItemDetail($data['order_id']);
-		$Itemid      = $app->input->getInt('Itemid');
+		$itemId      = $app->input->getInt('Itemid');
 
 		// Authnet vars to send
 		$formdata = array(
@@ -69,8 +69,8 @@ class PlgRedshop_PaymentRs_Payment_2checkout extends JPlugin
 			'ship_state'         => $data['shippinginfo']->state_code,
 			'ship_zip'           => $data['shippinginfo']->zipcode,
 			'ship_country'       => $data['shippinginfo']->country_code,
-			'return_url'         => JURI::base() . "index.php?option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_2checkout&Itemid=$Itemid&orderid=" . $data['order_id'],
-			'x_receipt_link_url' => JURI::base() . "index.php?option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_2checkout&Itemid=$Itemid&orderid=" . $data['order_id'],
+			'return_url'         => JURI::base() . "index.php?option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_2checkout&Itemid=$itemId&orderid=" . $data['order_id'],
+			'x_receipt_link_url' => JURI::base() . "index.php?option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_2checkout&Itemid=$itemId&orderid=" . $data['order_id'],
 			'id_type'            => 1,
 			'c_tangible_1'       => 'Y',
 			'total'              => number_format($data['carttotal'], 2, '.', '')

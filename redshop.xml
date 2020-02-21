@@ -104,7 +104,7 @@
         <!-- Alert plugin -->
         <plugin group="redshop_alert" name="alert"/>
 
-        <!-- Redshop Export plugins -->
+        <!-- \Redshop Export plugins -->
         <plugin name="attribute" group="redshop_export" published="published"/>
         <plugin name="category" group="redshop_export" published="published"/>
         <plugin name="field" group="redshop_export" published="published"/>
@@ -117,7 +117,7 @@
         <plugin name="shopper_group_product_price" group="redshop_export" published="published"/>
         <plugin name="user" group="redshop_export" published="published"/>
 
-        <!-- Redshop Import plugins -->
+        <!-- \Redshop Import plugins -->
         <plugin group="redshop_import" name="attribute" published="published"/>
         <plugin group="redshop_import" name="category" published="published"/>
         <plugin group="redshop_import" name="field" published="published"/>

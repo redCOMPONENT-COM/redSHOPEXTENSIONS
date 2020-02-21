@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 JLoader::import('redshop.library');
 
-class plgRedshop_paymentrs_payment_dibspaymentmethod extends JPlugin
+class plg\Redshop_paymentrs_payment_dibspaymentmethod extends JPlugin
 {
 	/**
 	 * Plugin method with the same name as the event will be called automatically.
@@ -122,7 +122,7 @@ class plgRedshop_paymentrs_payment_dibspaymentmethod extends JPlugin
 		$key1       = $this->params->get("dibs_md5key1");
 		$merchantid = $this->params->get("seller_id");
 
-		$formdata['amount'] = RedshopHelperCurrency::convert($data['order_amount'], '', $this->params->get("dibs_currency"));
+		$formdata['amount'] = \RedshopHelperCurrency::convert($data['order_amount'], '', $this->params->get("dibs_currency"));
 		$formdata['amount'] = number_format($formdata['amount'], 2, '.', '') * 100;
 
 		$md5key = md5(

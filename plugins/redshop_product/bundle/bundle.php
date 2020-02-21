@@ -17,7 +17,7 @@ JLoader::import('redshop.library');
  *
  * @since 1.0.0
  */
-class PlgRedshop_ProductBundle extends JPlugin
+class Plg\Redshop_ProductBundle extends JPlugin
 {
 	/**
 	 * Bundle Data
@@ -26,7 +26,7 @@ class PlgRedshop_ProductBundle extends JPlugin
 	 *
 	 * @since  1.0.0
 	 */
-	private $bundleData = array();
+	private $bundleData = [];
 
 	/**
 	 * Constructor
@@ -36,7 +36,7 @@ class PlgRedshop_ProductBundle extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_product_bundle', JPATH_ADMINISTRATOR);
@@ -69,7 +69,7 @@ class PlgRedshop_ProductBundle extends JPlugin
 			return;
 		}
 
-		$bundleIds = array();
+		$bundleIds = [];
 
 		foreach ($this->bundleData as $bundleDetail)
 		{
@@ -172,7 +172,7 @@ class PlgRedshop_ProductBundle extends JPlugin
 	 */
 	private function replaceBundleData(&$templateContent, $product)
 	{
-		$bundleTemplates = RedshopHelperTemplate::getTemplate('bundle_template');
+		$bundleTemplates = \RedshopHelperTemplate::getTemplate('bundle_template');
 
 		if (empty($bundleTemplates))
 		{
@@ -203,13 +203,13 @@ class PlgRedshop_ProductBundle extends JPlugin
 
 			if (strpos($content, "{bundle_stock_amount_image}") !== false)
 			{
-				$productInStock   = RedshopHelperStockroom::getStockAmountWithReserve($bundleDetail->bundle_id);
-				$stockamountList  = RedshopHelperStockroom::getStockAmountImage($bundleDetail->bundle_id, 'product', $productInStock);
+				$productInStock   = \RedshopHelperStockroom::getStockAmountWithReserve($bundleDetail->bundle_id);
+				$stockamountList  = \RedshopHelperStockroom::getStockAmountImage($bundleDetail->bundle_id, 'product', $productInStock);
 				$stockamountImage = "";
 
 				if (count($stockamountList) > 0)
 				{
-					$stockamountImage = RedshopLayoutHelper::render(
+					$stockamountImage = \RedshopLayoutHelper::render(
 						'product.stock_amount_image',
 						array(
 							'product_id'       => $product_id,
@@ -244,7 +244,7 @@ class PlgRedshop_ProductBundle extends JPlugin
 				$content = str_replace($propertyTemplate, "", $content);
 			}
 
-			$bundleContent .= RedshopLayoutHelper::render(
+			$bundleContent .= \RedshopLayoutHelper::render(
 				'bundle',
 				array
 				(
@@ -275,7 +275,7 @@ class PlgRedshop_ProductBundle extends JPlugin
 		$attributes = $productDetail->attributes;
 
 		JPluginHelper::importPlugin('redshop_product');
-		$dispatcher = RedshopHelperUtility::getDispatcher();
+		$dispatcher = \RedshopHelperUtility::getDispatcher();
 
 		$attributeTable = "";
 
@@ -291,7 +291,7 @@ class PlgRedshop_ProductBundle extends JPlugin
 
 			if (empty($attribute->properties))
 			{
-				$properties = RedshopHelperProduct_Attribute::getAttributeProperties(0, $attribute->attribute_id);
+				$properties = \RedshopHelperProduct_Attribute::getAttributeProperties(0, $attribute->attribute_id);
 			}
 			else
 			{
@@ -318,8 +318,8 @@ class PlgRedshop_ProductBundle extends JPlugin
 
 				$priceWithVat          = 0;
 				$priceWithoutVat       = 0;
-				$propertyStock         = RedshopHelperStockroom::getStockAmountWithReserve($property->value, "property");
-				$preOrderPropertyStock = RedshopHelperStockroom::getPreorderStockAmountwithReserve($property->value, "property");
+				$propertyStock         = \RedshopHelperStockroom::getStockAmountWithReserve($property->value, "property");
+				$preOrderPropertyStock = \RedshopHelperStockroom::getPreorderStockAmountwithReserve($property->value, "property");
 
 				$propertyData = str_replace("{property_name}", urldecode($property->property_name), $propertyData);
 				$propertyData = str_replace("{property_number}", $property->property_number, $propertyData);
@@ -340,14 +340,14 @@ class PlgRedshop_ProductBundle extends JPlugin
 						&& JFile::exists(REDSHOP_FRONT_IMAGES_RELPATH . "product_attributes/" . $property->property_image)
 					)
 					{
-						$thumbUrl       = RedshopHelperMedia::getImagePath(
+						$thumbUrl       = \RedshopHelperMedia::getImagePath(
 							$property->property_image,
 							'',
 							'thumb',
 							'product_attributes',
 							$mpw_thumb,
 							$mph_thumb,
-							Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
+							\Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
 						);
 						$property_image = "<img title='" . urldecode($property->property_name) . "' src='" . $thumbUrl . "'>";
 					}
@@ -468,15 +468,15 @@ class PlgRedshop_ProductBundle extends JPlugin
 			return;
 		}
 
-		$data = array();
+		$data = [];
 
 		foreach ($this->bundleData as $bundleData)
 		{
-			$propertyData = array();
+			$propertyData = [];
 
 			if (!empty($bundleProduct[$bundleData->bundle_id]))
 			{
-				$properties   = RedshopHelperProduct_Attribute::getAttributeProperties($bundleProduct[$bundleData->bundle_id]);
+				$properties   = \RedshopHelperProduct_Attribute::getAttributeProperties($bundleProduct[$bundleData->bundle_id]);
 				$propertyData = $properties[0];
 			}
 
@@ -487,7 +487,7 @@ class PlgRedshop_ProductBundle extends JPlugin
 			);
 		}
 
-		$bundleContent = RedshopLayoutHelper::render(
+		$bundleContent = \RedshopLayoutHelper::render(
 			'cart',
 			array
 			(
@@ -532,15 +532,15 @@ class PlgRedshop_ProductBundle extends JPlugin
 			return;
 		}
 
-		$data = array();
+		$data = [];
 
 		foreach ($bundleRows as $row)
 		{
-			$propertyData = array();
+			$propertyData = [];
 
 			if ($row->property_id > 0)
 			{
-				$properties   = RedshopHelperProduct_Attribute::getAttributeProperties($row->property_id);
+				$properties   = \RedshopHelperProduct_Attribute::getAttributeProperties($row->property_id);
 				$propertyData = $properties[0];
 			}
 
@@ -553,7 +553,7 @@ class PlgRedshop_ProductBundle extends JPlugin
 			);
 		}
 
-		$bundleContent = RedshopLayoutHelper::render(
+		$bundleContent = \RedshopLayoutHelper::render(
 			'cart',
 			array
 			(
@@ -644,14 +644,14 @@ class PlgRedshop_ProductBundle extends JPlugin
 		}
 
 		// Init $data
-		$data = array();
+		$data = [];
 		foreach ($bundleRows as $row)
 		{
-			$propertyData = array();
+			$propertyData = [];
 
 			if ($row->property_id > 0)
 			{
-				$properties   = RedshopHelperProduct_Attribute::getAttributeProperties($row->property_id);
+				$properties   = \RedshopHelperProduct_Attribute::getAttributeProperties($row->property_id);
 				$propertyData = $properties[0];
 			}
 
@@ -664,7 +664,7 @@ class PlgRedshop_ProductBundle extends JPlugin
 			);
 		}
 
-		$bundleContent = RedshopLayoutHelper::render(
+		$bundleContent = \RedshopLayoutHelper::render(
 			'cart',
 			array
 			(

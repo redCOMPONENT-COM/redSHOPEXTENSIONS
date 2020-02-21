@@ -19,7 +19,7 @@ use Joomla\Registry\Registry;
  *
  * @since  1.0.0
  */
-class PlgRedshop_UserJoomlamailer_Integrate extends JPlugin
+class Plg\Redshop_UserJoomlamailer_Integrate extends JPlugin
 {
 	/**
 	 * @var  bool  True for auto-load language
@@ -58,7 +58,7 @@ class PlgRedshop_UserJoomlamailer_Integrate extends JPlugin
 	 *
 	 * @return  boolean
 	 */
-	public function addNewsLetterSubscription($isNew, $data = array())
+	public function addNewsLetterSubscription($isNew, $data = [])
 	{
 		if (!$this->check())
 		{
@@ -116,7 +116,7 @@ class PlgRedshop_UserJoomlamailer_Integrate extends JPlugin
 			$isSubscribed = true;
 		}
 
-		$merges = array();
+		$merges = [];
 
 		$db = JFactory::getDbo();
 
@@ -124,7 +124,7 @@ class PlgRedshop_UserJoomlamailer_Integrate extends JPlugin
 			'FNAME' => $firstName,
 			'LNAME' => $lastName,
 			'INTERESTS' => '',
-			'GROUPINGS' => array()
+			'GROUPINGS' => []
 		);
 
 		// Get the users ip address unless the admin is saving his profile in backend

@@ -1,16 +1,16 @@
 <?php
 /**
- * @package     Redshop.Plugin
+ * @package     \Redshop.Plugin
  * @subpackage  Twig.Extension
  *
  * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-namespace Redshop\Twig;
+namespace \Redshop\Twig;
 
 use function is_object;
-use Redshop\Twig\Entity\Product as TwigProduct;
+use \Redshop\Twig\Entity\Product as TwigProduct;
 
 defined('_JEXEC') or die;
 

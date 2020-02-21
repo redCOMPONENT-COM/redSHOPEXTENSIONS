@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 JLoader::import('redshop.library');
 
-class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
+class plg\Redshop_Paymentrs_Payment_Payflowpro extends JPlugin
 {
 	/**
 	 * Plugin method with the same name as the event will be called automatically.
@@ -71,9 +71,9 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		{
 			$currencyID = $this->params->get("currency");
 		}
-		elseif (Redshop::getConfig()->get('CURRENCY_CODE') != "")
+		elseif (\Redshop::getConfig()->get('CURRENCY_CODE') != "")
 		{
-			$currencyID = urlencode(Redshop::getConfig()->get('CURRENCY_CODE'));
+			$currencyID = urlencode(\Redshop::getConfig()->get('CURRENCY_CODE'));
 		}
 		else
 		{
@@ -86,15 +86,15 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		$order_total = $data['order_total'] - $data['order_tax'];
 		*/
 		$order_total = $data['order_total'];
-		$amount      = RedshopHelperCurrency::convert($order_total, '', $currencyID);
+		$amount      = \RedshopHelperCurrency::convert($order_total, '', $currencyID);
 		$amount      = urlencode(number_format($amount, 2));
 
 		$shipping_amount = $data['order_shipping'];
-		$shipping_amount = RedshopHelperCurrency::convert($shipping_amount, '', $currencyID);
+		$shipping_amount = \RedshopHelperCurrency::convert($shipping_amount, '', $currencyID);
 		$shipping_amount = urlencode(number_format($shipping_amount, 2));
 
 		$tax_amount = $data['order_tax'];
-		$tax_amount = RedshopHelperCurrency::convert($tax_amount, '', $currencyID);
+		$tax_amount = \RedshopHelperCurrency::convert($tax_amount, '', $currencyID);
 		$tax_amount = urlencode(number_format($tax_amount, 2));
 
 		if ($is_test)
@@ -162,7 +162,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 		$post_string    = substr($post_string, 0, -1);
 		$response       = $this->sendTransactionToGateway($api_url, $post_string, array('X-VPS-REQUEST-ID: ' . md5($creditCardNumber . rand())));
-		$response_array = array();
+		$response_array = [];
 		parse_str($response, $response_array);
 
 		if ($response_array['RESULT'] == 0 && $response_array['RESPMSG'] == 'Approved')
@@ -184,7 +184,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 	public function sendTransactionToGateway($url, $parameters, $headers = null)
 	{
-		$header = array();
+		$header = [];
 		$server = parse_url($url);
 
 		if (!isset($server['port']))
@@ -262,16 +262,16 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		{
 			$currencyID = $this->params->get("currency");
 		}
-		elseif (Redshop::getConfig()->get('CURRENCY_CODE') != "")
+		elseif (\Redshop::getConfig()->get('CURRENCY_CODE') != "")
 		{
-			$currencyID = urlencode(Redshop::getConfig()->get('CURRENCY_CODE'));
+			$currencyID = urlencode(\Redshop::getConfig()->get('CURRENCY_CODE'));
 		}
 		else
 		{
 			$currencyID = "USD";
 		}
 
-		$order_amount  = RedshopHelperCurrency::convert($data['order_amount'], '', $currencyID);
+		$order_amount  = \RedshopHelperCurrency::convert($data['order_amount'], '', $currencyID);
 		$order_amount  = urlencode(number_format($order_amount, 2));
 
 		if ($is_test)
@@ -303,7 +303,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		$post_string = substr($post_string, 0, -1);
 		$response    = $this->sendTransactionToGateway($api_url, $post_string, array('X-VPS-REQUEST-ID: ' . md5($order_id . rand())));
 
-		$response_array = array();
+		$response_array = [];
 		parse_str($response, $response_array);
 
 		if ($response_array['RESULT'] == 0 && $response_array['RESPMSG'] == 'Approved')
@@ -340,16 +340,16 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		{
 			$currencyID = $this->params->get("currency");
 		}
-		elseif (Redshop::getConfig()->get('CURRENCY_CODE') != "")
+		elseif (\Redshop::getConfig()->get('CURRENCY_CODE') != "")
 		{
-			$currencyID = urlencode(Redshop::getConfig()->get('CURRENCY_CODE'));
+			$currencyID = urlencode(\Redshop::getConfig()->get('CURRENCY_CODE'));
 		}
 		else
 		{
 			$currencyID = "USD";
 		}
 
-		$order_amount = RedshopHelperCurrency::convert($data['order_amount'], '', $currencyID);
+		$order_amount = \RedshopHelperCurrency::convert($data['order_amount'], '', $currencyID);
 		$order_amount = urlencode(number_format($order_amount, 2));
 
 		if ($is_test)
@@ -381,7 +381,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		$post_string = substr($post_string, 0, -1);
 		$response    = $this->sendTransactionToGateway($api_url, $post_string, array('X-VPS-REQUEST-ID: ' . md5($order_id . rand())));
 
-		$response_array = array();
+		$response_array = [];
 		parse_str($response, $response_array);
 
 		if ($response_array['RESULT'] == 0 && $response_array['RESPMSG'] == 'Approved')

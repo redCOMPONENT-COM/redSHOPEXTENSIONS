@@ -20,7 +20,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_acymailing/helpers/list.php'
  *
  * @since  1.0
  */
-class PlgRedshop_UserRegistration_Acymailing extends JPlugin
+class Plg\Redshop_UserRegistration_Acymailing extends JPlugin
 {
 	/**
 	 * Constructor - note in Joomla 2.5 PHP4.x is no longer supported so we can use this.
@@ -42,7 +42,7 @@ class PlgRedshop_UserRegistration_Acymailing extends JPlugin
 	 *
 	 * @return boolean
 	 */
-	public function addNewsLetterSubscription($isNew, $data = array())
+	public function addNewsLetterSubscription($isNew, $data = [])
 	{
 		if ($isNew)
 		{

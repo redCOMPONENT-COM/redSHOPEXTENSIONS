@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     Aesir.Plugin
- * @subpackage  Aesir_Field.Redshop_Product
+ * @subpackage  Aesir_Field.\Redshop_Product
  *
  * @copyright   Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
@@ -18,14 +18,14 @@ use Aesir\Field\CustomField;
  *
  * @since  1.0.0
  */
-class PlgAesir_FieldRedshop_ProductFormFieldRedshop_Product extends CustomField
+class PlgAesir_Field\Redshop_ProductFormField\Redshop_Product extends CustomField
 {
 	/**
 	 * The form field type.
 	 *
 	 * @var  string
 	 */
-	protected $type = 'Redshop_Product';
+	protected $type = '\Redshop_Product';
 
 	/**
 	 * Cached array of options.
@@ -33,7 +33,7 @@ class PlgAesir_FieldRedshop_ProductFormFieldRedshop_Product extends CustomField
 	 * @var    array
 	 * @since  4.0.3
 	 */
-	protected static $options = array();
+	protected static $options = [];
 
 	/**
 	 * Cached layout data.
@@ -96,7 +96,7 @@ class PlgAesir_FieldRedshop_ProductFormFieldRedshop_Product extends CustomField
 
 		$items = $db->setQuery($query)->loadObjectList();
 
-		$data = array();
+		$data = [];
 
 		if ($this->addSelectOption)
 		{

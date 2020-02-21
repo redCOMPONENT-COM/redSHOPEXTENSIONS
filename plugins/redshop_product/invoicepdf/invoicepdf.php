@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.3.3.1
  */
-class PlgRedshop_ProductInvoicePdf extends JPlugin
+class Plg\Redshop_ProductInvoicePdf extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.
@@ -34,7 +34,7 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 	 *
 	 * @since   1.5
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_product_invoicepdf', JPATH_ADMINISTRATOR);
@@ -58,7 +58,7 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 
 		$app           = JFactory::getApplication();
 		$index         = $app->getUserState("com_redshop.order.batch.invoicepdf.currentIndex", 0);
-		$mergeOrderIds = $app->getUserState("com_redshop.order.batch.invoicepdf.orderId", array());
+		$mergeOrderIds = $app->getUserState("com_redshop.order.batch.invoicepdf.orderId", []);
 		$message       = $response['message'];
 
 		if ($data['order_status_all'] == 'S' && $data['order_paymentstatus' . $orderId] != "Paid")
@@ -67,12 +67,12 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 				. JText::sprintf("PLG_REDSHOP_PRODUCT_INVOICEPDF_CREATE_FAIL", "<span class=\"badge badge-important\">" . $orderId . "</span>")
 				. '</li>';
 		}
-		elseif (RedshopHelperPdf::isAvailablePdfPlugins())
+		elseif (\RedshopHelperPdf::isAvailablePdfPlugins())
 		{
 			$invoice = $this->createShippedInvoicePdf($orderId);
 
 			JPluginHelper::importPlugin('redshop_pdf');
-			$result = RedshopHelperUtility::getDispatcher()->trigger('onRedshopPdfCreateShippedInvoice', array($orderId, $invoice));
+			$result = \RedshopHelperUtility::getDispatcher()->trigger('on\RedshopPdfCreateShippedInvoice', array($orderId, $invoice));
 
 			ob_end_clean();
 
@@ -118,7 +118,7 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 	public function createShippedInvoicePdf($orderId)
 	{
 		$redshopMail  = redshopMail::getInstance();
-		$row          = RedshopHelperOrder::getOrderDetails($orderId);
+		$row          = \RedshopHelperOrder::getOrderDetails($orderId);
 		$discounts    = explode('@', $row->discount_type);
 		$discountType = '';
 
@@ -148,11 +148,11 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 		$replace[] = $discountType;
 		$body      = str_replace($search, $replace, $body);
 
-		$body             = RedshopHelperMail::imgInMail($body);
-		$billingaddresses = RedshopHelperOrder::getOrderBillingUserInfo($orderId);
+		$body             = \RedshopHelperMail::imgInMail($body);
+		$billingaddresses = \RedshopHelperOrder::getOrderBillingUserInfo($orderId);
 		$email            = $billingaddresses->user_email;
 		$userfullname     = $billingaddresses->firstname . " " . $billingaddresses->lastname;
-		$body             = Redshop\Order\Template::replaceTemplate($row, $body);
+		$body             = \Redshop\Order\Template::replaceTemplate($row, $body);
 
 		return $body;
 	}
@@ -173,7 +173,7 @@ class PlgRedshop_ProductInvoicePdf extends JPlugin
 
 		JArrayHelper::toInteger($mergeOrderIds);
 
-		$pdf = RedshopHelperPdf::getPDFMerger();
+		$pdf = \RedshopHelperPdf::getPDFMerger();
 
 		for ($m = 0, $mn = count($mergeOrderIds); $m < $mn; $m++)
 		{

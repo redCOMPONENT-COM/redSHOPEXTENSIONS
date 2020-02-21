@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  * @since  2.1.2
  */
 //class ProductFiltersHelper
-class ModRedshopCategoryProductFiltersHelper
+class Mod\RedshopCategoryProductFiltersHelper
 {
 	/**
 	 * This function will help get max and min value on list product price
@@ -24,18 +24,18 @@ class ModRedshopCategoryProductFiltersHelper
 	 *
 	 * @return array
 	 */
-	public static function getPriceRange($pids = array())
+	public static function getPriceRange($pids = [])
 	{
 		$max              = 0;
 		$min              = 0;
-		$allProductPrices = array();
+		$allProductPrices = [];
 
 		if (!empty($pids))
 		{
 			// Get product price
 			foreach ($pids as $k => $id)
 			{
-				$productprices      = RedshopHelperProductPrice::getNetPrice($id, JFactory::getUser()->id);
+				$productprices      = \RedshopHelperProductPrice::getNetPrice($id, JFactory::getUser()->id);
 				$allProductPrices[] = $productprices['productPrice'];
 			}
 
@@ -74,11 +74,11 @@ class ModRedshopCategoryProductFiltersHelper
 	 *
 	 * @return  mixed
 	 */
-	public static function getManufacturers($manuList = array())
+	public static function getManufacturers($manuList = [])
 	{
 		if (empty($manuList))
 		{
-			return array();
+			return [];
 		}
 
 		$db    = JFactory::getDbo();
@@ -105,11 +105,11 @@ class ModRedshopCategoryProductFiltersHelper
 	 *
 	 * @return  array
 	 */
-	public static function getCustomFields($pids = array(), $productFields = array())
+	public static function getCustomFields($pids = [], $productFields = [])
 	{
 		if (empty($pids) || empty($productFields))
 		{
-			return array();
+			return [];
 		}
 
 		$manufacturerId = JRequest::getVar('manufacturer_id');
@@ -138,7 +138,7 @@ class ModRedshopCategoryProductFiltersHelper
 			->order('f.ordering, fv.field_value');
 
 		$data   = $db->setQuery($query)->loadObjectList();
-		$result = array();
+		$result = [];
 
 		foreach ($data as $key => $value)
 		{

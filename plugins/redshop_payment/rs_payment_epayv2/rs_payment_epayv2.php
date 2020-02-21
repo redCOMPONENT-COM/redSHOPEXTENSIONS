@@ -16,7 +16,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.4
  */
-class PlgRedshop_Paymentrs_Payment_Epayv2 extends JPlugin
+class Plg\Redshop_Paymentrs_Payment_Epayv2 extends JPlugin
 {
 	/**
 	 * Epay SOAP Client Object
@@ -57,7 +57,7 @@ class PlgRedshop_Paymentrs_Payment_Epayv2 extends JPlugin
 		$formdata = array(
 			'merchantnumber'  => $this->params->get("merchant_id"),
 			'amount'          => (int) round($data['carttotal'] * 100, 2),
-			'currency'        => RedshopHelperCurrency::getISOCode(Redshop::getConfig()->get('CURRENCY_CODE')),
+			'currency'        => \RedshopHelperCurrency::getISOCode(\Redshop::getConfig()->get('CURRENCY_CODE')),
 			'orderid'         => $data['order_id'],
 			'instantcapture'  => $this->params->get("auth_type"),
 			'instantcallback' => 1,
@@ -146,7 +146,7 @@ class PlgRedshop_Paymentrs_Payment_Epayv2 extends JPlugin
 		$accept         = $request["accept"];
 		$tid            = $request["txnid"];
 		$order_id       = $request["orderid"];
-		$Itemid         = $request["Itemid"];
+		$itemId         = $request["Itemid"];
 		$order_amount   = $request["amount"];
 		$order_ekey     = $request["hash"];
 		$error          = $request["error"];

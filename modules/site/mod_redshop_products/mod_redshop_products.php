@@ -36,13 +36,13 @@ $isUrlCategoryId         = trim($params->get('urlCategoryId', 0));
 $showLoadmore            = trim($params->get('show_loadmore', 0));
 $loadmoreCount           = trim($params->get('loadmore_count', 9));
 $loadmoreBtnText         = trim($params->get('loadmore_text', 'Se flere tilbud'));
-$specificProducts        = $params->get('specific_products', array());
+$specificProducts        = $params->get('specific_products', []);
 $includeSubCategory      = (int) $params->get('includeSubCategory', 0);
 $readMoreItemid          = $params->get('read_more_itemid', 0);
 $view                    = $app->input->getInt('view');
 
 $isLoadmore       = $app->input->getInt('loadmore', 0);
-$loadedProductIds = $session->get('mod_redshop_products.' . $module->id . '.loadedpids', array());
+$loadedProductIds = $session->get('mod_redshop_products.' . $module->id . '.loadedpids', []);
 
 $user = JFactory::getUser();
 
@@ -155,7 +155,7 @@ if ($showChildProducts != 1)
 	$query->where($db->qn('p.product_parent_id') . ' = 0');
 }
 
-$categories = $params->get('category', array());
+$categories = $params->get('category', []);
 
 if ($isUrlCategoryId)
 {
@@ -174,7 +174,7 @@ if ($includeSubCategory && count($categories) > 0)
 {
 	foreach ($categories as $category) 
 	{
-		$subCategories = RedshopHelperCategory::getCategoryListArray($category);
+		$subCategories = \RedshopHelperCategory::getCategoryListArray($category);
 
 		if ($subCategories)
 		{
@@ -210,14 +210,14 @@ else
 	$stockrooms = trim($stockrooms);
 }
 
-if ($stockrooms && Redshop::getConfig()->getBool('USE_STOCKROOM'))
+if ($stockrooms && \Redshop::getConfig()->getBool('USE_STOCKROOM'))
 {
 	$query->leftJoin($db->qn('#__redshop_product_stockroom_xref', 'sx') . ' ON ' . $db->qn('p.product_id') . ' = ' . $db->qn('sx.product_id'))
 		->where($db->qn('sx.stockroom_id') . ' IN (' . $stockrooms . ')')
 		->where($db->qn('sx.quantity') . ' > 0');
 }
 
-$rows = array();
+$rows = [];
 
 if ($isLoadmore)
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Modules
+ * @package     \Redshop.Modules
  * @subpackage  plg_system_redgoogleanalytics
  *
  * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.
@@ -13,7 +13,7 @@ use Joomla\Registry\Registry;
 /**
  * PlgSystemRedProductZoomInstallerScript installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    2.0
  */
 class PlgSystemRedProductZoomInstallerScript

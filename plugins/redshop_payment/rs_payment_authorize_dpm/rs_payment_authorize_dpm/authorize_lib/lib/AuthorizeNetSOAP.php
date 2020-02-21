@@ -71,7 +71,7 @@ class AuthorizeNetSOAP extends SoapClient
 	public function getSoapMethods()
 	{
 		$string = "";
-		$functions = array();
+		$functions = [];
 		$methods = $this->__getFunctions();
 
 		foreach ($methods as $index => $method)

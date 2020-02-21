@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Layouts
+ * @package     \Redshop.Layouts
  * @subpackage  Payment.stripe
  * @copyright   Copyright (C) 2008-2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU/GPL, see LICENSE
@@ -12,7 +12,7 @@ $mollie  = $displayData['mollie'];
 $data    = $displayData['data'];
 $params  = $displayData['params'];
 $issuers = $mollie->issuers->all();
-$options = array();
+$options = [];
 
 $defaultOption        = new stdClass;
 $defaultOption->value = '';

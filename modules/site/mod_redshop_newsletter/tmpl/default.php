@@ -13,7 +13,7 @@ $app = JFactory::getApplication();
 $user = JFactory::getUser();
 $email = JRequest::getString('email');
 $name = JRequest::getString('name');
-$Itemid = JRequest::getInt('Itemid');
+$itemId = JRequest::getInt('Itemid');
 $newsletteritemid = $params->get('redirectpage');
 
 if ($user->id != "")
@@ -69,7 +69,7 @@ function validation() {
 		</div>
 	</div>
 	<input type="hidden" name="option" value="com_redshop"/>
-	<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>"/>
+	<input type="hidden" name="Itemid" value="<?php echo $itemId; ?>"/>
 	<input type="hidden" name="task" value=""/>
 	<input type="hidden" name="view" value="newsletter"/>
 	<input type="hidden" name="newsletteritemid" id="newsletteritemid" value="<?php echo $newsletteritemid; ?>">

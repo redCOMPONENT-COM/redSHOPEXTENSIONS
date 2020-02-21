@@ -17,7 +17,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.0.0
  */
-class PlgRedshop_Product_TypeGift extends JPlugin
+class Plg\Redshop_Product_TypeGift extends JPlugin
 {
 	/**
 	 * Constructor
@@ -28,7 +28,7 @@ class PlgRedshop_Product_TypeGift extends JPlugin
 	 *                             (this list is not meant to be comprehensive).
 	 * @since   1.0.0
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_product_type_gift', JPATH_ADMINISTRATOR);
@@ -76,7 +76,7 @@ class PlgRedshop_Product_TypeGift extends JPlugin
 		$db->setQuery($query);
 		$giftData = $db->loadObjectList();
 
-		echo RedshopLayoutHelper::render(
+		echo \RedshopLayoutHelper::render(
 			'gift',
 			array
 			(

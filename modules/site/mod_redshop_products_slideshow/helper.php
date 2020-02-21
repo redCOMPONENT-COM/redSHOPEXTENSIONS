@@ -10,11 +10,11 @@
 defined('_JEXEC') or die;
 
 /**
- * Class RedshopProductSlideshow
+ * Class \RedshopProductSlideshow
  *
  * @since  1.5
  */
-class RedshopProductSlideshow
+class \RedshopProductSlideshow
 {
 	/**
 	 * Create smart xml files
@@ -189,7 +189,7 @@ class RedshopProductSlideshow
 		}
 
 		$xml_data = '';
-		$rows = array();
+		$rows = [];
 
 		if ($productIds = $db->setQuery($query, 0, $numbproduct)->loadColumn())
 		{
@@ -213,21 +213,21 @@ class RedshopProductSlideshow
 		{
 			$ret_array['flag'] = true;
 			$price_txt         = '';
-			$ItemData          =  RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $rows[$k]->product_id);
+			$ItemData          =  \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $rows[$k]->product_id);
 
 			if (count($ItemData) > 0)
 			{
-				$Itemid = $ItemData->id;
+				$itemId = $ItemData->id;
 			}
 			else
 			{
-				$Itemid = RedshopHelperRouter::getItemId($rows[$k]->product_id);
+				$itemId = \RedshopHelperRouter::getItemId($rows[$k]->product_id);
 			}
 
 			if ($params->get('show_price') == "yes")
 			{
 				// Without vat price
-				$productArr        = RedshopHelperProductPrice::getNetPrice($rows[$k]->product_id, 0, 1);
+				$productArr        = \RedshopHelperProductPrice::getNetPrice($rows[$k]->product_id, 0, 1);
 				$product_price     = $productArr['productPrice'];
 				$productVat        = $productArr['productVat'];
 
@@ -247,11 +247,11 @@ class RedshopProductSlideshow
 					$abs_price = $product_price;
 				}
 
-				$abs_price = RedshopHelperProductPrice::formattedPrice($abs_price);
+				$abs_price = \RedshopHelperProductPrice::formattedPrice($abs_price);
 				$price_txt .= $abs_price;
 			}
 
-			$curr_link = JRoute::_('index.php?option=com_redshop&amp;view=product&amp;pid=' . $rows[$k]->product_id . '&amp;Itemid=' . $Itemid, true);
+			$curr_link = JRoute::_('index.php?option=com_redshop&amp;view=product&amp;pid=' . $rows[$k]->product_id . '&amp;Itemid=' . $itemId, true);
 			$pname = $rows[$k]->product_name;
 
 			if (!JFile::exists(REDSHOP_FRONT_IMAGES_RELPATH . "product/" . $rows[$k]->product_full_image))
@@ -267,7 +267,7 @@ class RedshopProductSlideshow
 					'product',
 					$imageWidth,
 					$imageHeight,
-					Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
+					\Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
 				);
 			}
 

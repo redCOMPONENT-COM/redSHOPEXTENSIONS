@@ -14,7 +14,7 @@ JLoader::import('redshop.library');
 /**
  * Onepay Payment gateway for redSHOP Payments
  */
-class PlgRedshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
+class Plg\Redshop_Paymentrs_Payment_Onepay_Domestic extends JPlugin
 {
 
 	/**

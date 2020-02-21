@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
 /**
  * QuickPay payment gateway
  *
- * @package     Redshop.Plugins
+ * @package     \Redshop.Plugins
  * @subpackage  QuickPay
  * @since       1.5
  */
-class PlgRedshop_PaymentQuickpay extends RedshopPayment
+class Plg\Redshop_PaymentQuickpay extends \RedshopPayment
 {
 	/**
 	 * Method to setup the payment form and send to gateway
@@ -58,7 +58,7 @@ class PlgRedshop_PaymentQuickpay extends RedshopPayment
 			'agreement_id'    => $this->params->get("agreementId"),
 			'order_id'        => $orderId,
 			'amount'          => ($orderInfo['carttotal'] * 100),
-			'currency'        => Redshop::getConfig()->get('CURRENCY_CODE'),
+			'currency'        => \Redshop::getConfig()->get('CURRENCY_CODE'),
 			'continueurl'     => $this->getReturnUrl($orderInfo['order_id']),
 			'cancelurl'       => $this->getNotifyUrl($orderInfo['order_id']),
 			'callbackurl'     => $this->getNotifyUrl($orderInfo['order_id']),
@@ -67,8 +67,8 @@ class PlgRedshop_PaymentQuickpay extends RedshopPayment
 		);
 
 		$paymentMethods = array_merge(
-			$this->params->get('paymentMethods', array()),
-			$this->params->get('paymentMethodsExlude', array())
+			$this->params->get('paymentMethods', []),
+			$this->params->get('paymentMethodsExlude', [])
 		);
 
 		if (!empty($paymentMethods))
@@ -429,7 +429,7 @@ class PlgRedshop_PaymentQuickpay extends RedshopPayment
 	 *
 	 * @return  array   Final flatten array
 	 */
-	protected function flattenParams($obj, $result = array(), $path = array())
+	protected function flattenParams($obj, $result = [], $path = [])
 	{
 		if (is_array($obj))
 		{

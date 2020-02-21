@@ -126,18 +126,18 @@ class mpgResponse
 	var $p; //parser
 
 	var $currentTag;
-	var $purchaseHash = array();
+	var $purchaseHash = [];
 	var $refundHash;
-	var $correctionHash = array();
+	var $correctionHash = [];
 	var $isBatchTotals;
 	var $term_id;
-	var $receiptHash = array();
-	var $ecrHash = array();
+	var $receiptHash = [];
+	var $ecrHash = [];
 	var $CardType;
 	var $currentTxnType;
-	var $ecrs = array();
-	var $cards = array();
-	var $cardHash = array();
+	var $ecrs = [];
+	var $cards = [];
+	var $cardHash = [];
 
 	var $ACSUrl;
 
@@ -316,7 +316,7 @@ class mpgResponse
 				{
 					$this->term_id = $data;
 					array_push($this->ecrs, $this->term_id);
-					$this->cardHash[$data] = array();
+					$this->cardHash[$data] = [];
 					break;
 				}
 
@@ -394,17 +394,17 @@ class mpgResponse
 		}
 		else if ($this->currentTag == "Purchase")
 		{
-			$this->purchaseHash[$this->term_id][$this->CardType] = array();
+			$this->purchaseHash[$this->term_id][$this->CardType] = [];
 			$this->currentTxnType = "Purchase";
 		}
 		else if ($this->currentTag == "Refund")
 		{
-			$this->refundHash[$this->term_id][$this->CardType] = array();
+			$this->refundHash[$this->term_id][$this->CardType] = [];
 			$this->currentTxnType = "Refund";
 		}
 		else if ($this->currentTag == "Correction")
 		{
-			$this->correctionHash[$this->term_id][$this->CardType] = array();
+			$this->correctionHash[$this->term_id][$this->CardType] = [];
 			$this->currentTxnType = "Correction";
 		}
 
@@ -440,7 +440,7 @@ class mpgRequest
 	                      'purchasecorrection' => array('order_id', 'txn_number', 'crypt_type'),
 	                      'opentotals'         => array('ecr_number'),
 	                      'batchclose'         => array('ecr_number'),
-	                      'batchcloseall'      => array(),
+	                      'batchcloseall'      => [],
 
 	                      'cavv_purchase'      => array('order_id', 'cust_id', 'amount', 'pan',
 		                      'expdate', 'cavv'),

@@ -14,11 +14,11 @@ jimport('joomla.plugin.plugin');
 JLoader::import('redshop.library');
 
 /**
- * PlgRedshop_ProductCustom_Field_Mapping Class
+ * Plg\Redshop_ProductCustom_Field_Mapping Class
  *
  * @since  1.5
  */
-class PlgRedshop_ProductCustom_Field_Mapping extends JPlugin
+class Plg\Redshop_ProductCustom_Field_Mapping extends JPlugin
 {
 	/**
 	 * constructor
@@ -42,7 +42,7 @@ class PlgRedshop_ProductCustom_Field_Mapping extends JPlugin
 	public function onBeforeAddProductToCart($data)
 	{
 		$mapping    = $this->mappedName($data);
-		$result     = array();
+		$result     = [];
 
 		foreach ($data as $key => $value)
 		{
@@ -55,14 +55,14 @@ class PlgRedshop_ProductCustom_Field_Mapping extends JPlugin
 			}
 		}
 
-		$result['country_code'] = Redshop::getConfig()->get('SHOP_COUNTRY');
+		$result['country_code'] = \Redshop::getConfig()->get('SHOP_COUNTRY');
 		$result['address_type'] = 'BT';
 		$result['user_id'] = 0;
 		$result['usertype'] = 'Registered';
 		$result['groups'] = array(2);
 		$result['shopper_group_id'] = 1;
 
-		return \RedshopHelperUser::storeRedshopUser($result, 0);
+		return \RedshopHelperUser::store\RedshopUser($result, 0);
 	}
 
 	/**
@@ -77,7 +77,7 @@ class PlgRedshop_ProductCustom_Field_Mapping extends JPlugin
 	 */
 	private function mappedName($data)
 	{
-		$result = array();
+		$result = [];
 		$mapping = $this->params->get('mapping');
 
 		if (!strstr($mapping, ';'))

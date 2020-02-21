@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshopb.Site
+ * @package     \Redshopb.Site
  * @subpackage  mod_redshopb_megamenu
  *
  * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
@@ -42,7 +42,7 @@ JFactory::getDocument()->addScriptDeclaration('
 				<ul class="nav-child unstyled megamenu">
 					<li class="maxMegaMenuWidth">
 						<div class="row-fluid">
-							<?php ModRedshopMegaMenuHelper::displayLevel($category->sub_cat, $category); ?>
+							<?php Mod\RedshopMegaMenuHelper::displayLevel($category->sub_cat, $category); ?>
 						</div>
 					</li>
 				</ul>

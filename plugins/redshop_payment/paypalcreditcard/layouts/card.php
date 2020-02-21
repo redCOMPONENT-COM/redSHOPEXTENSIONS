@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Layouts
+ * @package     \Redshop.Layouts
  * @subpackage  Payment.PaypalCreditCard
  * @copyright   Copyright (C) 2008-2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU/GPL, see LICENSE
@@ -39,7 +39,7 @@ extract($displayData);
 <tr id="card-edit-<?php echo $card->id; ?>">
 	<td colspan="6">
 		<?php
-		echo RedshopLayoutHelper::render(
+		echo \RedshopLayoutHelper::render(
 			'form',
 			array(
 				'id'              => $card->id,

@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 JLoader::import('redshop.library');
 
-class plgRedshop_paymentrs_payment_beanstream extends JPlugin
+class plg\Redshop_paymentrs_payment_beanstream extends JPlugin
 {
 	/**
 	 * Plugin method with the same name as the event will be called automatically.
@@ -37,9 +37,9 @@ class plgRedshop_paymentrs_payment_beanstream extends JPlugin
 		// For total amount
 		$cal_no = 2;
 
-		if (Redshop::getConfig()->get('PRICE_DECIMAL') != '')
+		if (\Redshop::getConfig()->get('PRICE_DECIMAL') != '')
 		{
-			$cal_no = Redshop::getConfig()->get('PRICE_DECIMAL');
+			$cal_no = \Redshop::getConfig()->get('PRICE_DECIMAL');
 		}
 
 		$order_total               = round($data['order_total'], $cal_no);

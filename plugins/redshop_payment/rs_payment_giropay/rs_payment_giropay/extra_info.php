@@ -13,7 +13,7 @@ $uri       = JURI::getInstance();
 $url       = $uri->root();
 $user      = JFactory::getUser();
 $sessionid = session_id();
-$amount    = RedshopHelperCurrency::convert($data['carttotal'], '', "EUR");
+$amount    = \RedshopHelperCurrency::convert($data['carttotal'], '', "EUR");
 
 $parameter['sourceId']      = $this->params->get("source_id");
 $parameter['merchantId']    = $this->params->get("merchant_id");

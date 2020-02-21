@@ -14,11 +14,11 @@ JLoader::import('redshop.library');
 /**
  * USPS Shipping plugins
  *
- * @package     Redshop.Shipping
+ * @package     \Redshop.Shipping
  * @subpackage  System
  * @since       1.5
  */
-class PlgRedshop_ShippingUspsv4 extends JPlugin
+class Plg\Redshop_ShippingUspsv4 extends JPlugin
 {
 	/**
 	 * Auto load language
@@ -45,7 +45,7 @@ class PlgRedshop_ShippingUspsv4 extends JPlugin
 
 		include_once JPATH_ROOT . '/plugins/' . $this->_type . '/' . $this->_name . '/config/' . $this->_name . '.cfg.php';
 
-		echo RedshopLayoutHelper::render('config', array(), __DIR__ . '/layouts');
+		echo \RedshopLayoutHelper::render('config', [], __DIR__ . '/layouts');
 
 		return true;
 	}
@@ -243,17 +243,17 @@ class PlgRedshop_ShippingUspsv4 extends JPlugin
 	{
 		$shippinghelper = shipping::getInstance();
 		$redconfig      = Redconfiguration::getInstance();
-		$shipping       = RedshopHelperShipping::getShippingMethodByClass($this->_name);
+		$shipping       = \RedshopHelperShipping::getShippingMethodByClass($this->_name);
 
-		$shippingRates = array();
+		$shippingRates = [];
 		$rate         = 0;
 
 		include_once JPATH_ROOT . '/plugins/' . $this->_type . '/' . $this->_name . '/config/' . $this->_name . '.cfg.php';
 
 		// Conversation of weight
-		$unitRatio       = \Redshop\Helper\Utility::getUnitConversation('pounds', Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT'));
-		$unitRatioVolume = \Redshop\Helper\Utility::getUnitConversation('inch', Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
-		$totalDimension  = RedshopHelperShipping::getCartItemDimension();
+		$unitRatio       = \Redshop\Helper\Utility::getUnitConversation('pounds', \Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT'));
+		$unitRatioVolume = \Redshop\Helper\Utility::getUnitConversation('inch', \Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
+		$totalDimension  = \RedshopHelperShipping::getCartItemDimension();
 		$orderWeight    = $totalDimension['totalweight'];
 
 		if ($unitRatio != 0)
@@ -262,7 +262,7 @@ class PlgRedshop_ShippingUspsv4 extends JPlugin
 			$orderWeight = $orderWeight * $unitRatio;
 		}
 
-		$shippingAddress = RedshopHelperShipping::getShippingAddress($data['users_info_id']);
+		$shippingAddress = \RedshopHelperShipping::getShippingAddress($data['users_info_id']);
 
 		if (count($shippingAddress) < 1)
 		{
@@ -271,13 +271,13 @@ class PlgRedshop_ShippingUspsv4 extends JPlugin
 
 		if (isset($data['shipping_box_id']) && $data['shipping_box_id'])
 		{
-			$whereShippingBoxes = RedshopHelperShipping::getBoxDimensions($data['shipping_box_id']);
+			$whereShippingBoxes = \RedshopHelperShipping::getBoxDimensions($data['shipping_box_id']);
 		}
 		else
 		{
-			$productData = RedshopHelperShipping::getProductVolumeShipping();
+			$productData = \RedshopHelperShipping::getProductVolumeShipping();
 
-			$whereShippingBoxes               = array();
+			$whereShippingBoxes               = [];
 			$whereShippingBoxes['box_length'] = $productData[2]['length'];
 			$whereShippingBoxes['box_width']  = $productData[1]['width'];
 			$whereShippingBoxes['box_height'] = $productData[0]['height'];
@@ -373,7 +373,7 @@ class PlgRedshop_ShippingUspsv4 extends JPlugin
 
 			if (isset($shippingAddress->country_code))
 			{
-				$shippingAddress->country_2_code = RedshopHelperWorld::getCountryCode2($shippingAddress->country_code);
+				$shippingAddress->country_2_code = \RedshopHelperWorld::getCountryCode2($shippingAddress->country_code);
 			}
 
 			// Send integer rounded down
@@ -389,8 +389,8 @@ class PlgRedshop_ShippingUspsv4 extends JPlugin
 				return $shippingRates;
 			}
 
-			$uspsShippingActive = array();
-			$uspsIntlActive = array();
+			$uspsShippingActive = [];
+			$uspsIntlActive = [];
 
 			// Default to International
 			$domestic = 0;
@@ -593,10 +593,10 @@ class PlgRedshop_ShippingUspsv4 extends JPlugin
 			// Get shipping options that are selected as available in VM from XML response
 			$count = 0;
 
-			$shippingServices = array();
-			$shippingPostage = array();
-			$shippingCommits = array();
-			$shippingWeights = array();
+			$shippingServices = [];
+			$shippingPostage = [];
+			$shippingCommits = [];
+			$shippingWeights = [];
 
 			if ($domestic)
 			{
@@ -688,7 +688,7 @@ class PlgRedshop_ShippingUspsv4 extends JPlugin
 					$delivery = $shippingCommits[$i];
 				}
 
-				$shippingRateId = RedshopShippingRate::encrypt(
+				$shippingRateId = \RedshopShippingRate::encrypt(
 					array(
 						__CLASS__,
 						$shipping->name,

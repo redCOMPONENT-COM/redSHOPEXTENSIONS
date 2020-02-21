@@ -42,7 +42,7 @@ class PlgSystemRedProductZoom extends JPlugin
 		$document->addScript($url . '/js/jquery.elevatezoom.js');
 		$document->addScript($url . '/js/redproductzoom.js');
 
-		$scripts = array();
+		$scripts = [];
 		$scripts[] = 'loadingIcon: "plugins/system/redproductzoom/js/zoomloader.gif"';
 		$scripts[] = 'cursor: "crosshair"';
 		$scripts[] = 'zoomType: "' . $this->params->get('zoom_type', 'window') . '"';

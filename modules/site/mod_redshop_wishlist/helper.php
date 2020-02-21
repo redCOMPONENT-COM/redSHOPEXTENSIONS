@@ -16,7 +16,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.7.0
  */
-abstract class ModRedshopWishlistHelper
+abstract class Mod\RedshopWishlistHelper
 {
 	/**
 	 * Retrieve a list of wishlist.
@@ -34,6 +34,6 @@ abstract class ModRedshopWishlistHelper
 			return JFactory::getSession()->get('wishlist');
 		}
 
-		return RedshopHelperWishlist::getUserWishlist($user->id);
+		return \RedshopHelperWishlist::getUserWishlist($user->id);
 	}
 }

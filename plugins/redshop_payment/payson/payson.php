@@ -13,11 +13,11 @@ JLoader::import('redshop.library');
 /**
  * Payson payment class
  *
- * @package  Redshop.Plugin
+ * @package  \Redshop.Plugin
  *
  * @since    1.7.0
  */
-class PlgRedshop_PaymentPayson extends JPlugin
+class Plg\Redshop_PaymentPayson extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.
@@ -67,7 +67,7 @@ class PlgRedshop_PaymentPayson extends JPlugin
 		$receiverEmail = $this->params->get('receiverEmail');
 
 		// Amount to send to receiver
-		$amountToReceive = RedshopHelperCurrency::convert($data['order']->order_total, '', $this->params->get('currencyCode'));
+		$amountToReceive = \RedshopHelperCurrency::convert($data['order']->order_total, '', $this->params->get('currencyCode'));
 
 		// Information about the sender of money
 		$senderEmail     = $data['billinginfo']->user_email;
@@ -102,10 +102,10 @@ class PlgRedshop_PaymentPayson extends JPlugin
 			$receivers
 		);
 
-		$orderItems = RedshopHelperOrder::getOrderItemDetail($data['order_id']);
+		$orderItems = \RedshopHelperOrder::getOrderItemDetail($data['order_id']);
 
 		// Set the list of products. For direct payment this is optional
-		$paysonOrderItems = array();
+		$paysonOrderItems = [];
 
 		foreach ($orderItems as $orderItem)
 		{
@@ -113,18 +113,18 @@ class PlgRedshop_PaymentPayson extends JPlugin
 
 			$paysonOrderItems[] = new OrderItem(
 				$orderItem->order_item_name . strip_tags($orderItem->product_attribute),
-				RedshopHelperCurrency::convert($orderItem->product_item_price_excl_vat, '', $this->params->get('currencyCode')),
+				\RedshopHelperCurrency::convert($orderItem->product_item_price_excl_vat, '', $this->params->get('currencyCode')),
 				$orderItem->product_quantity,
 				$vat,
 				$orderItem->order_item_sku
 			);
 		}
 
-		$shippingInfo = RedshopShippingRate::decrypt($data['order']->ship_method_id);
+		$shippingInfo = \RedshopShippingRate::decrypt($data['order']->ship_method_id);
 
 		$paysonOrderItems[] = new OrderItem(
 			$shippingInfo[2],
-			RedshopHelperCurrency::convert($shippingInfo[3], '', $this->params->get('currencyCode')),
+			\RedshopHelperCurrency::convert($shippingInfo[3], '', $this->params->get('currencyCode')),
 			1,
 			0,
 			'shipping-rate'

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Plugin
+ * @package     \Redshop.Plugin
  * @subpackage  mPDF
  *
  * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.
@@ -9,12 +9,12 @@
 defined('_JEXEC') or die();
 
 /**
- * PlgRedshop_PdfMPdf installer class.
+ * Plg\Redshop_PdfMPdf installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.0.0
  */
-class PlgRedshop_PdfMPdfInstallerScript
+class Plg\Redshop_PdfMPdfInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

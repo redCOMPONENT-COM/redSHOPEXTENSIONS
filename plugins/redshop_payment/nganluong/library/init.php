@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 /**
  * NganLuong payment
  *
- * @package     Redshop.Plugins
+ * @package     \Redshop.Plugins
  * @subpackage  NganLuong
  * @since       2.0.0
  */

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Plugin
+ * @package     \Redshop.Plugin
  * @subpackage  Bring
  *
  * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.
@@ -12,12 +12,12 @@ use Joomla\Registry\Registry;
 defined('_JEXEC') or die();
 
 /**
- * PlgRedshop_ShippingFedex installer class.
+ * Plg\Redshop_ShippingFedex installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    2.0.0
  */
-class PlgRedshop_ShippingFedexInstallerScript
+class Plg\Redshop_ShippingFedexInstallerScript
 {
 	/**
 	 * @var string

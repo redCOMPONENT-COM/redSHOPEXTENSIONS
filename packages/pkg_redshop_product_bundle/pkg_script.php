@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  *
  * @since    1.2
  */
-class pkg_Redshop_Product_BundleInstallerScript
+class pkg_\Redshop_Product_BundleInstallerScript
 {
 	/**
 	 * Method to install the component

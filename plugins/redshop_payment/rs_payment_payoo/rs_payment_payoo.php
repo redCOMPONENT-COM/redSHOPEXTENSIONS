@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
 /**
  * Payoo payment class
  *
- * @package  Redshop.Plugin
+ * @package  \Redshop.Plugin
  *
  * @since    1.0.0
  */
-class PlgRedshop_Paymentrs_Payment_Payoo extends JPlugin
+class Plg\Redshop_Paymentrs_Payment_Payoo extends JPlugin
 {
 	/**
 	 * Constructor
@@ -26,7 +26,7 @@ class PlgRedshop_Paymentrs_Payment_Payoo extends JPlugin
 	 *                            Recognized key values include 'name', 'group', 'params', 'language'
 	 *                            (this list is not meant to be comprehensive).
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		JPlugin::loadLanguage('plg_redshop_payment_rs_payment_payoo');
 		parent::__construct($subject, $config);

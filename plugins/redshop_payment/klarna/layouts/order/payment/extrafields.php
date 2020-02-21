@@ -1,8 +1,8 @@
 <?php
 /**
- * RedshopLayout to display payment extra fields
+ * \RedshopLayout to display payment extra fields
  *
- * @package     Redshop.Layouts
+ * @package     \Redshop.Layouts
  * @subpackage  Order.Payment
  * @copyright   Copyright (C) 2008-2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU/GPL, see LICENSE
@@ -14,21 +14,21 @@ extract($displayData);
 
 $user    = JFactory::getUser();
 $auth    = JFactory::getSession()->get('auth');
-$list    = array();
+$list    = [];
 
 if ($user->id)
 {
-	$list = RedshopHelperUser::getUserInformation($user->id);
+	$list = \RedshopHelperUser::getUserInformation($user->id);
 }
 elseif ($auth['users_info_id'])
 {
-	$list = RedshopHelperUser::getUserInformation(0, 'BT', $auth['users_info_id']);
+	$list = \RedshopHelperUser::getUserInformation(0, 'BT', $auth['users_info_id']);
 }
 
 $DOBGroup = (in_array($list->country_code, array('AUT', 'DEU', 'NLD')));
 $isNetherland = (in_array($list->country_code, array('NLD')));
 
-$fields = $plugin->params->get('extrafield_payment', array());
+$fields = $plugin->params->get('extrafield_payment', []);
 ?>
 <?php if (count($fields) > 0) : ?>
 	<div id="extraFields_<?php echo $plugin->name; ?>">
@@ -40,9 +40,9 @@ $fields = $plugin->params->get('extrafield_payment', array());
 
 			if (($isPNO && !$DOBGroup) || ($DOBFields && $DOBGroup) || ($isHouseExtension && $isNetherland))
 			{
-				$fieldInput = RedshopHelperExtrafields::listAllUserFields(
+				$fieldInput = \RedshopHelperExtrafields::listAllUserFields(
 							$name,
-							RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
+							\RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
 							'',
 							0,
 							0,

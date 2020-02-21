@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Plugin
+ * @package     \Redshop.Plugin
  * @subpackage  Payson
  *
  * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.
@@ -14,10 +14,10 @@ defined('_JEXEC') or die;
 /**
  * Payson Payment installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
-class PlgRedshop_PaymentPaysonInstallerScript
+class Plg\Redshop_PaymentPaysonInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Modules
+ * @package     \Redshop.Modules
  * @subpackage  Discount
  *
  * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
@@ -11,12 +11,12 @@ defined('_JEXEC') or die();
 use Joomla\Registry\Registry;
 
 /**
- * Mod_Redshop_Discount installer class.
+ * Mod_\Redshop_Discount installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
-class Mod_Redshop_DiscountInstallerScript
+class Mod_\Redshop_DiscountInstallerScript
 {
 	/**
 	 * Method to run before an install/update/uninstall method

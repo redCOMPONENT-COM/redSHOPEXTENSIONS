@@ -14,7 +14,7 @@ JHTML::_('behavior.modal');
 $uri = JURI::getInstance();
 $url = $uri->root();
 
-$Itemid = JRequest::getInt('Itemid');
+$itemId = JRequest::getInt('Itemid');
 $user   = JFactory::getUser();
 
 JHtml::_('redshopjquery.framework');
@@ -75,15 +75,15 @@ for ($i = 0, $countRows = count($rows); $i < $countRows; $i++)
 {
 	$row = $rows[$i];
 
-	$ItemData = RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+	$ItemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
 	if (count($ItemData) > 0)
 	{
-		$Itemid = $ItemData->id;
+		$itemId = $ItemData->id;
 	}
 	else
 	{
-		$Itemid = RedshopHelperRouter::getItemId($row->product_id);
+		$itemId = \RedshopHelperRouter::getItemId($row->product_id);
 	}
 
 	$catattach = '';
@@ -93,22 +93,22 @@ for ($i = 0, $countRows = count($rows); $i < $countRows; $i++)
 		$catattach = '&cid=' . $row->category_id;
 	}
 
-	$link = JRoute::_('index.php?option=com_redshop&view=product&pid=' . $row->product_id . $catattach . '&Itemid=' . $Itemid);
+	$link = JRoute::_('index.php?option=com_redshop&view=product&pid=' . $row->product_id . $catattach . '&Itemid=' . $itemId);
 	$url  = JURI::base();
 	echo "<li red_productindex='" . $i . "' class='red_product-item red_product-item-horizontal'><div class='listing-item'><div class='product-shop'>";
 
-	if ($show_product_name)
+	if ($isShowProductName)
 	{
 		$pname = $config->maxchar($row->product_name, $product_title_max_chars, $product_title_end_suffix);
 		echo "<a href='" . $link . "' title='" . $row->product_name . "'>" . $pname . "</a>";
 	}
 
-	if (Redshop::getConfig()->get('SHOW_PRICE') && !Redshop::getConfig()->get('USE_AS_CATALOG') && !Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && $show_price && !$row->not_for_sale)
+	if (\Redshop::getConfig()->get('SHOW_PRICE') && !\Redshop::getConfig()->get('USE_AS_CATALOG') && !\Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && $show_price && !$row->not_for_sale)
 	{
-		$productArr           = RedshopHelperProductPrice::getNetPrice($row->product_id);
-		$product_price        = RedshopHelperProductPrice::priceReplacement($productArr['product_price']);
-		$product_price_saving = RedshopHelperProductPrice::priceReplacement($productArr['product_price_saving']);
-		$product_old_price    = RedshopHelperProductPrice::priceReplacement($productArr['product_old_price']);
+		$productArr           = \RedshopHelperProductPrice::getNetPrice($row->product_id);
+		$product_price        = \RedshopHelperProductPrice::priceReplacement($productArr['product_price']);
+		$product_price_saving = \RedshopHelperProductPrice::priceReplacement($productArr['product_price_saving']);
+		$product_old_price    = \RedshopHelperProductPrice::priceReplacement($productArr['product_old_price']);
 
 		if ($show_discountpricelayout)
 		{
@@ -140,9 +140,9 @@ for ($i = 0, $countRows = count($rows); $i < $countRows; $i++)
 							'',
 							'thumb',
 							'product',
-							$thumbwidth,
-							$thumbheight,
-							Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
+							$thumbWidth,
+							$thumbHeight,
+							\Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
 						);
 		}
 		elseif (JFile::exists(REDSHOP_FRONT_IMAGES_RELPATH . "/product/" . $row->product_thumb_image))
@@ -152,9 +152,9 @@ for ($i = 0, $countRows = count($rows); $i < $countRows; $i++)
 							'',
 							'thumb',
 							'product',
-							$thumbwidth,
-							$thumbheight,
-							Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
+							$thumbWidth,
+							$thumbHeight,
+							\Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
 						);
 		}
 		else
@@ -162,30 +162,30 @@ for ($i = 0, $countRows = count($rows); $i < $countRows; $i++)
 			$prod_img = REDSHOP_FRONT_IMAGES_ABSPATH . "noimage.jpg";
 		}
 
-		$thum_image = "<a href='" . $link . "'><img style='width:" . $thumbwidth . "px;height:" . $thumbheight . "px;' src='" . $prod_img . "'></a>";
-		echo "<div class='product-image' style='width:" . $thumbwidth . "px;height:" . $thumbheight . "px;'>" . $thum_image . "</div>";
+		$thum_image = "<a href='" . $link . "'><img style='width:" . $thumbWidth . "px;height:" . $thumbHeight . "px;' src='" . $prod_img . "'></a>";
+		echo "<div class='product-image' style='width:" . $thumbWidth . "px;height:" . $thumbHeight . "px;'>" . $thum_image . "</div>";
 	}
 
 	if ($show_addtocart)
 	{
 		// Product attribute  Start
-		$attributes_set = array();
+		$setOfAttributes = [];
 
 		if ($row->attribute_set_id > 0)
 		{
-			$attributes_set = \Redshop\Product\Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
+			$setOfAttributes = \Redshop\Product\Attribute::getProductAttribute(0, $row->attribute_set_id, 0, 1);
 		}
 
 		$attributes = \Redshop\Product\Attribute::getProductAttribute($row->product_id);
-		$attributes = array_merge($attributes, $attributes_set);
-		$totalatt   = count($attributes);
+		$attributes = array_merge($attributes, $setOfAttributes);
+		$totalAttributes   = count($attributes);
 
 		// Product accessory Start
-		$accessory      = RedshopHelperAccessory::getProductAccessories(0, $row->product_id);
+		$accessory      = \RedshopHelperAccessory::getProductAccessories(0, $row->product_id);
 		$totalAccessory = count($accessory);
 
-		$addtocart_data = Redshop\Cart\Render::replace($row->product_id, 0, 0, 0, "", false, array(), $totalatt, $totalAccessory, 0, $module_id);
-		echo "<div class='form-button'>" . $addtocart_data . "<div>";
+		$addToCart_data = \Redshop\Cart\Render::replace($row->product_id, 0, 0, 0, "", false, [], $totalAttributes, $totalAccessory, 0, $module_id);
+		echo "<div class='form-button'>" . $addToCart_data . "<div>";
 	}
 
 	echo "</div></li>";

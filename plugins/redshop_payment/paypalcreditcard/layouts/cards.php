@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Layouts
+ * @package     \Redshop.Layouts
  * @subpackage  Payment.PaypalCreditCard
  * @copyright   Copyright (C) 2008-2016 redCOMPONENT.com. All rights reserved.
  * @license     GNU/GPL, see LICENSE
@@ -26,7 +26,7 @@ JHtml::script('plg_redshop_payment_paypalcreditcard/cards.min.js', false, true, 
 
 	<div id="newCardform">
 		<?php
-		echo RedshopLayoutHelper::render(
+		echo \RedshopLayoutHelper::render(
 			'form',
 			array(
 				'id'              => 0,
@@ -74,7 +74,7 @@ try
 				<tbody>
 				<?php foreach ($cards->items as $card) : ?>
 					<?php
-					echo RedshopLayoutHelper::render(
+					echo \RedshopLayoutHelper::render(
 						'card',
 						array(
 							'card'            => $card,

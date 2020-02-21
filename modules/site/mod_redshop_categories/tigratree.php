@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-global $Itemid, $urlpath, $sortparam;
+global $itemId, $urlpath, $sortparam;
 
 // Decide which node to open (if any)
 $Treeid = JRequest::getInt('Treeid');
@@ -82,7 +82,7 @@ var TREE_ITEMS_$varname = [\n";
 $menu_htmlcode .= "['" . $root_label . "', '" . JRoute::_($urlpath . 'index.php') . "',\n";
 
 // Get the actual category items
-$vmTigraTree->traverse_tree_down($menu_htmlcode, $category_id = '0', $level = '0', $shopper_group_id);
+$vmTigraTree->traverse_tree_down($menu_htmlcode, $categoryId = '0', $level = '0', $shopper_group_id);
 
 $menu_htmlcode .= "]];
 
@@ -93,7 +93,7 @@ o_tree_$varname.select($Treeid);
 
 // Add a linked list in case JavaScript is disabled
 $menu_htmlcode .= "<noscript>\n";
-$menu_htmlcode .= $redproduct_menu->get_category_tree($params, $category_id, $class_mainlevel, $list_css_class = "mm123", $highlighted_style = "font-style:italic;", $shopper_group_id);
+$menu_htmlcode .= $redproduct_menu->get_category_tree($params, $categoryId, $class_mainlevel, $list_css_class = "mm123", $highlighted_style = "font-style:italic;", $shopper_group_id);
 $menu_htmlcode .= "\n</noscript>\n";
 $menu_htmlcode .= "</div>";
 
@@ -104,13 +104,13 @@ class redTigraTreeMenu
 	/***************************************************
 	 * function traverse_tree_down
 	 */
-	function traverse_tree_down(&$mymenu_content, $category_id = '0', $level = '0', $shopper_group_id)
+	function traverse_tree_down(&$mymenu_content, $categoryId = '0', $level = '0', $shopper_group_id)
 	{
 		static $ibg = 0;
-		global $Itemid, $sortparam;
+		global $itemId, $sortparam;
 
 		$db        = JFactory::getDbo();
-		$Itemid    = JRequest::getInt('Itemid');
+		$itemId    = JRequest::getInt('Itemid');
 		$level++;
 		$redproduct_menu = new modProMenuHelper;
 
@@ -125,7 +125,7 @@ class redTigraTreeMenu
 
 		$query = "SELECT name as cname, id as cid, id as ccid FROM #__redshop_category "
 			. "WHERE published=1 "
-			. "AND parent_id=" . (int) $category_id;
+			. "AND parent_id=" . (int) $categoryId;
 
 		if ($shopper_group_id && $shoppergroup_cat)
 		{
@@ -144,14 +144,14 @@ class redTigraTreeMenu
 			{
 				$ibg++;
 				$Treeid  = $ibg;
-				$cItemid = RedshopHelperRouter::getCategoryItemid($category->cid);
+				$cItemid = \RedshopHelperRouter::getCategoryItemid($category->cid);
 				if ($cItemid != "")
 				{
 					$tmpItemid = $cItemid;
 				}
 				else
 				{
-					$tmpItemid = $Itemid;
+					$tmpItemid = $itemId;
 				}
 
 				$mymenu_content .= str_repeat("\t", $level - 1);

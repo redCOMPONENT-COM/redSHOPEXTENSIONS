@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshopb.Plugin
+ * @package     \Redshopb.Plugin
  * @subpackage  redshop_pdf
  *
  * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
@@ -16,12 +16,12 @@ jimport('redshop.library');
 JLoader::import('helper', __DIR__ . '/helper');
 
 /**
- * PlgRedshop_PdfMPdf class.
+ * Plg\Redshop_PdfMPdf class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.0.0
  */
-class PlgRedshop_PdfMPdf extends JPlugin
+class Plg\Redshop_PdfMPdf extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.
@@ -42,7 +42,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function onRedshopOrderCreateInvoicePdf($orderId = 0, $pdfHtml = '', $code = 'F', $isEmail = false)
+	public function on\RedshopOrderCreateInvoicePdf($orderId = 0, $pdfHtml = '', $code = 'F', $isEmail = false)
 	{
 		if (!$orderId || empty($pdfHtml))
 		{
@@ -50,10 +50,10 @@ class PlgRedshop_PdfMPdf extends JPlugin
 		}
 
 		// Load payment languages
-		RedshopHelperPayment::loadLanguages();
+		\RedshopHelperPayment::loadLanguages();
 
 		// Changed font to support Unicode Characters - Specially Polish Characters
-		$pdfObj = new PlgRedshop_PdfMPDFHelper;
+		$pdfObj = new Plg\Redshop_PdfMPDFHelper;
 		$pdfObj->SetTitle(JText::sprintf('PLG_REDSHOP_PDF_MPDF_INVOICE_TITLE', $orderId));
 		$pdfObj->AddPage();
 		$pdfObj->writeHTML($pdfHtml);
@@ -95,7 +95,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since  1.0.0
 	 */
-	public function onRedshopOrderCreateMultiInvoicePdf($orderIds = array(), $pdfHtml = '')
+	public function on\RedshopOrderCreateMultiInvoicePdf($orderIds = [], $pdfHtml = '')
 	{
 		if (empty($orderIds) || empty($pdfHtml))
 		{
@@ -103,12 +103,12 @@ class PlgRedshop_PdfMPdf extends JPlugin
 		}
 
 		// Changed font to support Unicode Characters - Specially Polish Characters
-		$pdfObj = new PlgRedshop_PdfMPDFHelper;
+		$pdfObj = new Plg\Redshop_PdfMPDFHelper;
 		$pdfObj->SetTitle(JText::_('PLG_REDSHOP_PDF_MPDF_MULTI_INVOICE_TITLE'));
 
 		foreach ($orderIds as $orderId)
 		{
-			$ordersDetail = RedshopHelperOrder::getOrderDetails($orderId);
+			$ordersDetail = \RedshopHelperOrder::getOrderDetails($orderId);
 			$message = $pdfHtml;
 
 			$printTag = "<a onclick='window.print();' title='" . JText::_('COM_REDSHOP_PRINT') . "'>"
@@ -118,7 +118,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 			$message = str_replace("{print}", $printTag, $message);
 			$message = str_replace("{order_mail_intro_text_title}", JText::_('COM_REDSHOP_ORDER_MAIL_INTRO_TEXT_TITLE'), $message);
 			$message = str_replace("{order_mail_intro_text}", JText::_('COM_REDSHOP_ORDER_MAIL_INTRO_TEXT'), $message);
-			$message = Redshop\Order\Template::replaceTemplate($ordersDetail, $message, true);
+			$message = \Redshop\Order\Template::replaceTemplate($ordersDetail, $message, true);
 			$pdfObj->AddPage();
 			$pdfObj->WriteHTML($message);
 		}
@@ -151,14 +151,14 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function onRedshopOrderCreateGiftCard($giftCard = null, $template = '')
+	public function on\RedshopOrderCreateGiftCard($giftCard = null, $template = '')
 	{
 		if (empty($giftCard) || empty($template))
 		{
 			return '';
 		}
 
-		$pdf = new PlgRedshop_PdfMPDFHelper;
+		$pdf = new Plg\Redshop_PdfMPDFHelper;
 
 		$pdf->SetCreator(PDF_CREATOR);
 		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
@@ -183,7 +183,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function onRedshopPdfCreateShippedInvoice($orderId = 0, $pdfHtml = '')
+	public function on\RedshopPdfCreateShippedInvoice($orderId = 0, $pdfHtml = '')
 	{
 		if (!$orderId || empty($pdfHtml))
 		{
@@ -191,10 +191,10 @@ class PlgRedshop_PdfMPdf extends JPlugin
 		}
 
 		// Load payment languages
-		RedshopHelperPayment::loadLanguages();
+		\RedshopHelperPayment::loadLanguages();
 
 		// Changed font to support Unicode Characters - Specially Polish Characters
-		$pdfObj = new PlgRedshop_PdfMPDFHelper;
+		$pdfObj = new Plg\Redshop_PdfMPDFHelper;
 
 		$pdfObj->SetTitle(JText::_('PLG_REDSHOP_PDF_MPDF_SHIPPED_INVOICE_TITLE'));
 		$pdfObj->SetMargins(20, 85, 20);
@@ -220,7 +220,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function onRedshopOrderGenerateStockNotePdf($orderData = null, $pdfHtml = '')
+	public function on\RedshopOrderGenerateStockNotePdf($orderData = null, $pdfHtml = '')
 	{
 		if (empty($orderData) || empty($pdfHtml))
 		{
@@ -228,10 +228,10 @@ class PlgRedshop_PdfMPdf extends JPlugin
 		}
 
 		// Load payment languages
-		RedshopHelperPayment::loadLanguages();
+		\RedshopHelperPayment::loadLanguages();
 
 		// Changed font to support Unicode Characters - Specially Polish Characters
-		$pdfObj = new PlgRedshop_PdfMPDFHelper;
+		$pdfObj = new Plg\Redshop_PdfMPDFHelper;
 		$pdfObj->SetTitle(JText::sprintf('PLG_REDSHOP_PDF_MPDF_ORDER_STOCK_NOTE_TITLE', $orderData->order_id));
 		$pdfObj->SetMargins(15, 15, 15);
 		$pdfObj->AddPage();
@@ -250,7 +250,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function onRedshopOrderGenerateShippingPdf($orderData = null, $pdfHtml = '')
+	public function on\RedshopOrderGenerateShippingPdf($orderData = null, $pdfHtml = '')
 	{
 		if (empty($orderData) || empty($pdfHtml))
 		{
@@ -258,10 +258,10 @@ class PlgRedshop_PdfMPdf extends JPlugin
 		}
 
 		// Load payment languages
-		RedshopHelperPayment::loadLanguages();
+		\RedshopHelperPayment::loadLanguages();
 
 		// Changed font to support Unicode Characters - Specially Polish Characters
-		$pdfObj = new PlgRedshop_PdfMPDFHelper;
+		$pdfObj = new Plg\Redshop_PdfMPDFHelper;
 		$pdfObj->SetTitle(JText::_('COM_REDSHOP_ORDER') . ': ' . $orderData->order_id);
 		$pdfObj->SetMargins(15, 15, 15);
 		$pdfObj->AddPage();

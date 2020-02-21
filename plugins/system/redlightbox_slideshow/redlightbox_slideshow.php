@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 jimport('joomla.plugin.plugin');
 
 /**
- * Redshop Lightbox Slideshow
+ * \Redshop Lightbox Slideshow
  *
  * @since  2.0
  */
@@ -48,9 +48,9 @@ class PlgSystemRedlightbox_Slideshow extends JPlugin
 
 		JHtml::_('redshopjquery.framework');
 
-		JHtml::stylesheet('plg_system_redlightbox_slideshow/slimbox2/slimbox2.min.css', array(), true);
-		JHtml::stylesheet('plg_system_redlightbox_slideshow/photoswipe/photoswipe.min.css', array(), true);
-		JHtml::stylesheet('plg_system_redlightbox_slideshow/photoswipe/default-skin/default-skin.min.css', array(), true);
+		JHtml::stylesheet('plg_system_redlightbox_slideshow/slimbox2/slimbox2.min.css', [], true);
+		JHtml::stylesheet('plg_system_redlightbox_slideshow/photoswipe/photoswipe.min.css', [], true);
+		JHtml::stylesheet('plg_system_redlightbox_slideshow/photoswipe/default-skin/default-skin.min.css', [], true);
 
 		JHtml::script('plg_system_redlightbox_slideshow/photoswipe/photoswipe.min.js', false, true, false, false);
 		JHtml::script('plg_system_redlightbox_slideshow/photoswipe/photoswipe-ui-default.min.js', false, true, false, false);
