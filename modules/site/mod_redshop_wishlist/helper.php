@@ -16,7 +16,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.7.0
  */
-abstract class Mod\RedshopWishlistHelper
+abstract class ModRedshopWishlistHelper
 {
 	/**
 	 * Retrieve a list of wishlist.

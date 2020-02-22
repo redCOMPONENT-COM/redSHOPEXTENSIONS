@@ -16,7 +16,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.7.0
  */
-class Mod\RedshopCurrenciesHelper
+class ModRedshopCurrenciesHelper
 {
 	/**
 	 * @var  array

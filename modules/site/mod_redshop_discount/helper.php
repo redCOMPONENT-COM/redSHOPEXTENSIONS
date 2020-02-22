@@ -16,7 +16,7 @@ JLoader::import('redshop.library');
  *
  * @since  1.7.0
  */
-abstract class Mod\RedshopDiscountHelper
+abstract class ModRedshopDiscountHelper
 {
 	/**
 	 * Retrieve a list of article

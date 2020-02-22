@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  * @since  2.1.2
  */
 //class ProductFiltersHelper
-class Mod\RedshopCategoryProductFiltersHelper
+class ModRedshopCategoryProductFiltersHelper
 {
 	/**
 	 * This function will help get max and min value on list product price

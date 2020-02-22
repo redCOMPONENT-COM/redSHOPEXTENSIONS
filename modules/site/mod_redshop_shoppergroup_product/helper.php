@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.5
  */
-class Mod\RedshopShopperGroupProduct
+class ModRedshopShopperGroupProduct
 {
 	/**
 	 * Get a list of the products.
