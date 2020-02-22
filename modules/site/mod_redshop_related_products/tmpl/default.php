@@ -66,11 +66,11 @@ $moduleId        = 'mod_' . $module->id;
 			}
 
 			$categoryId = \RedshopHelperProduct::getCategoryProduct($row->product_id);
-			$ItemData   = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+			$itemData   = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
-			if (count($ItemData) > 0)
+			if (count($itemData) > 0)
 			{
-				$itemId = $ItemData->id;
+				$itemId = $itemData->id;
 			}
 			else
 			{

@@ -213,11 +213,11 @@ class \RedshopProductSlideshow
 		{
 			$ret_array['flag'] = true;
 			$price_txt         = '';
-			$ItemData          =  \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $rows[$k]->product_id);
+			$itemData          =  \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $rows[$k]->product_id);
 
-			if (count($ItemData) > 0)
+			if (count($itemData) > 0)
 			{
-				$itemId = $ItemData->id;
+				$itemId = $itemData->id;
 			}
 			else
 			{
