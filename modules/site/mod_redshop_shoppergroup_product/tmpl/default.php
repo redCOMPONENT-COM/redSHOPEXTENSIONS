@@ -13,13 +13,14 @@ JHTML::_('behavior.modal');
 
 $uri = JURI::getInstance();
 $url = $uri->root();
+$input = \JFactory::getApplication()->input;
 
-$itemId    = JRequest::getInt('Itemid');
-$user      = JFactory::getUser();
-$view      = JRequest::getCmd('view');
-$getoption = JRequest::getCmd('option');
+$itemId    = $input->getInt('Itemid');
+$user      = \JFactory::getUser();
+$view      = $input->getString('view');
+$getOption = $input->get('option');
 
-$document = JFactory::getDocument();
+$document = \JFactory::getDocument();
 JHTML::stylesheet('modules/mod_redshop_shoppergroup_product/css/products.css');
 
 JHtml::script('com_redshop/attribute.js', false, true);
@@ -91,11 +92,11 @@ foreach ($rows as $row)
 		}
 	}
 
-	$ItemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+	$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
-	if (count($ItemData) > 0)
+	if (isset($itemData->id))
 	{
-		$itemId = $ItemData->id;
+		$itemId = $itemData->id;
 	}
 	else
 	{

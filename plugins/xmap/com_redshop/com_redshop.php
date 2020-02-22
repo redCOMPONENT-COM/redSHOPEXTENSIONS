@@ -221,11 +221,11 @@ class Xmap_Com_\Redshop
 				foreach ($rows as $row)
 				{
 					// Get Product Menu Itemid
-					$ItemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+					$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
-					if (count($ItemData) > 0)
+					if (count($itemData) > 0)
 					{
-						$params['Itemid'] = $ItemData->id;
+						$params['Itemid'] = $itemData->id;
 					}
 					else
 					{
@@ -311,11 +311,11 @@ class Xmap_Com_\Redshop
 			foreach ($childproducts as $row)
 			{
 				// Get Product Menu Itemid
-				$ItemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+				$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
-				if (count($ItemData) > 0)
+				if (count($itemData) > 0)
 				{
-					$params['Itemid'] = $ItemData->id;
+					$params['Itemid'] = $itemData->id;
 				}
 				else
 				{

@@ -81,11 +81,11 @@ class plgContentredshop_product extends JPlugin
 
 				// Changes for sh404sef duplicating url
 				$catid = \RedshopHelperProduct::getCategoryProduct($product->product_id);
-				$ItemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $product->product_id);
+				$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $product->product_id);
 
-				if (count($ItemData) > 0)
+				if (count($itemData) > 0)
 				{
-					$productItemId = $ItemData->id;
+					$productItemId = $itemData->id;
 				}
 				else
 				{
