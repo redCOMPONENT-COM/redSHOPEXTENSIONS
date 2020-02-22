@@ -16,7 +16,7 @@ use Joomla\Registry\Registry;
  *
  * @since  3.1
  */
-abstract class Mod\RedshopTagsHelper
+abstract class ModRedshopTagsHelper
 {
 	/**
 	 * Get a list of tags

@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-JLoader::register('Mod\RedshopCategoryProductFiltersHelper', __DIR__ . '/helper.php');
+JLoader::register('ModRedshopCategoryProductFiltersHelper', __DIR__ . '/helper.php');
 JLoader::import('redshop.library');
 
 $input        = JFactory::getApplication()->input;
@@ -62,11 +62,11 @@ if (empty($pids))
 	return;
 }
 
-$manufacturers   = Mod\RedshopCategoryProductFiltersHelper::getManufacturers(array_unique($manuList));
+$manufacturers   = ModRedshopCategoryProductFiltersHelper::getManufacturers(array_unique($manuList));
 $categories      = \RedshopHelperCategory::getCategoryListArray($cid);
-$customFields    = Mod\RedshopCategoryProductFiltersHelper::getCustomFields($pids, $productFields);
-$rangePrice      = Mod\RedshopCategoryProductFiltersHelper::getPriceRange($pids);
-$attributesGroup = Mod\RedshopCategoryProductFiltersHelper::getAttributeFiltersList($attributeFilters, $pids);
+$customFields    = ModRedshopCategoryProductFiltersHelper::getCustomFields($pids, $productFields);
+$rangePrice      = ModRedshopCategoryProductFiltersHelper::getPriceRange($pids);
+$attributesGroup = ModRedshopCategoryProductFiltersHelper::getAttributeFiltersList($attributeFilters, $pids);
 
 $rangeMin = $rangePrice['min'];
 $rangeMax = $rangePrice['max'];

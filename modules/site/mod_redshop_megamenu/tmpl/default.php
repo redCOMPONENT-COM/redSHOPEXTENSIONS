@@ -42,7 +42,7 @@ JFactory::getDocument()->addScriptDeclaration('
 				<ul class="nav-child unstyled megamenu">
 					<li class="maxMegaMenuWidth">
 						<div class="row-fluid">
-							<?php Mod\RedshopMegaMenuHelper::displayLevel($category->sub_cat, $category); ?>
+							<?php ModRedshopMegaMenuHelper::displayLevel($category->sub_cat, $category); ?>
 						</div>
 					</li>
 				</ul>

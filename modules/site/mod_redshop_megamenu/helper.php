@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  * @subpackage  mod_redshop_megamenu
  * @since       1.6.21
  */
-class Mod\RedshopMegaMenuHelper
+class ModRedshopMegaMenuHelper
 {
 	protected static $categories = [];
 

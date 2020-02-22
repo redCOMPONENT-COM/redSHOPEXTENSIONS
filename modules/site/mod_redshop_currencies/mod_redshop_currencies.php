@@ -8,11 +8,11 @@
  */
 
 defined('_JEXEC') or die;
-JLoader::register('Mod\RedshopCurrenciesHelper', __DIR__ . '/helper.php');
+JLoader::register('ModRedshopCurrenciesHelper', __DIR__ . '/helper.php');
 
 $session        = JFactory::getSession();
 $textBefore     = $params->get('text_before', '');
-$currencies     = Mod\RedshopCurrenciesHelper::getList($params);
-$activeCurrency = Mod\RedshopCurrenciesHelper::getActive();
+$currencies     = ModRedshopCurrenciesHelper::getList($params);
+$activeCurrency = ModRedshopCurrenciesHelper::getActive();
 
 require JModuleHelper::getLayoutPath('mod_redshop_currencies', $params->get('layout', 'default'));

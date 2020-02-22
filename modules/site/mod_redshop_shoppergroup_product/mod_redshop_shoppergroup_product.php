@@ -24,7 +24,7 @@ $show_vat                 = trim($params->get('show_vat', 1));
 // Include the syndicate functions only once
 require_once __DIR__ . '/helper.php';
 
-$rows = Mod\RedshopShopperGroupProduct::getList($params);
+$rows = ModRedshopShopperGroupProduct::getList($params);
 
 if ($rows)
 {
