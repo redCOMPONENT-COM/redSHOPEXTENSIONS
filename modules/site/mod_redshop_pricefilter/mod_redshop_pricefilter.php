@@ -30,10 +30,10 @@ $count                    = trim($params->get('count', 5));
 $image                    = trim($params->get('image', 0));
 $thumbWidth               = trim($params->get('thumbwidth', 100));
 $thumbHeight              = trim($params->get('thumbheight', 100));
-$show_price               = trim($params->get('show_price', 0));
-$show_readmore            = trim($params->get('show_readmore', 1));
-$show_addtocart           = trim($params->get('show_addtocart', 1));
-$show_discountpricelayout = trim($params->get('show_discountpricelayout', 1));
+$isShowPrice               = trim($params->get('show_price', 0));
+$isShowReadMore            = trim($params->get('show_readmore', 1));
+$isShowAddToCart           = trim($params->get('show_addtocart', 1));
+$isShowDiscountPriceLayout = trim($params->get('show_discountpricelayout', 1));
 $show_desc                = trim($params->get('show_desc', 1));
 
 global $context;

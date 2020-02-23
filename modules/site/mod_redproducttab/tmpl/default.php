@@ -14,7 +14,7 @@ JHTML::_('behavior.modal');
 JHtml::script('com_redshop/attribute.js', false, true);
 JHtml::script('com_redshop/common.js', false, true);
 JHTML::script('com_redshop/redbox.js', false, true);
-$module_id = "mod_" . $module->id;
+$moduleId = "mod_" . $module->id;
 
 
 // Create Pane

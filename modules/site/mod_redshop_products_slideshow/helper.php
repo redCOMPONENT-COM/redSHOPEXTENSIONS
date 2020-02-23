@@ -228,11 +228,11 @@ class \RedshopProductSlideshow
 			{
 				// Without vat price
 				$productArr        = \RedshopHelperProductPrice::getNetPrice($rows[$k]->product_id, 0, 1);
-				$product_price     = $productArr['productPrice'];
+				$productPrice     = $productArr['productPrice'];
 				$productVat        = $productArr['productVat'];
 
 				// With vat price
-				$product_price_vat = $product_price + $productVat;
+				$productPrice_vat = $productPrice + $productVat;
 				$price_txt         .= $params->get('price_text', ': ');
 				$price_txt         .= ' ';
 
@@ -240,11 +240,11 @@ class \RedshopProductSlideshow
 
 				if ($pricetax == 'yes')
 				{
-					$abs_price = $product_price_vat;
+					$abs_price = $productPrice_vat;
 				}
 				else
 				{
-					$abs_price = $product_price;
+					$abs_price = $productPrice;
 				}
 
 				$abs_price = \RedshopHelperProductPrice::formattedPrice($abs_price);
@@ -252,7 +252,7 @@ class \RedshopProductSlideshow
 			}
 
 			$curr_link = JRoute::_('index.php?option=com_redshop&amp;view=product&amp;pid=' . $rows[$k]->product_id . '&amp;Itemid=' . $itemId, true);
-			$pname = $rows[$k]->product_name;
+			$productName = $rows[$k]->product_name;
 
 			if (!JFile::exists(REDSHOP_FRONT_IMAGES_RELPATH . "product/" . $rows[$k]->product_full_image))
 			{
@@ -274,7 +274,7 @@ class \RedshopProductSlideshow
 			$xml_data .= '<item>
 		<link>' . $curr_link . '</link>
 		<image>' . $imgpath . '</image>
-		<title>' . htmlentities($pname) . strip_tags($price_txt) . '</title>
+		<title>' . htmlentities($productName) . strip_tags($price_txt) . '</title>
 		</item>';
 		}
 

@@ -31,7 +31,7 @@ $redTemplate   = Redtemplate::getInstance();
 
 echo "<div class='mod_redshop_shoppergroup_product_wrapper'>";
 
-$module_id = "mod_" . $module->id;
+$moduleId = "mod_" . $module->id;
 
 foreach ($rows as $row)
 {
@@ -109,8 +109,8 @@ foreach ($rows as $row)
 
 	if ($image)
 	{
-		$thum_image = \Redshop\Product\Image\Image::getImage($row->product_id, $link, $thumbWidth, $thumbHeight);
-		echo "<div class='mod_redshop_shoppergroup_product_image'>" . $thum_image . "</div>";
+		$thumbImage = \Redshop\Product\Image\Image::getImage($row->product_id, $link, $thumbWidth, $thumbHeight);
+		echo "<div class='mod_redshop_shoppergroup_product_image'>" . $thumbImage . "</div>";
 	}
 
 	echo "<div class='mod_redshop_shoppergroup_product_title'><a href='" . $link . "' title=''>";
@@ -122,43 +122,43 @@ foreach ($rows as $row)
 		echo "<div class='mod_redshop_shoppergroup_product_desc'>" . $row->product_s_desc . "</div>";
 	}
 
-	$product_price = \Redshop\Product\Price::getPrice($row->product_id, $show_vat);
+	$productPrice = \Redshop\Product\Price::getPrice($row->product_id, $isShowVat);
 	$productArr             = \RedshopHelperProductPrice::getNetPrice($row->product_id);
-	$product_price_discount = $productArr['productPrice'] + $productArr['productVat'];
+	$productPrice_discount = $productArr['productPrice'] + $productArr['productVat'];
 
-	if (!$row->not_for_sale && $show_price)
+	if (!$row->not_for_sale && $isShowPrice)
 	{
 		if (\Redshop::getConfig()->get('SHOW_PRICE') && (!\Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') || (\Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && SHOW_QUOTATION_PRICE)))
 		{
-			if (!$product_price)
+			if (!$productPrice)
 			{
-				$product_price_dis = \RedshopHelperProductPrice::priceReplacement($product_price);
+				$productPrice_dis = \RedshopHelperProductPrice::priceReplacement($productPrice);
 			}
 			else
 			{
-				$product_price_dis = \RedshopHelperProductPrice::formattedPrice($product_price);
+				$productPrice_dis = \RedshopHelperProductPrice::formattedPrice($productPrice);
 			}
 
-			$disply_text = "<div class='mod_redshop_shoppergroup_product_price'>" . $product_price_dis . "</div>";
+			$disply_text = "<div class='mod_redshop_shoppergroup_product_price'>" . $productPrice_dis . "</div>";
 
-			if ($row->product_on_sale && $product_price_discount > 0)
+			if ($row->product_on_sale && $productPrice_discount > 0)
 			{
-				if ($product_price > $product_price_discount)
+				if ($productPrice > $productPrice_discount)
 				{
 					$disply_text = "";
-					$s_price     = $product_price - $product_price_discount;
+					$s_price     = $productPrice - $productPrice_discount;
 
-					if ($show_discountpricelayout)
+					if ($isShowDiscountPriceLayout)
 					{
-						echo "<div id='mod_redoldprice' class='mod_redoldprice'><span style='text-decoration:line-through;'>" . \RedshopHelperProductPrice::formattedPrice($product_price) . "</span></div>";
-						$product_price = $product_price_discount;
-						echo "<div id='mod_redmainprice' class='mod_redmainprice'>" . \RedshopHelperProductPrice::formattedPrice($product_price_discount) . "</div>";
+						echo "<div id='mod_redoldprice' class='mod_redoldprice'><span style='text-decoration:line-through;'>" . \RedshopHelperProductPrice::formattedPrice($productPrice) . "</span></div>";
+						$productPrice = $productPrice_discount;
+						echo "<div id='mod_redmainprice' class='mod_redmainprice'>" . \RedshopHelperProductPrice::formattedPrice($productPrice_discount) . "</div>";
 						echo "<div id='mod_redsavedprice' class='mod_redsavedprice'>" . JText::_('MOD_REDSHOP_SHOPPERGROUP_PRODUCT_PRODCUT_PRICE_YOU_SAVED') . ' ' . \RedshopHelperProductPrice::formattedPrice($s_price) . "</div>";
 					}
 					else
 					{
-						$product_price = $product_price_discount;
-						echo "<div class='mod_redshop_shoppergroup_product_price'>" . \RedshopHelperProductPrice::formattedPrice($product_price) . "</div>";
+						$productPrice = $productPrice_discount;
+						echo "<div class='mod_redshop_shoppergroup_product_price'>" . \RedshopHelperProductPrice::formattedPrice($productPrice) . "</div>";
 					}
 				}
 			}
@@ -167,14 +167,14 @@ foreach ($rows as $row)
 		}
 	}
 
-	if ($show_readmore)
+	if ($isShowReadMore)
 	{
 		echo "<div class='mod_redshop_shoppergroup_product_readmore'><a href='" . $link . "'>" . JText::_('MOD_REDSHOP_SHOPPERGROUP_PRODUCT_TXT_READ_MORE') . "</a>&nbsp;</div>";
 	}
 
-	if ($show_addtocart)
+	if ($isShowAddToCart)
 	{
-		$addToCart = \Redshop\Cart\Render::replace($row->product_id, $row->category_id, 0, 0, "", false, $userFields, $totalAttributes, $row->total_accessories, $countUserFields, $module_id);
+		$addToCart = \Redshop\Cart\Render::replace($row->product_id, $row->category_id, 0, 0, "", false, $userFields, $totalAttributes, $row->total_accessories, $countUserFields, $moduleId);
 		echo "<div class='mod_redshop_shoppergroup_product_addtocart'>" . $addToCart . $hiddenUserField . "</div>";
 	}
 
