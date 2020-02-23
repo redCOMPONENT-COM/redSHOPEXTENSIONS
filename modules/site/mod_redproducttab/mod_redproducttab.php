@@ -16,7 +16,7 @@ $specialProduct       = trim($params->get('show_splprd', 1));
 
 $image           = trim($params->get('image', 0));
 $isShowPrice     = trim($params->get('show_price', 0));
-$isShowReadmore  = trim($params->get('show_readmore', 1));
+$isShowReadMore  = trim($params->get('show_readmore', 1));
 $isShowAddToCart = trim($params->get('show_addtocart', 1));
 $isShowDesc      = trim($params->get('show_desc', 1));
 $thumbWidth      = trim($params->get('thumbwidth', 100));

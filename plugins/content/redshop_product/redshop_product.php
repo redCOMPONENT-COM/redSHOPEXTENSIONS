@@ -37,7 +37,7 @@ class plgContentredshop_product extends JPlugin
 				$session->set('product_currency', $post['product_currency']);
 			}
 
-			$module_id     = "plg_";
+			$moduleId     = "plg_";
 			$lang          = JFactory::getLanguage();
 
 			// Or JPATH_ADMINISTRATOR if the template language file is only
@@ -48,9 +48,9 @@ class plgContentredshop_product extends JPlugin
 			$red_params = new JRegistry($plugin->params);
 
 			// Get show price yes/no option
-			$show_price = trim($red_params->get('show_price', 0));
-			$show_price_with_vat = trim($red_params->get('show_price_with_vat', 1));
-			$show_discountpricelayout = trim($red_params->get('show_discountpricelayout', 1));
+			$isShowPrice = trim($red_params->get('show_price', 0));
+			$isShowPrice_with_vat = trim($red_params->get('show_price_with_vat', 1));
+			$isShowDiscountPriceLayout = trim($red_params->get('show_discountpricelayout', 1));
 			$redTemplate = Redtemplate::getInstance();
 			$prtemplate_id = trim($red_params->get('product_template', 1));
 			$prtemplate1 = $redTemplate->getTemplate('product_content_template', $prtemplate_id);
@@ -125,8 +125,8 @@ class plgContentredshop_product extends JPlugin
 				$hidden_thumb_image = "<input type='hidden' name='prd_main_imgwidth' id='prd_main_imgwidth' value='"
 						. $pw_thumb . "'><input type='hidden' name='prd_main_imgheight' id='prd_main_imgheight' value='"
 						. $ph_thumb . "'>";
-				$thum_image = \Redshop\Product\Image\Image::getImage($product_id, $link, $pw_thumb, $ph_thumb, 2, 1);
-				$prtemplate = str_replace($pimg_tag, $thum_image . $hidden_thumb_image, $prtemplate);
+				$thumbImage = \Redshop\Product\Image\Image::getImage($product_id, $link, $pw_thumb, $ph_thumb, 2, 1);
+				$prtemplate = str_replace($pimg_tag, $thumbImage . $hidden_thumb_image, $prtemplate);
 				$product_name = "<a href='" . $link . "' title=''>" . $product->product_name . "</a>";
 				$prtemplate = str_replace("{product_name}", $product_name, $prtemplate);
 
@@ -139,25 +139,25 @@ class plgContentredshop_product extends JPlugin
 				{
 					$pr_price = '';
 
-					if ($show_price && \Redshop::getConfig()->get('SHOW_PRICE'))
+					if ($isShowPrice && \Redshop::getConfig()->get('SHOW_PRICE'))
 					{
-						$product_price = \Redshop\Product\Price::getPrice($product->product_id, $show_price_with_vat);
+						$productPrice = \Redshop\Product\Price::getPrice($product->product_id, $isShowPrice_with_vat);
 						$productArr = \RedshopHelperProductPrice::getNetPrice($product->product_id, 0, 1);
-						$product_price_discount = $productArr['productPrice'];
-						$product_price_discountVat = $productArr['productVat'];
+						$productPrice_discount = $productArr['productPrice'];
+						$productPrice_discountVat = $productArr['productVat'];
 
-						if ($show_price_with_vat)
+						if ($isShowPrice_with_vat)
 						{
-							$product_price_discount += $product_price_discountVat;
+							$productPrice_discount += $productPrice_discountVat;
 						}
 
-						if ($product->product_on_sale && $product_price_discount > 0)
+						if ($product->product_on_sale && $productPrice_discount > 0)
 						{
-							if ($product_price > $product_price_discount)
+							if ($productPrice > $productPrice_discount)
 							{
-								$s_price = $product_price - $product_price_discount;
+								$s_price = $productPrice - $productPrice_discount;
 
-								if ($show_discountpricelayout)
+								if ($isShowDiscountPriceLayout)
 								{
 									$pr_price = "<div id='mod_redsavedprice' class='mod_redsavedprice'>"
 										. JText::_('COM_REDSHOP_PRODCUT_PRICE_YOU_SAVED') . ' '
@@ -165,18 +165,18 @@ class plgContentredshop_product extends JPlugin
 								}
 								else
 								{
-									$product_price = $product_price_discount;
-									$pr_price = \RedshopHelperProductPrice::formattedPrice($product_price);
+									$productPrice = $productPrice_discount;
+									$pr_price = \RedshopHelperProductPrice::formattedPrice($productPrice);
 								}
 							}
 							else
 							{
-								$pr_price = \RedshopHelperProductPrice::formattedPrice($product_price);
+								$pr_price = \RedshopHelperProductPrice::formattedPrice($productPrice);
 							}
 						}
 						else
 						{
-							$pr_price = \RedshopHelperProductPrice::formattedPrice($product_price);
+							$pr_price = \RedshopHelperProductPrice::formattedPrice($productPrice);
 						}
 					}
 
@@ -306,7 +306,7 @@ class plgContentredshop_product extends JPlugin
 					$totalAttributes,
 					$totalAccessory,
 					$countUserFields,
-					$module_id
+					$moduleId
 				);
 
 				$attribute_template = \Redshop\Template\Helper::getAttribute($prtemplate);

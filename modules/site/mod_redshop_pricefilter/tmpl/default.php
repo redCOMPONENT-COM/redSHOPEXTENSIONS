@@ -50,9 +50,9 @@ $numberFormatParams = '\'' . \Redshop::getConfig()->get('PRICE_DECIMAL') . '\',\
 					var url = "<?php echo $url;?>index.php?format=raw&option=com_redshop&view=price_filter";
 					url = url + "&category=<?php echo $category;?>&count=<?php echo $count;?>&image=<?php echo $image;?>";
 					url = url + "&thumbwidth=<?php echo $thumbWidth;?>&thumbheight=<?php echo $thumbHeight;?>";
-					url = url + "&show_price=<?php echo $show_price;?>&show_readmore=<?php echo $show_readmore;?>";
-					url = url + "&show_addtocart=<?php echo $show_addtocart;?>&show_desc=<?php echo $show_desc;?>";
-					url = url + "&show_discountpricelayout=<?php echo $show_discountpricelayout;?>&Itemid=<?php echo $itemId;?>";
+					url = url + "&show_price=<?php echo $isShowPrice;?>&show_readmore=<?php echo $isShowReadMore;?>";
+					url = url + "&show_addtocart=<?php echo $isShowAddToCart;?>&show_desc=<?php echo $show_desc;?>";
+					url = url + "&show_discountpricelayout=<?php echo $isShowDiscountPriceLayout;?>&Itemid=<?php echo $itemId;?>";
 					url = url + "&texpricemin=" + ui.values[0] + "&texpricemax=" + ui.values[1];
 
 					$products.load(url, '', function () {
@@ -73,9 +73,9 @@ $numberFormatParams = '\'' . \Redshop::getConfig()->get('PRICE_DECIMAL') . '\',\
 			var url = "<?php echo $url;?>index.php?format=raw&option=com_redshop&view=price_filter";
 			url = url + "&category=<?php echo $category;?>&count=<?php echo $count;?>&image=<?php echo $image;?>";
 			url = url + "&thumbwidth=<?php echo $thumbWidth;?>&thumbheight=<?php echo $thumbHeight;?>";
-			url = url + "&show_price=<?php echo $show_price;?>&show_readmore=<?php echo $show_readmore;?>";
-			url = url + "&show_addtocart=<?php echo $show_addtocart;?>&show_desc=<?php echo $show_desc;?>";
-			url = url + "&show_discountpricelayout=<?php echo $show_discountpricelayout;?>&Itemid=<?php echo $itemId;?>";
+			url = url + "&show_price=<?php echo $isShowPrice;?>&show_readmore=<?php echo $isShowReadMore;?>";
+			url = url + "&show_addtocart=<?php echo $isShowAddToCart;?>&show_desc=<?php echo $show_desc;?>";
+			url = url + "&show_discountpricelayout=<?php echo $isShowDiscountPriceLayout;?>&Itemid=<?php echo $itemId;?>";
 			url = url + "&texpricemin=<?php echo $texpricemin;?>&texpricemax=<?php echo $texpricemax;?>";
 
 			$products.load(url, '', function () {

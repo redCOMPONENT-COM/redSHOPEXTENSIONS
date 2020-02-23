@@ -74,7 +74,7 @@ $j     = 0;
 				if ($row->product_on_sale
 					&& ($productPriceDiscountcount > 0 && $productPrice > $productPriceDiscountcount))
 				{
-					if ($show_discountpricelayout)
+					if ($isShowDiscountPriceLayout)
 					{
 						echo '<div id="mod_redoldprice" class="mod_redoldprice">'
 								. '<span style="text-decoration:line-through">'
@@ -111,7 +111,7 @@ $j     = 0;
             echo '<div class="mod_redshop_products_desc">' . $row->product_s_desc . '</div>';
         }
 
-		if ($isShowReadmore)
+		if ($isShowReadMore)
 		{
 			echo "<br><a href=\"" . $link . "\">" . JText::_('MOD_REDPRODUCTTAB_SHOW_READ_MORE') . "</a>&nbsp;";
 		}

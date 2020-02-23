@@ -30,7 +30,7 @@ JHtml::_('redshopjquery.framework');
 JHtml::script('modules/mod_redshop_who_bought/assets/js/jquery.jcarousel.min.js');
 
 $redTemplate = Redtemplate::getInstance();
-$module_id = "mod_" . $module->id;
+$moduleId = "mod_" . $module->id;
 
 JHtml::script('com_redshop/redshop.attribute.min.js', false, true);
 JHtml::script('com_redshop/redshop.common.min.js', false, true);
@@ -156,7 +156,7 @@ if (count($rows))
 
 			echo "<div>&nbsp;</div>";
 			$addToCart = \Redshop\Cart\Render::replace($product->product_id, $categoryId, 0, 0,
-                $addToCartTemplate, false, $userFields, $totalAttributes, $totalAccessory, $countUserFields, $module_id);
+                $addToCartTemplate, false, $userFields, $totalAttributes, $totalAccessory, $countUserFields, $moduleId);
 			echo "<div class='mod_redshop_products_addtocart addToCartWhoBought'>" . $addToCart . $hiddenUserField . "</div>";
 		}
 

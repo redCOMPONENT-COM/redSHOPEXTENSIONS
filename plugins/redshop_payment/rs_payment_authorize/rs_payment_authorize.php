@@ -74,9 +74,9 @@ class plgRedshop_paymentrs_payment_authorize extends JPlugin
 				$taxable = "Y";
 			}
 
-			$product_price = round($cart[$p]['product_price'], $cal_no);
+			$productPrice = round($cart[$p]['product_price'], $cal_no);
 
-			$item_details[] = $product_id . "<|>" . $product_name . "<|><|>" . $cart[$p]['quantity'] . "<|>" . $product_price . "<|>" . $taxable;
+			$item_details[] = $product_id . "<|>" . $product_name . "<|><|>" . $cart[$p]['quantity'] . "<|>" . $productPrice . "<|>" . $taxable;
 		}
 
 		$item_str = implode("&x_line_item=", $item_details);

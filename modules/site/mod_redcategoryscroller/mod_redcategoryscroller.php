@@ -14,8 +14,8 @@ JLoader::register('ModRedCategoryScrollerHelper', __DIR__ . '/helper.php');
 
 // Standard parameters
 $show_category_name = $params->get('show_category_name', "yes");
-$show_addtocart     = $params->get('show_addtocart', "yes");
-$show_price         = $params->get('show_price', "yes");
+$isShowAddToCart     = $params->get('show_addtocart', "yes");
+$isShowPrice         = $params->get('show_price', "yes");
 
 $thumbWidth  = $params->get('thumbwidth', 100);
 $thumbHeight = $params->get('thumbheight', 100);
