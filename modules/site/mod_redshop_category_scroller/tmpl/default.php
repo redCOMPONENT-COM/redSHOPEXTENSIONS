@@ -38,7 +38,7 @@ $document->addStyleSheet("modules/mod_redshop_category_scroller/css/slick.css");
 
 
 if ($view == 'category') {
-    if (!$GLOBALS['product_price_slider']) {
+    if (empty($GLOBALS['product_price_slider'])) {
         JHtml::script('com_redshop/jquery.tools.min.js', false, true);
     }
 } else {
