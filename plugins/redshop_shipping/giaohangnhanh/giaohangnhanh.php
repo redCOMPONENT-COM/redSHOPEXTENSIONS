@@ -40,7 +40,7 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	 */
 	public function onListRates(&$data)
 	{
-		$data['state_code'] = $data['post']['ghnCity'];
+		$data['state_code'] = $data['post']['ghnCity'] ?? '';
 		$shipping = \RedshopHelperShipping::getShippingMethodByClass('giaohangnhanh');
 		$rateList = \RedshopHelperShipping::listShippingRates($shipping->element, $data['users_info_id'], $data);
 
@@ -87,7 +87,7 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 			$districtField = \RedshopHelperExtrafields::getDataByName('rs_ghn_billing_district', 7, $userInfoId);
 		}
 
-		$district = $districtField->data_txt;
+		$district = $districtField->data_txt ?? '';
 
 		if ($data['users_info_id'] == 0)
 		{
@@ -613,7 +613,7 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	 *
 	 * @return void
 	 */
-	public function onBeforeCreate\RedshopUser(&$data, $isNew)
+	public function onBeforeCreateRedshopUser(&$data, $isNew)
 	{
 		$cities = [];
 		$result = $this->getDistrictProvinceData();
@@ -635,7 +635,7 @@ class PlgRedshop_ShippingGiaohangnhanh extends JPlugin
 	 *
 	 * @return void
 	 */
-	public function onBeforeStore\RedshopUserShipping(&$data)
+	public function onBeforeStoreRedshopUserShipping(&$data)
 	{
 		$cities = [];
 		$result = $this->getDistrictProvinceData();
