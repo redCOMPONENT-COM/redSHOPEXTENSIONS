@@ -18,6 +18,11 @@ defined('_JEXEC') or die;
  */
 class PlgRedshop_PaymentQuickpay extends \RedshopPayment
 {
+    /**
+     * @var
+     */
+    public $values;
+    
 	/**
 	 * Method to setup the payment form and send to gateway
 	 *
@@ -240,7 +245,7 @@ class PlgRedshop_PaymentQuickpay extends \RedshopPayment
 		$response = $this->sendQuickpayRequest('POST', $sendData, $type);
 
 		$body = json_decode($response->body);
-		$values = new stdClass();
+		$this->values = new stdClass();
 
 		if (202 == $response->code && $body->accepted)
 		{
@@ -250,25 +255,25 @@ class PlgRedshop_PaymentQuickpay extends \RedshopPayment
 			if (($operation->pending || $operation->qp_status_code != 20000) && !empty($operation->qp_status_code))
 			{
 				$message                = $operation->qp_status_msg . '<br />' . $operation->aq_status_msg;
-				$values->responsestatus = 'Fail';
+				$this->values->responsestatus = 'Fail';
 				JLog::add($message, JLog::ERROR, 'jerror');
 			}
 			else
 			{
-				$values->responsestatus = 'Success';
+				$this->values->responsestatus = 'Success';
 				$message                = $operation->qp_status_msg . '<br />' . $operation->aq_status_msg;
 			}
 		}
 		else
 		{
 			$message                = $body->message . ' Error: Amount ' . implode('<br />', $body->errors->amount);
-			$values->responsestatus = 'Fail';
+			$this->values->responsestatus = 'Fail';
 			JLog::add($message, JLog::ERROR, 'jerror');
 		}
 
-		$values->message = $message;
+		$this->values->message = $message;
 
-		return $values;
+		return $this->values;
 	}
 
 	/**
@@ -294,11 +299,11 @@ class PlgRedshop_PaymentQuickpay extends \RedshopPayment
 
 		if (200 != $response->code)
 		{
-			$values->message        = $body->message;
-			$values->responsestatus = 'Fail';
-			JLog::add($values->message, JLog::ERROR, 'jerror');
+			$this->values->message        = $body->message;
+			$this->values->responsestatus = 'Fail';
+			JLog::add($this->values->message, JLog::ERROR, 'jerror');
 
-			return $values;
+			return $this->values;
 		}
 
 		if ('processed' == $body->state)
@@ -336,19 +341,19 @@ class PlgRedshop_PaymentQuickpay extends \RedshopPayment
 
 		if (202 == $response->code && $body->accepted)
 		{
-			$values->responsestatus = 'Success';
+			$this->values->responsestatus = 'Success';
 			$message                = JText::_('PLG_REDSHOP_PAYMENT_QUICKPAY_PAYMENT_CAPTURED');
 		}
 		else
 		{
 			$message                = $body->message . ' Error: Amount ' . implode('<br />', $body->errors->amount);
-			$values->responsestatus = 'Fail';
+			$this->values->responsestatus = 'Fail';
 			JLog::add($message, JLog::ERROR, 'jerror');
 		}
 
-		$values->message = $message;
+		$this->values->message = $message;
 
-		return $values;
+		return $this->values;
 	}
 
 	/**
@@ -368,19 +373,19 @@ class PlgRedshop_PaymentQuickpay extends \RedshopPayment
 
 		if (202 == $response->code && $body->accepted)
 		{
-			$values->responsestatus = 'Success';
+			$this->values->responsestatus = 'Success';
 			$message                = JText::_('PLG_REDSHOP_PAYMENT_QUICKPAY_PAYMENT_CAPTURED');
 		}
 		else
 		{
 			$message                = $body->message;
-			$values->responsestatus = 'Fail';
+			$this->values->responsestatus = 'Fail';
 			JLog::add($message, JLog::ERROR, 'jerror');
 		}
 
-		$values->message = $message;
+		$this->values->message = $message;
 
-		return $values;
+		return $this->values;
 	}
 
 	/**
