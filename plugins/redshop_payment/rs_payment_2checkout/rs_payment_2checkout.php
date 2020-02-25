@@ -47,7 +47,7 @@ class PlgRedshop_PaymentRs_Payment_2checkout extends JPlugin
 		$itemId      = $app->input->getInt('Itemid');
 
 		// Authnet vars to send
-		$formdata = array(
+		$dataForm = array(
 			'sid'                => $this->params->get('vendor_id'),
 			'cart_order_id'      => 'Order Id:' . $data['order_id'],
 			'merchant_order_id'  => $data['order_id'],
@@ -78,10 +78,10 @@ class PlgRedshop_PaymentRs_Payment_2checkout extends JPlugin
 
 		for ($p = 0, $n = count($orderItems); $p < $n; $p++)
 		{
-			$formdata['c_prod_' . ($p + 1)]        = '1,' . $orderItems[$p]->product_quantity;
-			$formdata['c_name_' . ($p + 1)]        = $orderItems[$p]->order_item_name;
-			$formdata['c_price_' . ($p + 1)]       = $orderItems[$p]->product_item_price;
-			$formdata['c_description_' . ($p + 1)] = '';
+			$dataForm['c_prod_' . ($p + 1)]        = '1,' . $orderItems[$p]->product_quantity;
+			$dataForm['c_name_' . ($p + 1)]        = $orderItems[$p]->order_item_name;
+			$dataForm['c_price_' . ($p + 1)]       = $orderItems[$p]->product_item_price;
+			$dataForm['c_description_' . ($p + 1)] = '';
 		}
 
 		// Live 2checkout api url
@@ -89,13 +89,13 @@ class PlgRedshop_PaymentRs_Payment_2checkout extends JPlugin
 
 		if ((bool) $this->params->get('is_test'))
 		{
-			$formdata['demo'] = 'Y';
+			$dataForm['demo'] = 'Y';
 
 			// Test mode 2checkout api url
 			$checkoutUrl = 'https://sandbox.2checkout.com/checkout/purchase';
 		}
 
-		$app->redirect($checkoutUrl . '/?' . JUri::buildQuery($formdata));
+		$app->redirect($checkoutUrl . '/?' . JUri::buildQuery($dataForm));
 		$app->close();
 	}
 

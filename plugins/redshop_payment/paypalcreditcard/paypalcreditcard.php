@@ -82,8 +82,8 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 		{
 			try
 			{
-				$ccdata         = JFactory::getSession()->get('ccdata');
-				$selectedCardId = $ccdata['selectedCardId'];
+				$creditCardData         = JFactory::getSession()->get('ccdata');
+				$selectedCardId = $creditCardData['selectedCardId'];
 
 				if ($selectedCardId != '')
 				{
@@ -239,8 +239,8 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 	protected function creditCard($data)
 	{
 		$billingInfo = $data['billinginfo'];
-		$ccdata      = JFactory::getSession()->get('ccdata');
-		$cardType    = strtolower($ccdata['creditcard_code']);
+		$creditCardData      = JFactory::getSession()->get('ccdata');
+		$cardType    = strtolower($creditCardData['creditcard_code']);
 
 		if ('mc' == $cardType)
 		{
@@ -253,10 +253,10 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 		 */
 		$card = new CreditCard;
 		$card->setType($cardType)
-			->setNumber($ccdata['order_payment_number'])
-			->setExpireMonth($ccdata['order_payment_expire_month'])
-			->setExpireYear($ccdata['order_payment_expire_year'])
-			->setCvv2($ccdata['credit_card_code'])
+			->setNumber($creditCardData['order_payment_number'])
+			->setExpireMonth($creditCardData['order_payment_expire_month'])
+			->setExpireYear($creditCardData['order_payment_expire_year'])
+			->setCvv2($creditCardData['credit_card_code'])
 			->setFirstName($billingInfo->firstname)
 			->setLastName($billingInfo->lastname);
 

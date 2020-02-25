@@ -168,14 +168,14 @@ class PlgRedshop_PaymentDibsDx extends JPlugin
 		include JPATH_SITE . '/plugins/redshop_payment/' . $element . '/' . $element . '/dibs_hmac.php';
 		$dibsHmac = new Dibs_Hmac;
 
-		$formData = array(
+		$dataForm = array(
 			'merchant' => $this->params->get("seller_id"),
 			'amount'   => $data['order_amount'],
 			'transact' => $data["order_transactionid"],
 			'orderid'  => $data['order_id']
 		);
 
-		$macKey  = $dibsHmac->calculateMac($formData, $hmacKey);
+		$macKey  = $dibsHmac->calculateMac($dataForm, $hmacKey);
 		$dibsUrl .= "merchant=" . urlencode($this->params->get("seller_id")) . "&amount=" . urlencode($data['order_amount'])
 			. "&transact=" . $data["order_transactionid"] . "&orderid=" . $data['order_id'] . "&force=yes&textreply=yes&mac=" . $macKey;
 		$data    = $dibsUrl;

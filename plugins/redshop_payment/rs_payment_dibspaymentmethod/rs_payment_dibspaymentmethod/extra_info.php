@@ -27,7 +27,7 @@ $db->setQuery($q);
 $rs = $db->loadObjectlist();
 
 // Authenticate vars to send
-$formdata = array(
+$dataForm = array(
 	'merchant'          => $this->params->get("seller_id"),
 	'orderid'           => $data['order_id'],
 	'currency'          => $this->params->get("dibs_currency"),
@@ -57,23 +57,23 @@ $formdata = array(
 
 for ($p = 0, $pn = count($rs); $p < $pn; $p++)
 {
-	$formdata['ordline' . ($p + 1) . '-1'] = $rs[$p]->product_id;
-	$formdata['ordline' . ($p + 1) . '-2'] = $rs[$p]->order_item_name;
-	$formdata['ordline' . ($p + 1) . '-3'] = $rs[$p]->product_quantity;
-	$formdata['ordline' . ($p + 1) . '-4'] = $rs[$p]->product_item_price;
+	$dataForm['ordline' . ($p + 1) . '-1'] = $rs[$p]->product_id;
+	$dataForm['ordline' . ($p + 1) . '-2'] = $rs[$p]->order_item_name;
+	$dataForm['ordline' . ($p + 1) . '-3'] = $rs[$p]->product_quantity;
+	$dataForm['ordline' . ($p + 1) . '-4'] = $rs[$p]->product_item_price;
 }
 
 if ($this->params->get("is_test") == "1")
 {
-	$formdata['test'] = "yes";
+	$dataForm['test'] = "yes";
 }
 
 $version            = "2";
 $dibsurl            = "https://payment.architrade.com/paymentweb/start.action";
-$formdata['amount'] = \RedshopHelperCurrency::convert($order_details[0]->order_total, '', $this->params->get("dibs_currency"));
-$formdata['amount'] = number_format($formdata['amount'], 2, '.', '') * 100;
+$dataForm['amount'] = \RedshopHelperCurrency::convert($order_details[0]->order_total, '', $this->params->get("dibs_currency"));
+$dataForm['amount'] = number_format($dataForm['amount'], 2, '.', '') * 100;
 
-if ($formdata['flexlang'] == "Auto")
+if ($dataForm['flexlang'] == "Auto")
 {
 	$dibs_lang_arr = array(
 		'Denmark'       => 'da',
@@ -90,41 +90,41 @@ if ($formdata['flexlang'] == "Auto")
 
 	if (isset($lang) && $lang != '')
 	{
-		$formdata["lang"] = $lang;
+		$dataForm["lang"] = $lang;
 	}
 	else
 	{
 		$lang = 'en';
-		$formdata["lang"] = $lang;
+		$dataForm["lang"] = $lang;
 	}
 }
 
-if ($formdata['flexlang'] != "Auto")
+if ($dataForm['flexlang'] != "Auto")
 {
-	$formdata["lang"] = $formdata['flexlang'];
+	$dataForm["lang"] = $dataForm['flexlang'];
 }
 
-if ($formdata["flexwin_decorator"] != "Own Decorator")
+if ($dataForm["flexwin_decorator"] != "Own Decorator")
 {
-	$formdata["decorator"] = $formdata["flexwin_decorator"];
-	$formdata["color"]     = $formdata["flexwin_color"];
+	$dataForm["decorator"] = $dataForm["flexwin_decorator"];
+	$dataForm["color"]     = $dataForm["flexwin_color"];
 }
 
-if ($formdata["md5key1"] != "" && $formdata["md5key2"] != "")
+if ($dataForm["md5key1"] != "" && $dataForm["md5key2"] != "")
 {
-	$md5key                    = md5($formdata["md5key2"] . md5($formdata["md5key1"] . 'merchant=' . $formdata["merchant"] . '&orderid=' . $data['order_id'] . '&currency=' . $formdata['currency'] . '&amount=' . $formdata['amount']));
-	$formdata["md5key"]        = $md5key;
-	$formdata["dibs_uniqueid"] = 'yes';
+	$md5key                    = md5($dataForm["md5key2"] . md5($dataForm["md5key1"] . 'merchant=' . $dataForm["merchant"] . '&orderid=' . $data['order_id'] . '&currency=' . $dataForm['currency'] . '&amount=' . $dataForm['amount']));
+	$dataForm["md5key"]        = $md5key;
+	$dataForm["dibs_uniqueid"] = 'yes';
 }
 
 // Build the post string
-$poststring = '';
+$postString = '';
 ?>
 <form action="<?php echo $dibsurl ?>" id='dibscheckout' name="dibscheckout" target="myNewWin" method="post">
-	<?php foreach ($formdata as $name => $value): ?>
+	<?php foreach ($dataForm as $name => $value): ?>
 		<input type="hidden" name="<?php echo $name ?>" value="<?php echo urlencode($value) ?>"/>
 	<?php endforeach; ?>
-	<?php echo $poststring; ?>
+	<?php echo $postString; ?>
 	<?php
 	$accepturl = JURI::base() . "index.php?option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_dibspaymentmethod&orderid=" . $data['order_id'];
 	$cancelurl = JURI::base() . "index.php?option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_dibspaymentmethod&orderid=" . $data['order_id'];

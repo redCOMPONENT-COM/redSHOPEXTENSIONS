@@ -38,7 +38,7 @@ class PlgRedshop_PaymentRs_Payment_Eway extends JPlugin
 		}
 
 		$session          = JFactory::getSession();
-		$ccdata           = $session->get('ccdata');
+		$creditCardData           = $session->get('ccdata');
 
 		// Collecting user Information ( Billing Information )
 
@@ -71,12 +71,12 @@ class PlgRedshop_PaymentRs_Payment_Eway extends JPlugin
 		$userEmail                 = $data['billinginfo']->user_email;
 
 		// Get Credit card Information
-		$orderPaymentName        = substr($ccdata['order_payment_name'], 0, 50);
-		$creditCardCode          = strtoupper($ccdata['creditcard_code']);
-		$orderPaymentNumber      = substr($ccdata['order_payment_number'], 0, 20);
-		$creditCardCode2         = substr($ccdata['credit_card_code'], 0, 4);
-		$orderPaymentExpireMonth = substr($ccdata['order_payment_expire_month'], 0, 2);
-		$orderPaymentExpireYear  = substr($ccdata['order_payment_expire_year'], -2);
+		$orderPaymentName        = substr($creditCardData['order_payment_name'], 0, 50);
+		$creditCardCode          = strtoupper($creditCardData['creditcard_code']);
+		$orderPaymentNumber      = substr($creditCardData['order_payment_number'], 0, 20);
+		$creditCardCode2         = substr($creditCardData['credit_card_code'], 0, 4);
+		$orderPaymentExpireMonth = substr($creditCardData['order_payment_expire_month'], 0, 2);
+		$orderPaymentExpireYear  = substr($creditCardData['order_payment_expire_year'], -2);
 		$orderNumber             = substr($data['order_number'], 0, 16);
 		$taxExempt               = false;
 

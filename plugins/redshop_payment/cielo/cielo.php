@@ -37,7 +37,7 @@ class PlgRedshop_PaymentCielo extends JPlugin
 	{
 		$app 		= JFactory::getApplication();
 		$session 	= JFactory::getSession();
-		$ccdata 	= $session->get('ccdata');
+		$creditCardData 	= $session->get('ccdata');
 
 		if ($element != 'cielo')
 		{
