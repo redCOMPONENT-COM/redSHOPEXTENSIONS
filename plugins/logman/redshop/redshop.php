@@ -12,7 +12,7 @@
  *
  * @since    1.0.0
  */
-class PlgLogman\Redshop extends ComLogmanPluginJoomla
+class PlgLogmanRedshop extends ComLogmanPluginJoomla
 {
 	/**
 	 * Trigger after saved configuration
