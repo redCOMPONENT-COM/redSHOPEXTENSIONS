@@ -10,6 +10,8 @@ defined('_JEXEC') or die;
 
 JLoader::import('redshop.library');
 
+require_once __DIR__ . '/libraries/vendor/paysonaktiebolag/api-integration-php/lib/paysonapi.php';
+
 /**
  * Payson payment class
  *
