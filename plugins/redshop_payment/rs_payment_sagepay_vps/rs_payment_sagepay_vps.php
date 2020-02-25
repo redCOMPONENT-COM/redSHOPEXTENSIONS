@@ -101,7 +101,7 @@ class PlgRedshop_Paymentrs_Payment_Sagepay_Vps extends JPlugin
 		$_SESSION["VendorTxCode"] = $strVendorTxCode;
 
 		// Assign Amount
-		$tot_amount = $order_total = $data['order']->order_total;
+		$tot_amount = $orderTotal = $data['order']->order_total;
 		$amount     = \RedshopHelperCurrency::convert($tot_amount, '', $strCurrency);
 		$amount     = number_format($amount, 2, '.', '');
 

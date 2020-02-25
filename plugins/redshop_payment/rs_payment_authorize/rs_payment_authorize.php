@@ -30,18 +30,18 @@ class plgRedshop_paymentrs_payment_authorize extends JPlugin
 
 		$db      = JFactory::getDbo();
 		$session = JFactory::getSession();
-		$ccdata  = $session->get('ccdata');
+		$creditCardData  = $session->get('ccdata');
 		$cart    = $session->get('cart');
 
 		// For total amount
-		$cal_no = 2;
+		$calNo = 2;
 
 		if (\Redshop::getConfig()->get('PRICE_DECIMAL') != '')
 		{
-			$cal_no = \Redshop::getConfig()->get('PRICE_DECIMAL');
+			$calNo = \Redshop::getConfig()->get('PRICE_DECIMAL');
 		}
 
-		$order_total = round($data['order_total'], $cal_no);
+		$orderTotal = round($data['order_total'], $calNo);
 
 		$item_details = [];
 
@@ -74,7 +74,7 @@ class plgRedshop_paymentrs_payment_authorize extends JPlugin
 				$taxable = "Y";
 			}
 
-			$productPrice = round($cart[$p]['product_price'], $cal_no);
+			$productPrice = round($cart[$p]['product_price'], $calNo);
 
 			$item_details[] = $product_id . "<|>" . $product_name . "<|><|>" . $cart[$p]['quantity'] . "<|>" . $productPrice . "<|>" . $taxable;
 		}
@@ -95,7 +95,7 @@ class plgRedshop_paymentrs_payment_authorize extends JPlugin
 
 		// Authnet vars to send
 
-		$formdata = array(
+		$dataForm = array(
 			'x_version'            => '3.1',
 			'x_login'              => $this->params->get("access_id"),
 			'x_tran_key'           => $this->params->get("transaction_id"),
@@ -146,14 +146,14 @@ class plgRedshop_paymentrs_payment_authorize extends JPlugin
 			'x_line_item'          => $item_str,
 
 			// Transaction Data
-			'x_amount'             => $order_total,
+			'x_amount'             => $orderTotal,
 			'x_currency_code'      => \Redshop::getConfig()->get('CURRENCY_CODE'),
 			'x_method'             => 'CC',
 			'x_type'               => $this->params->get("auth_type"),
 
-			'x_card_num'           => $ccdata['order_payment_number'],
-			'x_card_code'          => $ccdata['credit_card_code'],
-			'x_exp_date'           => ($ccdata['order_payment_expire_month']) . ($ccdata['order_payment_expire_year']),
+			'x_card_num'           => $creditCardData['order_payment_number'],
+			'x_card_code'          => $creditCardData['credit_card_code'],
+			'x_exp_date'           => ($creditCardData['order_payment_expire_month']) . ($creditCardData['order_payment_expire_year']),
 
 			// Level 2 data
 			'x_po_num'             => substr($data['order_number'], 0, 20),
@@ -166,19 +166,19 @@ class plgRedshop_paymentrs_payment_authorize extends JPlugin
 
 		if ($view_table_format == 0)
 		{
-			unset($formdata['x_line_item']);
+			unset($dataForm['x_line_item']);
 		}
 
 		// Build the post string
-		$poststring = '';
+		$postString = '';
 
-		foreach ($formdata AS $key => $val)
+		foreach ($dataForm AS $key => $val)
 		{
-			$poststring .= urlencode($key) . "=" . $val . "&";
+			$postString .= urlencode($key) . "=" . $val . "&";
 		}
 
 		// Strip off trailing ampersand
-		$poststring = substr($poststring, 0, -1);
+		$postString = substr($postString, 0, -1);
 
 		if ($this->params->get("is_test") == 'TRUE')
 		{
@@ -201,9 +201,9 @@ class plgRedshop_paymentrs_payment_authorize extends JPlugin
 
 		curl_setopt($CR, CURLOPT_FAILONERROR, true);
 
-		if ($poststring)
+		if ($postString)
 		{
-			curl_setopt($CR, CURLOPT_POSTFIELDS, $poststring);
+			curl_setopt($CR, CURLOPT_POSTFIELDS, $postString);
 
 			curl_setopt($CR, CURLOPT_POST, 1);
 		}
@@ -278,17 +278,17 @@ class plgRedshop_paymentrs_payment_authorize extends JPlugin
 		}
 
 		// For total amount
-		$cal_no = 2;
+		$calNo = 2;
 
 		if (\Redshop::getConfig()->get('PRICE_DECIMAL') != '')
 		{
-			$cal_no = \Redshop::getConfig()->get('PRICE_DECIMAL');
+			$calNo = \Redshop::getConfig()->get('PRICE_DECIMAL');
 		}
 
-		$order_total = round($order_details->order_total, $cal_no);
+		$orderTotal = round($order_details->order_total, $calNo);
 
 		// Authnet vars to send
-		$formdata = array(
+		$dataForm = array(
 			'x_version'            => '3.1',
 			'x_login'              => $this->params->get("access_id"),
 			'x_tran_key'           => $this->params->get("transaction_id"),
@@ -327,7 +327,7 @@ class plgRedshop_paymentrs_payment_authorize extends JPlugin
 			'x_invoice_num'        => substr($data['order_number'], 0, 20),
 			'x_description'        => JText::_('COM_REDSHOP_AUTHORIZENET_ORDER_PRINT_PO_LBL'),
 			// Transaction Data
-			'x_amount'             => $order_total,
+			'x_amount'             => $orderTotal,
 			'x_currency_code'      => \Redshop::getConfig()->get('CURRENCY_CODE'),
 			'x_method'             => 'CC',
 			'x_type'               => "PRIOR_AUTH_CAPTURE",
@@ -340,15 +340,15 @@ class plgRedshop_paymentrs_payment_authorize extends JPlugin
 		);
 
 		// Build the post string
-		$poststring = '';
+		$postString = '';
 
-		foreach ($formdata AS $key => $val)
+		foreach ($dataForm AS $key => $val)
 		{
-			$poststring .= urlencode($key) . "=" . urlencode($val) . "&";
+			$postString .= urlencode($key) . "=" . urlencode($val) . "&";
 		}
 
 		// Strip off trailing ampersand
-		$poststring = substr($poststring, 0, -1);
+		$postString = substr($postString, 0, -1);
 
 		if ($this->params->get("is_test") == 'TRUE')
 		{
@@ -361,15 +361,15 @@ class plgRedshop_paymentrs_payment_authorize extends JPlugin
 
 		$url = "https://$host/gateway/transact.dll";
 		$urlParts = parse_url($url);
-		$poststring = substr($poststring, 0, -1);
+		$postString = substr($postString, 0, -1);
 		$CR = curl_init();
 		curl_setopt($CR, CURLOPT_URL, $url);
 		curl_setopt($CR, CURLOPT_TIMEOUT, 30);
 		curl_setopt($CR, CURLOPT_FAILONERROR, true);
 
-		if ($poststring)
+		if ($postString)
 		{
-			curl_setopt($CR, CURLOPT_POSTFIELDS, $poststring);
+			curl_setopt($CR, CURLOPT_POSTFIELDS, $postString);
 			curl_setopt($CR, CURLOPT_POST, 1);
 		}
 

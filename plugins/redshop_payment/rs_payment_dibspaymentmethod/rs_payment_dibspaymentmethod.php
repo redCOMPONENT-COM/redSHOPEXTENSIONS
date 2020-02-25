@@ -122,8 +122,8 @@ class plgRedshop_paymentrs_payment_dibspaymentmethod extends JPlugin
 		$key1       = $this->params->get("dibs_md5key1");
 		$merchantid = $this->params->get("seller_id");
 
-		$formdata['amount'] = \RedshopHelperCurrency::convert($data['order_amount'], '', $this->params->get("dibs_currency"));
-		$formdata['amount'] = number_format($formdata['amount'], 2, '.', '') * 100;
+		$dataForm['amount'] = \RedshopHelperCurrency::convert($data['order_amount'], '', $this->params->get("dibs_currency"));
+		$dataForm['amount'] = number_format($dataForm['amount'], 2, '.', '') * 100;
 
 		$md5key = md5(
 			$key2 . md5(
@@ -131,11 +131,11 @@ class plgRedshop_paymentrs_payment_dibspaymentmethod extends JPlugin
 					. 'merchant=' . $merchantid
 					. '&orderid=' . $order_id
 					. '&transact=' . $data["order_transactionid"]
-					. '&amount=' . $formdata['amount']
+					. '&amount=' . $dataForm['amount']
 			)
 		);
 
-		$dibsurl .= "merchant=" . urlencode($this->params->get("seller_id")) . "&amount=" . urlencode($formdata['amount']) . "&transact=" . $data["order_transactionid"] . "&orderid=" . $order_id . "&force=yes&textreply=yes&md5key=" . $md5key;
+		$dibsurl .= "merchant=" . urlencode($this->params->get("seller_id")) . "&amount=" . urlencode($dataForm['amount']) . "&transact=" . $data["order_transactionid"] . "&orderid=" . $order_id . "&force=yes&textreply=yes&md5key=" . $md5key;
 
 		$data = $dibsurl;
 		$ch   = curl_init($data);

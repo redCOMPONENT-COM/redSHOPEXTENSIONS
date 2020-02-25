@@ -32,11 +32,11 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		$user    = JFactory::getUser();
 		$values  = new stdClass;
 		$session = JFactory::getSession();
-		$ccdata  = $session->get('ccdata');
+		$creditCardData  = $session->get('ccdata');
 
 		// Get Payment Params
 		$partner           = $this->params->get("partner");
-		$merchant_id       = $this->params->get("merchant_id");
+		$merchantId       = $this->params->get("merchant_id");
 		$merchant_password = $this->params->get("merchant_password");
 		$merchant_user     = $this->params->get("merchant_user");
 		$paymentType       = $this->params->get("sales_auth_only");
@@ -61,11 +61,11 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		$shcountry   = urlencode($data['shippinginfo']->country_2_code);
 
 		// Get CreditCard Data
-		$strCardHolder    = substr($ccdata['order_payment_name'], 0, 100);
-		$creditCardType   = urlencode($ccdata['creditcard_code']);
-		$creditCardNumber = urlencode($ccdata['order_payment_number']);
-		$strExpiryDate    = substr($ccdata['order_payment_expire_month'], 0, 2) . substr($ccdata['order_payment_expire_year'], -2);
-		$strCV2           = substr($ccdata['credit_card_code'], 0, 4);
+		$strCardHolder    = substr($creditCardData['order_payment_name'], 0, 100);
+		$creditCardType   = urlencode($creditCardData['creditcard_code']);
+		$creditCardNumber = urlencode($creditCardData['order_payment_number']);
+		$strExpiryDate    = substr($creditCardData['order_payment_expire_month'], 0, 2) . substr($creditCardData['order_payment_expire_year'], -2);
+		$strCV2           = substr($creditCardData['credit_card_code'], 0, 4);
 
 		if ($this->params->get("currency") != "")
 		{
@@ -82,11 +82,11 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 		/*
 		As per the email error no need to remove shipping - tmp fix
-		$order_total = $data['order_total'] - $data['order_shipping'] - $data['order_tax'];
-		$order_total = $data['order_total'] - $data['order_tax'];
+		$orderTotal = $data['order_total'] - $data['order_shipping'] - $data['order_tax'];
+		$orderTotal = $data['order_total'] - $data['order_tax'];
 		*/
-		$order_total = $data['order_total'];
-		$amount      = \RedshopHelperCurrency::convert($order_total, '', $currencyID);
+		$orderTotal = $data['order_total'];
+		$amount      = \RedshopHelperCurrency::convert($orderTotal, '', $currencyID);
 		$amount      = urlencode(number_format($amount, 2));
 
 		$shipping_amount = $data['order_shipping'];
@@ -108,7 +108,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 		$params = array(
 			'USER'      => $merchant_user,
-			'VENDOR'    => $merchant_id,
+			'VENDOR'    => $merchantId,
 			'PARTNER'   => $partner,
 			'PWD'       => $merchant_password,
 			'TENDER'    => 'C',
@@ -248,7 +248,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 	{
 		// Get Payment Params
 		$partner           = $this->params->get("partner");
-		$merchant_id       = $this->params->get("merchant_id");
+		$merchantId       = $this->params->get("merchant_id");
 		$merchant_password = $this->params->get("merchant_password");
 		$merchant_user     = $this->params->get("merchant_user");
 		$paymentType       = $this->params->get("sales_auth_only");
@@ -285,7 +285,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 		$params      = array(
 			'USER'    => $merchant_user,
-			'VENDOR'  => $merchant_id,
+			'VENDOR'  => $merchantId,
 			'PARTNER' => $partner,
 			'PWD'     => $merchant_password,
 			'TENDER'  => 'C',
@@ -326,7 +326,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 	{
 		// Get Payment Params
 		$partner           = $this->params->get("partner");
-		$merchant_id       = $this->params->get("merchant_id");
+		$merchantId       = $this->params->get("merchant_id");
 		$merchant_password = $this->params->get("merchant_password");
 		$merchant_user     = $this->params->get("merchant_user");
 		$paymentType       = $this->params->get("sales_auth_only");
@@ -363,7 +363,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 		$params      = array(
 			'USER'    => $merchant_user,
-			'VENDOR'  => $merchant_id,
+			'VENDOR'  => $merchantId,
 			'PARTNER' => $partner,
 			'PWD'     => $merchant_password,
 			'TENDER'  => 'C',

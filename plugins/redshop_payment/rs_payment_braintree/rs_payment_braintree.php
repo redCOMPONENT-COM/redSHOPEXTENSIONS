@@ -249,7 +249,7 @@ class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 		}
 
 		$session = JFactory::getSession();
-		$ccdata  = $session->get('ccdata', []);
+		$creditCardData  = $session->get('ccdata', []);
 		$input   = JFactory::getApplication()->input;
 
 		$menuItemId = $input->getInt('Itemid');
@@ -260,14 +260,14 @@ class PlgRedshop_Paymentrs_Payment_Braintree extends JPlugin
 
 		if ($input->getInt('ccinfo', 0) == 1)
 		{
-			$ccdata['order_payment_name']         = $input->getString('order_payment_name');
-			$ccdata['creditcard_code']            = $input->get('creditcard_code');
-			$ccdata['order_payment_number']       = $input->get('order_payment_number');
-			$ccdata['order_payment_expire_month'] = $input->get('order_payment_expire_month');
-			$ccdata['order_payment_expire_year']  = $input->get('order_payment_expire_year');
-			$ccdata['credit_card_code']           = $input->get('credit_card_code');
+			$creditCardData['order_payment_name']         = $input->getString('order_payment_name');
+			$creditCardData['creditcard_code']            = $input->get('creditcard_code');
+			$creditCardData['order_payment_number']       = $input->get('order_payment_number');
+			$creditCardData['order_payment_expire_month'] = $input->get('order_payment_expire_month');
+			$creditCardData['order_payment_expire_year']  = $input->get('order_payment_expire_year');
+			$creditCardData['credit_card_code']           = $input->get('credit_card_code');
 
-			$session->set('ccdata', $ccdata);
+			$session->set('ccdata', $creditCardData);
 		}
 
 		// Send the order_id and orderpayment_id to the payment plugin so it knows which DB record to update upon successful payment

@@ -13,7 +13,7 @@ $Redconfiguration = Redconfiguration::getInstance();
 $order_functions  = order_functions::getInstance();
 $order_items      = $order_functions->getOrderItemDetail($data['order_id']);
 $session          = JFactory::getSession();
-$ccdata           = $session->get('ccdata');
+$creditCardData           = $session->get('ccdata');
 $app              = JFactory::getApplication();
 $itemId           = $app->input->getInt('Itemid');
 
@@ -125,9 +125,9 @@ $document->addScriptDeclaration(
 <h3><?php echo JText::_('PLG_RS_PAYMENT_RAPID_EWAY_WAIT_MESSAGE'); ?></h3>
 <form method="POST" action="<?php echo $result->FormActionURL ?>" id="ewayfrm" name="ewayfrm">
     <input type="hidden" name="EWAY_ACCESSCODE" value="<?php echo $result->AccessCode ?>"/>
-    <input type="hidden" name="EWAY_CARDNAME" value="<?php echo $ccdata['order_payment_name'] ?>"/>
-    <input type="hidden" name="EWAY_CARDNUMBER" value="<?php echo $ccdata['order_payment_number'] ?>"/>
-    <input type="hidden" name="EWAY_CARDEXPIRYMONTH" value="<?php echo $ccdata['order_payment_expire_month'] ?>"/>
-    <input type="hidden" name="EWAY_CARDEXPIRYYEAR" value="<?php echo $ccdata['order_payment_expire_year'] ?>"/>
-    <input type="hidden" name="EWAY_CARDCVN" value="<?php echo $ccdata['credit_card_code'] ?>"/>
+    <input type="hidden" name="EWAY_CARDNAME" value="<?php echo $creditCardData['order_payment_name'] ?>"/>
+    <input type="hidden" name="EWAY_CARDNUMBER" value="<?php echo $creditCardData['order_payment_number'] ?>"/>
+    <input type="hidden" name="EWAY_CARDEXPIRYMONTH" value="<?php echo $creditCardData['order_payment_expire_month'] ?>"/>
+    <input type="hidden" name="EWAY_CARDEXPIRYYEAR" value="<?php echo $creditCardData['order_payment_expire_year'] ?>"/>
+    <input type="hidden" name="EWAY_CARDCVN" value="<?php echo $creditCardData['credit_card_code'] ?>"/>
 </form>
