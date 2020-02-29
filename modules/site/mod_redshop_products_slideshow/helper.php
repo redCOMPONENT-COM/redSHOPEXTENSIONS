@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.5
  */
-class \RedshopProductSlideshow
+class RedshopProductSlideshow
 {
 	/**
 	 * Create smart xml files
@@ -215,7 +215,7 @@ class \RedshopProductSlideshow
 			$price_txt         = '';
 			$itemData          =  \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $rows[$k]->product_id);
 
-			if (count($itemData) > 0)
+			if (isset($itemData->id))
 			{
 				$itemId = $itemData->id;
 			}
