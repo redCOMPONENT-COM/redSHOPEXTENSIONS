@@ -10,16 +10,18 @@
 defined('_JEXEC') or die;
 
 JLoader::import('redshop.library');
-$image                    = trim($params->get('image', 0));
-$isShowPrice               = trim($params->get('show_price', 0));
-$thumbWidth               = trim($params->get('thumbwidth', 100));
-$thumbHeight              = trim($params->get('thumbheight', 100));
-$show_short_description   = trim($params->get('show_short_description', 1));
-$isShowReadMore            = trim($params->get('show_readmore', 1));
-$isShowAddToCart           = trim($params->get('show_addtocart', 1));
-$isShowDiscountPriceLayout = trim($params->get('show_discountpricelayout', 1));
-$show_desc                = trim($params->get('show_desc', 1));
-$isShowVat                 = trim($params->get('show_vat', 1));
+$image                      = trim($params->get('image', 0));
+$isShowPrice                = trim($params->get('show_price', 0));
+$thumbWidth                 = trim($params->get('thumbwidth', 100));
+$thumbHeight                = trim($params->get('thumbheight', 100));
+$showShortDesc              = trim($params->get('show_short_description', 1));
+$isShowReadMore             = trim($params->get('show_readmore', 1));
+$isShowAddToCart            = trim($params->get('show_addtocart', 1));
+$isShowDiscountPriceLayout  = trim($params->get('show_discountpricelayout', 1));
+$showDesc                   = trim($params->get('show_desc', 1));
+$isShowVat                  = trim($params->get('show_vat', 1));
+$limit = $params->get('count', 5);
+$count = 1;
 
 // Include the syndicate functions only once
 require_once __DIR__ . '/helper.php';
