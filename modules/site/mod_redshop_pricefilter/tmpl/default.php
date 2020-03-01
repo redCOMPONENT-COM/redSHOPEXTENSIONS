@@ -51,7 +51,7 @@ $numberFormatParams = '\'' . \Redshop::getConfig()->get('PRICE_DECIMAL') . '\',\
 					url = url + "&category=<?php echo $category;?>&count=<?php echo $count;?>&image=<?php echo $image;?>";
 					url = url + "&thumbwidth=<?php echo $thumbWidth;?>&thumbheight=<?php echo $thumbHeight;?>";
 					url = url + "&show_price=<?php echo $isShowPrice;?>&show_readmore=<?php echo $isShowReadMore;?>";
-					url = url + "&show_addtocart=<?php echo $isShowAddToCart;?>&show_desc=<?php echo $show_desc;?>";
+					url = url + "&show_addtocart=<?php echo $isShowAddToCart;?>&show_desc=<?php echo $showDesc;?>";
 					url = url + "&show_discountpricelayout=<?php echo $isShowDiscountPriceLayout;?>&Itemid=<?php echo $itemId;?>";
 					url = url + "&texpricemin=" + ui.values[0] + "&texpricemax=" + ui.values[1];
 
@@ -74,7 +74,7 @@ $numberFormatParams = '\'' . \Redshop::getConfig()->get('PRICE_DECIMAL') . '\',\
 			url = url + "&category=<?php echo $category;?>&count=<?php echo $count;?>&image=<?php echo $image;?>";
 			url = url + "&thumbwidth=<?php echo $thumbWidth;?>&thumbheight=<?php echo $thumbHeight;?>";
 			url = url + "&show_price=<?php echo $isShowPrice;?>&show_readmore=<?php echo $isShowReadMore;?>";
-			url = url + "&show_addtocart=<?php echo $isShowAddToCart;?>&show_desc=<?php echo $show_desc;?>";
+			url = url + "&show_addtocart=<?php echo $isShowAddToCart;?>&show_desc=<?php echo $showDesc;?>";
 			url = url + "&show_discountpricelayout=<?php echo $isShowDiscountPriceLayout;?>&Itemid=<?php echo $itemId;?>";
 			url = url + "&texpricemin=<?php echo $texpricemin;?>&texpricemax=<?php echo $texpricemax;?>";
 
