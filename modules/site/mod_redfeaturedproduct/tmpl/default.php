@@ -64,7 +64,7 @@ if (count($list) > 0) {
                         $itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '',
                             'product&pid=' . $row->product_id);
 
-                        if (count($itemData) > 0) {
+                        if (isset($itemData->id)) {
                             $itemId = $itemData->id;
                         } else {
                             $itemId = \RedshopHelperRouter::getItemId($row->product_id);
@@ -162,7 +162,14 @@ if (count($list) > 0) {
                             if ($params->get('show_addtocart', 1)) {
                                 $attributes = \Redshop\Product\Attribute::getProductAttribute($row->product_id);
                                 $totalAttributes = count($attributes);
-                                $addToCartData = \Redshop\Cart\Render::replace($row->product_id, 0, 0, 0, "", false, [], $totalAttributes, 0, 0, $module->id);
+
+                                $addToCartTemplates = \RedshopHelperTemplate::getTemplate('add_to_cart');
+                                $templateName = $addToCartTemplates[0]->name ?? 'add_to_cart1';
+                                $addToCartTemplate = '{form_addtocart:' . $templateName . '}';
+
+                                $addToCartData = \Redshop\Cart\Render::replace($row->product_id, 0, 0, 0,
+                                    $addToCartTemplate, false, [],
+                                    $totalAttributes, 0, 0, $module->id);
                                 echo "<div class=\"form-button\">" . $addToCartData . "</div>";
                             }
                             ?>

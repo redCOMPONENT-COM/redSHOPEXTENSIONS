@@ -183,12 +183,16 @@ foreach ($rows as $row) {
     }
 
     if ($isShowAddToCart) {
+        $addToCartTemplates = \RedshopHelperTemplate::getTemplate('add_to_cart');
+        $templateName = $addToCartTemplates[0]->name ?? 'add_to_cart1';
+        $addToCartTemplate = '{form_addtocart:' . $templateName . '}';
+
         $addToCart = \Redshop\Cart\Render::replace(
             $row->product_id,
             $row->category_id,
             0,
             0,
-            "",
+            $addToCartTemplate,
             false,
             $userFields,
             $totalAttributes,
