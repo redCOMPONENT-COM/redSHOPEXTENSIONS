@@ -43,14 +43,6 @@
                     description="MOD_REDSHOP_AESIR_PRODUCTS_ITEM_DESC">
                 </field>
                 <field
-                        name="field_redshopproduct"
-                        type="aesirfieldsredshopproduct"
-                        multiple="true"
-                        default=""
-                        label="Aesir Fields (type 'redshop product')"
-                        description="Aesir Fields (type 'redshop product')">
-                </field>
-                <field
                     name="urlCategoryId"
                     type="radio"
                     default="0"
