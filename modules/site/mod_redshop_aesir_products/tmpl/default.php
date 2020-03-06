@@ -232,7 +232,7 @@ for ($i = 0; $i < count($rows); $i++)
 				$ajaxDetailTemplateDesc = $ajaxDetailTemplate->template_desc;
 			}
 
-			$returns          = \RedshopHelperProduct::getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
+			$returns          = \Redshop\Product\Product::getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
 			$templateUserfield = $returns[0];
 			$userFields       = $returns[1];
 
