@@ -75,7 +75,7 @@ for ($i = 0; $i < count($rows); $i++)
 
 	$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
-	if (count($itemData) > 0)
+	if (!empty($itemData))
 	{
 		$itemId = $itemData->id;
 	}
@@ -105,14 +105,14 @@ for ($i = 0; $i < count($rows); $i++)
 		else
 		{
 			$thumImage = RedshopHelperMedia::getImagePath(
-							$thumb,
-							'',
-							'thumb',
-							'product',
-							$thumbWidth,
-							$thumbHeight,
+				$thumb,
+				'',
+				'thumb',
+				'product',
+				$thumbWidth,
+				$thumbHeight,
 				\Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
-						);
+			);
 			echo "<div class=\"mod_redshop_products_image\"><a href=\"" . $link . "\" title=\"$row->product_name\"><img src=\"" . $thumImage . "\"></a></div>";
 		}
 	}
@@ -146,7 +146,8 @@ for ($i = 0; $i < count($rows); $i++)
 			$productOldPrice 		= $productArr['product_old_price_excl_vat'];
 		}
 
-		if (SHOW_PRICE && (!DEFAULT_QUOTATION_MODE || (DEFAULT_QUOTATION_MODE && SHOW_QUOTATION_PRICE)))
+		if (Redshop::getConfig()->get('SHOW_PRICE') && (!Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE')
+				|| (Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && Redshop::getConfig()->get('SHOW_QUOTATION_PRICE'))))
 		{
 			if (!$productPrice)
 			{
