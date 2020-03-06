@@ -24,13 +24,9 @@ $document->addStyleSheet('modules/mod_redshop_products/css/products.css');
 JLoader::load('\RedshopHelperAdminImages');
 
 // Lightbox Javascript
-JHtml::script('com_redshop/attribute.js', false, true);
-JHtml::script('com_redshop/common.js', false, true);
-JHtml::script('com_redshop/redbox.js', false, true);
-
-$redTemplate     = new Redtemplate;
-$stockroomhelper = new rsstockroomhelper;
-
+JHtml::script('com_redshop/redshop.attribute.min.js', false, true);
+JHtml::script('com_redshop/redshop.common.min.js', false, true);
+JHtml::script('com_redshop/redshop.redbox.min.js', false, true);
 
 echo "<div class=\"mod_redshop_products_wrapper\">";
 
@@ -42,11 +38,11 @@ for ($i = 0; $i < count($rows); $i++)
 
 	if ($showStockroomStatus == 1)
 	{
-		$isStockExists = $stockroomhelper->isStockExists($row->product_id);
+		$isStockExists = RedshopHelperStockroom::isStockExists($row->product_id);
 
 		if (!$isStockExists)
 		{
-			$isPreorderStockExists = $stockroomhelper->isPreorderStockExists($row->product_id);
+			$isPreorderStockExists = RedshopHelperStockroom::isPreorderStockExists($row->product_id);
 		}
 
 		if (!$isStockExists)
@@ -108,7 +104,7 @@ for ($i = 0; $i < count($rows); $i++)
 		}
 		else
 		{
-			$thumImage = RedShopHelperImages::getImagePath(
+			$thumImage = RedshopHelperMedia::getImagePath(
 							$thumb,
 							'',
 							'thumb',
@@ -266,7 +262,8 @@ for ($i = 0; $i < count($rows); $i++)
 
 		// End
 
-		$addToCart = \Redshop\Cart\Render::replace($row->product_id, $categoryId, 0, 0, "", false, $userFields, $totalAttributes, $totalAccessory, $countNoUserField, $moduleId);
+		$addToCart = \Redshop\Cart\Render::replace($row->product_id, $categoryId, 0, 0, "{form_addtocart:add_to_cart1}", false, $userFields, $totalAttributes, $totalAccessory, $countNoUserField, $moduleId);
+
 		echo "<div class=\"mod_redshop_products_addtocart\">" . $addToCart . $hiddenUserField . "</div>";
 	}
 
