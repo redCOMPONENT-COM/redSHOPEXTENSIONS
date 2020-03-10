@@ -333,9 +333,11 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 		$rate         = 0;
 		$shipping     = \RedshopHelperShipping::getShippingMethodByClass($this->_name);
 		$rates        = \RedshopHelperShipping::listShippingRates($shipping->element, $data['users_info_id'], $data);
-		$countRate    = count($rates) >= 1 ? 1 : 0;
 
-		for ($i = 0; $i < $countRate; $i++)
+		// fix listshipping rate show one item #task: 5879
+		//$countRate    = count($rates) >= 1 ? 1 : 0;
+
+		for ($i = 0; $i < count($rates); $i++)
 		{
 			$rs                      = $rates[$i];
 			$shippingRateValue       = $rs->shipping_rate_value;
