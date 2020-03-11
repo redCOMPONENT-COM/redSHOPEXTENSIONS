@@ -44,13 +44,14 @@ $query = $db->getQuery(true)
 	->from($db->qn('#__reditem_items'))
 	->where($db->qn('id') . ' = ' . $db->q((int) $item));
 $itemId = $db->setQuery($query)->loadResult();
+
 if ($tableName)
 {
 	$query = $db->getQuery(true)
-		->select($db->qn('id'))
+		->select($db->qn('redshop_product'))
 		->from($db->qn('#__reditem_types_' . $tableName))
 		->where($db->qn('id') . ' = ' . $db->q((int) $itemId));
-	$ids = $db->setQuery($query)->loadResult();
+	$ids = json_decode($db->setQuery($query)->loadResult());
 }
 
 $query = $db->getQuery(true)

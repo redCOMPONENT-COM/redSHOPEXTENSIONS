@@ -211,7 +211,7 @@ $moduleId        = 'mod_' . $module->id;
 							$ajaxDetailTemplateDesc = $ajaxDetailTemplate->template_desc;
 						}
 
-						$returns         = \RedshopHelperProduct::getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
+						$returns         = \Redshop\Product\Product::getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
 						$templateUserfield = $returns[0];
 						$userFields      = $returns[1];
 

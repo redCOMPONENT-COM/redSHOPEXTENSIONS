@@ -81,7 +81,7 @@ if (count($rows))
 				$ajaxDetailTemplate_desc = $ajaxDetailTemplate->template_desc;
 			}
 
-			$returns           = \RedshopHelperProduct::getProductUserfieldFromTemplate($ajaxDetailTemplate_desc);
+			$returns           = \Redshop\Product\Product::getProductUserfieldFromTemplate($ajaxDetailTemplate_desc);
 			$templateUserField = $returns[0];
 			$userFields        = $returns[1];
 

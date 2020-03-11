@@ -46,7 +46,7 @@ class JFormFieldAesirItems extends JFormFieldList
 
 		if (!$this->element['multiple'])
 		{
-			$options[] = JHTML::_('select.option', '', JText::_('COM_REDSHOP_SELECT_TYPE'), 'value', 'text');
+			$options[] = JHTML::_('select.option', '', JText::_('COM_REDSHOP_SELECT_ITEM'), 'value', 'text');
 		}
 
 		if (count($items) > 0)
