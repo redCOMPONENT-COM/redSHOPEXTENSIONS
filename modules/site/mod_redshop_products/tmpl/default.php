@@ -206,7 +206,7 @@ $moduleId        = 'mod_' . $module->id;
 						$ajaxDetailTemplateDesc = "";
 						$ajaxDetailTemplate     = \Redshop\Template\Helper::getAjaxDetailBox($row);
 
-						if (count($ajaxDetailTemplate) > 0)
+						if (is_object($ajaxDetailTemplate) && isset($ajaxDetailTemplate))
 						{
 							$ajaxDetailTemplateDesc = $ajaxDetailTemplate->template_desc;
 						}
