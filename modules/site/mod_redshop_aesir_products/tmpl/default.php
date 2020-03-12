@@ -24,13 +24,9 @@ $document->addStyleSheet('modules/mod_redshop_products/css/products.css');
 JLoader::load('\RedshopHelperAdminImages');
 
 // Lightbox Javascript
-JHtml::script('com_redshop/attribute.js', false, true);
-JHtml::script('com_redshop/common.js', false, true);
-JHtml::script('com_redshop/redbox.js', false, true);
-
-$redTemplate     = new Redtemplate;
-$stockroomhelper = new rsstockroomhelper;
-
+JHtml::script('com_redshop/redshop.attribute.min.js', false, true);
+JHtml::script('com_redshop/redshop.common.min.js', false, true);
+JHtml::script('com_redshop/redshop.redbox.min.js', false, true);
 
 echo "<div class=\"mod_redshop_products_wrapper\">";
 
@@ -42,11 +38,11 @@ for ($i = 0; $i < count($rows); $i++)
 
 	if ($showStockroomStatus == 1)
 	{
-		$isStockExists = $stockroomhelper->isStockExists($row->product_id);
+		$isStockExists = RedshopHelperStockroom::isStockExists($row->product_id);
 
 		if (!$isStockExists)
 		{
-			$isPreorderStockExists = $stockroomhelper->isPreorderStockExists($row->product_id);
+			$isPreorderStockExists = RedshopHelperStockroom::isPreorderStockExists($row->product_id);
 		}
 
 		if (!$isStockExists)
@@ -79,7 +75,7 @@ for ($i = 0; $i < count($rows); $i++)
 
 	$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
-	if (count($itemData) > 0)
+	if (!empty($itemData))
 	{
 		$itemId = $itemData->id;
 	}
@@ -108,15 +104,15 @@ for ($i = 0; $i < count($rows); $i++)
 		}
 		else
 		{
-			$thumImage = RedShopHelperImages::getImagePath(
-							$thumb,
-							'',
-							'thumb',
-							'product',
-							$thumbWidth,
-							$thumbHeight,
+			$thumImage = RedshopHelperMedia::getImagePath(
+				$thumb,
+				'',
+				'thumb',
+				'product',
+				$thumbWidth,
+				$thumbHeight,
 				\Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
-						);
+			);
 			echo "<div class=\"mod_redshop_products_image\"><a href=\"" . $link . "\" title=\"$row->product_name\"><img src=\"" . $thumImage . "\"></a></div>";
 		}
 	}
@@ -150,7 +146,8 @@ for ($i = 0; $i < count($rows); $i++)
 			$productOldPrice 		= $productArr['product_old_price_excl_vat'];
 		}
 
-		if (SHOW_PRICE && (!DEFAULT_QUOTATION_MODE || (DEFAULT_QUOTATION_MODE && SHOW_QUOTATION_PRICE)))
+		if (Redshop::getConfig()->get('SHOW_PRICE') && (!Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE')
+				|| (Redshop::getConfig()->get('DEFAULT_QUOTATION_MODE') && Redshop::getConfig()->get('SHOW_QUOTATION_PRICE'))))
 		{
 			if (!$productPrice)
 			{
@@ -235,7 +232,7 @@ for ($i = 0; $i < count($rows); $i++)
 				$ajaxDetailTemplateDesc = $ajaxDetailTemplate->template_desc;
 			}
 
-			$returns          = \RedshopHelperProduct::getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
+			$returns          = \Redshop\Product\Product::getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
 			$templateUserfield = $returns[0];
 			$userFields       = $returns[1];
 
@@ -266,7 +263,8 @@ for ($i = 0; $i < count($rows); $i++)
 
 		// End
 
-		$addToCart = \Redshop\Cart\Render::replace($row->product_id, $categoryId, 0, 0, "", false, $userFields, $totalAttributes, $totalAccessory, $countNoUserField, $moduleId);
+		$addToCart = \Redshop\Cart\Render::replace($row->product_id, $categoryId, 0, 0, "{form_addtocart:add_to_cart1}", false, $userFields, $totalAttributes, $totalAccessory, $countNoUserField, $moduleId);
+
 		echo "<div class=\"mod_redshop_products_addtocart\">" . $addToCart . $hiddenUserField . "</div>";
 	}
 

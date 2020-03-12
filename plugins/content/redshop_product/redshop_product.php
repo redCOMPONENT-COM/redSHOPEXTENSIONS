@@ -211,7 +211,7 @@ class plgContentredshop_product extends JPlugin
 
 				// Product User Field Start
 				$countUserFields = 0;
-				$returns = \RedshopHelperProduct::getProductUserfieldFromTemplate($prtemplate);
+				$returns = \Redshop\Product\Product::getProductUserfieldFromTemplate($prtemplate);
 				$templateUserField = $returns[0];
 				$userFields = $returns[1];
 

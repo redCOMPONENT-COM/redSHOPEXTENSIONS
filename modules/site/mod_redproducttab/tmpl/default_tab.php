@@ -146,7 +146,7 @@ $j     = 0;
 					$ajaxDetailTemplateDesc = $ajaxDetailTemplate->template_desc;
 				}
 
-				$returns          = \RedshopHelperProduct::getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
+				$returns          = \Redshop\Product\Product::getProductUserfieldFromTemplate($ajaxDetailTemplateDesc);
 				$templateUserField  = $returns[0];
 				$userFieldArr       = $returns[1];
 
