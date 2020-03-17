@@ -25,7 +25,9 @@ $showAddToCart           = trim($params->get('show_addtocart', 1));
 $showDiscountPriceLayout = trim($params->get('show_discountpricelayout', 1));
 $showDescription         = trim($params->get('show_desc', 1));
 $showVat                 = trim($params->get('show_vat', 1));
+$showWishlist            = trim($params->get('show_wishlist', 0));
 $showStockroomStatus     = trim($params->get('show_stockroom_status', 1));
+$showReadmore            = trim($params->get('show_readmore', 1));
 $productId               = JFactory::getApplication()->input->get('pid');
 
 $user = JFactory::getUser();
