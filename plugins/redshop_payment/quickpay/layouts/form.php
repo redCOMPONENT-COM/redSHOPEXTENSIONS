@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Layouts
+ * @package     \Redshop.Layouts
  * @subpackage  Payment.stripe
  * @copyright   Copyright (C) 2008-2015 redCOMPONENT.com. All rights reserved.
  * @license     GNU/GPL, see LICENSE

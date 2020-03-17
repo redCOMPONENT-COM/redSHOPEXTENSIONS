@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="1.6.0" client="site" method="upgrade">
     <name>MOD_REDSHOP_WHO_BOUGHT</name>
-    <version>2.0.0</version>
-    <redshop>2.1.0</redshop>
+    <version>2.0.2</version>
+    <redshop>2.1.6</redshop>
     <creationDate>November 2017</creationDate>
     <author>redCOMPONENT.com</author>
     <authorEmail>email@redcomponent.com</authorEmail>
@@ -29,6 +29,8 @@
                        description="COM_REDSHOP_ENTER_CATEGORY"/>
                 <field name="number_of_items" type="text" default="5" label="COM_REDSHOP_NUMBER_OF_PRODUCT"
                        description="COM_REDSHOP_NUMBER_OF_PRODUCT_DESC"/>
+                <field name="number_of_products_one_scroll" type="number" default="2" label="COM_REDSHOP_NUMBER_PRODUCT_ONE_SCROLL"
+                       description="COM_REDSHOP_NUMBER_PRODUCT_ONE_SCROLL_DESC"/>
                 <field name="sliderwidth" type="text" size="10" label="COM_REDSHOP_SLIDER_IMAGE_WIDTH"
                        default="440"/>
                 <field name="thumbwidth" type="text" size="10" label="COM_REDSHOP_THUMB_IMAGE_WIDTH"

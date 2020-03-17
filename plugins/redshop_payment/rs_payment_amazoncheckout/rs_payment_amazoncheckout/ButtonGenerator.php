@@ -58,7 +58,7 @@ class ButtonGenerator
 	 */
 	public static function getSimplePayStandardParams($accessKey, $amount, $description, $referenceId, $immediateReturn,
 		$returnUrl, $abandonUrl, $processImmediate, $ipnUrl, $collectShippingAddress,
-		$signatureMethod, $formHiddenInputs = array())
+		$signatureMethod, $formHiddenInputs = [])
 	{
 		$cobrandingStyle = self::COBRANDING_STYLE;
 
@@ -198,7 +198,7 @@ class ButtonGenerator
 
 	public static function GenerateForm($accessKey, $secretKey, $amount, $description, $referenceId, $immediateReturn,
 		$returnUrl, $abandonUrl, $processImmediate, $ipnUrl, $collectShippingAddress,
-		$signatureMethod, $environment, $otherParams = array())
+		$signatureMethod, $environment, $otherParams = [])
 	{
 		if ($environment != "1")
 		{

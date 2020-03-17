@@ -42,7 +42,7 @@ class PlgRedshop_UserRegistration_Acymailing extends JPlugin
 	 *
 	 * @return boolean
 	 */
-	public function addNewsLetterSubscription($isNew, $data = array())
+	public function addNewsLetterSubscription($isNew, $data = [])
 	{
 		if ($isNew)
 		{

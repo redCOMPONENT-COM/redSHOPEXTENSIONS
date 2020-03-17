@@ -146,7 +146,7 @@ abstract class ModRedshopTagsHelper
 		{
 			JFactory::getApplication()->enqueueMessage(JText::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
 
-			return array();
+			return [];
 		}
 
 		foreach ($results as $result)

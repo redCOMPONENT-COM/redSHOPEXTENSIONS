@@ -32,7 +32,7 @@ class Plgredshop_Productstock_Notifyemail extends JPlugin
 	 *
 	 * @since   1.5
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang          = JFactory::getLanguage();
 		$lang->load('plg_redshop_product_stock_notifyemail', JPATH_ADMINISTRATOR);
@@ -73,7 +73,7 @@ class Plgredshop_Productstock_Notifyemail extends JPlugin
 						$message = str_replace("{product_detail}", $productDetail, $message);
 						$mail_subject = str_replace("{product_name}", $productName, $mail_subject);
 						$message = $redshopMail->imginmail($message);
-						JFactory::getMailer()->sendMail(Redshop::getConfig()->get('ADMINISTRATOR_EMAIL'), Redshop::getConfig()->get('SHOP_NAME'), $userData[$u]->user_email, $mail_subject, $message, 1);
+						JFactory::getMailer()->sendMail(\Redshop::getConfig()->get('ADMINISTRATOR_EMAIL'), \Redshop::getConfig()->get('SHOP_NAME'), $userData[$u]->user_email, $mail_subject, $message, 1);
 					}
 
 					$this->deleteNotifiedUsers($userData[$u]);
@@ -129,18 +129,17 @@ class Plgredshop_Productstock_Notifyemail extends JPlugin
 	 */
 	public function getProductData($userData)
 	{
-		$productData = array();
+		$productData = [];
 
 		if ($userData->product_id)
 		{
-			if ($product_data = RedshopHelperProduct::getProductById($userData->product_id))
+			if ($product_data = \Redshop\Product\Product::getProductById($userData->product_id))
 			{
 				$productDetail = $product_data->product_name;
-				$producthelper = productHelper::getInstance();
 
 				if ($userData->property_id)
 				{
-					if ($property_data = $producthelper->getAttibuteProperty($userData->property_id))
+					if ($property_data = \RedshopHelperProduct_Attribute::getAttributeProperties($userData->property_id))
 					{
 						$productDetail .= "<br/>" . $property_data->property_name;
 					}
@@ -148,7 +147,7 @@ class Plgredshop_Productstock_Notifyemail extends JPlugin
 
 				if ($userData->subproperty_id)
 				{
-					if ($subproperty_data = $producthelper->getAttibuteSubProperty($userData->subproperty_id))
+					if ($subproperty_data = \RedshopHelperProduct_Attribute::getAttributeSubProperties($userData->subproperty_id))
 					{
 						$productDetail .= "<br/>" . $subproperty_data->subattribute_color_name;
 					}

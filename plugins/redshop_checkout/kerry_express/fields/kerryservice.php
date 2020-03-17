@@ -35,7 +35,7 @@ class JFormFieldKerryservice extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$list   = array();
+		$list   = [];
 		$i      = 0;
 		$handle = $this->getServiceData();
 

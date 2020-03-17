@@ -11,14 +11,12 @@ defined('_JEXEC') or die;
 $uri = JURI::getInstance();
 $url = $uri->root();
 
-$producthelper = productHelper::getInstance();
-$redhelper = redhelper::getInstance();
 
-$Itemid = JRequest::getInt('Itemid');
+$itemId = JRequest::getInt('Itemid');
 $cid = JRequest::getInt('cid');
-if (Redshop::getConfig()->get('COMPARE_PRODUCTS') == 1)
+if (\Redshop::getConfig()->get('COMPARE_PRODUCTS') == 1)
 {
-	$compare = new RedshopProductCompare();
+	$compare = new \RedshopProductCompare();
 
 	?>
 
@@ -30,27 +28,27 @@ if (Redshop::getConfig()->get('COMPARE_PRODUCTS') == 1)
 			{
 				foreach ($compare->getItems() as $item)
 				{
-					$row = $producthelper->getProductById($item['item']->productId);
+					$row = \Redshop\Product\Product::getProductById($item['item']->productId);
 
 					$cid = $item['item']->categoryId;
 
 					if (!$cid)
 					{
-						$cid = $producthelper->getCategoryProduct($row->product_id);
+						$cid = \RedshopHelperProduct::getCategoryProduct($row->product_id);
 					}
 
-					$ItemData = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+					$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
-					if (count($ItemData) > 0)
+					if (count($itemData) > 0)
 					{
-						$Itemid = $ItemData->id;
+						$itemId = $itemData->id;
 					}
 					else
 					{
-						$Itemid = RedshopHelperRouter::getItemId($row->product_id);
+						$itemId = \RedshopHelperRouter::getItemId($row->product_id);
 					}
 
-					$link = JRoute::_('index.php?option=com_redshop&view=product&pid=' . $row->product_id . '&cid=' . $cid . '&Itemid=' . $Itemid);
+					$link = JRoute::_('index.php?option=com_redshop&view=product&pid=' . $row->product_id . '&cid=' . $cid . '&Itemid=' . $itemId);
 
 
 			?>
@@ -85,7 +83,7 @@ if (Redshop::getConfig()->get('COMPARE_PRODUCTS') == 1)
 		</table>
 	</div>
 	<div id="mod_compare">
-		<a href="<?php echo JRoute::_('index.php?option=com_redshop&view=product&layout=compare&Itemid=' . $Itemid . $cid_main) ?>"><?php echo JText::_('COM_REDSHOP_COMPARE'); ?></a>
+		<a href="<?php echo JRoute::_('index.php?option=com_redshop&view=product&layout=compare&Itemid=' . $itemId . $cid_main) ?>"><?php echo JText::_('COM_REDSHOP_COMPARE'); ?></a>
 	</div>
 <?php
 }

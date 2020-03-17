@@ -58,12 +58,12 @@ class AuthorizeNetAIM extends AuthorizeNetRequest
 	/**
 	 * Only used if merchant wants to send multiple line items about the charge.
 	 */
-	private $_additional_line_items = array();
+	private $_additional_line_items = [];
 
 	/**
 	 * Only used if merchant wants to send custom fields.
 	 */
-	private $_custom_fields = array();
+	private $_custom_fields = [];
 
 	/**
 	 * Checks to make sure a field is actually in the API before setting.
@@ -408,7 +408,7 @@ class AuthorizeNetAIM extends AuthorizeNetRequest
  */
 class AuthorizeNetAIM_Response extends AuthorizeNetResponse
 {
-	private $_response_array = array(); // An array with the split response.
+	private $_response_array = []; // An array with the split response.
 
 	/**
 	 * Constructor. Parses the AuthorizeNet response string.

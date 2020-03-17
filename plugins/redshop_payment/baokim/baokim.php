@@ -8,12 +8,7 @@
  */
 defined('_JEXEC') or die;
 
-// Load baokim library
-require_once dirname(__DIR__) . '/baokim/library/constants.php';
-require_once dirname(__DIR__) . '/baokim/library/baokim_payment_pro.php';
-require_once dirname(__DIR__) . '/baokim/library/baokim_payment.php';
-
-class plgRedshop_PaymentBaokim extends RedshopPayment
+class plgRedshop_PaymentBaokim extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.
@@ -22,6 +17,26 @@ class plgRedshop_PaymentBaokim extends RedshopPayment
 	 * @since  3.1
 	 */
 	protected $autoloadLanguage = true;
+
+	/**
+	 * Application object
+	 *
+	 * @var    JApplicationCms
+	 * @since  3.2
+	 */
+	protected $app;
+
+	/**
+	 * Setting Api Baokim
+	 *
+	 * @return  void
+	 */
+	public function settingApi()
+	{
+		$this->loadLibrary();
+		BaoKimAPI::setApiKey($this->params->get('api_key'));
+		BaoKimAPI::setSecretKey($this->params->get('secret_key'));
+	}
 
 	/**
 	 * This method will be triggered on before placing order to authorize or charge credit card
@@ -38,103 +53,65 @@ class plgRedshop_PaymentBaokim extends RedshopPayment
 			return;
 		}
 
-		echo $this->renderPaymentForm($data);
-	}
-
-	/**
-	 * Prepare Payment Input
-	 *
-	 * @param   array  $orderInfo  Order Information
-	 *
-	 * @return  array  Payment Gateway for parameters
-	 */
-	protected function preparePaymentInput($orderInfo)
-	{
-		$inputs = array(
-				'action' 	  => JURI::base() . "index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=process_payment&payment_method_id=baokim&order_id=" . $orderInfo['order_id'],
-				'firstname'   => $orderInfo['billinginfo']->firstname,
-				'lastname'    => $orderInfo['billinginfo']->lastname,
-				'email'       => $orderInfo['billinginfo']->user_email,
-				'url'         => $this->getReturnUrl($orderInfo['order_id']),
-				'urlc'        => $this->getNotifyUrl($orderInfo['order_id']),
-				'phone'       => $orderInfo['billinginfo']->phone,
-				'street'      => $orderInfo['billinginfo']->address,
-			);
-
-		return $inputs;
-	}
-
-	/**
-	 * Notify payment
-	 *
-	 * @param   string  $element  Name of plugin
-	 * @param   array   $request  HTTP request data
-	 *
-	 * @return  object  Contains the information of order success of falier in object
-	 */
-	public function onPrePayment_Baokim($element, $request)
-	{
-		if ($element != 'baokim')
+		if (empty($plugin))
 		{
-			return;
+			$plugin = $element;
 		}
 
-		$app                            = JFactory::getApplication();
-		$input                          = $app->input;
-		$orderHelper                    = order_functions::getInstance();
-		$orderId                        = $input->getInt('order_id');
-		$itemId                         = $input->getInt('Itemid');
-		$order                          = $orderHelper->getOrderDetails($orderId);
-		$price                          = $order->order_total;
-		$bankPaymentMethodId            = $input->post->get('bank_payment_method_id');
-		$data                           = array();
-		$data['order_id']               = $orderId;
-		$data['total_amount']           = $price;
-		$data['bank_payment_method_id'] = $input->post->get('bank_payment_method_id');
-		$data['payer_name']             = $input->post->getString('payer_name');
-		$data['payer_email']            = $input->post->getString('payer_email');
-		$data['payer_phone_no']         = $input->post->get('payer_phone_no');
-		$data['address']                = $input->post->getString('address');
-		$data['return']                 = $this->getNotifyUrl($orderId);
-		$data['cancel']                 = $this->getReturnUrl($orderId);
-		$data['detail']                 = JRoute::_('index.php?option=com_redshop&view=order_detail&oid=' . $orderId . '&Itemid=' . $itemId, true);
-		$data['shipping_fee']           = $order->order_shipping;
-		$data['tax_fee']                = $order->order_tax;
-		$data['transaction_mode_id']    = $input->post->get('payment_mode');
 
-		if ($data['transaction_mode_id'] == 1)
+		$uri            = JURI::getInstance();
+		$url            = $uri->root();
+		$user           = JFactory::getUser();
+		$app            = JFactory::getApplication();
+		$itemId         = $app->input->getInt('Itemid', 0);
+		$orderInfo      = $data['order'];
+		$billingInfo    = $data['billinginfo'];
+
+		$this->settingApi();
+
+		$client = new GuzzleHttp\Client(['timeout' => 20.0]);;
+		$options['query']['jwt'] = BaoKimAPI::getToken();
+
+		$payload['mrc_order_id'] = $orderInfo->order_id;
+		$payload['total_amount'] = ($orderInfo->order_total > 10000) ? $orderInfo->order_total : '10000';
+		$payload['description'] = "Thanh toan đơn hàng " . $data['order_id'];
+		$payload['url_success'] = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Baokim&accept=1&Itemid=' . $itemId;
+		$payload['url_detail'] = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Baokim&accept=0&mrc_order_id='. $orderInfo->order_id .'&Itemid=' . $itemId;
+		$payload['customer_email'] = !empty($billingInfo->user_email) ? $billingInfo->user_email : $billingInfo->email;
+		$payload['customer_phone'] = $billingInfo->phone;
+		$payload['customer_name'] = $billingInfo->lastname .  $billingInfo->firstname;
+		$payload['customer_address'] = $billingInfo->address;
+
+		$options['form_params'] = $payload;
+
+		$link = 'https://api.baokim.vn/payment/api/v4/';
+
+		if ($this->params->get('isTest'))
 		{
-			$data['escrow_timeout'] = 0;
+			$link = 'https://sandbox-api.baokim.vn/payment/api/v4/';
 		}
-		else
-		{
-			$data['escrow_timeout'] = $input->post->get('escrow_timeout');
-		}
 
-		if (!empty($bankPaymentMethodId))
-		{
-			$baokim = new BaoKimPaymentPro;
-			$result = $baokim->pay_by_card($data);
 
-			if (!empty($result['error']))
+		$response = $client->request("POST", $link . "order/send", $options);
+
+		$result = json_decode($response->getBody()->getContents());
+
+		if (!empty($result->message))
+		{
+			foreach ($result->message as $key => $value)
 			{
-				$app->enqueueMessage($result['error'], 'error');
-
-				return false;
+				$this->app->enqueueMessage($value[0], 'error');
 			}
 
-			$baokimUrl = $result['redirect_url'] ? $result['redirect_url'] : $result['guide_url'];
+			$link = JRoute::_('index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Baokim&accept=0&mrc_order_id='. $orderInfo->order_id .'&Itemid=' . $itemId);
+
+			$this->app->redirect($link);
 		}
-		else
+
+		if (!empty($result->data))
 		{
-			$baokim    = new BaoKimPayment;
-			$baokimUrl = $baokim->createRequestUrl($data);
+			$this->app->redirect($result->data->payment_url);
 		}
-
-		$redirect = (string) $baokimUrl;
-		$app->redirect($redirect);
-
-		$values      = new stdClass;
 	}
 
 	/**
@@ -147,19 +124,18 @@ class plgRedshop_PaymentBaokim extends RedshopPayment
 	 */
 	public function onNotifyPaymentBaokim($element, $request)
 	{
-		if ($element != 'baokim')
+		if ($element != 'Baokim')
 		{
 			return;
 		}
 
 		$app              = JFactory::getApplication();
 		$input            = $app->input;
-		$orderId          = $input->getInt('order_id');
-		$errorCode        = $input->getInt('transaction_status');
+		$orderId          = $input->getInt('mrc_order_id');
 		$values           = new stdClass;
 		$values->order_id = $orderId;
 
-		if ($errorCode == 4)
+		if (isset($request['stat']) && $request['stat'] == 'c' && $request['accept'] == 1 && $this->checkSum($request))
 		{
 			$values->order_status_code         = $this->params->get('verify_status', 'C');
 			$values->order_payment_status_code = 'Paid';
@@ -172,8 +148,43 @@ class plgRedshop_PaymentBaokim extends RedshopPayment
 			$values->order_payment_status_code = 'Unpaid';
 			$values->log                       = JText::_('PLG_REDSHOP_PAYMENT_BAOKIM_ORDER_NOT_PLACED');
 			$values->msg                       = JText::_('PLG_REDSHOP_PAYMENT_BAOKIM_ORDER_NOT_PLACED');
+			$values->type                      = 'error';
 		}
 
 		return $values;
+	}
+
+	public function checkSum($query)
+	{
+		if (empty($query))
+		{
+			return false;
+		}
+
+		$checksum = $query['checksum'];
+		unset($query['checksum']);
+		unset($query['tmpl']);
+		unset($query['view']);
+		unset($query['controller']);
+		unset($query['task']);
+		unset($query['payment_plugin']);
+		unset($query['accept']);
+		unset($query['Itemid']);
+		unset($query['option']);
+		ksort($query);
+
+		$myChecksum = hash_hmac('sha256', http_build_query($query), $this->params->get('secret_key'));
+
+		return ($checksum == $myChecksum) ? true : false;
+	}
+
+	/**
+	 * Load library payment Baokim
+	 *
+	 * @return  void
+	 */
+	public function loadLibrary()
+	{
+		require_once dirname(__DIR__) . '/baokim/library/baokimapi.php';
 	}
 }

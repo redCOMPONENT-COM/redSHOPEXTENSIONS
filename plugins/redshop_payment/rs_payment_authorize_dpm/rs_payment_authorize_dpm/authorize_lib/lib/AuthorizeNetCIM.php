@@ -461,7 +461,7 @@ class AuthorizeNetCIM_Response extends AuthorizeNetXMLResponse
 	 */
 	public function getTransactionResponse()
 	{
-		return new AuthorizeNetAIM_Response($this->_getElementContents("directResponse"), ",", "", array());
+		return new AuthorizeNetAIM_Response($this->_getElementContents("directResponse"), ",", "", []);
 	}
 
 	/**
@@ -470,11 +470,11 @@ class AuthorizeNetCIM_Response extends AuthorizeNetXMLResponse
 	public function getValidationResponses()
 	{
 		$responses = (array) $this->xml->validationDirectResponseList;
-		$return = array();
+		$return = [];
 
 		foreach ((array) $responses["string"] as $response)
 		{
-			$return[] = new AuthorizeNetAIM_Response($response, ",", "", array());
+			$return[] = new AuthorizeNetAIM_Response($response, ",", "", []);
 		}
 
 		return $return;
@@ -485,7 +485,7 @@ class AuthorizeNetCIM_Response extends AuthorizeNetXMLResponse
 	 */
 	public function getValidationResponse()
 	{
-		return new AuthorizeNetAIM_Response($this->_getElementContents("validationDirectResponse"), ",", "", array());
+		return new AuthorizeNetAIM_Response($this->_getElementContents("validationDirectResponse"), ",", "", []);
 	}
 
 	/**

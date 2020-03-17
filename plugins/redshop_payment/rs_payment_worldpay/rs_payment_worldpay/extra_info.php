@@ -12,9 +12,8 @@ JLoader::import('redshop.library');
 $objOrder         = order_functions::getInstance();
 $objconfiguration = Redconfiguration::getInstance();
 $user             = JFactory::getUser();
-$shipping_address = RedshopHelperOrder::getOrderShippingUserInfo($data['order_id']);
+$shipping_address = \RedshopHelperOrder::getOrderShippingUserInfo($data['order_id']);
 
-$redhelper = redhelper::getInstance();
 $db        = JFactory::getDbo();
 $user      = JFActory::getUser();
 $task      = JRequest::getVar('task');
@@ -51,13 +50,13 @@ else
 
 $order->order_subtotal = number_format($order_details[0]->order_total, 2, '.', '');
 $amount                = $order->order_subtotal;
-$sign_key              = $md5_key . ":" . $instId . ":" . $order->order_subtotal . ":" . Redshop::getConfig()->get('CURRENCY_CODE') . ":" . $cartId;
+$sign_key              = $md5_key . ":" . $instId . ":" . $order->order_subtotal . ":" . \Redshop::getConfig()->get('CURRENCY_CODE') . ":" . $cartId;
 $md5_sign_key          = md5($sign_key);
 
 $post_variables = Array(
 	"instId"      => $instId,
 	"cartId"      => $data['order_id'],
-	"currency"    => Redshop::getConfig()->get('CURRENCY_CODE'),
+	"currency"    => \Redshop::getConfig()->get('CURRENCY_CODE'),
 	"amount"      => $order->order_subtotal,
 	"email"       => $buyeremail,
 	"address"     => $owneraddress,

@@ -39,7 +39,7 @@ class JFormFieldPaymentType extends JFormFieldCheckboxes
 	{
 		JFactory::getLanguage()->load('com_redshop');
 
-		$cardTypes        = array();
+		$cardTypes        = [];
 		$cardTypes['ALL'] = 'COM_REDSHOP_CARD_TYPE_ALL';
 		$cardTypes['1']   =	'PLG_RS_PAYMENT_EPAYV2_CARD_TYPE_DANKORT';
 		$cardTypes['2']   =	'PLG_RS_PAYMENT_EPAYV2_CARD_TYPE_DANKORT_EDANKORT';

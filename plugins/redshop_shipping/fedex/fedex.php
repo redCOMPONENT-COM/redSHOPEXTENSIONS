@@ -46,9 +46,9 @@ class PlgRedshop_ShippingFedex extends JPlugin
 		// Load config
 		include_once JPATH_ROOT . '/plugins/redshop_shipping/' . $this->_name . '/config/' . $this->_name . '.cfg.php';
 
-		echo RedshopLayoutHelper::render(
+		echo \RedshopLayoutHelper::render(
 			'config',
-			array(),
+			[],
 			__DIR__ . '/layouts'
 		);
 
@@ -116,8 +116,7 @@ class PlgRedshop_ShippingFedex extends JPlugin
 	{
 		include_once JPATH_ROOT . '/plugins/redshop_shipping/fedex/config/fedex.cfg.php';
 
-		$productHelper = productHelper::getInstance();
-		$shipping      = RedshopHelperShipping::getShippingMethodByClass($this->_name);
+		$shipping      = \RedshopHelperShipping::getShippingMethodByClass($this->_name);
 
 		$fedexAccountNumber = FEDEX_ACCOUNT_NUMBER;
 		$fedexMeterNumber   = FEDEX_METER_NUMBER;
@@ -128,13 +127,13 @@ class PlgRedshop_ShippingFedex extends JPlugin
 		$fedexWeightUnits   = FEDEX_WEIGHTUNITS;
 		$fedexKey           = FEDEX_KEY;
 		$fedexPass          = FEDEX_PASSWORD;
-		$shippingRates      = array();
+		$shippingRates      = [];
 
-		$unitRatio        = $productHelper->getUnitConversation($fedexWeightUnits, strtolower(Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT')));
+		$unitRatio        = \Redshop\Helper\Utility::getUnitConversation($fedexWeightUnits, strtolower(\Redshop::getConfig()->get('DEFAULT_WEIGHT_UNIT')));
 		$fedexWeightUnits = $fedexWeightUnits == 'lbs' ? 'LB' : 'KG';
 
-		$unitRatioVolume   = $productHelper->getUnitConversation('inch', Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
-		$totalDimension    = RedshopHelperShipping::getCartItemDimension();
+		$unitRatioVolume   = \Redshop\Helper\Utility::getUnitConversation('inch', \Redshop::getConfig()->get('DEFAULT_VOLUME_UNIT'));
+		$totalDimension    = \RedshopHelperShipping::getCartItemDimension();
 		$cartTotalQuantity = $totalDimension['totalquantity'];
 		$cartTotalWeight   = $totalDimension['totalweight'];
 
@@ -145,7 +144,7 @@ class PlgRedshop_ShippingFedex extends JPlugin
 			$cartTotalWeight = $cartTotalWeight * $unitRatio;
 		}
 
-		$shippingInfor = RedshopHelperShipping::getShippingAddress($data['users_info_id']);
+		$shippingInfor = \RedshopHelperShipping::getShippingAddress($data['users_info_id']);
 
 		if (is_null($shippingInfor))
 		{
@@ -154,12 +153,12 @@ class PlgRedshop_ShippingFedex extends JPlugin
 
 		if (!empty($data['shipping_box_id']))
 		{
-			$whereShippingBoxes = RedshopHelperShipping::getBoxDimensions($data['shipping_box_id']);
+			$whereShippingBoxes = \RedshopHelperShipping::getBoxDimensions($data['shipping_box_id']);
 		}
 		else
 		{
-			$whereShippingBoxes               = array();
-			$productData                      = RedshopHelperShipping::getProductVolumeShipping();
+			$whereShippingBoxes               = [];
+			$productData                      = \RedshopHelperShipping::getProductVolumeShipping();
 			$whereShippingBoxes['box_length'] = $productData[2]['length'];
 			$whereShippingBoxes['box_width']  = $productData[1]['width'];
 			$whereShippingBoxes['box_height'] = $productData[0]['height'];
@@ -176,7 +175,7 @@ class PlgRedshop_ShippingFedex extends JPlugin
 			return $shippingRates;
 		}
 
-		$billing = RedshopHelperUser::getUserInformation($shippingInfor->user_id);
+		$billing = \RedshopHelperUser::getUserInformation($shippingInfor->user_id);
 
 		if (!empty((array) $billing))
 		{
@@ -185,12 +184,12 @@ class PlgRedshop_ShippingFedex extends JPlugin
 
 		if (!empty($shippingInfor->country_code))
 		{
-			$shippingInfor->country_2_code = RedshopHelperWorld::getCountryCode2($shippingInfor->country_code);
+			$shippingInfor->country_2_code = \RedshopHelperWorld::getCountryCode2($shippingInfor->country_code);
 		}
 
 		if (!empty($billing->country_code))
 		{
-			$billing->country_2_code = RedshopHelperWorld::getCountryCode2($billing->country_code);
+			$billing->country_2_code = \RedshopHelperWorld::getCountryCode2($billing->country_code);
 		}
 
 		if (!empty($shippingInfor->state_code))
@@ -199,7 +198,7 @@ class PlgRedshop_ShippingFedex extends JPlugin
 
 			if (strlen($billing->state_code) > 2)
 			{
-				$shippingInfor->state_2_code = RedshopHelperWorld::getStateCode2($shippingInfor->state_code);
+				$shippingInfor->state_2_code = \RedshopHelperWorld::getStateCode2($shippingInfor->state_code);
 			}
 		}
 
@@ -209,15 +208,15 @@ class PlgRedshop_ShippingFedex extends JPlugin
 
 			if (strlen($billing->state_code) > 2)
 			{
-				$billing->state_2_code = RedshopHelperWorld::getStateCode2($billing->state_code);
+				$billing->state_2_code = \RedshopHelperWorld::getStateCode2($billing->state_code);
 			}
 		}
 
-		$countryCode = Redshop::getConfig()->get('SHOP_COUNTRY');
+		$countryCode = \Redshop::getConfig()->get('SHOP_COUNTRY');
 
 		if ($countryCode != '')
 		{
-			$billing->country_2_code = RedshopHelperWorld::getCountryCode2($countryCode);
+			$billing->country_2_code = \RedshopHelperWorld::getCountryCode2($countryCode);
 		}
 
 		// The XML that will be posted to UPS
@@ -333,12 +332,12 @@ class PlgRedshop_ShippingFedex extends JPlugin
 					{
 						$amount = $rateReply->RatedShipmentDetails[0]->ShipmentRateDetail->TotalNetCharge->Amount;
 
-						if (Redshop::getConfig()->get('FEDEX_DISCOUNT') == 0)
+						if (\Redshop::getConfig()->get('FEDEX_DISCOUNT') == 0)
 						{
 							$amount += $rateReply->RatedShipmentDetails[0]->EffectiveNetDiscount->Amount;
 						}
 
-						$shipping_rate_id = RedshopShippingRate::encrypt(
+						$shipping_rate_id = \RedshopShippingRate::encrypt(
 							array(
 								__CLASS__,
 								$shipping->name,

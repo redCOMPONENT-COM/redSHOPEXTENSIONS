@@ -27,11 +27,11 @@ abstract class ModRedFeaturedProductHelper
 	 */
 	public static function getList(&$params)
 	{
-		$db = JFactory::getDbo();
+		$db = \JFactory::getDbo();
 		$query = $db->getQuery(true)
 			->select('p.product_id')
 			->from($db->qn('#__redshop_product', 'p'))
-			->where($db->qn('p.published') . ' = 1')
+			->where($db->qn('p.published') . ' = ' . $db->q(1))
 			->where('product_special = 1')
 			->group('p.product_id');
 
@@ -51,7 +51,7 @@ abstract class ModRedFeaturedProductHelper
 				break;
 		}
 
-		$rows = array();
+		$rows = [];
 
 		if ($productIds = $db->setQuery($query, 0, (int) $params->get('NumberOfProducts', 5))->loadColumn())
 		{
@@ -61,12 +61,12 @@ abstract class ModRedFeaturedProductHelper
 				->order('FIELD(p.product_id, ' . implode(',', $productIds) . ')');
 
 			$user = JFactory::getUser();
-			$query = RedshopHelperProduct::getMainProductQuery($query, $user->id)
+			$query = \Redshop\Product\Product::getMainProductQuery($query, $user->id)
 				->select('CONCAT_WS(' . $db->q('.') . ', p.product_id, ' . (int) $user->id . ') AS concat_id');
 
 			if ($rows = $db->setQuery($query)->loadObjectList('concat_id'))
 			{
-				RedshopHelperProduct::setProduct($rows);
+				\Redshop\Product\Product::setProduct($rows);
 				$rows = array_values($rows);
 			}
 		}

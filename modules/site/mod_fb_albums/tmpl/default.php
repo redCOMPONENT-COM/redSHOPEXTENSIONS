@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-$albums = isset($output->albums->data) ? $output->albums->data : array();
+$albums = isset($output->albums->data) ? $output->albums->data : [];
 
 $count = count($albums);
 ?>

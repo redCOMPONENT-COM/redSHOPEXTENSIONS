@@ -27,7 +27,6 @@ $showDescription         = trim($params->get('show_desc', 1));
 $showVat                 = trim($params->get('show_vat', 1));
 $showStockroomStatus     = trim($params->get('show_stockroom_status', 1));
 $productId               = JFactory::getApplication()->input->get('pid');
-$producthelper           = productHelper::getInstance();
 
 $user = JFactory::getUser();
 
@@ -43,18 +42,18 @@ else
 	$stockrooms = trim($stockrooms);
 }
 
-if ($stockrooms && Redshop::getConfig()->getBool('USE_STOCKROOM'))
+if ($stockrooms && \Redshop::getConfig()->getBool('USE_STOCKROOM'))
 {
 	$query->leftJoin($db->qn('#__redshop_product_stockroom_xref', 'sx') . ' ON ' . $db->qn('p.product_id') . ' = ' . $db->qn('sx.product_id'))
 		->where($db->qn('sx.stockroom_id') . ' IN (' . $stockrooms . ')')
 		->where($db->qn('sx.quantity') . ' > 0');
 }
 
-$rows = array();
+$rows = [];
 
 if ($productId)
 {
-	$rows = $producthelper->getRelatedProduct($productId);
+	$rows = \RedshopHelperProduct::getRelatedProduct($productId);
 }
 
 require JModuleHelper::getLayoutPath('mod_redshop_related_products', $params->get('layout', 'default'));

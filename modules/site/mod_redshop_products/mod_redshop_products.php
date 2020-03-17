@@ -36,10 +36,13 @@ $isUrlCategoryId         = trim($params->get('urlCategoryId', 0));
 $showLoadmore            = trim($params->get('show_loadmore', 0));
 $loadmoreCount           = trim($params->get('loadmore_count', 9));
 $loadmoreBtnText         = trim($params->get('loadmore_text', 'Se flere tilbud'));
-$specificProducts        = $params->get('specific_products', array());
+$specificProducts        = $params->get('specific_products', []);
+$includeSubCategory      = (int) $params->get('includeSubCategory', 0);
+$readMoreItemid          = $params->get('read_more_itemid', 0);
+$view                    = $app->input->getInt('view');
 
 $isLoadmore       = $app->input->getInt('loadmore', 0);
-$loadedProductIds = $session->get('mod_redshop_products.' . $module->id . '.loadedpids', array());
+$loadedProductIds = $session->get('mod_redshop_products.' . $module->id . '.loadedpids', []);
 
 $user = JFactory::getUser();
 
@@ -49,6 +52,12 @@ $query = $db->getQuery(true)
 	->leftJoin($db->qn('#__redshop_product_category_xref', 'pc') . ' ON ' . $db->qn('pc.product_id') . ' = ' . $db->qn('p.product_id'))
 	->where($db->qn('p.published') . ' = 1')
 	->group($db->qn('p.product_id'));
+
+if ($view == 'product')
+{
+	$pid = $app->input->getInt('pid');
+	$query->where($db->qn('p.product_id') . ' != ' . $db->q($pid));
+}
 
 switch ($type)
 {
@@ -127,6 +136,11 @@ switch ($type)
 
 		$query->where($db->qn('p.product_id') . ' IN (' . implode(',', $specificProducts) . ')');
 		break;
+		
+	// Ordering
+	case 8:
+		$query->order($db->qn('pc.ordering'));
+		break;
 }
 
 // Only Display Feature Product
@@ -141,39 +155,43 @@ if ($showChildProducts != 1)
 	$query->where($db->qn('p.product_parent_id') . ' = 0');
 }
 
-$category = $params->get('category', '');
-
-if (is_array($category))
-{
-	$category = implode(',', $category);
-}
-else
-{
-	$category = trim($category);
-}
+$categories = $params->get('category', []);
 
 if ($isUrlCategoryId)
 {
 	// Get Category id from menu params if not found in URL
 	$urlCategoryId = (int) $app->input->getInt('cid', $app->getParams('com_redshop')->get('cid', ''));
 
-	if ($category)
+	if ($urlCategoryId)
 	{
-		$categoryArray   = explode(",", $category);
-		$categoryArray[] = $urlCategoryId;
-		$categoryArray   = \Joomla\Utilities\ArrayHelper::toInteger($categoryArray);
-		$category        = implode(',', $categoryArray);
+		$categories[] = $urlCategoryId;
 	}
-	else
+}
+
+$finalCategories = $categories;
+
+if ($includeSubCategory && count($categories) > 0)
+{
+	foreach ($categories as $category) 
 	{
-		$category = $urlCategoryId;
+		$subCategories = \RedshopHelperCategory::getCategoryListArray($category);
+
+		if ($subCategories)
+		{
+			foreach ($subCategories as $subCategory) 
+			{
+				$finalCategories[] = $subCategory->id;
+			}
+		}
 	}
 }
 
 // If category is found
-if ($category)
+if ($finalCategories)
 {
-	$query->where($db->qn('pc.category_id') . ' IN (' . $category . ')');
+	$finalCategories   = \Joomla\Utilities\ArrayHelper::toInteger($finalCategories);
+
+	$query->where($db->qn('pc.category_id') . ' IN (' . implode(',', $finalCategories) . ')');
 }
 else
 {
@@ -192,14 +210,14 @@ else
 	$stockrooms = trim($stockrooms);
 }
 
-if ($stockrooms && Redshop::getConfig()->getBool('USE_STOCKROOM'))
+if ($stockrooms && \Redshop::getConfig()->getBool('USE_STOCKROOM'))
 {
 	$query->leftJoin($db->qn('#__redshop_product_stockroom_xref', 'sx') . ' ON ' . $db->qn('p.product_id') . ' = ' . $db->qn('sx.product_id'))
 		->where($db->qn('sx.stockroom_id') . ' IN (' . $stockrooms . ')')
 		->where($db->qn('sx.quantity') . ' > 0');
 }
 
-$rows = array();
+$rows = [];
 
 if ($isLoadmore)
 {
@@ -213,6 +231,11 @@ if ($isLoadmore)
 
 $productIds = $db->setQuery($query, 0, $count)->loadColumn();
 
+$countProduct = clone $query;
+$countProduct->clear('limit');
+
+$totalProduct = count($db->setQuery($countProduct)->loadColumn());
+
 if (!empty($productIds))
 {
 	// Third steep get all product relate info
@@ -220,14 +243,14 @@ if (!empty($productIds))
 		->where($db->qn('p.product_id') . ' IN (' . implode(',', $productIds) . ')')
 		->order('FIELD(p.product_id, ' . implode(',', $productIds) . ')');
 
-	$query = RedshopHelperProduct::getMainProductQuery($query, $user->id)
+	$query = \Redshop\Product\Product::getMainProductQuery($query, $user->id)
 		->select('CONCAT_WS(' . $db->q('.') . ', p.product_id, ' . (int) $user->id . ') AS concat_id');
 
 	$rows = $db->setQuery($query)->loadObjectList('concat_id');
 
 	if (!empty($rows))
 	{
-		RedshopHelperProduct::setProduct($rows);
+		\Redshop\Product\Product::setProduct($rows);
 		$rows = array_values($rows);
 	}
 

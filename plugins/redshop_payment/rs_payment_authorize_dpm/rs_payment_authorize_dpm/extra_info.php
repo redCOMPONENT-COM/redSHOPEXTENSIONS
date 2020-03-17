@@ -25,13 +25,13 @@ $session          = JFactory::getSession();
 $redirect_ccdata  = $session->get('ccdata');
 
 $app              = JFactory::getApplication();
-$Itemid           = $app->input->getInt('Itemid', 0);
+$itemId           = $app->input->getInt('Itemid', 0);
 $api_login_id         = $this->params->get("access_id");
 $transaction_key         = $this->params->get("transaction_id");
 $is_test          = $this->params->get("is_test");
 
 $relay_response_url = JURI::root() . 'index.php?option=com_redshop&view=order_detail&layout=checkout_final&stap=2&tmpl=component&oid='
-	. $data["order_id"] . '&encr=' . $data['order']->encr_key . '&Itemid=' . $Itemid;
+	. $data["order_id"] . '&encr=' . $data['order']->encr_key . '&Itemid=' . $itemId;
 
 $amount          = $data['order']->order_total;
 $fp_sequence     = $data['order']->order_number;

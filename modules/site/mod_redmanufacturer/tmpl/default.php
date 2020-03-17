@@ -56,14 +56,14 @@ $document->addStyleDeclaration('
 <div class="flexslider">
 	<ul class="slides">
 		<?php foreach ($list as $slide):
-			$thumbUrl = RedshopHelperMedia::getImagePath(
+			$thumbUrl = \RedshopHelperMedia::getImagePath(
 				$slide->media_name,
 				'',
 				'thumb',
 				'manufacturer',
 				$ImageWidth,
 				$ImageHeight,
-				Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING'),
+				\Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING'),
 				'manufacturer',
 				$slide->id
 			);

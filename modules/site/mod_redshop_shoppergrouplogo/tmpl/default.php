@@ -14,19 +14,19 @@ $portalLogo = '';
 
 if (!$user->id)
 {
-	if (JFile::exists(REDSHOP_FRONT_IMAGES_RELPATH . 'shopperlogo/' . Redshop::getConfig()->get('DEFAULT_PORTAL_LOGO')))
+	if (JFile::exists(REDSHOP_FRONT_IMAGES_RELPATH . 'shopperlogo/' . \Redshop::getConfig()->get('DEFAULT_PORTAL_LOGO')))
 	{
 		$portalLogo = RedShopHelperImages::getImagePath(
-			Redshop::getConfig()->get('DEFAULT_PORTAL_LOGO'),
+			\Redshop::getConfig()->get('DEFAULT_PORTAL_LOGO'),
 			'',
 			'thumb',
 			'shopperlogo',
-			$thumbwidth,
-			$thumbheight
+			$thumbWidth,
+			$thumbHeight
 		);
 	}
 }
-elseif ($userInfo = RedshopHelperUser::getUserInformation($user->id))
+elseif ($userInfo = \RedshopHelperUser::getUserInformation($user->id))
 {
 	if (JFile::exists(REDSHOP_FRONT_IMAGES_RELPATH . 'shopperlogo/' . $userInfo->shopper_group_logo))
 	{
@@ -35,8 +35,8 @@ elseif ($userInfo = RedshopHelperUser::getUserInformation($user->id))
 			'',
 			'thumb',
 			'shopperlogo',
-			$thumbwidth,
-			$thumbheight
+			$thumbWidth,
+			$thumbHeight
 		);
 	}
 }

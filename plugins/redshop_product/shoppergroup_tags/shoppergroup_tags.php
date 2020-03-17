@@ -79,7 +79,7 @@ class PlgRedshop_ProductShopperGroup_Tags extends JPlugin
 			trigger_error(sprintf("%s: length of argument 2 must be <= argument 1", __FUNCTION__), E_USER_WARNING);
 		}
 
-		$seeks = array();
+		$seeks = [];
 
 		while ($seek = strrpos($haystack, $needle))
 		{
@@ -102,15 +102,15 @@ class PlgRedshop_ProductShopperGroup_Tags extends JPlugin
 	 */
 	protected function stripShopperGroupTags(&$template)
 	{
-		$shopperGroupId   = RedshopHelperUser::getShopperGroup(JFactory::getUser()->id);
-		$shopperGroupData = Redshop\Helper\ShopperGroup::generateList($shopperGroupId);
+		$shopperGroupId   = \RedshopHelperUser::getShopperGroup(JFactory::getUser()->id);
+		$shopperGroupData = \Redshop\Helper\ShopperGroup::generateList($shopperGroupId);
 		$shopperGroupName = $shopperGroupData[0]->shopper_group_name;
 
 		$startShopperGroups = $this->getStringPosition($template, '{if shoppergroup::');
 		$endShopperGroups   = $this->getStringPosition($template, '{shoppergroup end if}');
 
 		// Get ShopperGroup parents
-		$shopperGroupNames = array();
+		$shopperGroupNames = [];
 
 		if (!empty($shopperGroupData[0]->parent_id))
 		{
@@ -173,7 +173,7 @@ class PlgRedshop_ProductShopperGroup_Tags extends JPlugin
 			return;
 		}
 
-		$shopperGroupData = Redshop\Helper\ShopperGroup::generateList($shopperGroupId);
+		$shopperGroupData = \Redshop\Helper\ShopperGroup::generateList($shopperGroupId);
 
 		if (empty($shopperGroupData))
 		{

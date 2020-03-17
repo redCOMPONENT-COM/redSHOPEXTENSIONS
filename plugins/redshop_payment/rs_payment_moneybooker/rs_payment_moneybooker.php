@@ -29,7 +29,7 @@ class plgRedshop_paymentrs_payment_moneybooker extends JPlugin
 	 *
 	 * @since   11.1
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		JFactory::getLanguage()->load('plg_redshop_payment_rs_payment_moneybooker', JPATH_ADMINISTRATOR);
 

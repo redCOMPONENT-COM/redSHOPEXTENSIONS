@@ -26,7 +26,7 @@ class PlgRedshop_ProductGift extends JPlugin
 	 *
 	 * @since  1.0.0
 	 */
-	private $giftData = array();
+	private $giftData = [];
 
 	/**
 	 * Constructor
@@ -36,7 +36,7 @@ class PlgRedshop_ProductGift extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_product_gift', JPATH_ADMINISTRATOR);
@@ -144,7 +144,7 @@ class PlgRedshop_ProductGift extends JPlugin
 		{
 			$giftData = $this->getProductGift($product->product_id);
 
-			$table = RedshopLayoutHelper::render(
+			$table = \RedshopLayoutHelper::render(
 					'table',
 					array('giftData' => $giftData),
 					JPATH_PLUGINS . '/redshop_product/gift/layouts'
@@ -174,7 +174,7 @@ class PlgRedshop_ProductGift extends JPlugin
 			return;
 		}
 
-		$result = array();
+		$result = [];
 
 		foreach ($giftData as $key => $gift)
 		{
@@ -207,7 +207,7 @@ class PlgRedshop_ProductGift extends JPlugin
 			return;
 		}
 
-		$result = array();
+		$result = [];
 
 		foreach ($giftData as $key => $gift)
 		{
@@ -239,7 +239,7 @@ class PlgRedshop_ProductGift extends JPlugin
 			return;
 		}
 
-		$html = RedshopLayoutHelper::render(
+		$html = \RedshopLayoutHelper::render(
 			'cart',
 			array('data' => $cart[$i]['gift']),
 			JPATH_PLUGINS . '/redshop_product/gift/layouts'
@@ -272,7 +272,7 @@ class PlgRedshop_ProductGift extends JPlugin
 			return;
 		}
 
-		$data = array();
+		$data = [];
 
 		foreach ($giftRows as $key => $value)
 		{
@@ -280,7 +280,7 @@ class PlgRedshop_ProductGift extends JPlugin
 			$data[$key]['quantity']   = $value->quantity;
 		}
 
-		$html = RedshopLayoutHelper::render(
+		$html = \RedshopLayoutHelper::render(
 			'cart',
 			array('data' => $data),
 			JPATH_PLUGINS . '/redshop_product/gift/layouts'
@@ -352,7 +352,7 @@ class PlgRedshop_ProductGift extends JPlugin
 			return;
 		}
 
-		$data = array();
+		$data = [];
 
 		foreach ($giftRows as $key => $value)
 		{
@@ -360,7 +360,7 @@ class PlgRedshop_ProductGift extends JPlugin
 			$data[$key]['quantity']   = $value->quantity;
 		}
 
-		$html = RedshopLayoutHelper::render(
+		$html = \RedshopLayoutHelper::render(
 			'cart',
 			array('data' => $data),
 			JPATH_PLUGINS . '/redshop_product/gift/layouts'

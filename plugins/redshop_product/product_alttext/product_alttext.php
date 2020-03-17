@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 /**
  *  PlgRedshop_ProductProduct_AltText installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.0
  */
 class PlgRedshop_ProductProduct_AltText extends JPlugin

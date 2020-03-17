@@ -26,7 +26,7 @@ class PlgRedshop_ProductWss_Datafeed extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_product_wss_datafeed', JPATH_ADMINISTRATOR);

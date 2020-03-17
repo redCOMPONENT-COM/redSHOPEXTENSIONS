@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 /**
  *  PlgRedshop_PaymentRs_Payment_BankTransfer_Discount class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
 class PlgRedshop_PaymentRs_Payment_BankTransfer_Discount extends JPlugin
@@ -38,7 +38,7 @@ class PlgRedshop_PaymentRs_Payment_BankTransfer_Discount extends JPlugin
 		}
 
 		// Send the Order mail
-		if (Redshop::getConfig()->get('ORDER_MAIL_AFTER'))
+		if (\Redshop::getConfig()->get('ORDER_MAIL_AFTER'))
 		{
 						$redshopMail = redshopMail::getInstance();
 			$redshopMail->sendOrderMail($data['order_id']);

@@ -97,10 +97,9 @@ class TransMenu
 	{
 		$app = JFactory::getApplication();
 
-		$objhelper = redhelper::getInstance();
-		$Itemid    = JRequest::getInt('Itemid', '1');
+		$itemId    = JRequest::getInt('Itemid', '1');
 
-		$cItemid = RedshopHelperRouter::getCategoryItemid($row->id);
+		$cItemid = \RedshopHelperRouter::getCategoryItemid($row->id);
 
 		if ($cItemid != "")
 		{
@@ -108,7 +107,7 @@ class TransMenu
 		}
 		else
 		{
-			$tmpItemid = $Itemid;
+			$tmpItemid = $itemId;
 		}
 
 		switch ($row->type)
@@ -177,7 +176,7 @@ class TransMenu
 
 	function getFirstLevelItem($mitem)
 	{
-		global $Itemid, $urlpath;
+		global $itemId, $urlpath;
 
 		$app = JFactory::getApplication();
 
@@ -203,7 +202,7 @@ class TransMenu
 				break;
 			case 'content_typed':
 			default:
-				$mitem->link .= '&Itemid=' . $Itemid;
+				$mitem->link .= '&Itemid=' . $itemId;
 				break;
 		}
 

@@ -125,7 +125,7 @@ class PlgRedshop_ProductGoogle_Microdata extends JPlugin
 		);
 
 		// Brand prepare
-		$manufacturer = RedshopEntityManufacturer::getInstance($product->manufacturer_id);
+		$manufacturer = \RedshopEntityManufacturer::getInstance($product->manufacturer_id);
 
 		if ($manufacturer->isValid())
 		{
@@ -135,7 +135,7 @@ class PlgRedshop_ProductGoogle_Microdata extends JPlugin
 			);
 		}
 
-		$productData = RedshopHelperProduct::getProductById($product->product_id);
+		$productData = \Redshop\Product\Product::getProductById($product->product_id);
 
 		if (!empty($productData->count_rating))
 		{
@@ -148,11 +148,11 @@ class PlgRedshop_ProductGoogle_Microdata extends JPlugin
 
 		$availability = "http://schema.org/OutOfStock";
 
-		if (RedshopHelperStockroom::isStockExists($product->product_id, 'product'))
+		if (\RedshopHelperStockroom::isStockExists($product->product_id, 'product'))
 		{
 			$availability = "http://schema.org/InStock";
 		}
-		elseif (RedshopHelperStockroom::isPreorderStockExists($product->product_id, 'product'))
+		elseif (\RedshopHelperStockroom::isPreorderStockExists($product->product_id, 'product'))
 		{
 			$availability = "http://schema.org/PreOrder";
 		}
@@ -160,7 +160,7 @@ class PlgRedshop_ProductGoogle_Microdata extends JPlugin
 		// Offer
 		$data['offers'] = array(
 			'@type'         => 'Offer',
-			'priceCurrency' => Redshop::getConfig()->get('REDCURRENCY_SYMBOL'),
+			'priceCurrency' => \Redshop::getConfig()->get('REDCURRENCY_SYMBOL'),
 			'price'         => ($product->product_price < 0) ? 0.0 : $product->product_price,
 			"availability"  => $availability
 		);

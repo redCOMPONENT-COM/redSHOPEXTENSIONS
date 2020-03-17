@@ -57,7 +57,7 @@ class PlgRedshop_ProductSync_B2bHelper
 			return true;
 		}
 
-		$data = array();
+		$data = [];
 		$type = 'POST';
 
 		$data['product_id']   = $productB2BId;
@@ -114,8 +114,8 @@ class PlgRedshop_ProductSync_B2bHelper
 			return;
 		}
 
-		$remoteImages = self::sendData($url . self::WS_PRO_IMG . '&filter[product_id]=' . $productB2BId, $accessToken, array(), 'GET');
-		$remoteImages = $remoteImages->totalItems > 0 ? $remoteImages->_embedded->item : array();
+		$remoteImages = self::sendData($url . self::WS_PRO_IMG . '&filter[product_id]=' . $productB2BId, $accessToken, [], 'GET');
+		$remoteImages = $remoteImages->totalItems > 0 ? $remoteImages->_embedded->item : [];
 
 		if (empty($remoteImages))
 		{
@@ -126,7 +126,7 @@ class PlgRedshop_ProductSync_B2bHelper
 		$productImageRemoteId  = self::getRemoteId(self::TAG_IMG, $productId);
 
 		$additionalImages    = self::getAdditionalImages($productId);
-		$additionalRemoteIds = array();
+		$additionalRemoteIds = [];
 
 		if (!empty($additionalImages))
 		{
@@ -155,7 +155,7 @@ class PlgRedshop_ProductSync_B2bHelper
 
 				self::sendData($url . self::WS_PRO_IMG, $accessToken, array('id' => $remoteImage->id), 'DELETE');
 
-				$additionalRemoteIds = array();
+				$additionalRemoteIds = [];
 
 				// Try to delete old reference if not exist.
 				foreach ($additionalImages as $index => $additionalImage)
@@ -358,7 +358,7 @@ class PlgRedshop_ProductSync_B2bHelper
 				continue;
 			}
 
-			$data = array();
+			$data = [];
 			$type = 'POST';
 
 			$data['product_id']   = $productB2BId;
@@ -411,7 +411,7 @@ class PlgRedshop_ProductSync_B2bHelper
 	 *
 	 * @return  boolean
 	 */
-	public static function syncProductAttributes($url, $accessToken, $attributes = array(), $productId = 0, $productB2BId = 0)
+	public static function syncProductAttributes($url, $accessToken, $attributes = [], $productId = 0, $productB2BId = 0)
 	{
 		if (empty($url) || empty($accessToken) || empty($attributes) || !$productId || !$productB2BId)
 		{
@@ -487,9 +487,9 @@ class PlgRedshop_ProductSync_B2bHelper
 		$remoteUrl = $url . self::WS_PRO_ATT . '&filter[product_id]=' . $productB2BId;
 
 		$remoteAttributes = self::sendData(
-			$remoteUrl, $accessToken, array(), 'GET'
+			$remoteUrl, $accessToken, [], 'GET'
 		);
-		$remoteAttributes = !empty($remoteAttributes) && $remoteAttributes->totalItems > 0 ? $remoteAttributes->_embedded->item : array();
+		$remoteAttributes = !empty($remoteAttributes) && $remoteAttributes->totalItems > 0 ? $remoteAttributes->_embedded->item : [];
 
 		if (!empty($remoteAttributes))
 		{
@@ -504,7 +504,7 @@ class PlgRedshop_ProductSync_B2bHelper
 			return;
 		}
 
-		$attributeIds = array();
+		$attributeIds = [];
 
 		foreach ($attributes as $attribute)
 		{
@@ -643,10 +643,10 @@ class PlgRedshop_ProductSync_B2bHelper
 		}
 
 		$remoteData = self::sendData(
-			$url . self::WS_PRO_ATT_VAL . '&filter[product_attribute_id]=' . $productAttributeValueId, $accessToken, array(), 'GET'
+			$url . self::WS_PRO_ATT_VAL . '&filter[product_attribute_id]=' . $productAttributeValueId, $accessToken, [], 'GET'
 		);
 
-		$remoteData = !empty($remoteData) && $remoteData->totalItems > 0 ? $remoteData->_embedded->item : array();
+		$remoteData = !empty($remoteData) && $remoteData->totalItems > 0 ? $remoteData->_embedded->item : [];
 
 		if (!empty($remoteData))
 		{
@@ -661,7 +661,7 @@ class PlgRedshop_ProductSync_B2bHelper
 			return;
 		}
 
-		$propertyIds = array();
+		$propertyIds = [];
 
 		foreach ($properties as $property)
 		{
@@ -694,9 +694,9 @@ class PlgRedshop_ProductSync_B2bHelper
 			return;
 		}
 
-		$remoteImages = self::sendData($url . self::WS_PRO_IMG . '&filter[product_id]=' . $productB2BId, $accessToken, array(), 'GET');
+		$remoteImages = self::sendData($url . self::WS_PRO_IMG . '&filter[product_id]=' . $productB2BId, $accessToken, [], 'GET');
 		$remoteId     = self::getRemoteId(self::TAG_IMG_ATTR, $propertyId);
-		$remoteImages = $remoteImages->totalItems > 0 ? $remoteImages->_embedded->item : array();
+		$remoteImages = $remoteImages->totalItems > 0 ? $remoteImages->_embedded->item : [];
 
 		if (empty($remoteImages))
 		{
@@ -791,10 +791,10 @@ class PlgRedshop_ProductSync_B2bHelper
 		}
 
 		$remoteDescriptions = self::sendData(
-			$url . self::WS_PRO_DESC . '&filter[product_id]=' . $productB2BId, $accessToken, array(), 'GET'
+			$url . self::WS_PRO_DESC . '&filter[product_id]=' . $productB2BId, $accessToken, [], 'GET'
 		);
 		$remoteId           = self::getRemoteId(self::TAG_DESC, $productId);
-		$remoteDescriptions = $remoteDescriptions->totalItems > 0 ? $remoteDescriptions->_embedded->item : array();
+		$remoteDescriptions = $remoteDescriptions->totalItems > 0 ? $remoteDescriptions->_embedded->item : [];
 
 		if (empty($remoteDescriptions))
 		{
@@ -842,7 +842,7 @@ class PlgRedshop_ProductSync_B2bHelper
 			'company'  => $company
 		);
 
-		$redshopBId = self::getRedshopBId($product->product_id);
+		$redshopBId = self::get\RedshopBId($product->product_id);
 
 		if ($redshopBId)
 		{
@@ -901,7 +901,7 @@ class PlgRedshop_ProductSync_B2bHelper
 	 *
 	 * @return  integer
 	 */
-	public static function getRedshopBId($productId)
+	public static function get\RedshopBId($productId)
 	{
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)

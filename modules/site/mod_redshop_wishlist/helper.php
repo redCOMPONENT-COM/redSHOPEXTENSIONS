@@ -34,6 +34,6 @@ abstract class ModRedshopWishlistHelper
 			return JFactory::getSession()->get('wishlist');
 		}
 
-		return RedshopHelperWishlist::getUserWishlist($user->id);
+		return \RedshopHelperWishlist::getUserWishlist($user->id);
 	}
 }

@@ -9,19 +9,19 @@
 
 $objOrder          = order_functions::getInstance();
 $request           = JRequest::get('request');
-$Itemid            = $request["Itemid"];
+$itemId            = $request["Itemid"];
 $task              = $request['task'];
 $PxPay_Url         = "https://sec2.paymentexpress.com/pxpay/pxaccess.aspx";
 $pxpay_success_url = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail
     &controller=order_detail
     &task=notify_payment
     &payment_plugin=rs_payment_payment_express
-    &Itemid=' . $Itemid . '&orderid=' . $data['order_id'];
+    &Itemid=' . $itemId . '&orderid=' . $data['order_id'];
 $pxpay_fail_url = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail
     &controller=order_detail
     &task=notify_payment
     &payment_plugin=rs_payment_payment_express
-    &Itemid=' . $Itemid . '&orderid=' . $data['order_id'];
+    &Itemid=' . $itemId . '&orderid=' . $data['order_id'];
 $pxpay             = new PxPay_Curl($PxPay_Url, $this->params->get("px_pay_username"), $this->params->get("px_post_label_key"));
 $request           = new PxPayRequest;
 $http_host         = getenv("HTTP_HOST");
@@ -41,7 +41,7 @@ $request->setAmountInput($AmountInput);
 $request->setMerchantReference('');
 $request->setTxnType($this->params->get("px_post_txntype"));
 $request->setTxnData1(JText::_('COM_REDSHOP_ORDER_ID') . ":" . $data['order_id']);
-$request->setCurrencyInput(Redshop::getConfig()->get('CURRENCY_CODE'));
+$request->setCurrencyInput(\Redshop::getConfig()->get('CURRENCY_CODE'));
 
 // Can be a dedicated failure page
 $request->setUrlFail($pxpay_fail_url);

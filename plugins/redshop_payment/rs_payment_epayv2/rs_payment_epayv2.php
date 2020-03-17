@@ -48,17 +48,16 @@ class PlgRedshop_Paymentrs_Payment_Epayv2 extends JPlugin
 		}
 
 
-		$producthelper  = productHelper::getInstance();
 		$uri            = JURI::getInstance();
 		$url            = $uri->root();
 		$user           = JFactory::getUser();
 		$app            = JFactory::getApplication();
 		$itemId         = $app->input->getInt('Itemid', 0);
 
-		$formdata = array(
+		$dataForm = array(
 			'merchantnumber'  => $this->params->get("merchant_id"),
 			'amount'          => (int) round($data['carttotal'] * 100, 2),
-			'currency'        => RedshopHelperCurrency::getISOCode(Redshop::getConfig()->get('CURRENCY_CODE')),
+			'currency'        => \RedshopHelperCurrency::getISOCode(\Redshop::getConfig()->get('CURRENCY_CODE')),
 			'orderid'         => $data['order_id'],
 			'instantcapture'  => $this->params->get("auth_type"),
 			'instantcallback' => 1,
@@ -72,13 +71,13 @@ class PlgRedshop_Paymentrs_Payment_Epayv2 extends JPlugin
 		// Payment Group is an optional
 		if ($this->params->get('payment_group'))
 		{
-			$formdata['group'] = $this->params->get('payment_group');
+			$dataForm['group'] = $this->params->get('payment_group');
 		}
 
 		// Epay will send email receipt to given email
 		if (trim($this->params->get('mailreceipt')))
 		{
-			$formdata['mailreceipt'] = $this->params->get('mailreceipt');
+			$dataForm['mailreceipt'] = $this->params->get('mailreceipt');
 		}
 
 		if ($cardTypes = $this->params->get('paymenttype'))
@@ -91,26 +90,26 @@ class PlgRedshop_Paymentrs_Payment_Epayv2 extends JPlugin
 				unset($cardTypes[$unsetIndex]);
 			}
 
-			$formdata['paymenttype'] = implode(',', $cardTypes);
+			$dataForm['paymenttype'] = implode(',', $cardTypes);
 		}
 
 		if ((int) $this->params->get('activate_callback', 0) == 1)
 		{
-			$formdata['cancelurl']   = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_epayv2&accept=0&Itemid=' . $itemId;
-			$formdata['callbackurl'] = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_epayv2&accept=1&Itemid=' . $itemId;
-			$formdata['accepturl']   = JURI::base() . 'index.php?option=com_redshop&view=order_detail&layout=receipt&oid=' . $data['order_id'] . '&Itemid=' . $itemId;
+			$dataForm['cancelurl']   = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_epayv2&accept=0&Itemid=' . $itemId;
+			$dataForm['callbackurl'] = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_epayv2&accept=1&Itemid=' . $itemId;
+			$dataForm['accepturl']   = JURI::base() . 'index.php?option=com_redshop&view=order_detail&layout=receipt&oid=' . $data['order_id'] . '&Itemid=' . $itemId;
 		}
 		else
 		{
-			$formdata['cancelurl'] = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_epayv2&accept=0&Itemid=' . $itemId;
-			$formdata['accepturl'] = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_epayv2&accept=1&Itemid=' . $itemId;
+			$dataForm['cancelurl'] = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_epayv2&accept=0&Itemid=' . $itemId;
+			$dataForm['accepturl'] = JURI::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_epayv2&accept=1&Itemid=' . $itemId;
 		}
 
 		// Create hash value to post
-		$formdata['hash'] = md5(implode("", array_values($formdata)) . $this->params->get("epay_paymentkey"));
+		$dataForm['hash'] = md5(implode("", array_values($dataForm)) . $this->params->get("epay_paymentkey"));
 
 		// New Code
-		$json_pass_string = json_encode($formdata);
+		$json_pass_string = json_encode($dataForm);
 
 		$html = '';
 		$html .= '<script charset="UTF-8" src="https://ssl.ditonlinebetalingssystem.dk/integration/ewindow/paymentwindow.js" type="text/javascript"></script>';
@@ -147,7 +146,7 @@ class PlgRedshop_Paymentrs_Payment_Epayv2 extends JPlugin
 		$accept         = $request["accept"];
 		$tid            = $request["txnid"];
 		$order_id       = $request["orderid"];
-		$Itemid         = $request["Itemid"];
+		$itemId         = $request["Itemid"];
 		$order_amount   = $request["amount"];
 		$order_ekey     = $request["hash"];
 		$error          = $request["error"];

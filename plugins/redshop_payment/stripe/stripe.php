@@ -17,7 +17,7 @@ JLoader::import('redshop.library');
 /**
  * Stripe payment class
  *
- * @package  Redshop.Plugin
+ * @package  \Redshop.Plugin
  *
  * @since    2.0.0
  */
@@ -46,7 +46,7 @@ class PlgRedshop_PaymentStripe extends JPlugin
 			return;
 		}
 
-		echo RedshopLayoutHelper::render(
+		echo \RedshopLayoutHelper::render(
 			'form',
 			array(
 				'action' => JUri::base() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail'
@@ -77,7 +77,7 @@ class PlgRedshop_PaymentStripe extends JPlugin
 
 		$app     = JFactory::getApplication();
 		$orderId = $app->input->getInt('orderid');
-		$order   = RedshopHelperOrder::getOrderDetail($orderId);
+		$order   = \RedshopHelperOrder::getOrderDetail($orderId);
 		$price   = $order->order_total;
 		$values  = new stdClass;
 
@@ -97,7 +97,7 @@ class PlgRedshop_PaymentStripe extends JPlugin
 			$charge = Charge::create(
 				array(
 					"amount"      => round($price * 100),
-					"currency"    => Redshop::getConfig()->get('CURRENCY_CODE'),
+					"currency"    => \Redshop::getConfig()->get('CURRENCY_CODE'),
 					"source"      => $app->input->get('stripeToken'),
 					"description" => $orderId
 				)

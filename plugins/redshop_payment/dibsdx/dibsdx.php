@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 /**
- * Redshop Payment - DIBSDX
+ * \Redshop Payment - DIBSDX
  *
  * @since  1.5
  */
@@ -32,7 +32,7 @@ class PlgRedshop_PaymentDibsDx extends JPlugin
 	 *                            Recognized key values include 'name', 'group', 'params', 'language'
 	 *                            (this list is not meant to be comprehensive).
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		JPlugin::loadLanguage('plg_redshop_payment_dibsdx');
 		parent::__construct($subject, $config);
@@ -168,14 +168,14 @@ class PlgRedshop_PaymentDibsDx extends JPlugin
 		include JPATH_SITE . '/plugins/redshop_payment/' . $element . '/' . $element . '/dibs_hmac.php';
 		$dibsHmac = new Dibs_Hmac;
 
-		$formData = array(
+		$dataForm = array(
 			'merchant' => $this->params->get("seller_id"),
 			'amount'   => $data['order_amount'],
 			'transact' => $data["order_transactionid"],
 			'orderid'  => $data['order_id']
 		);
 
-		$macKey  = $dibsHmac->calculateMac($formData, $hmacKey);
+		$macKey  = $dibsHmac->calculateMac($dataForm, $hmacKey);
 		$dibsUrl .= "merchant=" . urlencode($this->params->get("seller_id")) . "&amount=" . urlencode($data['order_amount'])
 			. "&transact=" . $data["order_transactionid"] . "&orderid=" . $data['order_id'] . "&force=yes&textreply=yes&mac=" . $macKey;
 		$data    = $dibsUrl;

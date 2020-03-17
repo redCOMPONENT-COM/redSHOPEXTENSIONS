@@ -20,141 +20,141 @@ use Aesir\Field\CustomField;
  */
 class PlgAesir_FieldRedshop_ProductFormFieldRedshop_Product extends CustomField
 {
-	/**
-	 * The form field type.
-	 *
-	 * @var  string
-	 */
-	protected $type = 'Redshop_Product';
+    /**
+     * The form field type.
+     *
+     * @var  string
+     */
+    protected $type = 'Redshop_Product';
 
-	/**
-	 * Cached array of options.
-	 *
-	 * @var    array
-	 * @since  4.0.3
-	 */
-	protected static $options = array();
+    /**
+     * Cached array of options.
+     *
+     * @var    array
+     * @since  4.0.3
+     */
+    protected static $options = [];
 
-	/**
-	 * Cached layout data.
-	 *
-	 * @var  1.0.6
-	 */
-	private $layoutData;
+    /**
+     * Cached layout data.
+     *
+     * @var  1.0.6
+     */
+    private $layoutData;
 
-	/**
-	 * Empty option text
-	 *
-	 * @var    string
-	 * @since  1.0.8
-	 */
-	protected $emptyOptionText = 'PLG_AESIR_FIELD_REDSHOP_PRODUCT_EMPTY_OPTION';
+    /**
+     * Empty option text
+     *
+     * @var    string
+     * @since  1.0.8
+     */
+    protected $emptyOptionText = 'PLG_AESIR_FIELD_REDSHOP_PRODUCT_EMPTY_OPTION';
 
-	/**
-	 * Get the data that is going to be passed to the layout
-	 *
-	 * @return  array
-	 */
-	protected function getLayoutData()
-	{
-		if (null === $this->layoutData || 1 == 1)
-		{
-			$data = parent::getLayoutData();
-			$data['data'] = $this->getOptions($data['value']);
+    /**
+     * Get the data that is going to be passed to the layout
+     *
+     * @return  array
+     */
+    protected function getLayoutData()
+    {
+        if (null === $this->layoutData || 1 == 1) {
+            $data         = parent::getLayoutData();
+            $data['data'] = $this->getOptions($data['value']);
 
-			// Attributes data
-			if ($this->multiple === true)
-			{
-				$data['attribs']['multiple'] = 'true';
-			}
+            // Attributes data
+            if ($this->multiple === true) {
+                $data['attribs']['multiple'] = 'true';
+            }
 
-			$data['attributes'] = \JArrayHelper::toString($data['attribs']);
+            $data['attributes'] = Joomla\Utilities\ArrayHelper::toString($data['attribs']);
 
-			$this->layoutData = $data;
-		}
+            $this->layoutData = $data;
+        }
 
-		return $this->layoutData;
-	}
+        return $this->layoutData;
+    }
 
-	/**
-	 * Method for get options of this field.
-	 *
-	 * @param   array  $values  List of selected values
-	 *
-	 * @return  array           List of options
-	 */
-	private function getOptions($values)
-	{
-		$hash  = md5($this->name . $this->element);
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select($db->qn('product_id'))
-			->select($db->qn('product_name'))
-			->select($db->qn('product_number'))
-			->from($db->qn('#__redshop_product'))
-			->order($db->qn('product_name'));
+    /**
+     * Method for get options of this field.
+     *
+     * @param array $values List of selected values
+     *
+     * @return  array           List of options
+     */
+    private function getOptions($values)
+    {
+        $values = json_decode($values);
 
-		$items = $db->setQuery($query)->loadObjectList();
+        $hash  = md5($this->name . $this->element);
+        $db    = JFactory::getDBO();
+        $query = $db->getQuery(true)
+            ->select($db->qn('product_id'))
+            ->select($db->qn('product_name'))
+            ->select($db->qn('product_number'))
+            ->from($db->qn('#__redshop_product'))
+            ->order($db->qn('product_name'));
 
-		$data = array();
+        $items = $db->setQuery($query)->loadObjectList();
 
-		if ($this->addSelectOption)
-		{
-			$selected = (!empty($values) && in_array('', array_keys($values))) ? true : false;
+        $data = array();
 
-			$data[] = array(
-				'text'     => JText::_($this->emptyOptionText),
-				'value'    => '',
-				'selected' => $selected
-			);
-		}
+        if ($this->addSelectOption) {
+            $selected = (!empty($values)) ? true : false;
 
-		if (empty($items))
-		{
-			return $data;
-		}
+            $data[] = array(
+                'text'     => \JText::_($this->emptyOptionText),
+                'value'    => '',
+                'selected' => $selected
+            );
+        }
 
-		foreach ($items as $key => $item)
-		{
-			$selected = (!empty($values) && in_array($item->product_id, array_keys($values))) ? true : false;
+        if (empty($items)) {
+            return $data;
+        }
 
-			$data[] = array(
-				'text'     => htmlspecialchars(trim($item->product_name . '(' . $item->product_number . ')'), ENT_COMPAT, 'UTF-8'),
-				'value'    => htmlspecialchars(trim($item->product_id), ENT_COMPAT, 'UTF-8'),
-				'selected' => $selected
-			);
-		}
+        foreach ($items as $key => $item) {
+            $selected = (!empty($values) && in_array($item->product_id, $values)) ? true : false;
 
-		static::$options[$hash] = $data;
+            $data[] = array(
+                'text'     => htmlspecialchars(
+                    trim($item->product_name . '(' . $item->product_number . ')'),
+                    ENT_COMPAT,
+                    'UTF-8'
+                ),
+                'value'    => htmlspecialchars(trim($item->product_id), ENT_COMPAT, 'UTF-8'),
+                'selected' => $selected
+            );
+        }
 
-		return static::$options[$hash];
-	}
+        static::$options[$hash] = $data;
 
-	/**
-	 * Method to attach a JForm object to the field.
-	 *
-	 * @param   \SimpleXMLElement  $element  The SimpleXMLElement object representing the <field /> tag for the form field object.
-	 * @param   mixed              $value    The form field value to validate.
-	 * @param   string             $group    The field name group control value. This acts as as an array container for the field.
-	 *                                      For example if the field has name="foo" and the group value is set to "bar" then the
-	 *                                      full field name would end up being "bar[foo]".
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @since   11.1
-	 */
-	public function setup(\SimpleXMLElement $element, $value, $group = null)
-	{
-		if (!parent::setup($element, $value, $group))
-		{
-			return false;
-		}
+        return static::$options[$hash];
+    }
 
-		if (!$this->multiple)
-		{
-			$this->__set('addSelectOption', $this->getAttribute('addSelectOption', 'false') === 'true');
-		}
+    /**
+     * Method to attach a JForm object to the field.
+     *
+     * @param \SimpleXMLElement $element    The SimpleXMLElement object representing the <field /> tag for the form
+     *                                      field object.
+     * @param mixed             $value      The form field value to validate.
+     * @param string            $group      The field name group control value. This acts as as an array container for
+     *                                      the field. For example if the field has name="foo" and the group value is
+     *                                      set to "bar" then the full field name would end up being "bar[foo]".
+     *
+     * @return  boolean  True on success.
+     *
+     * @since   11.1
+     */
+    public function setup(\SimpleXMLElement $element, $value, $group = null)
+    {
+        if (!parent::setup($element, $value, $group)) {
+            return false;
+        }
 
-		return true;
-	}
+        if (!$this->multiple) {
+            $this->__set('addSelectOption', $this->getAttribute('addSelectOption', 'false') === 'true');
+        }
+
+        return true;
+    }
 }

@@ -46,7 +46,7 @@ class plgSystemQuickbook extends JPlugin
 			&& $control)
 		{
 			// Set redshop as a prefix to allow only specific methods
-			$method = 'Redshop' . $control;
+			$method = '\Redshop' . $control;
 
 			if ($app->isAdmin())
 			{
@@ -73,7 +73,7 @@ class plgSystemQuickbook extends JPlugin
 	 *
 	 * @return  void
 	 */
-	private function RedshopSetConnectionTicketSite()
+	private function \RedshopSetConnectionTicketSite()
 	{
 		jimport( 'joomla.filesystem.file' );
 
@@ -90,7 +90,7 @@ class plgSystemQuickbook extends JPlugin
 	 *
 	 * @return  void
 	 */
-	private function RedshopGetConnectionTicket()
+	private function \RedshopGetConnectionTicket()
 	{
 		jimport('joomla.filesystem.file');
 
@@ -109,7 +109,7 @@ class plgSystemQuickbook extends JPlugin
 		JFactory::getApplication()->close();
 	}
 
-	private function RedshopGeneratePrivateKey()
+	private function \RedshopGeneratePrivateKey()
 	{
 		$basePath       = realpath(JPATH_SITE . '/../');
 		$privateKeyPath = $basePath . '/quickbook_private.key';
@@ -135,7 +135,7 @@ class plgSystemQuickbook extends JPlugin
 		JFactory::getApplication()->close();
 	}
 
-	private function RedshopGeneratePem()
+	private function \RedshopGeneratePem()
 	{
 		$app = JFactory::getApplication();
 

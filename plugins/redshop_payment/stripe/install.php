@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Plugin
+ * @package     \Redshop.Plugin
  * @subpackage  Stripe
  *
  * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.
@@ -11,7 +11,7 @@ defined('_JEXEC') or die();
 /**
  * PlgRedshop_PaymentStripe installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    2.0.0
  */
 class PlgRedshop_PaymentStripeInstallerScript

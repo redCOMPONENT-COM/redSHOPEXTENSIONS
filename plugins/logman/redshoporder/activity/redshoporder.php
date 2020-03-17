@@ -12,7 +12,7 @@
  *
  * @since    1.0.0
  */
-class PlgLogmanRedshoporderActivityRedshoporder extends ComLogmanModelEntityActivity
+class PlgLogman\RedshoporderActivity\Redshoporder extends ComLogmanModelEntityActivity
 {
 	/**
 	 * Init

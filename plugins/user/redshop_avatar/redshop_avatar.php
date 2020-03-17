@@ -17,11 +17,11 @@ JLoader::import('redshop.library');
  * Create Avatar user after creating redSHOP User
  *
  * @package     Joomla.User
- * @subpackage  Plugin.RedshopHighrise
+ * @subpackage  Plugin.\RedshopHighrise
  *
  * @since   1.0.0
  */
-class PlgUserRedshop_Avatar extends JPlugin
+class PlgUser\Redshop_Avatar extends JPlugin
 {
 	/**
 	 * @var string
@@ -245,7 +245,7 @@ class PlgUserRedshop_Avatar extends JPlugin
 
 		$avatar = $db->setQuery($query)->loadResult();
 
-		$html = RedshopLayoutHelper::render('redshop_avatar', array('image' => $avatar, 'key' => $this->key), __DIR__ . '/layouts');
+		$html = \RedshopLayoutHelper::render('redshop_avatar', array('image' => $avatar, 'key' => $this->key), __DIR__ . '/layouts');
 
 		$template = str_replace('{avatar}', $html, $template);
 	}
@@ -299,7 +299,7 @@ class PlgUserRedshop_Avatar extends JPlugin
 		JFolder::create($thumbFolder);
 
 		// Upload original images.
-		$fileName        = RedshopHelperMedia::cleanFileName($file['name']);
+		$fileName        = \RedshopHelperMedia::cleanFileName($file['name']);
 		$destinationFile = $folder . '/' . $fileName;
 
 		if (!JFile::upload($src, $destinationFile))
@@ -318,7 +318,7 @@ class PlgUserRedshop_Avatar extends JPlugin
 		// @TODO: Later move to plugin config or template tag config.
 		$thumbWidth  = 200;
 		$thumbHeight = 200;
-		RedshopHelperMedia::resizeImage($thumbFile, $thumbWidth, $thumbHeight, 1, 'file', false);
+		\RedshopHelperMedia::resizeImage($thumbFile, $thumbWidth, $thumbHeight, 1, 'file', false);
 
 		try
 		{

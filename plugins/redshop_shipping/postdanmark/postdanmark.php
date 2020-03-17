@@ -30,7 +30,7 @@ class PlgRedshop_ShippingPostdanmark extends JPlugin
 	 *
 	 * @since   1.5
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		JPlugin::loadLanguage('plg_redshop_shipping_postdanmark');
 
@@ -55,17 +55,17 @@ class PlgRedshop_ShippingPostdanmark extends JPlugin
 	 */
 	public function onListRates(&$data)
 	{
-		$shippingRates = array();
+		$shippingRates = [];
 		$rate          = 0;
-		$shipping      = RedshopHelperShipping::getShippingMethodByClass($this->className);
-		$shippingArr   = RedshopHelperShipping::getShopperGroupDefaultShipping();
+		$shipping      = \RedshopHelperShipping::getShippingMethodByClass($this->className);
+		$shippingArr   = \RedshopHelperShipping::getShopperGroupDefaultShipping();
 
 		if (!empty($shippingArr))
 		{
 			$shopperShipping   = $shippingArr['shipping_rate'];
 			$shippingVatRate   = $shippingArr['shipping_vat'];
 			$defaultShipping   = JText::_('COM_REDSHOP_DEFAULT_SHOPPER_GROUP_SHIPPING');
-			$shopperShippingId = Redshop\Shipping\Rate::encrypt(
+			$shopperShippingId = \Redshop\Shipping\Rate::encrypt(
 				array(
 					__CLASS__,
 					JText::_($shipping->name),
@@ -87,15 +87,15 @@ class PlgRedshop_ShippingPostdanmark extends JPlugin
 			$rate++;
 		}
 
-		$rateList = RedshopHelperShipping::listShippingRates($shipping->element, $data['users_info_id'], $data);
+		$rateList = \RedshopHelperShipping::listShippingRates($shipping->element, $data['users_info_id'], $data);
 
 		foreach ($rateList as $rateItem)
 		{
 			$shippingRate                  = $rateItem->shipping_rate_value;
-			$rateItem->shipping_rate_value = Redshop\Shipping\Rate::applyVat($rateItem, $data);
+			$rateItem->shipping_rate_value = \Redshop\Shipping\Rate::applyVat($rateItem, $data);
 			$shippingVatRate               = $rateItem->shipping_rate_value - $shippingRate;
 			$economicDisplay               = $rateItem->economic_displaynumber;
-			$shippingRateId                = Redshop\Shipping\Rate::encrypt(
+			$shippingRateId                = \Redshop\Shipping\Rate::encrypt(
 				array(
 					__CLASS__,
 					JText::_($shipping->name),
@@ -137,7 +137,7 @@ class PlgRedshop_ShippingPostdanmark extends JPlugin
 			JText::script('PLG_REDSHOP_SHIPPING_POSTDANMARK_SELECT_ONE_OPTION');
 
 			$useMap = $this->params->get('useMap', 1);
-			RedshopHelperConfig::script('useMap', $useMap);
+			\RedshopHelperConfig::script('useMap', $useMap);
 
 			$document = JFactory::getDocument();
 			$document->addStyleSheet('plugins/redshop_shipping/postdanmark/includes/css/postdanmark_style.css');
@@ -190,22 +190,22 @@ class PlgRedshop_ShippingPostdanmark extends JPlugin
 			if ($data)
 			{
 				$points     = (array) $data->servicePointInformationResponse->servicePoints;
-				$addresses  = array();
-				$name       = array();
-				$number     = array();
-				$generate   = array();
-				$opening    = array();
-				$close      = array();
-				$openingSat = array();
-				$closeSat   = array();
-				$lat        = array();
-				$lng        = array();
-				$city       = array();
-				$postalCode = array();
+				$addresses  = [];
+				$name       = [];
+				$number     = [];
+				$generate   = [];
+				$opening    = [];
+				$close      = [];
+				$openingSat = [];
+				$closeSat   = [];
+				$lat        = [];
+				$lng        = [];
+				$city       = [];
+				$postalCode = [];
 				$key        = 1;
 
 				// Unique shops location based on their servicePointId
-				$uniqueShops = array();
+				$uniqueShops = [];
 
 				if (!empty($points))
 				{
@@ -292,7 +292,7 @@ class PlgRedshop_ShippingPostdanmark extends JPlugin
 	 *
 	 * @return  string
 	 */
-	protected function getPickupLocationsResult($shops = array())
+	protected function getPickupLocationsResult($shops = [])
 	{
 		if (empty($shops))
 		{
@@ -301,7 +301,7 @@ class PlgRedshop_ShippingPostdanmark extends JPlugin
 				. '<input type="hidden" name="postdanmark_pickupLocation" id="location" class="postdanmark_location" />';
 		}
 
-		return  RedshopLayoutHelper::render(
+		return  \RedshopLayoutHelper::render(
 			'locations',
 			array('shops' => $shops),
 			JPATH_PLUGINS . '/redshop_shipping/postdanmark/layouts'

@@ -75,7 +75,7 @@ class RapidAPI
      *      $params['sandbox'] to true to use the sandbox for testing
      *      $params['disable_ssl_verification'] to true to disable SSL verification in sandbox
      */
-    public function __construct($apiKey, $apiPassword, $params = array())
+    public function __construct($apiKey, $apiPassword, $params = [])
     {
         if (strlen($apiKey) === 0 || strlen($apiPassword) === 0) {
             die("Username and Password are required");
@@ -898,7 +898,7 @@ class ShippingAddress
  */
 class Items
 {
-    public $LineItem = array();
+    public $LineItem = [];
 }
 
 /**
@@ -919,7 +919,7 @@ class LineItem
  */
 class Options
 {
-    public $Option = array();
+    public $Option = [];
 }
 
 /**

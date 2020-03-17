@@ -26,7 +26,7 @@ class PlgRedshop_Paymentrs_Payment_Sagepay_Vps extends JPlugin
 	 *                             Recognized key values include 'name', 'group', 'params', 'language'
 	 *                             (this list is not meant to be comprehensive).
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		JPlugin::loadLanguage('plg_redshop_payment_rs_payment_sagepay_vps');
 		parent::__construct($subject, $config);
@@ -59,15 +59,15 @@ class PlgRedshop_Paymentrs_Payment_Sagepay_Vps extends JPlugin
 		$sagepay_3dsecure             = $this->params->get('sagepay_3dsecure', '0');
 		$app                          = JFactory::getApplication();
 		$input                        = $app->input;
-		$Itemid                       = $input->getInt('Itemid');
+		$itemId                       = $input->getInt('Itemid');
 
 		if ($this->params->get("currency"))
 		{
 			$currency_main = $this->params->get("currency");
 		}
-        elseif (Redshop::getConfig()->get('CURRENCY_CODE') != "")
+        elseif (\Redshop::getConfig()->get('CURRENCY_CODE') != "")
 		{
-			$currency_main = Redshop::getConfig()->get('CURRENCY_CODE');
+			$currency_main = \Redshop::getConfig()->get('CURRENCY_CODE');
 		}
 		else
 		{
@@ -101,8 +101,8 @@ class PlgRedshop_Paymentrs_Payment_Sagepay_Vps extends JPlugin
 		$_SESSION["VendorTxCode"] = $strVendorTxCode;
 
 		// Assign Amount
-		$tot_amount = $order_total = $data['order']->order_total;
-		$amount     = RedshopHelperCurrency::convert($tot_amount, '', $strCurrency);
+		$tot_amount = $orderTotal = $data['order']->order_total;
+		$amount     = \RedshopHelperCurrency::convert($tot_amount, '', $strCurrency);
 		$amount     = number_format($amount, 2, '.', '');
 
 		$strPost = "VPSProtocol=2.23";
@@ -177,7 +177,7 @@ class PlgRedshop_Paymentrs_Payment_Sagepay_Vps extends JPlugin
 
 		// Set a one-minute timeout for this script
 		set_time_limit(60);
-		$output = array();
+		$output = [];
 
 		// Open the cURL session
 		$curlSession = curl_init();
@@ -215,7 +215,7 @@ class PlgRedshop_Paymentrs_Payment_Sagepay_Vps extends JPlugin
 			$strACSURL    = $output["ACSURL"];
 			$strPAReq     = $output["PAReq"];
 			$strPageState = "3DRedirect";
-			$returnURL    = JURI::base() . "index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay_vps&Itemid=$Itemid&orderid=" . $data['order_id'];
+			$returnURL    = JURI::base() . "index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay_vps&Itemid=$itemId&orderid=" . $data['order_id'];
 
 			?>
             <FORM action="<?php echo $strACSURL ?>" method="POST" name="secureform" id="secureform"/>
@@ -232,7 +232,7 @@ class PlgRedshop_Paymentrs_Payment_Sagepay_Vps extends JPlugin
 		}
 		else
 		{
-			$returnURL = JURI::base() . "index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay_vps&Itemid=$Itemid&orderid=" . $data['order_id'];
+			$returnURL = JURI::base() . "index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay_vps&Itemid=$itemId&orderid=" . $data['order_id'];
 
 			$values = new stdClass;
 
