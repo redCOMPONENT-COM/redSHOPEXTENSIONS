@@ -563,9 +563,9 @@ class SyncProductRedshop extends Product
 
 	public function storeAccessories($kvProduct, $productId)
 	{
-		$this->removeAccessoryById($productId);
-
 		if (!empty($kvProduct->formulas)) {
+			$this->removeAccessoryById($productId);
+
 			foreach ($kvProduct->formulas as $accessory) {
 				$productRedshop = \Redshop\Repositories\Product::getProductByNumber($accessory->code);
 				$childProduct   = 0;
