@@ -34,13 +34,23 @@ class plgRedshop_PaymentPayfast extends JPlugin
 
         $app = \JFactory::getApplication();
 
+        $url       = \JRoute::_(
+            JUri::base()
+            . 'index.php?option=com_redshop&view=order_detail&layout=receipt&Itemid=0&oid='
+            . (int)$data['order_id']
+        );
+        $notifyUrl = \JRoute::_(
+            JUri::base()
+            . 'index.php?option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=payfast&Itemid=0&oid='
+            . (int)$data['order_id']
+        );
 
         $checksumSource = array(
             'merchant_id'   => $this->params->get('merchantId'),
             'merchant_key'  => $this->params->get('merchantKey'),
-            'return_url'    => 'http://www.yourdomain.co.za/thank-you.html',
-            'cancel_url'    => 'http://www.yourdomain.co.za/cancelled-transction.html',
-            'notify_url'    => 'http://www.yourdomain.co.za/itn.php',
+            'return_url'    => $url,
+            'cancel_url'    => $url,
+            'notify_url'    => $notifyUrl,
             'name_first'    => 'First Name',
             'name_last'     => 'Last Name',
             'email_address' => 'sbtu01@payfast.co.za',
@@ -64,7 +74,7 @@ class plgRedshop_PaymentPayfast extends JPlugin
         }
         $data['signature'] = md5($getString);
 
-        $testingMode = true;
+        $testingMode = (bool)$this->params->get('sandbox', 1);
         $pfHost      = $testingMode ? 'sandbox.payfast.co.za' : 'www.payfast.co.za';
         $htmlForm    = '<form  id="payfastform" action="https://' . $pfHost . '/eng/process" method="post">';
 
@@ -84,6 +94,14 @@ class plgRedshop_PaymentPayfast extends JPlugin
         );
     }
 
+    /**
+     * @param $element
+     * @param $request
+     *
+     * @return stdClass|void
+     * @throws Exception
+     * @since 1.0
+     */
     public function onNotifyPaymentPayfast($element, $request)
     {
         if ($element != 'payfast') {
@@ -91,7 +109,102 @@ class plgRedshop_PaymentPayfast extends JPlugin
         }
 
         $app   = JFactory::getApplication();
-        $input = $app->input;
+
+        define('SANDBOX_MODE', (int)$this->params->get('sandbox', 1));
+        $pfHost = SANDBOX_MODE ? 'sandbox.payfast.co.za' : 'www.payfast.co.za';
+
+        // Posted variables from ITN
+        $pfData = $request;
+
+        // Strip any slashes in data
+        foreach ($pfData as $key => $val) {
+            $pfData[$key] = stripslashes($val);
+        }
+
+        $pfParamString = '';
+
+        // Construct variables
+        foreach ($pfData as $key => $val) {
+            if ($key != 'signature') {
+                $pfParamString .= $key . '=' . urlencode($val) . '&';
+            }
+        }
+
+        $pfParamString     = substr($pfParamString, 0, -1);
+        $pfTempParamString = $pfParamString;
+
+        $passPhrase = '';
+
+        if (!empty($passPhrase)) {
+            $pfTempParamString .= '&passphrase=' . urlencode($passPhrase);
+        }
+        $signature = md5($pfTempParamString);
+
+        if ($signature != $pfData['signature']) {
+            die('Invalid Signature');
+        }
+
+        $validHosts = array(
+            'www.payfast.co.za',
+            'sandbox.payfast.co.za',
+            'w1w.payfast.co.za',
+            'w2w.payfast.co.za',
+        );
+
+        // Variable initialization
+        $url = 'https://' . $pfHost . '/eng/query/validate';
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $pfParamString);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $lines        = explode("\r\n", $response);
+        $verifyResult = trim($lines[0]);
+
+        if (strcasecmp($verifyResult, 'VALID') != 0) {
+            die('Data not valid');
+        }
+
+        $pfPaymentId = $pfData['pf_payment_id'];
+        $orderId     = $pfData['m_payment_id'];
+        $values      = new stdClass;
+
+        if ($pfData ['payment_status'] == 'COMPLETE') {
+            $values->order_status_code         = $this->params->get('verify_status', '');
+            $values->order_payment_status_code = 'Paid';
+            $values->log                       = \JText::_(
+                'PLG_REDSHOP_PAYMENT_PAYGATE_PAYMENT_SUCCESS_LOG',
+                $pfPaymentId
+            );
+            $values->msg                       = \JText::_('PLG_REDSHOP_PAYMENT_PAYFAST_PAYMENT_SUCCESS');
+            $values->type                      = 'Success';
+        } else {
+            // If unknown status, do nothing (which is the safest course of action)
+            $values->order_status_code         = $this->params->get('invalid_status', '');
+            $values->order_payment_status_code = 'Unpaid';
+            $values->log                       = \JText::_(
+                'PLG_REDSHOP_PAYMENT_PAYFAST_PAYMENT_FAIL_LOG',
+                'FAIL NHA CUNG'
+            );
+            $values->msg                       = '';
+
+            $app->enqueueMessage($values->log, 'Warning');
+        }
+
+        $values->transaction_id = $pfPaymentId;
+        $values->order_id       = $orderId;
+
+        return $values;
 
         $status     = $input->getInt('TRANSACTION_STATUS');
         $tid        = $input->getInt('TRANSACTION_ID');
