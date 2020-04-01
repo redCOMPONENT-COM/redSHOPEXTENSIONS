@@ -32,8 +32,6 @@ class plgRedshop_PaymentPayfast extends JPlugin
             return;
         }
 
-        $app = \JFactory::getApplication();
-
         $url       = \JRoute::_(
             JUri::base()
             . 'index.php?option=com_redshop&view=order_detail&layout=receipt&Itemid=0&oid='
@@ -51,13 +49,12 @@ class plgRedshop_PaymentPayfast extends JPlugin
             'return_url'    => $url,
             'cancel_url'    => $url,
             'notify_url'    => $notifyUrl,
-            'name_first'    => 'First Name',
-            'name_last'     => 'Last Name',
-            'email_address' => 'sbtu01@payfast.co.za',
-            'm_payment_id'  => '',
-            'amount'        => '100.00',
-            'item_name'     => 'Test Item',
-
+            'name_first'    => $data['billinginfo']->firstname,
+            'name_last'     => $data['billinginfo']->lastname,
+            'email_address' => $data['billinginfo']->user_email,
+            'm_payment_id'  => $data['order_id'],
+            'amount'        => $data['order']->order_total,
+            'item_name'     => 'Order #' . $data['order_id']
         );
 
         $pfOutput = '';
