@@ -20,6 +20,12 @@ class plgRedshop_PaymentPayfast extends JPlugin
     protected $autoloadLanguage = true;
 
     /**
+     * @var string
+     * @since 1.0
+     */
+    protected $secretKey = '';
+
+    /**
      * @param $element
      * @param $data
      *
@@ -32,22 +38,27 @@ class plgRedshop_PaymentPayfast extends JPlugin
             return;
         }
 
+        $secretKey = md5(uniqid(rand(), true));
+        \JFactory::getSession()->set('payfast_secret_key', $secretKey);
+
         $url       = \JRoute::_(
             JUri::base()
             . 'index.php?option=com_redshop&view=order_detail&layout=receipt&Itemid=0&oid='
             . (int)$data['order_id']
         );
+
         $notifyUrl = \JRoute::_(
             JUri::base()
-            . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Payfast'
+            . 'index.php?option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Payfast&payment_status=COMPLETE&secret_key=' . $secretKey
+            .  '&Itemid=0&oid=' . $data['order_id']
         );
 
         $checksumSource = array(
             'merchant_id'   => $this->params->get('merchantId'),
             'merchant_key'  => $this->params->get('merchantKey'),
-            'return_url'    => $url,
+            'return_url'    => $notifyUrl,
             'cancel_url'    => $url,
-            'notify_url'    => $notifyUrl,
+            'notify_url'    => $url,
             'name_first'    => $data['billinginfo']->firstname,
             'name_last'     => $data['billinginfo']->lastname,
             'email_address' => $data['billinginfo']->user_email,
@@ -98,31 +109,38 @@ class plgRedshop_PaymentPayfast extends JPlugin
      * @throws Exception
      * @since 1.0
      */
-    public function onNotifyPaymentpayfast($element, $request)
+    public function onNotifyPaymentPayfast($element, $request)
     {
-        if ($element != 'payfast')
-        {
+        if (strtolower($element) != 'payfast') {
             return;
         }
+        // Notify PayFast that information has been received
+        header('HTTP/1.0 200 OK');
+        flush();
 
-        $orderId          = $request['m_payment_id'];
-        $signature        = $request['signature'];
-        $paymentStatus    = $request['payment_status'];
+        $orderId       = $request['m_payment_id'] ?? $request['oid'];
+        $paymentStatus = $request['payment_status'];
 
+        $validHosts = array(
+            'www.payfast.co.za',
+            'sandbox.payfast.co.za',
+            'w1w.payfast.co.za',
+            'w2w.payfast.co.za',
+        );
+
+        $secretKey = \JFactory::getSession()->get('payfast_secret_key', '');
+        $result = ($secretKey == $request['secret_key']);
 
         $values           = new stdClass;
         $values->order_id = $orderId;
 
-        if (isset($signature)
-            && ($paymentStatus == 'COMPLETE'))
-        {
+        if ($result
+            && ($paymentStatus == 'COMPLETE')) {
             $values->order_status_code         = $this->params->get('payment_status', 'C');
             $values->order_payment_status_code = 'Paid';
             $values->log                       = \JText::_('PLG_REDSHOP_PAYMENT_PAYFAST_ORDER_PLACED');
             $values->msg                       = \JText::_('PLG_REDSHOP_PAYMENT_PAYFAST_ORDER_PLACED');
-        }
-        else
-        {
+        } else {
             $values->order_status_code         = $this->params->get('invalid_status', 'P');
             $values->order_payment_status_code = 'Unpaid';
             $values->log                       = \JText::_('PLG_REDSHOP_PAYMENT_PAYFAST_ORDER_NOT_PLACED');
