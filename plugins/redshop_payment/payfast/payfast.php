@@ -53,6 +53,8 @@ class plgRedshop_PaymentPayfast extends JPlugin
             .  '&Itemid=0&oid=' . $data['order_id']
         );
 
+        $amount = (float) $this->params->get('exchange_rate', '1') * $data['order']->order_total;
+
         $checksumSource = array(
             'merchant_id'   => $this->params->get('merchantId'),
             'merchant_key'  => $this->params->get('merchantKey'),
@@ -63,7 +65,7 @@ class plgRedshop_PaymentPayfast extends JPlugin
             'name_last'     => $data['billinginfo']->lastname,
             'email_address' => $data['billinginfo']->user_email,
             'm_payment_id'  => $data['order_id'],
-            'amount'        => $data['order']->order_total,
+            'amount'        => $amount,
             'item_name'     => 'Order #' . $data['order_id']
         );
 

@@ -24,7 +24,7 @@
                 <field
                         name="merchantId"
                         type="text"
-                        default="10016771"
+                        default="10016773"
                         required="true"
                         class="input-mini validate-numeric"
                         label="PLG_REDSHOP_PAYMENT_PAYFAST_MERCHANT_ID_LABEL"
@@ -33,7 +33,7 @@
                 <field
                         name="merchantKey"
                         type="text"
-                        default="fhn1qfxr7tt4s"
+                        default="a26nu9gf08eof"
                         required="true"
                         class="input-xlarge"
                         label="PLG_REDSHOP_PAYMENT_PAYFAST_MERCHANT_KEY_LABEL"
@@ -41,9 +41,9 @@
                 />
                 <field type="spacer" name="privateKeySpacer" hr="true"/>
                 <field
-                        name="version"
+                        name="exchange_rate"
                         type="text"
-                        default="v1"
+                        default="1"
                         required="true"
                         class="input-mini"
                         label="PLG_REDSHOP_PAYMENT_PAYFAST_VERSION_LABEL"
