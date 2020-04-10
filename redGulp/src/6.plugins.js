@@ -14,7 +14,7 @@ try {
  * @return  array
  */
 function getPlugins() {
-	var results = []
+	var results = [];
 
 	if (extensions && extensions.hasOwnProperty('plugins')) {
 
