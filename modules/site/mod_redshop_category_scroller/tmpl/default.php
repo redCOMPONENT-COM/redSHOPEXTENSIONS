@@ -82,8 +82,8 @@ for ($i = 0, $countRows = count($rows); $i < $countRows; $i++) {
 
     $categoryAttach = '';
 
-    if (isset($row->category_id)) {
-        $categoryAttach = '&cid=' . $row->category_id;
+    if (isset($row->cat_in_sefurl)) {
+        $categoryAttach = '&cid=' . $row->cat_in_sefurl;
     }
 
     $link = JRoute::_(

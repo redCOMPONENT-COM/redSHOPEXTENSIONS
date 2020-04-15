@@ -80,7 +80,7 @@ class plgContentredshop_product extends JPlugin
 				$dispatcher->trigger('onPrepareProduct', array(&$prtemplate, &$red_params, $product));
 
 				// Changes for sh404sef duplicating url
-				$catid = \RedshopHelperProduct::getCategoryProduct($product->product_id);
+				$catid = $row->cat_in_sefurl;
 				$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $product->product_id);
 
 				if (count($itemData) > 0)

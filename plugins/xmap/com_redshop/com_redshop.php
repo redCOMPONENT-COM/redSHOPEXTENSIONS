@@ -229,23 +229,23 @@ class Xmap_Com_\Redshop
 					}
 					else
 					{
-						$params['Itemid'] = \RedshopHelperRouter::getItemId($row->product_id, $row->category_id);
+						$params['Itemid'] = \RedshopHelperRouter::getItemId($row->product_id, $row->cat_in_sefurl);
 					}
 
 					$node = new stdclass;
 					$node->id = $parent->id;
-					$node->uid = $parent->uid . 'c' . $row->category_id . 'p' . $row->product_id;
+					$node->uid = $parent->uid . 'c' . $row->cat_in_sefurl . 'p' . $row->product_id;
 					$node->browserNav = $parent->browserNav;
 					$node->priority = $params['prod_priority'];
 					$node->changefreq = $params['prod_changefreq'];
 					$node->name = $row->product_name;
 					$node->modified = strtotime($row->update_date);
 					$node->expandible = false;
-					$node->link = "index.php?option=com_redshop&view=product&pid=$row->product_id&cid=$row->category_id&Itemid=" . $params['Itemid'];
+					$node->link = "index.php?option=com_redshop&view=product&pid=$row->product_id&cid=$row->cat_in_sefurl&Itemid=" . $params['Itemid'];
 
 					if ($xmap->printNode($node) !== false)
 					{
-						self::getProductTree($xmap, $parent, $params, $row->product_id, $row->category_id);
+						self::getProductTree($xmap, $parent, $params, $row->product_id, $row->cat_in_sefurl);
 					}
 				}
 
@@ -319,19 +319,19 @@ class Xmap_Com_\Redshop
 				}
 				else
 				{
-					$params['Itemid'] = \RedshopHelperRouter::getItemId($row->product_id, $row->category_id);
+					$params['Itemid'] = \RedshopHelperRouter::getItemId($row->product_id, $row->cat_in_sefurl);
 				}
 
 				$node = new stdclass;
 				$node->id = $parent->id;
-				$node->uid = ($manid > 0) ? $parent->uid . 'm' . $manid . 'p' . $row->product_id : $parent->uid . 'c' . $row->category_id . 'p' . $row->product_id;
+				$node->uid = ($manid > 0) ? $parent->uid . 'm' . $manid . 'p' . $row->product_id : $parent->uid . 'c' . $row->cat_in_sefurl . 'p' . $row->product_id;
 				$node->browserNav = $parent->browserNav;
 				$node->priority = $params['prod_priority'];
 				$node->changefreq = $params['prod_changefreq'];
 				$node->name = $row->product_name;
 				$node->modified = strtotime($row->update_date);
 				$node->expandible = false;
-				$node->link = "index.php?option=com_redshop&view=product&pid=$row->product_id&cid=$row->category_id&Itemid=" . $params['Itemid'];
+				$node->link = "index.php?option=com_redshop&view=product&pid=$row->product_id&cid=$row->cat_in_sefurl&Itemid=" . $params['Itemid'];
 
 				if ($xmap->printNode($node) !== false)
 				{

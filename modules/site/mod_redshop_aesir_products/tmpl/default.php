@@ -71,7 +71,7 @@ for ($i = 0; $i < count($rows); $i++)
 		}
 	}
 
-	$categoryId = \RedshopHelperProduct::getCategoryProduct($row->product_id);
+	$categoryId = $row->cat_in_sefurl;
 
 	$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 

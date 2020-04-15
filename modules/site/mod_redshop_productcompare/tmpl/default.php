@@ -34,7 +34,7 @@ if (\Redshop::getConfig()->get('COMPARE_PRODUCTS') == 1)
 
 					if (!$cid)
 					{
-						$cid = \RedshopHelperProduct::getCategoryProduct($row->product_id);
+						$cid = $row->cat_in_sefurl;
 					}
 
 					$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
