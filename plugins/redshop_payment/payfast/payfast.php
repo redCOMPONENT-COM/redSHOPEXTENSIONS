@@ -41,7 +41,7 @@ class plgRedshop_PaymentPayfast extends JPlugin
         $secretKey = md5(uniqid(rand(), true));
         \JFactory::getSession()->set('payfast_secret_key', $secretKey);
 
-        $url       = \JRoute::_(
+        $url = \JRoute::_(
             JUri::base()
             . 'index.php?option=com_redshop&view=order_detail&layout=receipt&Itemid=0&oid='
             . (int)$data['order_id']
@@ -50,10 +50,10 @@ class plgRedshop_PaymentPayfast extends JPlugin
         $notifyUrl = \JRoute::_(
             JUri::base()
             . 'index.php?option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Payfast&payment_status=COMPLETE&secret_key=' . $secretKey
-            .  '&Itemid=0&oid=' . $data['order_id']
+            . '&Itemid=0&oid=' . $data['order_id']
         );
 
-        $amount = (float) $this->params->get('exchange_rate', '1') * $data['order']->order_total;
+        $amount = (float)$this->params->get('exchange_rate', '1') * $data['order']->order_total;
 
         $checksumSource = array(
             'merchant_id'   => $this->params->get('merchantId'),
@@ -113,9 +113,17 @@ class plgRedshop_PaymentPayfast extends JPlugin
      */
     public function onNotifyPaymentPayfast($element, $request)
     {
+        $this->flattenDebug($element);
+        $this->flattenDebug($request);
+
         if (strtolower($element) != 'payfast') {
             return;
         }
+
+        $post = \JFactory::getApplication()->input->getArray();
+
+        $this->flattenDebug($post);
+
         // Notify PayFast that information has been received
         header('HTTP/1.0 200 OK');
         flush();
@@ -131,7 +139,7 @@ class plgRedshop_PaymentPayfast extends JPlugin
         );
 
         $secretKey = \JFactory::getSession()->get('payfast_secret_key', '');
-        $result = ($secretKey == $request['secret_key']);
+        $result    = ($secretKey == $request['secret_key']);
 
         $values           = new stdClass;
         $values->order_id = $orderId;
