@@ -36,6 +36,14 @@ $query = $db->getQuery(true)
     ->from($db->qn('#__redshop_product', 'p'))
     ->where($db->qn('p.published') . ' = ' . $db->q(1));
 
+/* REDSHOP-5967 */
+if (\Redshop::getConfig()->getInt('SHOW_DISCONTINUED_PRODUCTS')) {
+    $query->where($db->qn('p.expired') . ' IN (0, 1)');
+} else {
+    $query->where($db->qn('p.expired') . ' IN (0)');
+}
+/* End REDSHOP-5967 */
+
 if ($category != "") {
     $query->leftJoin(
         $db->qn('#__redshop_product_category_xref', 'pc') . ' ON ' .
