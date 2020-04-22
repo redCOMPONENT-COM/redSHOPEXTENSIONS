@@ -64,6 +64,14 @@ $query = $db->getQuery(true)
 	->group($db->qn('p.product_id'))
 	->order($db->qn('p.product_id') . ' DESC');
 
+/* REDSHOP-5967 */
+if (\Redshop::getConfig()->getInt('SHOW_DISCONTINUED_PRODUCTS')) {
+    $query->where($db->qn('p.expired') . ' IN (0, 1)');
+} else {
+    $query->where($db->qn('p.expired') . ' IN (0)');
+}
+/* End REDSHOP-5967 */
+
 if (!empty($ids) && is_array($ids))
 {
 	$query->where($db->qn('p.product_id') . ' IN (' . implode(',', $ids) . ')');

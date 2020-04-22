@@ -53,6 +53,14 @@ $query = $db->getQuery(true)
 	->where($db->qn('p.published') . ' = 1')
 	->group($db->qn('p.product_id'));
 
+/* REDSHOP-5967 */
+if (\Redshop::getConfig()->getInt('SHOW_DISCONTINUED_PRODUCTS')) {
+    $query->where($db->qn('p.expired') . ' IN (0, 1)');
+} else {
+    $query->where($db->qn('p.expired') . ' IN (0)');
+}
+/* End REDSHOP-5967 */
+
 if ($view == 'product')
 {
 	$pid = $app->input->getInt('pid');

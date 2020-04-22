@@ -159,6 +159,15 @@ class RedshopProductSlideshow
 			->where('p.published = 1')
 			->where('c.published = 1');
 
+
+        /* REDSHOP-5967 */
+        if (\Redshop::getConfig()->getInt('SHOW_DISCONTINUED_PRODUCTS')) {
+            $query->where($db->qn('p.expired') . ' IN (0, 1)');
+        } else {
+            $query->where($db->qn('p.expired') . ' IN (0)');
+        }
+        /* End REDSHOP-5967 */
+
 		if (count($cat_arr) > 0)
 		{
 			$query->where('x.category_id IN (' . implode(',', $cat_arr) . ')');
