@@ -21,9 +21,11 @@ class ConnectApi
 
 	protected $baseUrl = 'https://publicfnb.kiotapi.com/';
 
+	public $db;
+
 	public function __construct()
 	{
-
+		$this->db = \JFactory::getDbo();
 	}
 
 	public function setConfig($config = array())

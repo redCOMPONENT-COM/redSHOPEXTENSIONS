@@ -17,6 +17,8 @@ class SyncProductRedshop extends Product
 
 	public $startLimit;
 
+	private $configProduct;
+
 	public function __construct($accessToken, $retailerName, $options = array())
 	{
 		$this->syncCategory = new SyncCategoriesRedshop($accessToken, $retailerName, $options);
@@ -51,7 +53,7 @@ class SyncProductRedshop extends Product
 				$this->storeAdditionalImages($productId, $kvProduct->images);
 			}
 
-			if ($this->_options->get('update_redshop_stockroom') && $productId) {
+			if ($productId && $this->_options->get('update_redshop_stockroom') && $this->allowConfig('sync_stockroom')) {
 				$this->storeStockRoom($productId, $kvProduct);
 			}
 
@@ -82,7 +84,7 @@ class SyncProductRedshop extends Product
 				$this->storeAdditionalImages($productId, $kvProduct->images);
 			}
 
-			if ($this->_options->get('update_redshop_stockroom') && $productId) {
+			if ($productId && $this->_options->get('update_redshop_stockroom') && $this->allowConfig('sync_stockroom')) {
 				$this->storeStockRoom($productId, $kvProduct);
 			}
 
@@ -121,12 +123,17 @@ class SyncProductRedshop extends Product
 
 	public function storeProduct($kvProduct, $pid = 0)
 	{
+		if ($pid)
+		{
+			$this->configProduct = $this->getConfigProductById($pid);
+		}
+
 		if (!empty($kvProduct->masterProductId)) {
 			return false;
 		}
 
 		$table           = $this->getTable('Product_Detail');
-		$db              = \JFactory::getDbo();
+		$db              = $this->db;
 		$catIdRedshop    = Category::getRedshopCategoryByIdKv($kvProduct->categoryId);
 
 		// Store Price
@@ -180,12 +187,21 @@ class SyncProductRedshop extends Product
 		$data['product_type']   = 'product';
 		$data['published']      = 1;
 
-		if ($this->_options->get('update_product_template'))
+		if ($this->allowConfig('unpublished_product'))
+		{
+			$data['published']      = 1;
+		}
+
+		if ($this->_options->get('update_product_template') && $this->allowConfig('sync_template'))
 		{
 			$data['product_template'] = $this->_options->get('product_template');
 		}
 
-		$data['product_s_desc'] = isset($kvProduct->description) ? $kvProduct->description : '';
+		if ($this->_options->get('update_product_short_desc') && $this->allowConfig('sync_product_short_desc'))
+		{
+			$data['product_s_desc'] = isset($kvProduct->description) ? $kvProduct->description : '';
+		}
+
 
 		$data['not_for_sale'] = 0;
 
@@ -210,6 +226,10 @@ class SyncProductRedshop extends Product
 			$data['product_full_image'] = $fileName;
 		}
 
+		if ($pid && !$this->allowConfig('sync_image')) {
+			unset($data['product_full_image']);
+		}
+
 		$isNew = false;
 
 		// Try to load old data.
@@ -217,10 +237,9 @@ class SyncProductRedshop extends Product
 			$isNew = $table->load($data[$this->primaryKey]);
 		}
 
-		if (!$isNew || ($isNew && $this->_options->get('update_redshop_price'))) {
+		if (!$isNew || ($isNew && $this->_options->get('update_redshop_price') && $this->allowConfig('sync_price'))) {
 			$data['product_price'] = $kvProduct->basePrice;
 		}
-
 
 		if (!$table->bind($data) && !$table->check()) {
 			return false;
@@ -269,7 +288,7 @@ class SyncProductRedshop extends Product
 
 	public function removeCategoryXref($pid)
 	{
-		$db = \JFactory::getDbo();
+		$db = $this->db;
 		$query = $db->getQuery(true)
 			->delete($db->qn('#__redshop_product_category_xref'))
 			->where(
@@ -286,7 +305,7 @@ class SyncProductRedshop extends Product
 			$this->removeCategoryXref($pid);
 		}
 
-		$db = \JFactory::getDbo();
+		$db = $this->db;
 
 		$query = $db->getQuery(true)
 			->select('category_id')
@@ -306,11 +325,11 @@ class SyncProductRedshop extends Product
 
 	public function storeAdditionalImages($productId = 0, $images = array())
 	{
-		if (empty($images) || !$productId) {
+		if (empty($images) || !$productId || !$this->allowConfig('sync_image')) {
 			return;
 		}
 
-		$db = \JFactory::getDbo();
+		$db = $this->db;
 
 		$query = $db->getQuery(true);
 
@@ -349,7 +368,7 @@ class SyncProductRedshop extends Product
 
 	public function deleteMediaNotFound($productId, $images)
 	{
-		$db    = \JFactory::getDbo();
+		$db    = $this->db;
 		$query = $db->getQuery(true)
 			->select('*')
 			->from($db->qn('#__redshop_media'))
@@ -418,11 +437,11 @@ class SyncProductRedshop extends Product
 
 	public function storeStockRoom($rsProductId, $productDetail)
 	{
-		if ($productDetail->formulas) {
+		if (!empty($productDetail->formulas)) {
 			return true;
 		}
 
-		$db = \JFactory::getDbo();
+		$db = $this->db;
 
 		$query = $db->getQuery(true)
 			->delete($db->qn('#__redshop_product_stockroom_xref'))
@@ -476,7 +495,10 @@ class SyncProductRedshop extends Product
 
 
 		// Store Field unit
-		$this->storeField($unitFieldId, $kvProduct->unit, $productId, \RedshopHelperExtrafields::SECTION_PRODUCT);
+		if (isset($kvProduct->unit))
+		{
+			$this->storeField($unitFieldId, $kvProduct->unit, $productId, \RedshopHelperExtrafields::SECTION_PRODUCT);
+		}
 
 		$conversionValue = array();
 
@@ -563,7 +585,7 @@ class SyncProductRedshop extends Product
 
 	public function storeAccessories($kvProduct, $productId)
 	{
-		if (!empty($kvProduct->formulas)) {
+		if (!empty($kvProduct->formulas && $this->allowConfig('sync_accessory'))) {
 			$this->removeAccessoryById($productId);
 
 			foreach ($kvProduct->formulas as $accessory) {
@@ -587,11 +609,35 @@ class SyncProductRedshop extends Product
 
 	public function removeAccessoryById($productId)
 	{
-		$db    = \JFactory::getDbo();
+		$db    = $this->db;
 		$query = $db->getQuery(true)
 			->delete($db->qn('#__redshop_product_accessory'))
 			->where($db->qn('product_id') . ' = ' . $db->q($productId));
 
 		$db->setQuery($query)->execute();
+	}
+
+	public function getConfigProductById($productId)
+	{
+		$db = $this->db;
+		$query = $db->getQuery(true)
+			->select('key_setting,value_setting')
+			->from($db->qn('#__kiotviet_setting_product'))
+			->where($db->qn('product_id') . ' = ' . $db->q($productId));
+
+		$data = $db->setQuery($query)->loadObjectList();
+		$result = [];
+
+		foreach ($data as $value)
+		{
+			$result[$value->key_setting] = $value->value_setting;
+		}
+
+		return $result;
+	}
+
+	public function allowConfig($config)
+	{
+		return !isset($this->configProduct[$config]) || $this->configProduct[$config] !== 'no';
 	}
 }
