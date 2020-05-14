@@ -49,11 +49,11 @@ class SyncProductRedshop extends Product
 			}
 
 
-			if ($this->_options->get('update_redshop_image') && $productId) {
+			if ($this->allowConfig($this->_options->get('update_redshop_image'), 'sync_image') && $productId) {
 				$this->storeAdditionalImages($productId, $kvProduct->images);
 			}
 
-			if ($productId && $this->_options->get('update_redshop_stockroom') && $this->allowConfig('sync_stockroom')) {
+			if ($productId && $this->allowConfig($this->_options->get('update_redshop_stockroom'), 'sync_stockroom')) {
 				$this->storeStockRoom($productId, $kvProduct);
 			}
 
@@ -80,11 +80,11 @@ class SyncProductRedshop extends Product
 				$this->storeProduct($kvProduct, $productId);
 			}
 
-			if ($this->_options->get('update_redshop_image') && $productId && isset($kvProduct->images)) {
+			if ($this->allowConfig($this->_options->get('update_redshop_image'), 'sync_image') && $productId && isset($kvProduct->images)) {
 				$this->storeAdditionalImages($productId, $kvProduct->images);
 			}
 
-			if ($productId && $this->_options->get('update_redshop_stockroom') && $this->allowConfig('sync_stockroom')) {
+			if ($productId && $this->allowConfig($this->_options->get('update_redshop_stockroom'), 'sync_stockroom')) {
 				$this->storeStockRoom($productId, $kvProduct);
 			}
 
@@ -187,21 +187,24 @@ class SyncProductRedshop extends Product
 		$data['product_type']   = 'product';
 		$data['published']      = 1;
 
-		if ($this->allowConfig('unpublished_product'))
+		if (isset($this->configProduct['unpublished_product']) && $this->configProduct['unpublished_product'] === 'yes')
+		{
+			$data['published']      = 0;
+		}
+		else
 		{
 			$data['published']      = 1;
 		}
 
-		if ($this->_options->get('update_product_template') && $this->allowConfig('sync_template'))
+		if ($this->allowConfig($this->_options->get('update_product_template'), 'sync_template'))
 		{
 			$data['product_template'] = $this->_options->get('product_template');
 		}
 
-		if ($this->_options->get('update_product_short_desc') && $this->allowConfig('sync_product_short_desc'))
+		if ($this->allowConfig($this->_options->get('update_product_short_desc'), 'sync_product_short_desc'))
 		{
 			$data['product_s_desc'] = isset($kvProduct->description) ? $kvProduct->description : '';
 		}
-
 
 		$data['not_for_sale'] = 0;
 
@@ -214,7 +217,7 @@ class SyncProductRedshop extends Product
 //			$data['not_for_sale'] = 0;
 //		}
 
-		if (!empty($kvProduct->images) && $this->_options->get('update_redshop_image')) {
+		if (!empty($kvProduct->images) && $this->allowConfig($this->_options->get('update_redshop_image'), 'sync_image')) {
 			$url        = $kvProduct->images[0];
 			$binaryData = file_get_contents($url);
 			$imageName  = basename($url);
@@ -226,7 +229,7 @@ class SyncProductRedshop extends Product
 			$data['product_full_image'] = $fileName;
 		}
 
-		if ($pid && !$this->allowConfig('sync_image')) {
+		if ($pid && !$this->allowConfig($this->_options->get('update_redshop_image'), 'sync_image')) {
 			unset($data['product_full_image']);
 		}
 
@@ -237,7 +240,7 @@ class SyncProductRedshop extends Product
 			$isNew = $table->load($data[$this->primaryKey]);
 		}
 
-		if (!$isNew || ($isNew && $this->_options->get('update_redshop_price') && $this->allowConfig('sync_price'))) {
+		if (!$isNew || ($isNew && $this->allowConfig($this->_options->get('update_redshop_price'), 'sync_price'))) {
 			$data['product_price'] = $kvProduct->basePrice;
 		}
 
@@ -257,7 +260,7 @@ class SyncProductRedshop extends Product
 
 		$this->storeCategoryXref($catIdRedshop, $table->{$this->primaryKey});
 
-		if (!empty($data['product_full_image']) && $this->_options->get('update_redshop_image')) {
+		if (!empty($data['product_full_image']) && $this->allowConfig($this->_options->get('update_redshop_image'), 'sync_image')) {
 			$query->clear()
 				->select("COUNT(*)")
 				->from($db->qn('#__redshop_media'))
@@ -325,7 +328,7 @@ class SyncProductRedshop extends Product
 
 	public function storeAdditionalImages($productId = 0, $images = array())
 	{
-		if (empty($images) || !$productId || !$this->allowConfig('sync_image')) {
+		if (empty($images) || !$productId || !$this->allowConfig($this->_options->get('update_redshop_image'), 'sync_image')) {
 			return;
 		}
 
@@ -437,9 +440,9 @@ class SyncProductRedshop extends Product
 
 	public function storeStockRoom($rsProductId, $productDetail)
 	{
-		if (!empty($productDetail->formulas)) {
-			return true;
-		}
+//		if ($productDetail->formulas) {
+//			return true;
+//		}
 
 		$db = $this->db;
 
@@ -585,7 +588,7 @@ class SyncProductRedshop extends Product
 
 	public function storeAccessories($kvProduct, $productId)
 	{
-		if (!empty($kvProduct->formulas && $this->allowConfig('sync_accessory'))) {
+		if (!empty($kvProduct->formulas && $this->allowConfig(1, 'sync_accessory'))) {
 			$this->removeAccessoryById($productId);
 
 			foreach ($kvProduct->formulas as $accessory) {
@@ -636,8 +639,15 @@ class SyncProductRedshop extends Product
 		return $result;
 	}
 
-	public function allowConfig($config)
+	public function allowConfig($globalConfig, $config)
 	{
-		return !isset($this->configProduct[$config]) || $this->configProduct[$config] !== 'no';
+		if (isset($this->configProduct[$config]) && $this->configProduct[$config] != '0')
+		{
+			return $this->configProduct[$config] !== 'no';
+		}
+		else
+		{
+			return (bool) $globalConfig;
+		}
 	}
 }

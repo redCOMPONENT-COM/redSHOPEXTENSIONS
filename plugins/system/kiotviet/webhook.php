@@ -95,7 +95,7 @@ foreach ($notications as $notication)
 				$syncProduct->storeAdditionalImages($productId, $kvProduct->images);
 			}
 
-			if ($productId && $params->get('update_redshop_stockroom') && $syncProduct->allowConfig('sync_stockroom'))
+			if ($productId && $syncProduct->allowConfig($params->get('update_redshop_stockroom'), 'sync_stockroom'))
 			{
 				$syncProduct->storeStockRoom($productId, $kvProduct);
 			}

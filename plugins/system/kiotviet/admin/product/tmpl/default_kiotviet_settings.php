@@ -11,9 +11,9 @@ defined('_JEXEC') or die;
 
 $db = JFactory::getDbo();
 $query = $db->getQuery(true)
-->select('key_setting, value_setting')
-->from($db->qn('#__kiotviet_setting_product'))
-->where($db->qn('product_id') . ' = ' . $db->q($this->detail->product_id));
+	->select('key_setting, value_setting')
+	->from($db->qn('#__kiotviet_setting_product'))
+	->where($db->qn('product_id') . ' = ' . $db->q($this->detail->product_id));
 
 $kiotvietSelected = $db->setQuery($query)->loadAssocList('key_setting');
 
