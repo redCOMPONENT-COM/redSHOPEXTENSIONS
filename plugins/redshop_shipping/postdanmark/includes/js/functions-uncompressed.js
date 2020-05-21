@@ -242,7 +242,7 @@ function getShippingZipcodeAjax() {
 	jQuery.post(
 		redSHOP.RSConfig._('SITE_URL') + 'index.php?option=com_redshop&view=account_shipto&task=addshipping&return=checkout&tmpl=component&for=true&infoid=' + jQuery('input[name="users_info_id"]:checked').val() + '&Itemid=1',
 		function (response) {
-			var shipping_postcode = jQuery('[name=zipcode_ST]').val();
+			var shipping_postcode = jQuery('[name=zipcode_ST]', response).val();
 
 			if (jQuery('#billisship:checked').length === 1)
 			{
