@@ -336,7 +336,10 @@ function showForm(id) {
             showCloseBtn: false,
             callbacks: {
                 open: function () {
-                    initMap(service_points.addresses, service_points.name, service_points.number, service_points.opening, service_points.close, service_points.opening_sat, service_points.close_sat, service_points.lat, service_points.lng, service_points.servicePointId);
+                	if (service_points != undefined)
+	                {
+		                initMap(service_points.addresses, service_points.name, service_points.number, service_points.opening, service_points.close, service_points.opening_sat, service_points.close_sat, service_points.lat, service_points.lng, service_points.servicePointId);
+	                }
                 }
             }
         }, 0);
