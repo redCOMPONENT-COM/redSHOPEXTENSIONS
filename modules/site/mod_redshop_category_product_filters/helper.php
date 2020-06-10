@@ -137,6 +137,7 @@ class ModRedshopCategoryProductFiltersHelper
 			->leftJoin($db->qn('#__redshop_product', 'p') . ' ON ' . $db->qn('p.product_id') . ' = ' . $db->qn('fd.itemid'))
 			->where($db->qn('fd.itemid') . ' IN (' . implode(',', $pids) . ')')
 			->where($db->qn('f.name') . ' IN (' . implode(',', $db->q($productFields)) . ')')
+			->where($db->qn('f.published') . ' = 1')
 			->where($db->qn('fd.data_txt') . ' NOT LIKE "" AND ' . $db->qn('fd.data_txt') . ' IS NOT NULL ');
 
 		if ($manufacturerId)
