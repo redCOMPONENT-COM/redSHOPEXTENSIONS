@@ -40,8 +40,7 @@ $layout             = $input->getString('layout', '');
 $action             = JRoute::_("index.php?option=com_redshop&view=category&layout=detail&cid=" . $cid);
 
 $categoryModel = JModelLegacy::getInstance('Category', '\RedshopModel');
-$filterInput = $categoryModel->getState('filterform', []);
-
+$filterInput = $input->get->get('filterform', array(), 'array');
 
 $productList = \RedshopHelperCategory::getCategoryProductList($cid, true);
 $manuList    = [];
