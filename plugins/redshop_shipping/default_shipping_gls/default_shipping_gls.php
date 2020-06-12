@@ -396,4 +396,41 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 
 		$template = str_replace("{gls_shipping_location}", $glsLocation, $template);
 	}
+
+	public function onBeforeUserShippingStore($orderUser, $orderResult)
+	{
+		if (empty($orderResult->shop_id))
+		{
+			return;
+		}
+
+		$orderShippingInfo = \RedshopShippingRate::decrypt($orderResult->ship_method_id);
+
+		if ('plgredshop_shippingdefault_shipping_gls' != strtolower($orderShippingInfo[0]))
+		{
+			return;
+		}
+
+		$locationInfo = explode("|", trim($orderResult->shop_id));
+
+		if (count($locationInfo) <= 0)
+		{
+			return;
+		}
+
+		$companyName = 'ServicePointID:' . $locationInfo[0] . ':PostDanmark';
+		$city = explode('###', $locationInfo[7]);
+		$city = trim($city[0]);
+
+		$data = [
+			'company_name' => $companyName,
+			'firstname'    => $locationInfo[1],
+			'lastname'     => '',
+			'address'      => $locationInfo[2],
+			'city'         => $city,
+			'zipcode'      => $locationInfo[3]
+		];
+
+		$orderUser->bind($data);
+	}
 }
