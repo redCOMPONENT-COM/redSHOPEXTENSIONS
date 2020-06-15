@@ -185,7 +185,7 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 		{
 			$this->onLabelsGLSConnection();
 
-			$countryCode = $values->country_code;
+			$countryCode = isset($values->country_code) ? $values->country_code : '';
 
 			if (!$countryCode)
 			{
@@ -194,8 +194,8 @@ class PlgRedshop_ShippingDefault_Shipping_Gls extends JPlugin
 
 			$handle = $this->client->SearchNearestParcelShops(
 				array(
-					'street'           => (string) $values->address,
-					'zipcode'          => (string) $values->zipcode,
+					'street'           => (string) isset($values->address) ? $values->address : '',
+					'zipcode'          => (string) isset($values->zipcode) ? $values->zipcode : '',
 					'countryIso3166A2' => \RedshopHelperWorld::getCountryCode2($countryCode),
 					'Amount'           => $this->params->get('amount_shop', 10)
 				)
