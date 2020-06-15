@@ -165,7 +165,17 @@ class plgSystemKiotviet extends JPlugin
 
 	public function sendOrderShipping($orderId, $orderRef)
 	{
-		if ($this->params->get('use_lalamove')) {
+		$orderKvData = RedshopEntityField_Data::getInstance()->loadItemByArray(
+			array(
+				'fieldid' => RedshopHelperExtrafields::getField('rs_kiotviet_orders')->id,
+				'itemid'  => $orderId,
+				'section' => RedshopHelperExtrafields::SECTION_ORDER
+			)
+		)->data_txt;
+
+		$orderKvCode = json_decode($orderKvData)->code;
+
+		if ($this->params->get('use_lalamove') || !empty($orderKvCode)) {
 			return false;
 		}
 

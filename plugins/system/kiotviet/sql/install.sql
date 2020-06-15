@@ -18,3 +18,7 @@ ALTER TABLE `#__kiotviet_category_mapping`
   ADD PRIMARY KEY (`kv_category_id`),
   ADD UNIQUE KEY `rs_category_id` (`rs_category_id`);
 COMMIT;
+
+INSERT IGNORE INTO `#__redshop_fields` (`title`, `name`, `type`, `desc`, `class`, `section`, `maxlength`, `cols`, `rows`, `size`, `show_in_front`, `required`, `published`, `publish_up`, `publish_down`, `display_in_product`, `ordering`, `display_in_checkout`, `checked_out`, `checked_out_time`, `created_date`, `created_by`, `modified_date`, `modified_by`)
+VALUES
+	('Kiotviet Orders', 'rs_kiotviet_orders', '1', '', '', '20', 0, 0, 0, 0, 0, 1, 1, 'CURRENT_TIMESTAMP', 'CURRENT_TIMESTAMP', 0, 7, 1, 0, 'CURRENT_TIMESTAMP', 'CURRENT_TIMESTAMP', NULL, 'CURRENT_TIMESTAMP', NULL);
