@@ -10,8 +10,16 @@ var google, service_points;
 		redSHOP.postDanmark.useMap = (Boolean(parseInt(redSHOP.RSConfig._('USEMAP'))) && !redSHOP.postDanmark.isMobile);
 
 		var $postDanmarkInput = $('input[value="postdanmark_postdanmark"]');
-		var $body = $('body');
 
+		jQuery(redSHOP).on('onAfterOneStepCheckoutProcess', function() {
+			$('input[type="radio"]').each(function (i, item) {
+				if (checkPDinput($(item)) && $(item).attr('checked') && $('#showMap_input').length === 0) {
+					inject_button($(item));
+				}
+			});
+		})
+
+		var $body = $('body');
 
 		if ($postDanmarkInput.attr('checked') === 'checked' || $postDanmarkInput.attr('type') === 'hidden') {
 			inject_button($postDanmarkInput.parent().parent());
@@ -158,6 +166,8 @@ function injectPostnord() {
 function inject_button(el) {
 	// Is mobile
 	if (redSHOP.postDanmark.useMap) {
+		jQuery('#showMap_input, #sp_info, #sp_inputs, #showMap, #postdanmark_html_inject').remove();
+
 		if (0 === jQuery('#sp_info').length) {
 			map_contents = get_map_contents();
 
