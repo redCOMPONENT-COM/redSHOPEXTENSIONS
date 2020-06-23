@@ -11,7 +11,7 @@ var google, service_points;
 
 		var $postDanmarkInput = $('input[value="postdanmark_postdanmark"]');
 
-		jQuery(redSHOP).on('onAfterOneStepCheckoutProcess', function() {
+		$(redSHOP).on('onAfterOneStepCheckoutProcess', function() {
 			$('input[type="radio"]').each(function (i, item) {
 				if (checkPDinput($(item)) && $(item).attr('checked') && $('#showMap_input').length === 0) {
 					inject_button($(item));
