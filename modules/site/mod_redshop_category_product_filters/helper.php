@@ -144,6 +144,11 @@ class ModRedshopCategoryProductFiltersHelper
 		{
 			$query->where($db->qn('p.manufacturer_id') . ' = ' . $db->q($manufacturerId));
 		}
+
+		if (!\Redshop::getConfig()->getInt('SHOW_DISCONTINUED_PRODUCTS')) {
+			$query->where($db->qn('p.expired') . ' NOT IN (1)');
+		}
+
 		$query->group('fv.field_value, fv.field_id')
 			->order('f.ordering, fv.field_value');
 
