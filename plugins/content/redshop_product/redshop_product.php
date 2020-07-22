@@ -25,6 +25,9 @@ class plgContentredshop_product extends JPlugin
 			JHTML::_('behavior.tooltip');
 			JHTML::_('behavior.modal');
 			JHtml::_('redshopjquery.framework');
+			JHtml::script('com_redshop/redshop.attribute.min.js', false, true);
+			JHtml::script('com_redshop/redshop.common.min.js', false, true);
+			JHtml::script('com_redshop/redshop.redbox.min.js', false, true);
 
 			JPluginHelper::importPlugin('redshop_product');
 			$dispatcher = \RedshopHelperUtility::getDispatcher();
