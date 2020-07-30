@@ -60,6 +60,7 @@
       "esms"
     ],
     "redshop_payment": [
+      "alepay",
       "baokim",
       "cielo",
       "dibsdx",
