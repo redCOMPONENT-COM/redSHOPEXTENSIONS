@@ -81,7 +81,7 @@ class plgRedshop_PaymentNganluong extends JPlugin
 
 		if ($this->params->get('sandbox') == 1)
 		{
-			$url = 'https://sandbox.nganluong.vn:8088/nl30/checkout.php';
+			$url = 'https://sandbox.nganluong.vn:8088/nl35/checkout.php';
 		}
 
 		$merchantId   = $this->params->get('nganluong_merchant_id');
