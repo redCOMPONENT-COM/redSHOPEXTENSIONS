@@ -102,7 +102,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 
 		if (empty($discountDetail))
 		{
-			return true;
+			return false;
 		}
 
 		$discountValue = $discountDetail->value;
