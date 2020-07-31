@@ -16,6 +16,11 @@ require_once 'library/Crypt/RSA.php';
 
 class plgRedshop_PaymentAlepay extends JPlugin
 {
+//    Invalid phone number
+    const ALEPAY_SUCCESS = '000';
+    const ALEPAY_INVALID_PHONE_NUMBER = '147';
+    const ALEPAY_INVALID_CARD_TYPE= '149';
+    const ALEPAY_PAYMENT_AMOUNT_IS_NOT_VALID= '156';
 	/**
 	 * Load the language file on instantiation.
 	 *
@@ -39,7 +44,7 @@ class plgRedshop_PaymentAlepay extends JPlugin
 	 * @param string $element Name of the payment plugin
 	 * @param array  $data    Cart Information
 	 *
-	 * @return  object  Authorize or Charge success or failed message and transaction id
+	 * @return  mixed  Authorize or Charge success or failed message and transaction id
 	 */
 	public function onPrePayment($element, $data)
 	{
@@ -83,28 +88,42 @@ class plgRedshop_PaymentAlepay extends JPlugin
 		$dataPost['allowDomestic'] = $this->params->get('allow_domestic') == 1 ? true : false;
 
 		$result = $this->sendRequestToAlepay($dataPost, 'checkout/v1/request-order');
+		$msg = '';
 
-		if ($result->errorCode === '000') {
-			$dataDecrypted = $this->decryptData($result->data, $this->params->get('encrypt_key'));
-			$dataDecrypted = json_decode($dataDecrypted);
-			$linkCheckout = $dataDecrypted->checkoutUrl;
-			$lang = JFactory::getLanguage();
+		switch ($result->errorCode)
+        {
+            case self::ALEPAY_SUCCESS:
+                $dataDecrypted = $this->decryptData($result->data, $this->params->get('encrypt_key'));
+                $dataDecrypted = json_decode($dataDecrypted);
+                $linkCheckout = $dataDecrypted->checkoutUrl;
+                $lang = JFactory::getLanguage();
 
-			if ($lang->getTag() == 'en-GB')
-			{
-				$linkCheckout = str_replace('/vi', '/eng', $linkCheckout);
-			}
+                if ($lang->getTag() == 'en-GB')
+                {
+                    $linkCheckout = str_replace('/vi', '/eng', $linkCheckout);
+                }
 
-			$this->app->redirect($linkCheckout);
-		} else {
-			$this->app->enqueueMessage($result->errorDescription, 'error');
+                $this->app->redirect($linkCheckout);
+                return true;
 
-			$link = JRoute::_(
-				'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Alepay&accept=0&orderid=' . $data['order_id'] . '&Itemid=' . $itemId
-			);
+            case self::ALEPAY_PAYMENT_AMOUNT_IS_NOT_VALID:
+                $msg = JText::_('PLG_RS_PAYMENT_ALEPAY_AMOUNT_IS_NOT_VALID');
+                break;
+            case self::ALEPAY_INVALID_PHONE_NUMBER:
+                $msg = JText::_('PLG_RS_PAYMENT_ALEPAY_INVALID_PHONE_NUMBER');
+                break;
+            case self::ALEPAY_INVALID_CARD_TYPE:
+                $msg = JText::_('PLG_RS_PAYMENT_ALEPAY_INVALID_CARD_TYPE');
+                break;
+        }
 
-			$this->app->redirect($link);
-		}
+        $this->app->enqueueMessage($msg, 'error');
+
+        $link = JRoute::_(
+            'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Alepay&accept=0&orderid=' . $data['order_id'] . '&Itemid=' . $itemId
+        );
+
+        $this->app->redirect($link);
 	}
 
 	private function sendRequestToAlepay($data, $url)
