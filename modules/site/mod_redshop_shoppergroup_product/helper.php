@@ -28,7 +28,7 @@ class ModRedshopShopperGroupProduct
 		$user = JFactory::getUser();
 		$shopperGroupId = \RedshopHelperUser::getShopperGroup($user->id);
 		$shopperGroupData = \Redshop\Helper\ShopperGroup::generateList($shopperGroupId);
-		$shopperGroupCategories = $shopperGroupData[0]->shopper_group_categories;
+		$shopperGroupCategories = $shopperGroupData[0]->categories;
 
 		return \RedshopHelperProduct::getProductCategory($shopperGroupCategories);
 	}
