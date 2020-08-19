@@ -21,6 +21,7 @@ class plgRedshop_PaymentAlepay extends JPlugin
     const ALEPAY_INVALID_PHONE_NUMBER = '147';
     const ALEPAY_INVALID_CARD_TYPE= '149';
     const ALEPAY_PAYMENT_AMOUNT_IS_NOT_VALID= '156';
+    const ALEPAY_PAYMENT_INVALID_CURRENCY= '121';
 	/**
 	 * Load the language file on instantiation.
 	 *
@@ -64,6 +65,13 @@ class plgRedshop_PaymentAlepay extends JPlugin
 		$dataPost['currency']         = $this->params->get('currency');
 		$dataPost['totalItem']        = $data['order_quantity'];
 
+        $lang = JFactory::getLanguage();
+
+        if ($lang->getTag() == 'en-GB')
+        {
+            $dataPost['language'] = 'eng';
+        }
+
 		$dataPost['returnUrl'] = JURI::base(
 			) . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Alepay&orderid=' . $data['order_id'] . '&accept=1&Itemid=' . $itemId;
 		$dataPost['cancelUrl'] = JURI::base(
@@ -90,40 +98,20 @@ class plgRedshop_PaymentAlepay extends JPlugin
 		$result = $this->sendRequestToAlepay($dataPost, 'checkout/v1/request-order');
 		$msg = '';
 
-		switch ($result->errorCode)
+		if ($result->errorCode == self::ALEPAY_SUCCESS)
         {
-            case self::ALEPAY_SUCCESS:
-                $dataDecrypted = $this->decryptData($result->data, $this->params->get('encrypt_key'));
-                $dataDecrypted = json_decode($dataDecrypted);
-                $linkCheckout = $dataDecrypted->checkoutUrl;
-                $lang = JFactory::getLanguage();
+            $dataDecrypted = $this->decryptData($result->data, $this->params->get('encrypt_key'));
+            $dataDecrypted = json_decode($dataDecrypted);
 
-                if ($lang->getTag() == 'en-GB')
-                {
-                    $linkCheckout = str_replace('/vi', '/eng', $linkCheckout);
-                }
-
-                $this->app->redirect($linkCheckout);
-                return true;
-
-            case self::ALEPAY_PAYMENT_AMOUNT_IS_NOT_VALID:
-                $msg = JText::_('PLG_RS_PAYMENT_ALEPAY_AMOUNT_IS_NOT_VALID');
-                break;
-            case self::ALEPAY_INVALID_PHONE_NUMBER:
-                $msg = JText::_('PLG_RS_PAYMENT_ALEPAY_INVALID_PHONE_NUMBER');
-                break;
-            case self::ALEPAY_INVALID_CARD_TYPE:
-                $msg = JText::_('PLG_RS_PAYMENT_ALEPAY_INVALID_CARD_TYPE');
-                break;
+            $this->app->redirect($dataDecrypted->checkoutUrl);
+            return true;
         }
+		else
+        {
+            $link = JUri::root() . 'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Alepay&accept=0&orderid=' . $data['order_id'] . '&Itemid=' . $itemId . '&errorCode=' . $result->errorCode;
 
-        $this->app->enqueueMessage($msg, 'error');
-
-        $link = JRoute::_(
-            'index.php?tmpl=component&option=com_redshop&view=order_detail&controller=order_detail&task=notify_payment&payment_plugin=Alepay&accept=0&orderid=' . $data['order_id'] . '&Itemid=' . $itemId
-        );
-
-        $this->app->redirect($link);
+            $this->app->redirect($link);
+        }
 	}
 
 	private function sendRequestToAlepay($data, $url)
@@ -224,6 +212,26 @@ class plgRedshop_PaymentAlepay extends JPlugin
 				$values->type                      = 'error';
 			}
 		} else {
+            $msg = '';
+
+            switch ($request['errorCode'])
+            {
+                case self::ALEPAY_PAYMENT_AMOUNT_IS_NOT_VALID:
+                    $msg = JText::_('PLG_RS_PAYMENT_ALEPAY_AMOUNT_IS_NOT_VALID');
+                    break;
+                case self::ALEPAY_INVALID_PHONE_NUMBER:
+                    $msg = JText::_('PLG_RS_PAYMENT_ALEPAY_INVALID_PHONE_NUMBER');
+                    break;
+                case self::ALEPAY_INVALID_CARD_TYPE:
+                    $msg = JText::_('PLG_RS_PAYMENT_ALEPAY_INVALID_CARD_TYPE');
+                    break;
+                case self::ALEPAY_PAYMENT_INVALID_CURRENCY:
+                    $msg = JText::_('PLG_RS_PAYMENT_ALEPAY_INVALID_CURRENCY');
+                    break;
+            }
+
+            JFactory::getApplication()->enqueueMessage($msg, 'error');
+
 			$values->order_status_code         = $invalid_status;
 			$values->order_payment_status_code = 'Unpaid';
 			$values->log                       = JText::_('PLG_RS_PAYMENT_ALEPAY_NOT_PLACED');
