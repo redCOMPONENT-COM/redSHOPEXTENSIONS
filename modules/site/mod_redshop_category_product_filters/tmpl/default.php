@@ -253,9 +253,11 @@ $group = [];
     }
 
     function submitFilter() {
-        var $filterForm = jQuery("#category-product-filter-form-<?php echo $module->id; ?>");
-        $filterForm.find('[name="limitstart"]').val(0);
-        $filterForm.submit();
+	    var $filterForm = jQuery("#category-product-filter-form-<?php echo $module->id; ?>");
+	    var sefEnabled = "<?php echo JFactory::getConfig()->get('sef') ?>";
+	    var appendCharacter = sefEnabled === "1" ? '?' : '&';
+	    $filterForm.attr('action', $filterForm.attr('action') + appendCharacter + $filterForm.serialize());
+	    $filterForm.submit();
     }
 
 
