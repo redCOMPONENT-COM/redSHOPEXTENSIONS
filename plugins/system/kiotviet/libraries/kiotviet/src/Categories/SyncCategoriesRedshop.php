@@ -41,13 +41,13 @@ class SyncCategoriesRedshop extends Category
 
 		if (!empty($category->parentId)) {
 			$kvCategory      = $this->getCategoryKiotvietById($category->parentId);
-			$categoryRedshop = self::getRedshopCategoryByIdKv($kvCategory->categoryId);
+			$categoryRedshopID = self::getRedshopCategoryByIdKv($kvCategory->categoryId);
 
 			if (empty($categoryRedshop)) {
-				$categoryRedshop->id = self::storeCategory($kvCategory);
+				$categoryRedshopID = self::storeCategory($kvCategory);
 			}
 
-			$data['parent_id'] = $categoryRedshop->id;
+			$data['parent_id'] = $categoryRedshopID;
 		}
 
 		$table->setLocation($data['parent_id'], 'last-child');
