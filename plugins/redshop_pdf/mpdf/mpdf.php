@@ -42,7 +42,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function on\RedshopOrderCreateInvoicePdf($orderId = 0, $pdfHtml = '', $code = 'F', $isEmail = false)
+	public function onRedshopOrderCreateInvoicePdf($orderId = 0, $pdfHtml = '', $code = 'F', $isEmail = false)
 	{
 		if (!$orderId || empty($pdfHtml))
 		{
@@ -95,7 +95,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since  1.0.0
 	 */
-	public function on\RedshopOrderCreateMultiInvoicePdf($orderIds = [], $pdfHtml = '')
+	public function onRedshopOrderCreateMultiInvoicePdf($orderIds = [], $pdfHtml = '')
 	{
 		if (empty($orderIds) || empty($pdfHtml))
 		{
@@ -151,7 +151,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function on\RedshopOrderCreateGiftCard($giftCard = null, $template = '')
+	public function onRedshopOrderCreateGiftCard($giftCard = null, $template = '')
 	{
 		if (empty($giftCard) || empty($template))
 		{
@@ -183,7 +183,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function on\RedshopPdfCreateShippedInvoice($orderId = 0, $pdfHtml = '')
+	public function onRedshopPdfCreateShippedInvoice($orderId = 0, $pdfHtml = '')
 	{
 		if (!$orderId || empty($pdfHtml))
 		{
@@ -220,7 +220,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function on\RedshopOrderGenerateStockNotePdf($orderData = null, $pdfHtml = '')
+	public function onRedshopOrderGenerateStockNotePdf($orderData = null, $pdfHtml = '')
 	{
 		if (empty($orderData) || empty($pdfHtml))
 		{
@@ -250,7 +250,7 @@ class PlgRedshop_PdfMPdf extends JPlugin
 	 *
 	 * @since   1.0.0
 	 */
-	public function on\RedshopOrderGenerateShippingPdf($orderData = null, $pdfHtml = '')
+	public function onRedshopOrderGenerateShippingPdf($orderData = null, $pdfHtml = '')
 	{
 		if (empty($orderData) || empty($pdfHtml))
 		{
