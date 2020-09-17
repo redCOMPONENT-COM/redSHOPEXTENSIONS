@@ -34,13 +34,10 @@ class JFormFieldStock extends JFormFieldList
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select($db->qn(array('stockroom_id', 'stockroom_name')))
+			->select($db->qn(array('id', 'name')))
 			->from($db->qn('#__redshop_stockroom'));
 
-
-		$items = $db->setQuery($query)->loadObjectList();
-
-
+		$items   = $db->setQuery($query)->loadObjectList();
 		$options = array();
 
 		if (!$this->element['multiple'])
@@ -52,7 +49,7 @@ class JFormFieldStock extends JFormFieldList
 		{
 			foreach ($items as $item)
 			{
-				$option = JHTML::_('select.option', $item->stockroom_id, $item->stockroom_name);
+				$option = JHTML::_('select.option', $item->id, $item->name);
 				$options[] = $option;
 			}
 		}

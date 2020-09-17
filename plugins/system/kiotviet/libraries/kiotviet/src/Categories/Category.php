@@ -3,12 +3,13 @@
 namespace Kiotviet\Categories;
 
 use Kiotviet\ConnectApi;
+use Joomla\Registry\Registry;
 
 class Category extends ConnectApi
 {
 	protected $_options;
 
-	public function __construct($accessToken, $retailName, $options = array())
+	public function __construct($accessToken, $retailName, Registry $options)
 	{
 		$this->_headers = $this->getHeaders($accessToken, $retailName);
 		$this->_client  = $this->getClient();
