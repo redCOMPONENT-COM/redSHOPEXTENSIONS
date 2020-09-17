@@ -107,12 +107,6 @@ class plgSystemKiotviet extends JPlugin
 	public function onAjaxSyncCategories()
 	{
 		$accessToken = $this->getAccessToken();
-		$options     = array(
-			'category_products_per_page' => $this->params->get('category_products_per_page'),
-			'category_template'          => $this->params->get('category_template'),
-			'update_redshop_category'    => $this->params->get('update_redshop_category')
-		);
-
 		if ($this->params->get('update_redshop_category')) {
 			$categoryRedshop = new SyncCategoriesRedshop($accessToken, $this->params->get('retailer'), $this->params);
 			$categoryRedshop->execute();

@@ -18,12 +18,12 @@ JFormHelper::loadFieldClass('list');
  *
  * @since  1.5
  */
-class JFormFieldBranch extends JFormFieldList
+class JFormFieldKiotvietcategory extends JFormFieldList
 {
     /**
      * @access private
      */
-    protected $name = 'branch';
+    protected $name = 'kiotvietcategory';
 
     /**
      * Method to get the field input markup for a generic list.
@@ -49,7 +49,6 @@ class JFormFieldBranch extends JFormFieldList
             'client_id' => $params->client_id,
             'secret_id' => $params->secret_id
         );
-
         $kiotviet->setConfig($config);
 
         $accessToken = $kiotviet->getAccessToken();
@@ -57,26 +56,26 @@ class JFormFieldBranch extends JFormFieldList
 
         $client = $kiotviet->getClient();
 
+        $response = $client->request('GET', 'categories', $headers);
+
         try {
-            $response = $client->request('GET', 'branches', $headers);
+            $response = $client->request('GET', 'categories', $headers);
         } catch (Exception $e) {
             return false;
         }
 
-        $branches = json_decode($response->getBody()->getContents())->data;
+        $categories = json_decode($response->getBody()->getContents())->data;
 
-        $options   = [];
-        $branchIds = [];
+        $options   = array();
 
-        if ( ! $this->element['multiple']) {
-            $options[] = JHTML::_('select.option', '', JText::_('PLG_SYSTEM_KIOTVIET_SELECT_BRANCH'), 'value', 'text');
+        if (!$this->element['multiple']) {
+            $options[] = JHTML::_('select.option', '', JText::_('PLG_SYSTEM_KIOTVIET_SELECT_CATEGORIES'), 'value', 'text');
         }
 
-        if (count($branches) > 0) {
-            foreach ($branches as $item) {
-                $option      = JHTML::_('select.option', $item->id, $item->branchName);
+        if (count($categories) > 0) {
+            foreach ($categories as $category) {
+                $option      = JHTML::_('select.option', $category->categoryId, $category->categoryName);
                 $options[]   = $option;
-                $branchIds[] = $item->branchName . '#' . $item->id;
             }
         }
 
