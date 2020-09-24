@@ -25,6 +25,9 @@ $layout          = $params->get('layout', 'default');
 $productPerRow   = $params->get('number_of_row');
 
 \JFactory::getDocument()->addStyleSheet("modules/mod_redproducttab/css/style.css");
+JFactory::getDocument()->addStyleSheet("modules/mod_redproducttab/css/bootstrap.min.css");
+JFactory::getDocument()->addStyleSheet("modules/mod_redproducttab/js/bootstrap.min.js");
+JFactory::getDocument()->addStyleSheet("modules/mod_redproducttab/js/jquery.min.js");
 
 \JLoader::import('redshop.library');
 
