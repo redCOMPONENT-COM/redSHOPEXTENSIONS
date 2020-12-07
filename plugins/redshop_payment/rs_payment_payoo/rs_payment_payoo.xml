@@ -2,8 +2,8 @@
 <extension version="3.0" type="plugin" group="redshop_payment"
 		   method="upgrade">
 	<name>PLG_RS_PAYMENT_PAYOO</name>
-	<version>1.5.2</version>
-	<redshop>2.0</redshop>
+	<version>1.5.3</version>
+	<redshop>3.0.3</redshop>
 	<creationDate>Sep 2016</creationDate>
 	<author>redCOMPONENT.com</author>
 	<authorEmail>email@redcomponent.com</authorEmail>
@@ -19,13 +19,19 @@
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_rs_payment_payoo.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_rs_payment_payoo.sys.ini</language>
-		<language tag="vi-VN">language/vi-VN/vi-VN.plg_redshop_payment_rs_payment_payoo.ini</language>
-		<language tag="vi-VN">language/vi-VN/vi-VN.plg_redshop_payment_rs_payment_payoo.sys.ini</language>
 	</languages>
 	<config addfieldpath="/libraries/redshop/form/fields">
 		<fields name="params">
 			<fieldset name="basic">
-
+				<field
+						name="sandbox"
+						type="radio"
+						default="0"
+						label="PLG_RS_PAYMENT_PAYOO_SANDBOX_LBL"
+						class="btn-group">
+					<option value="0">PLG_RS_PAYMENT_PAYOO_LIVE</option>
+					<option value="1">PLG_RS_PAYMENT_PAYOO_SANDBOX</option>
+				</field>
 				<field name="username" type="text" size="30" default=""
 					   label="PLG_RS_PAYMENT_PAYOO_USERNAME_LBL"/>
 
