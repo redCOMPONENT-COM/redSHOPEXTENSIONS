@@ -134,7 +134,7 @@ class plgRedshop_paymentrs_payment_payment_express extends JPlugin
 
 			// Get user billing information
 			$session = JFactory::getSession();
-			$ccdata = $session->get('ccdata');
+			$creditCardData = $session->get('ccdata');
 
 			// Calculate AmountInput
 
@@ -143,7 +143,7 @@ class plgRedshop_paymentrs_payment_payment_express extends JPlugin
 			// Convert .8 to .80
 			$amount = sprintf("%9.2f", $amount);
 
-			$currency = Redshop::getConfig()->get('CURRENCY_CODE');
+			$currency = \Redshop::getConfig()->get('CURRENCY_CODE');
 			$merchRef = substr($data['billinginfo']->firstname, 0, 50) . " " . substr($data['billinginfo']->lastname, 0, 50);
 			$cmdDoTxnTransaction .= "<Txn>";
 
@@ -156,10 +156,10 @@ class plgRedshop_paymentrs_payment_payment_express extends JPlugin
 				. "</PostPassword>";
 			$cmdDoTxnTransaction .= "<Amount>" . $amount . "</Amount>";
 			$cmdDoTxnTransaction .= "<InputCurrency>$currency</InputCurrency>";
-			$cmdDoTxnTransaction .= "<CardHolderName>" . $ccdata['order_payment_name'] . "</CardHolderName>";
-			$cmdDoTxnTransaction .= "<CardNumber>" . $ccdata['order_payment_number'] . "</CardNumber>";
-			$cmdDoTxnTransaction .= "<DateExpiry>" . ($ccdata['order_payment_expire_month']) . substr($ccdata['order_payment_expire_year'], 2, 2) . "</DateExpiry>";
-			$cmdDoTxnTransaction .= "<Cvc2>" . $ccdata['credit_card_code'] . "</Cvc2>";
+			$cmdDoTxnTransaction .= "<CardHolderName>" . $creditCardData['order_payment_name'] . "</CardHolderName>";
+			$cmdDoTxnTransaction .= "<CardNumber>" . $creditCardData['order_payment_number'] . "</CardNumber>";
+			$cmdDoTxnTransaction .= "<DateExpiry>" . ($creditCardData['order_payment_expire_month']) . substr($creditCardData['order_payment_expire_year'], 2, 2) . "</DateExpiry>";
+			$cmdDoTxnTransaction .= "<Cvc2>" . $creditCardData['credit_card_code'] . "</Cvc2>";
 			$cmdDoTxnTransaction .= "<TxnType>" . $this->params->get("px_post_txntype") . "</TxnType>";
 			$cmdDoTxnTransaction .= "<TxnData1>" . JText::_('COM_REDSHOP_ORDER_ID') . " : "
 				. $order_number . "</TxnData1>";
@@ -223,8 +223,8 @@ class plgRedshop_paymentrs_payment_payment_express extends JPlugin
 		xml_parse_into_struct($xml_parser, $data, $vals, $index);
 		xml_parser_free($xml_parser);
 
-		$params = array();
-		$level = array();
+		$params = [];
+		$level = [];
 
 		foreach ($vals as $xml_elem)
 		{
@@ -270,7 +270,7 @@ class plgRedshop_paymentrs_payment_payment_express extends JPlugin
 		$db = JFactory::getDbo();
 		JPlugin::loadLanguage('com_redshop');
 		$order_id = $data['order_id'];
-		$Itemid = $_REQUEST['Itemid'];
+		$itemId = $_REQUEST['Itemid'];
 
 		if ($this->params->get("px_post_txntype") == 'Auth')
 		{
@@ -281,12 +281,12 @@ class plgRedshop_paymentrs_payment_payment_express extends JPlugin
 			// Get user billing information
 
 			// Calculate AmountInput
-			$amount = $order_total;
+			$amount = $orderTotal;
 
 			$order_payment_amount = $orderDetail[0]->order_payment_amount;
 			$order_payment_trans_id = $orderDetail[0]->order_payment_trans_id;
 
-			$currency = Redshop::getConfig()->get('CURRENCY_CODE');
+			$currency = \Redshop::getConfig()->get('CURRENCY_CODE');
 			$cmdDoTxnTransaction .= "<Txn>";
 
 			// Insert your DPS Username here

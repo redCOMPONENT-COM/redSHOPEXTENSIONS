@@ -70,7 +70,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 		$mailBcc     = null;
 		$productName = null;
 
-		$mailInfo = RedshopHelperMail::getMailTemplate(0, "send_discount_code_mail", '');
+		$mailInfo = \RedshopHelperMail::getMailTemplate(0, "send_discount_code_mail", '');
 
 		if (empty($mailInfo))
 		{
@@ -88,7 +88,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 			$mailBcc = explode(",", $mailInfo[0]->mail_bcc);
 		}
 
-		$mailBody = RedshopHelperMail::imgInMail($mailBody);
+		$mailBody = \RedshopHelperMail::imgInMail($mailBody);
 
 		$app   = JFactory::getApplication();
 		$input = $app->input;
@@ -102,7 +102,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 
 		if (empty($discountDetail))
 		{
-			return true;
+			return false;
 		}
 
 		$discountValue = $discountDetail->value;
@@ -111,17 +111,17 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 		{
 			$discountValue = $discountDetail->amount;
 			$productIds = $this->getProductsVoucher($discountDetail->id);
-			$arrName = array();
+			$arrName = [];
 
 			foreach ($productIds as $productId)
 			{
-				$arrName[] = RedshopEntityProduct::getInstance($productId)->getItem()->product_name;
+				$arrName[] = \RedshopEntityProduct::getInstance($productId)->getItem()->product_name;
 			}
 
 			$productName = implode(',',$arrName);
 		}
 
-		$value = RedshopHelperProductPrice::formattedPrice($discountValue);
+		$value = \RedshopHelperProductPrice::formattedPrice($discountValue);
 
 		if ($discountDetail->type == '1' || $discountDetail->type == 'Percentage')
 		{
@@ -134,7 +134,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 		$mailBody = str_replace('{discount_end_date}', $discountDetail->end_date, $mailBody);
 		$mailBody = str_replace('{discount_voucher_product}', $productName, $mailBody);
 
-		if (!RedshopHelperMail::sendEmail($from, $fromName, $email, $subject, $mailBody, true, null, $mailBcc))
+		if (!\RedshopHelperMail::sendEmail($from, $fromName, $email, $subject, $mailBody, true, null, $mailBcc))
 		{
 			JError::raiseWarning(21, JText::_('COM_REDSHOP_ERROR_SENDING_CONFIRMATION_MAIL'));
 
@@ -186,7 +186,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 			return;
 		}
 
-		$render .= RedshopLayoutHelper::render(
+		$render .= \RedshopLayoutHelper::render(
 			'form',
 			array(
 				'view' => $input->get('view', '')

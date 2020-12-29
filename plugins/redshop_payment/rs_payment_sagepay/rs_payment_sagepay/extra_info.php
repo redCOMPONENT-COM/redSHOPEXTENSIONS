@@ -13,7 +13,7 @@ $url    = $uri->root();
 $user   = JFactory::getUser();
 $db     = JFactory::getDbo();
 $input  = JFactory::getApplication()->input;
-$Itemid = $input->getInt('Itemid');
+$itemId = $input->getInt('Itemid');
 
 if ($this->params->get("payment_method") == "TEST")
 {
@@ -76,10 +76,10 @@ if ($data['shippinginfo']->address != "" && $data['shippinginfo']->address != "0
 		"VendorTxCode"       => $strVendorTxCode,
 		"VendorEMail"        => $VendorEMail,
 		"Amount"             => $data['carttotal'],
-		"Currency"           => Redshop::getConfig()->get('CURRENCY_CODE'),
+		"Currency"           => \Redshop::getConfig()->get('CURRENCY_CODE'),
 		"Description"        => $data['order_id'],
-		"SuccessURL"         => JURI::base() . "index.php?option=com_redshop&view=order_detail&tmpl=component&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay&Itemid=$Itemid&orderid=" . $data['order_id'],
-		"FailureURL"         => JURI::base() . "index.php?option=com_redshop&view=order_detail&tmpl=component&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay&Itemid=$Itemid&orderid=" . $data['order_id'],
+		"SuccessURL"         => JURI::base() . "index.php?option=com_redshop&view=order_detail&tmpl=component&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay&Itemid=$itemId&orderid=" . $data['order_id'],
+		"FailureURL"         => JURI::base() . "index.php?option=com_redshop&view=order_detail&tmpl=component&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay&Itemid=$itemId&orderid=" . $data['order_id'],
 		"CustomerName"       => urlencode($data['billinginfo']->firstname),
 		"SendEMail"          => 1,
 		"BillingFirstnames"  => urlencode($data['billinginfo']->firstname),
@@ -109,10 +109,10 @@ else
 		"VendorTxCode"       => $strVendorTxCode,
 		"VendorEMail"        => $VendorEMail,
 		"Amount"             => $data['carttotal'],
-		"Currency"           => Redshop::getConfig()->get('CURRENCY_CODE'),
+		"Currency"           => \Redshop::getConfig()->get('CURRENCY_CODE'),
 		"Description"        => $data['order_id'],
-		"SuccessURL"         => JURI::base() . "index.php?option=com_redshop&view=order_detail&tmpl=component&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay&Itemid=$Itemid&orderid=" . $data['order_id'],
-		"FailureURL"         => JURI::base() . "index.php?option=com_redshop&view=order_detail&tmpl=component&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay&Itemid=$Itemid&orderid=" . $data['order_id'],
+		"SuccessURL"         => JURI::base() . "index.php?option=com_redshop&view=order_detail&tmpl=component&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay&Itemid=$itemId&orderid=" . $data['order_id'],
+		"FailureURL"         => JURI::base() . "index.php?option=com_redshop&view=order_detail&tmpl=component&controller=order_detail&task=notify_payment&payment_plugin=rs_payment_sagepay&Itemid=$itemId&orderid=" . $data['order_id'],
 		"CustomerName"       => urlencode($data['billinginfo']->firstname),
 		"SendEMail"          => 1,
 		"BillingFirstnames"  => urlencode($data['billinginfo']->firstname),

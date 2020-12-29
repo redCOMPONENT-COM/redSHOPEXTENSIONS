@@ -28,7 +28,7 @@ class PlgRedshop_Vies_RegistrationRs_Vies_Registration extends JPlugin
 	 *
 	 * @since   1.5
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		JHtml::_('redshopjquery.framework');
 		$lang = JFactory::getLanguage();

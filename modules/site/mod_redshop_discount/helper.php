@@ -44,7 +44,7 @@ abstract class ModRedshopDiscountHelper
 			->where($db->qn('d.published') . ' = 1')
 			->where($db->qn('d.start_date') . ' <= ' . $db->q($time))
 			->where($db->qn('d.end_date') . ' >= ' . $db->q($time))
-			->where($db->qn('ds.shopper_group_id') . ' = ' . (int) RedshopHelperUser::getShopperGroup(JFactory::getUser()->id))
+			->where($db->qn('ds.shopper_group_id') . ' = ' . (int) \RedshopHelperUser::getShopperGroup(JFactory::getUser()->id))
 			->order($db->qn('d.amount') . ' ASC');
 		$data = $db->setQuery($query)->LoadObjectList();
 

@@ -40,7 +40,7 @@ class PlgRedshop_UserCmc_Integrate extends JPlugin
 	 *
 	 * @return  boolean
 	 */
-	public function addNewsLetterSubscription($isNew, $data = array())
+	public function addNewsLetterSubscription($isNew, $data = [])
 	{
 		if (!$this->check())
 		{
@@ -57,7 +57,7 @@ class PlgRedshop_UserCmc_Integrate extends JPlugin
 			$userId = $data['user_id'];
 		}
 
-		$userInfor = RedshopHelperUser::getUserInformation($userId);
+		$userInfor = \RedshopHelperUser::getUserInformation($userId);
 
 		if (empty($userInfor->email))
 		{
@@ -140,7 +140,7 @@ class PlgRedshop_UserCmc_Integrate extends JPlugin
 	 */
 	public function onAjaxCmcIntegrateListSelect()
 	{
-		RedshopHelperAjax::validateAjaxRequest();
+		\RedshopHelperAjax::validateAjaxRequest();
 
 		$app = JFactory::getApplication();
 
@@ -148,7 +148,7 @@ class PlgRedshop_UserCmc_Integrate extends JPlugin
 
 		if (empty($listId))
 		{
-			echo json_encode(array());
+			echo json_encode([]);
 		}
 
 		$mergeFields = CmcHelperList::getMergeFields($listId);
@@ -201,11 +201,11 @@ class PlgRedshop_UserCmc_Integrate extends JPlugin
 	{
 		if (!$raw)
 		{
-			return array();
+			return [];
 		}
 
 		$lines = explode("\n", trim($raw));
-		$groups = array();
+		$groups = [];
 
 		foreach ($lines as $line)
 		{

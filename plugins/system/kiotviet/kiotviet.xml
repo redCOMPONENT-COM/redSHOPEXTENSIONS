@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" client="site" type="plugin" group="system" method="upgrade">
+	<name>PLG_SYSTEM_KIOTVIET</name>
+	<version>1.0.3</version>
+	<redshop>2.1.3</redshop>
+	<creationDate>September 2016</creationDate>
+	<author>redCOMPONENT.com</author>
+	<authorEmail>email@redcomponent.com</authorEmail>
+	<authorUrl>http://www.redcomponent.com</authorUrl>
+	<copyright>redCOMPONENT.com</copyright>
+	<license>GNU General Public License v2</license>
+	<description>PLG_SYSTEM_KIOTVIET_DESC</description>
+	<scriptfile>install.php</scriptfile>
+	<files>
+		<filename plugin="kiotviet">kiotviet.php</filename>
+		<folder>libraries</folder>
+		<folder>js</folder>
+		<folder>sql</folder>
+		<folder>fields</folder>
+	</files>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_system_kiotviet.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_system_kiotviet.sys.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params" addfieldpath="/plugins/system/kiotviet/fields">
+			<fieldset name="basic">
+				<field
+						name="client_id"
+						type="text"
+						default=""
+						label="PLG_SYSTEM_KIOTVIET_CLIENT_ID"
+						required="true"
+				/>
+				<field
+						name="secret_id"
+						type="text"
+						default=""
+						label="PLG_SYSTEM_KIOTVIET_SECRET_ID"
+						required="true"
+				/>
+				<field
+						name="retailer"
+						type="text"
+						default=""
+						label="PLG_SYSTEM_KIOTVIET_RETAILER"
+						required="true"
+				/>
+				<field
+						name="use_lalamove"
+						type="radio"
+						default="0"
+						label="PLG_SYSTEM_KIOTVIET_USE_LALAMOVE"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+			</fieldset>
+			<fieldset name="category">
+				<field
+						name="update_category_per_page"
+						type="radio"
+						default="0"
+						label="PLG_SYSTEM_KIOTVIET_UPDATE_CATEGORY_PER_PAGE"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="category_products_per_page"
+						type="number"
+						default="5"
+						label="PLG_SYSTEM_KIOTVIET_CATEGORY_PRODUCT_PER_PAGE"
+						description="PLG_SYSTEM_KIOTVIET_CATEGORY_PRODUCT_PER_PAGE_DESC"
+						showon="update_category_per_page:1"
+				/>
+				<field
+						name="update_category_template"
+						type="radio"
+						default="1"
+						label="PLG_SYSTEM_KIOTVIET_UPDATE_CATEGORY_TEMPLATE"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="category_template"
+						type="template"
+						default="5"
+						label="PLG_SYSTEM_KIOTVIET_CATEGORY_TEMPLATE"
+						description="PLG_SYSTEM_KIOTVIET_CATEGORY_TEMPLATE_DESC"
+						showon="update_category_template:1"
+				/>
+
+				<field
+						name="update_redshop_category"
+						type="radio"
+						default="1"
+						label="PLG_SYSTEM_KIOTVIET_UPDATE_REDSHOP_CATEGORY"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="Category_parent"
+						type="redshopcategory"
+						default=""
+						label="PLG_SYSTEM_KIOTVIET_CATEGORY_PARENT"
+						description="PLG_SYSTEM_KIOTVIET_CATEGORY_PARENT_DESC"
+				/>
+				<field
+						name="category_enable_filter"
+						type="radio"
+						default="0"
+						label="PLG_SYSTEM_KIOTVIET_CATEGORY_ENABLE_FILTER"
+						description="PLG_SYSTEM_KIOTVIET_CATEGORY_ENABLE_FILTER_DESC"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="keyword_enable"
+						showon="category_enable_filter:1"
+						type="redshop.radio"
+						default="0"
+						label="COM_REDSHOP_KEYWORD_ENABLE">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="product_attributes"
+						showon="category_enable_filter:1"
+						type="productattributes"
+						product_ids=""
+						label="COM_REDSHOP_PRODUCT_ATTRIBUTES"
+						multiple="true"
+				/>
+				<field
+						name="category_enable"
+						showon="category_enable_filter:1"
+						type="redshop.radio"
+						default="0"
+						label="COM_REDSHOP_FILTER_ENABLE_CATEGORY"
+						description="COM_REDSHOP_FILTER_ENABLE_CATEGORY_NOTICE">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="manufacturer_enable"
+						showon="category_enable_filter:1"
+						type="redshop.radio"
+						default="0"
+						label="COM_REDSHOP_FILTER_ENABLE_MANUFACTURER">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="price_enable"
+						showon="category_enable_filter:1"
+						type="redshop.radio"
+						default="0"
+						label="COM_REDSHOP_FILTER_ENABLE_PRICE">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="customfield_enable"
+						showon="category_enable_filter:1"
+						type="redshop.radio"
+						default="0"
+						label="COM_REDSHOP_FILTER_ENABLE_CUSTOM_FIELDS">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="customfields"
+						type="extrafields"
+						showon="category_enable_filter:1[AND]customfield_enable:1"
+						section="1"
+						field_type="3,4,5,6"
+						multiple="true"
+						label="COM_REDSHOP_PRODUCT_CUSTOM_FIELDS"
+						description="COM_REDSHOP_PRODUCT_CUSTOM_FIELDS_FILTER_NOTICE">
+				</field>
+			</fieldset>
+			<fieldset name="products">
+				<field
+						name="update_product_template"
+						type="radio"
+						default="0"
+						label="PLG_SYSTEM_KIOTVIET_UPDATE_PRODUCT_TEMPLATE"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="product_template"
+						type="redshop.template"
+						default="9"
+						section="product"
+						label="PLG_SYSTEM_KIOTVIET_PRODUCT_TEMPLATE"
+						description="PLG_SYSTEM_KIOTVIET_PRODUCT_TEMPLATE_DESC"
+						showon="update_product_template:1"
+				/>
+				<field
+						name="update_redshop_product"
+						type="radio"
+						default="1"
+						label="PLG_SYSTEM_KIOTVIET_UPDATE_REDSHOP_PRODUCT"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="update_redshop_stockroom"
+						type="radio"
+						default="1"
+						label="PLG_SYSTEM_KIOTVIET_UPDATE_REDSHOP_STOCKROOM"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="update_redshop_image"
+						type="radio"
+						default="1"
+						label="PLG_SYSTEM_KIOTVIET_UPDATE_REDSHOP_IMAGE"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="update_redshop_price"
+						type="radio"
+						default="1"
+						label="PLG_SYSTEM_KIOTVIET_UPDATE_REDSHOP_PRICE"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="remove_category_maping"
+						type="radio"
+						default="0"
+						label="PLG_SYSTEM_KIOTVIET_REMOVE_CATEGORY_MAPING"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="update_product_short_desc"
+						type="radio"
+						default="1"
+						label="PLG_SYSTEM_KIOTVIET_UPDATE_PRODUCT_SHORT_DESC"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+			</fieldset>
+			<fieldset name="branch">
+				<field
+						name="mapping_branch"
+						type="subform"
+						multiple="true"
+						required="true"
+						label="PLG_SYSTEM_KIOTVIET_BRANCH">
+					<form>
+						<field
+								name="state"
+								type="state"
+								label="PLG_SYSTEM_KIOTVIET_STATE"
+								required="true"
+						/>
+						<field
+								name="branch"
+								type="branch"
+								label="PLG_SYSTEM_KIOTVIET_BRANCH"
+								required="true"
+						/>
+					</form>
+				</field>
+			</fieldset>
+			<fieldset name="stock">
+				<field
+						name="mapping_stock"
+						type="subform"
+						multiple="true"
+						required="true"
+						label="PLG_SYSTEM_KIOTVIET_STOCK">
+					<form>
+						<field
+								name="stock"
+								type="stock"
+								label="PLG_SYSTEM_KIOTVIET_STOCK"
+								required="true"
+						/>
+						<field
+								name="branch"
+								type="branch"
+								label="PLG_SYSTEM_KIOTVIET_BRANCH"
+								required="true"
+						/>
+					</form>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.sql</file>
+		</sql>
+	</uninstall>
+</extension>

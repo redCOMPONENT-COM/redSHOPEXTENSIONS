@@ -28,7 +28,7 @@ use PayPal\Rest\ApiContext;
 /**
  * Paypal CreditCard payment class
  *
- * @package  Redshop.Plugin
+ * @package  \Redshop.Plugin
  *
  * @since    2.0.0
  */
@@ -82,8 +82,8 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 		{
 			try
 			{
-				$ccdata         = JFactory::getSession()->get('ccdata');
-				$selectedCardId = $ccdata['selectedCardId'];
+				$creditCardData         = JFactory::getSession()->get('ccdata');
+				$selectedCardId = $creditCardData['selectedCardId'];
 
 				if ($selectedCardId != '')
 				{
@@ -134,17 +134,17 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 		// Itemized information
 		// (Optional) Lets you specify item wise
 		// information
-		$cartItems = array();
+		$cartItems = [];
 
 		for ($i = 0; $i < $cart['idx']; $i++)
 		{
 			$cartItem    = $cart[$i];
-			$product     = RedshopHelperProduct::getProductById($cartItem['product_id']);
+			$product     = \Redshop\Product\Product::getProductById($cartItem['product_id']);
 			$tax         = ($cartItem['product_vat'] < 0) ? 0 : $cartItem['product_vat'];
 			$item        = new Item();
 			$cartItems[] = $item->setName($product->product_name)
 				->setDescription($product->product_s_desc)
-				->setCurrency(Redshop::getConfig()->get('CURRENCY_CODE'))
+				->setCurrency(\Redshop::getConfig()->get('CURRENCY_CODE'))
 				->setQuantity($cartItem['quantity'])
 				->setTax($tax)
 				->setPrice($cartItem['product_price']);
@@ -177,7 +177,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 		$transaction = new Transaction();
 		$transaction->setAmount($amount)
 			->setItemList($itemList)
-			->setDescription(Redshop::getConfig()->get('SHOP_NAME') . ' Order No ' . $data['order_number'])
+			->setDescription(\Redshop::getConfig()->get('SHOP_NAME') . ' Order No ' . $data['order_number'])
 			->setInvoiceNumber(uniqid());
 
 
@@ -239,8 +239,8 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 	protected function creditCard($data)
 	{
 		$billingInfo = $data['billinginfo'];
-		$ccdata      = JFactory::getSession()->get('ccdata');
-		$cardType    = strtolower($ccdata['creditcard_code']);
+		$creditCardData      = JFactory::getSession()->get('ccdata');
+		$cardType    = strtolower($creditCardData['creditcard_code']);
 
 		if ('mc' == $cardType)
 		{
@@ -253,10 +253,10 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 		 */
 		$card = new CreditCard;
 		$card->setType($cardType)
-			->setNumber($ccdata['order_payment_number'])
-			->setExpireMonth($ccdata['order_payment_expire_month'])
-			->setExpireYear($ccdata['order_payment_expire_year'])
-			->setCvv2($ccdata['credit_card_code'])
+			->setNumber($creditCardData['order_payment_number'])
+			->setExpireMonth($creditCardData['order_payment_expire_month'])
+			->setExpireYear($creditCardData['order_payment_expire_year'])
+			->setCvv2($creditCardData['credit_card_code'])
 			->setFirstName($billingInfo->firstname)
 			->setLastName($billingInfo->lastname);
 
@@ -298,11 +298,11 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 			return;
 		}
 
-		$user = RedshopHelperUser::getUserInformation(JFactory::getUser()->id);
+		$user = \RedshopHelperUser::getUserInformation(JFactory::getUser()->id);
 
 		$apiContext = $this->loadFramework();
 
-		$html = RedshopLayoutHelper::render(
+		$html = \RedshopLayoutHelper::render(
 			'cards',
 			array(
 				'apiContext'         => $apiContext,
@@ -343,7 +343,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 			'cardExpireMonth' => $app->input->getInt('cardExpireMonth'),
 			'cardExpireYear'  => $app->input->getInt('cardExpireYear'),
 			'cardCvv'         => $app->input->getInt('cardCvv'),
-			'users_info_id'   => RedshopHelperUser::getUserInformation(JFactory::getUser()->id)->users_info_id
+			'users_info_id'   => \RedshopHelperUser::getUserInformation(JFactory::getUser()->id)->users_info_id
 		);
 
 		$this->$ajaxMethod($data);
@@ -406,7 +406,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 
 			$cardId = $card->getId();
 
-			$html = RedshopLayoutHelper::render(
+			$html = \RedshopLayoutHelper::render(
 				'card',
 				array(
 					'card'            => $card,
@@ -536,7 +536,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 	protected function getSystemMessages()
 	{
 		$messages           = JFactory::getApplication()->getMessageQueue();
-		$return['messages'] = array();
+		$return['messages'] = [];
 
 		if (is_array($messages))
 		{
@@ -547,7 +547,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 						$msg['type'] => array($msg['message'])
 					)
 				);
-				$msg['message'] = RedshopLayoutHelper::render('system.message', $msgList);
+				$msg['message'] = \RedshopLayoutHelper::render('system.message', $msgList);
 
 				switch ($msg['type'])
 				{
@@ -664,7 +664,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 		try
 		{
 			$amount = new Amount();
-			$amount->setCurrency(Redshop::getConfig()->get('CURRENCY_CODE'))
+			$amount->setCurrency(\Redshop::getConfig()->get('CURRENCY_CODE'))
 				->setTotal($data['order_amount']);
 
 			// Capture
@@ -718,7 +718,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 	{
 		$data = json_decode($ex->getData());
 
-		$errorMessage   = array();
+		$errorMessage   = [];
 		$errorMessage[] = $data->name;
 
 		if (isset($data->details))
@@ -765,7 +765,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 	{
 		$app = JFactory::getApplication();
 
-		$orderInfo = RedshopEntityOrder::getInstance($orderId)->getItem();
+		$orderInfo = \RedshopEntityOrder::getInstance($orderId)->getItem();
 
 		// Only pay when order status is set to pending and unpaid.
 		if ('P' != $orderInfo->order_status && 'Unpaid' != $orderInfo->order_payment_status)
@@ -782,7 +782,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 			return false;
 		}
 
-		$paymentInfo = RedshopHelperOrder::getPaymentInfo($orderId);
+		$paymentInfo = \RedshopHelperOrder::getPaymentInfo($orderId);
 		$cardId      = $paymentInfo->order_payment_trans_id;
 
 		$apiContext = $this->loadFramework();
@@ -802,7 +802,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 			->setFundingInstruments(array($fi));
 
 		// Itemized information
-		$cartItems  = array();
+		$cartItems  = [];
 		$orderItems = order_functions::getInstance()->getOrderItemDetail($orderId);
 
 		for ($i = 0, $n = count($orderItems); $i < $n; $i++)
@@ -815,7 +815,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 			$item        = new Item;
 			$cartItems[] = $item->setName($orderItem->order_item_name)
 				->setDescription('')
-				->setCurrency(Redshop::getConfig()->get('CURRENCY_CODE'))
+				->setCurrency(\Redshop::getConfig()->get('CURRENCY_CODE'))
 				->setQuantity($orderItem->product_quantity)
 				->setTax()
 				->setPrice($orderItem->product_item_price);
@@ -834,7 +834,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 
 		// Amount
 		$amount = new Amount;
-		$amount->setCurrency(Redshop::getConfig()->get('CURRENCY_CODE'))
+		$amount->setCurrency(\Redshop::getConfig()->get('CURRENCY_CODE'))
 			->setTotal($orderInfo->order_total)
 			->setDetails($details);
 
@@ -842,7 +842,7 @@ class PlgRedshop_PaymentPaypalCreditcard extends JPlugin
 		$transaction = new Transaction;
 		$transaction->setAmount($amount)
 			->setItemList($itemList)
-			->setDescription(Redshop::getConfig()->get('SHOP_NAME') . ' Order No ' . $orderInfo->order_number)
+			->setDescription(\Redshop::getConfig()->get('SHOP_NAME') . ' Order No ' . $orderInfo->order_number)
 			->setInvoiceNumber(uniqid());
 
 		// Payment

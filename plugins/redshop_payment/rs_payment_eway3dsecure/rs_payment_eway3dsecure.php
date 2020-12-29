@@ -24,7 +24,7 @@ class PlgRedshop_Paymentrs_Payment_Eway3dsecure extends JPlugin
 	 *                             Recognized key values include 'name', 'group', 'params', 'language'
 	 *                             (this list is not meant to be comprehensive).
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		JPlugin::loadLanguage('plg_redshop_payment_rs_payment_eway3dsecure');
 		parent::__construct($subject, $config);

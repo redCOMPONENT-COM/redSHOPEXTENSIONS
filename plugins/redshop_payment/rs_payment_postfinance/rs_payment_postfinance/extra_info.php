@@ -12,8 +12,7 @@ JLoader::import('redshop.library');
 $objOrder         = order_functions::getInstance();
 $objconfiguration = Redconfiguration::getInstance();
 $user             = JFactory::getUser();
-$shipping_address = RedshopHelperOrder::getOrderShippingUserInfo($data['order_id']);
-$redhelper        = redhelper::getInstance();
+$shipping_address = \RedshopHelperOrder::getOrderShippingUserInfo($data['order_id']);
 $db               = JFactory::getDbo();
 $user             = JFActory::getUser();
 $task             = JRequest::getVar('task');
@@ -40,7 +39,7 @@ else
 	$postfinanceurl = "https://e-payment.postfinance.ch/ncol/prod/orderstandard.asp";
 }
 
-$order->order_subtotal = round(RedshopHelperCurrency::convert($order_details[0]->order_total, '', 'USD'), 2) * 100;
+$order->order_subtotal = round(\RedshopHelperCurrency::convert($order_details[0]->order_total, '', 'USD'), 2) * 100;
 
 $post_variables = Array(
 	"orderID"      => $data['order_id'],

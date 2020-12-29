@@ -32,11 +32,11 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		$user    = JFactory::getUser();
 		$values  = new stdClass;
 		$session = JFactory::getSession();
-		$ccdata  = $session->get('ccdata');
+		$creditCardData  = $session->get('ccdata');
 
 		// Get Payment Params
 		$partner           = $this->params->get("partner");
-		$merchant_id       = $this->params->get("merchant_id");
+		$merchantId       = $this->params->get("merchant_id");
 		$merchant_password = $this->params->get("merchant_password");
 		$merchant_user     = $this->params->get("merchant_user");
 		$paymentType       = $this->params->get("sales_auth_only");
@@ -61,19 +61,19 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		$shcountry   = urlencode($data['shippinginfo']->country_2_code);
 
 		// Get CreditCard Data
-		$strCardHolder    = substr($ccdata['order_payment_name'], 0, 100);
-		$creditCardType   = urlencode($ccdata['creditcard_code']);
-		$creditCardNumber = urlencode($ccdata['order_payment_number']);
-		$strExpiryDate    = substr($ccdata['order_payment_expire_month'], 0, 2) . substr($ccdata['order_payment_expire_year'], -2);
-		$strCV2           = substr($ccdata['credit_card_code'], 0, 4);
+		$strCardHolder    = substr($creditCardData['order_payment_name'], 0, 100);
+		$creditCardType   = urlencode($creditCardData['creditcard_code']);
+		$creditCardNumber = urlencode($creditCardData['order_payment_number']);
+		$strExpiryDate    = substr($creditCardData['order_payment_expire_month'], 0, 2) . substr($creditCardData['order_payment_expire_year'], -2);
+		$strCV2           = substr($creditCardData['credit_card_code'], 0, 4);
 
 		if ($this->params->get("currency") != "")
 		{
 			$currencyID = $this->params->get("currency");
 		}
-		elseif (Redshop::getConfig()->get('CURRENCY_CODE') != "")
+		elseif (\Redshop::getConfig()->get('CURRENCY_CODE') != "")
 		{
-			$currencyID = urlencode(Redshop::getConfig()->get('CURRENCY_CODE'));
+			$currencyID = urlencode(\Redshop::getConfig()->get('CURRENCY_CODE'));
 		}
 		else
 		{
@@ -82,19 +82,19 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 		/*
 		As per the email error no need to remove shipping - tmp fix
-		$order_total = $data['order_total'] - $data['order_shipping'] - $data['order_tax'];
-		$order_total = $data['order_total'] - $data['order_tax'];
+		$orderTotal = $data['order_total'] - $data['order_shipping'] - $data['order_tax'];
+		$orderTotal = $data['order_total'] - $data['order_tax'];
 		*/
-		$order_total = $data['order_total'];
-		$amount      = RedshopHelperCurrency::convert($order_total, '', $currencyID);
+		$orderTotal = $data['order_total'];
+		$amount      = \RedshopHelperCurrency::convert($orderTotal, '', $currencyID);
 		$amount      = urlencode(number_format($amount, 2));
 
 		$shipping_amount = $data['order_shipping'];
-		$shipping_amount = RedshopHelperCurrency::convert($shipping_amount, '', $currencyID);
+		$shipping_amount = \RedshopHelperCurrency::convert($shipping_amount, '', $currencyID);
 		$shipping_amount = urlencode(number_format($shipping_amount, 2));
 
 		$tax_amount = $data['order_tax'];
-		$tax_amount = RedshopHelperCurrency::convert($tax_amount, '', $currencyID);
+		$tax_amount = \RedshopHelperCurrency::convert($tax_amount, '', $currencyID);
 		$tax_amount = urlencode(number_format($tax_amount, 2));
 
 		if ($is_test)
@@ -108,7 +108,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 		$params = array(
 			'USER'      => $merchant_user,
-			'VENDOR'    => $merchant_id,
+			'VENDOR'    => $merchantId,
 			'PARTNER'   => $partner,
 			'PWD'       => $merchant_password,
 			'TENDER'    => 'C',
@@ -162,7 +162,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 		$post_string    = substr($post_string, 0, -1);
 		$response       = $this->sendTransactionToGateway($api_url, $post_string, array('X-VPS-REQUEST-ID: ' . md5($creditCardNumber . rand())));
-		$response_array = array();
+		$response_array = [];
 		parse_str($response, $response_array);
 
 		if ($response_array['RESULT'] == 0 && $response_array['RESPMSG'] == 'Approved')
@@ -184,7 +184,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 	public function sendTransactionToGateway($url, $parameters, $headers = null)
 	{
-		$header = array();
+		$header = [];
 		$server = parse_url($url);
 
 		if (!isset($server['port']))
@@ -248,7 +248,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 	{
 		// Get Payment Params
 		$partner           = $this->params->get("partner");
-		$merchant_id       = $this->params->get("merchant_id");
+		$merchantId       = $this->params->get("merchant_id");
 		$merchant_password = $this->params->get("merchant_password");
 		$merchant_user     = $this->params->get("merchant_user");
 		$paymentType       = $this->params->get("sales_auth_only");
@@ -262,17 +262,16 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		{
 			$currencyID = $this->params->get("currency");
 		}
-		elseif (Redshop::getConfig()->get('CURRENCY_CODE') != "")
+		elseif (\Redshop::getConfig()->get('CURRENCY_CODE') != "")
 		{
-			$currencyID = urlencode(Redshop::getConfig()->get('CURRENCY_CODE'));
+			$currencyID = urlencode(\Redshop::getConfig()->get('CURRENCY_CODE'));
 		}
 		else
 		{
 			$currencyID = "USD";
 		}
 
-		$currencyClass = CurrencyHelper::getInstance();
-		$order_amount  = RedshopHelperCurrency::convert($data['order_amount'], '', $currencyID);
+		$order_amount  = \RedshopHelperCurrency::convert($data['order_amount'], '', $currencyID);
 		$order_amount  = urlencode(number_format($order_amount, 2));
 
 		if ($is_test)
@@ -286,7 +285,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 		$params      = array(
 			'USER'    => $merchant_user,
-			'VENDOR'  => $merchant_id,
+			'VENDOR'  => $merchantId,
 			'PARTNER' => $partner,
 			'PWD'     => $merchant_password,
 			'TENDER'  => 'C',
@@ -304,7 +303,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		$post_string = substr($post_string, 0, -1);
 		$response    = $this->sendTransactionToGateway($api_url, $post_string, array('X-VPS-REQUEST-ID: ' . md5($order_id . rand())));
 
-		$response_array = array();
+		$response_array = [];
 		parse_str($response, $response_array);
 
 		if ($response_array['RESULT'] == 0 && $response_array['RESPMSG'] == 'Approved')
@@ -327,7 +326,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 	{
 		// Get Payment Params
 		$partner           = $this->params->get("partner");
-		$merchant_id       = $this->params->get("merchant_id");
+		$merchantId       = $this->params->get("merchant_id");
 		$merchant_password = $this->params->get("merchant_password");
 		$merchant_user     = $this->params->get("merchant_user");
 		$paymentType       = $this->params->get("sales_auth_only");
@@ -341,16 +340,16 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		{
 			$currencyID = $this->params->get("currency");
 		}
-		elseif (Redshop::getConfig()->get('CURRENCY_CODE') != "")
+		elseif (\Redshop::getConfig()->get('CURRENCY_CODE') != "")
 		{
-			$currencyID = urlencode(Redshop::getConfig()->get('CURRENCY_CODE'));
+			$currencyID = urlencode(\Redshop::getConfig()->get('CURRENCY_CODE'));
 		}
 		else
 		{
 			$currencyID = "USD";
 		}
 
-		$order_amount = RedshopHelperCurrency::convert($data['order_amount'], '', $currencyID);
+		$order_amount = \RedshopHelperCurrency::convert($data['order_amount'], '', $currencyID);
 		$order_amount = urlencode(number_format($order_amount, 2));
 
 		if ($is_test)
@@ -364,7 +363,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 
 		$params      = array(
 			'USER'    => $merchant_user,
-			'VENDOR'  => $merchant_id,
+			'VENDOR'  => $merchantId,
 			'PARTNER' => $partner,
 			'PWD'     => $merchant_password,
 			'TENDER'  => 'C',
@@ -382,7 +381,7 @@ class plgRedshop_Paymentrs_Payment_Payflowpro extends JPlugin
 		$post_string = substr($post_string, 0, -1);
 		$response    = $this->sendTransactionToGateway($api_url, $post_string, array('X-VPS-REQUEST-ID: ' . md5($order_id . rand())));
 
-		$response_array = array();
+		$response_array = [];
 		parse_str($response, $response_array);
 
 		if ($response_array['RESULT'] == 0 && $response_array['RESPMSG'] == 'Approved')

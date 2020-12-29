@@ -12,13 +12,17 @@ JHTML::_('behavior.tooltip');
 JHTML::_('behavior.modal');
 $uri = JURI::getInstance();
 $url = $uri->root();
-$Itemid = JRequest::getInt('Itemid');
+$itemId = JRequest::getInt('Itemid');
 $document = JFactory::getDocument();
 
-JHtml::_('redshopjquery.ui');
-JHtml::script('com_redshop/attribute.js', false, true);
-JHtml::stylesheet('com_redshop/priceslider.css', array(), true);
-$numberFormatParams = '\'' . Redshop::getConfig()->get('PRICE_DECIMAL') . '\',\'' . Redshop::getConfig()->get('PRICE_SEPERATOR') . '\',\'' . Redshop::getConfig()->get('THOUSAND_SEPERATOR') . '\'';
+JHTML::_('redshopjquery.ui');
+JHTML::script('/media/com_redshop/js/redshop.min.js');
+JHTML::script('/media/com_redshop/js/redshop.redbox.min.js');
+JHTML::script('/media/com_redshop/js/redshop.attribute.min.js');
+JHTML::script('/media/com_redshop/js/redshop.common.min.js');
+JHTML::stylesheet('com_redshop/priceslider.css', array(), true);
+
+$numberFormatParams = '\'' . \Redshop::getConfig()->get('PRICE_DECIMAL') . '\',\'' . \Redshop::getConfig()->get('PRICE_SEPERATOR') . '\',\'' . \Redshop::getConfig()->get('THOUSAND_SEPERATOR') . '\'';
 ?>
 <script type="text/javascript">
 	jQuery(function($) {
@@ -49,10 +53,10 @@ $numberFormatParams = '\'' . Redshop::getConfig()->get('PRICE_DECIMAL') . '\',\'
 
 					var url = "<?php echo $url;?>index.php?format=raw&option=com_redshop&view=price_filter";
 					url = url + "&category=<?php echo $category;?>&count=<?php echo $count;?>&image=<?php echo $image;?>";
-					url = url + "&thumbwidth=<?php echo $thumbwidth;?>&thumbheight=<?php echo $thumbheight;?>";
-					url = url + "&show_price=<?php echo $show_price;?>&show_readmore=<?php echo $show_readmore;?>";
-					url = url + "&show_addtocart=<?php echo $show_addtocart;?>&show_desc=<?php echo $show_desc;?>";
-					url = url + "&show_discountpricelayout=<?php echo $show_discountpricelayout;?>&Itemid=<?php echo $Itemid;?>";
+					url = url + "&thumbwidth=<?php echo $thumbWidth;?>&thumbheight=<?php echo $thumbHeight;?>";
+					url = url + "&show_price=<?php echo $isShowPrice;?>&show_readmore=<?php echo $isShowReadMore;?>";
+					url = url + "&show_addtocart=<?php echo $isShowAddToCart;?>&show_desc=<?php echo $showDesc;?>";
+					url = url + "&show_discountpricelayout=<?php echo $isShowDiscountPriceLayout;?>&Itemid=<?php echo $itemId;?>";
 					url = url + "&texpricemin=" + ui.values[0] + "&texpricemax=" + ui.values[1];
 
 					$products.load(url, '', function () {
@@ -72,10 +76,10 @@ $numberFormatParams = '\'' . Redshop::getConfig()->get('PRICE_DECIMAL') . '\',\'
 
 			var url = "<?php echo $url;?>index.php?format=raw&option=com_redshop&view=price_filter";
 			url = url + "&category=<?php echo $category;?>&count=<?php echo $count;?>&image=<?php echo $image;?>";
-			url = url + "&thumbwidth=<?php echo $thumbwidth;?>&thumbheight=<?php echo $thumbheight;?>";
-			url = url + "&show_price=<?php echo $show_price;?>&show_readmore=<?php echo $show_readmore;?>";
-			url = url + "&show_addtocart=<?php echo $show_addtocart;?>&show_desc=<?php echo $show_desc;?>";
-			url = url + "&show_discountpricelayout=<?php echo $show_discountpricelayout;?>&Itemid=<?php echo $Itemid;?>";
+			url = url + "&thumbwidth=<?php echo $thumbWidth;?>&thumbheight=<?php echo $thumbHeight;?>";
+			url = url + "&show_price=<?php echo $isShowPrice;?>&show_readmore=<?php echo $isShowReadMore;?>";
+			url = url + "&show_addtocart=<?php echo $isShowAddToCart;?>&show_desc=<?php echo $showDesc;?>";
+			url = url + "&show_discountpricelayout=<?php echo $isShowDiscountPriceLayout;?>&Itemid=<?php echo $itemId;?>";
 			url = url + "&texpricemin=<?php echo $texpricemin;?>&texpricemax=<?php echo $texpricemax;?>";
 
 			$products.load(url, '', function () {

@@ -30,7 +30,7 @@ class plgRedshop_paymentrs_payment_imglobal extends JPlugin
 
 		$app      = JFactory::getApplication();
 		$session  = JFactory::getSession();
-		$ccdata   = $session->get('ccdata');
+		$creditCardData   = $session->get('ccdata');
 		$url      = "https://secure.imglobalpayments.com/api/transact.php";
 		$urlParts = parse_url($url);
 
@@ -39,32 +39,32 @@ class plgRedshop_paymentrs_payment_imglobal extends JPlugin
 			$urlParts['scheme'] = 'http';
 		}
 
-		$formdata = array(
+		$dataForm = array(
 			'type'     => 'sale',
 			'username' => $this->params->get("username"),
 			'password' => $this->params->get("password"),
 			'orderid'  => $data['order_number'],
 			'amount'   => $data['order_total'],
-			'ccnumber' => $ccdata['order_payment_number'],
-			'cvv'      => $ccdata['credit_card_code'],
-			'ccexp'    => ($ccdata['order_payment_expire_month']) . ($ccdata['order_payment_expire_year'])
+			'ccnumber' => $creditCardData['order_payment_number'],
+			'cvv'      => $creditCardData['credit_card_code'],
+			'ccexp'    => ($creditCardData['order_payment_expire_month']) . ($creditCardData['order_payment_expire_year'])
 		);
-		$poststring = '';
+		$postString = '';
 
-		foreach ($formdata AS $key => $val)
+		foreach ($dataForm AS $key => $val)
 		{
-			$poststring .= urlencode($key) . "=" . urlencode($val) . "&";
+			$postString .= urlencode($key) . "=" . urlencode($val) . "&";
 		}
 
-		$poststring = substr($poststring, 0, -1);
+		$postString = substr($postString, 0, -1);
 		$CR = curl_init();
 		curl_setopt($CR, CURLOPT_URL, $url);
 		curl_setopt($CR, CURLOPT_TIMEOUT, 30);
 		curl_setopt($CR, CURLOPT_FAILONERROR, true);
 
-		if ($poststring)
+		if ($postString)
 		{
-			curl_setopt($CR, CURLOPT_POSTFIELDS, $poststring);
+			curl_setopt($CR, CURLOPT_POSTFIELDS, $postString);
 			curl_setopt($CR, CURLOPT_POST, 1);
 		}
 

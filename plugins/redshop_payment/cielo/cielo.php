@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 /**
  *  PlgRedshop_PaymentCielo class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
 class PlgRedshop_PaymentCielo extends JPlugin
@@ -37,7 +37,7 @@ class PlgRedshop_PaymentCielo extends JPlugin
 	{
 		$app 		= JFactory::getApplication();
 		$session 	= JFactory::getSession();
-		$ccdata 	= $session->get('ccdata');
+		$creditCardData 	= $session->get('ccdata');
 
 		if ($element != 'cielo')
 		{
@@ -59,12 +59,12 @@ class PlgRedshop_PaymentCielo extends JPlugin
 			$order->Cart->Discount->Value = $data['odiscount'] * 100;
 		}
 
-		$order->Cart->Items                 = array();
+		$order->Cart->Items                 = [];
 
 		for ($i = 0; $i < $cart['idx']; $i++)
 		{
 			$itemId = $cart[$i]['product_id'];
-			$item = RedshopHelperProduct::getProductById($itemId);
+			$item = \Redshop\Product\Product::getProductById($itemId);
 
 			$order->Cart->Items[$i]              = new stdClass;
 			$order->Cart->Items[$i]->Name        = $item->product_name;
@@ -94,7 +94,7 @@ class PlgRedshop_PaymentCielo extends JPlugin
 		$order->Shipping->Address->City       = $data['shippinginfo']->city;
 		$order->Shipping->Address->State      = $data['shippinginfo']->state_2_code;
 
-		$order->Shipping->Services              = array();
+		$order->Shipping->Services              = [];
 		$order->Shipping->Services[0]           = new stdClass;
 		$order->Shipping->Services[0]->Name     = 'Shipping';
 		$order->Shipping->Services[0]->Price    = $data['order_shipping'] * 100;

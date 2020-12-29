@@ -14,7 +14,7 @@ require_once dirname(__DIR__) . '/nganluong/library/init.php';
 /**
  * Nganluong payment class
  *
- * @package  Redshop.Plugin
+ * @package  \Redshop.Plugin
  *
  * @since    1.0.0
  */
@@ -81,7 +81,7 @@ class plgRedshop_PaymentNganluong extends JPlugin
 
 		if ($this->params->get('sandbox') == 1)
 		{
-			$url = 'https://sandbox.nganluong.vn:8088/nl30/checkout.php';
+			$url = 'https://sandbox.nganluong.vn:8088/nl35/checkout.php';
 		}
 
 		$merchantId   = $this->params->get('nganluong_merchant_id');
@@ -95,7 +95,7 @@ class plgRedshop_PaymentNganluong extends JPlugin
 
 		$orderId          = $data['order']->order_id;
 		$totalAmount      = $data['order']->order_total;
-		$items            = array();
+		$items            = [];
 		$orderCode        = $orderId;
 		$orderQuantity    = $data['order_quantity'];
 		$orderDescription = $data['order']->customer_message;
@@ -113,7 +113,7 @@ class plgRedshop_PaymentNganluong extends JPlugin
 			'',
 			$orderCode,
 			$totalAmount,
-			Redshop::getConfig()->get('CURRENCY_CODE'),
+			\Redshop::getConfig()->get('CURRENCY_CODE'),
 			$orderQuantity,
 			0,
 			0,

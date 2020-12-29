@@ -83,15 +83,15 @@ class PlgRedshop_PaymentQuickbook extends JPlugin
 
 		// Now, let's create a credit card object, and authorize an amount agains the card
 		$session = JFactory::getSession();
-		$ccdata  = $session->get('ccdata');
+		$creditCardData  = $session->get('ccdata');
 
-		$name       = $ccdata['order_payment_name'];
-		$number     = $ccdata['order_payment_number'];
-		$expyear    = $ccdata['order_payment_expire_year'];
-		$expmonth   = $ccdata['order_payment_expire_month'];
+		$name       = $creditCardData['order_payment_name'];
+		$number     = $creditCardData['order_payment_number'];
+		$expyear    = $creditCardData['order_payment_expire_year'];
+		$expmonth   = $creditCardData['order_payment_expire_month'];
 		$address    = $data['billinginfo']->address;
 		$postalcode = $data['billinginfo']->zipcode;
-		$cvv        = $ccdata['credit_card_code'];
+		$cvv        = $creditCardData['credit_card_code'];
 
 		// Create the CreditCard object
 		$Card = new QuickBooks_MerchantService_CreditCard(

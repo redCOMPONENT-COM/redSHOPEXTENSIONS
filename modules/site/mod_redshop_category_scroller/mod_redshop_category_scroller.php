@@ -14,21 +14,21 @@ $cid = JFactory::getApplication()->input->getInt('cid', 0);
 
 $NumberOfProducts  = trim($params->get('NumberOfProducts', 5));
 $ScrollSortMethod  = trim($params->get('ScrollSortMethod', 'random'));
-$show_product_name = trim($params->get('show_product_name', 1));
-$show_addtocart    = trim($params->get('show_addtocart', 1));
-$show_price        = trim($params->get('show_price', 1));
-$show_image        = trim($params->get('show_image', 1));
-$show_readmore     = trim($params->get('show_readmore', 1));
-$show_vat          = trim($params->get('show_vat', 1));
+$isShowProductName = trim($params->get('show_product_name', 1));
+$isShowAddToCart   = trim($params->get('show_addtocart', 1));
+$isShowPrice       = trim($params->get('show_price', 1));
+$isShowImage       = trim($params->get('show_image', 1));
+$isShowReadMore    = trim($params->get('show_readmore', 1));
+$isShowVat         = trim($params->get('show_vat', 1));
 
-$scrollerwidth            = trim($params->get('scrollerwidth', 500));
-$scrollerheight           = trim($params->get('scrollerheight', 200));
-$thumbwidth               = trim($params->get('thumbwidth', 100));
-$thumbheight              = trim($params->get('thumbheight', 100));
-$product_title_end_suffix = trim($params->get('product_title_end_suffix', '...'));
-$product_title_max_chars  = trim($params->get('product_title_max_chars', 10));
-$show_discountpricelayout = trim($params->get('show_discountpricelayout', 1));
-$pretext                  = trim($params->get('pretext', ''));
+$scrollerWidth             = trim($params->get('scrollerwidth', 500));
+$scrollerHeight            = trim($params->get('scrollerheight', 200));
+$thumbWidth                = trim($params->get('thumbwidth', 100));
+$thumbHeight               = trim($params->get('thumbheight', 100));
+$productTitleEndSuffix     = trim($params->get('product_title_end_suffix', '...'));
+$productTitleMaxChars      = trim($params->get('product_title_max_chars', 10));
+$isShowDiscountPriceLayout = trim($params->get('show_discountpricelayout', 1));
+$pretext                   = trim($params->get('pretext', ''));
 $user = JFactory::getUser();
 
 $db = JFactory::getDbo();
@@ -70,7 +70,7 @@ if ($cid)
 		->where('cx.category_id = ' . (int) $cid);
 }
 
-$rows = array();
+$rows = [];
 
 if ($productIds = $db->setQuery($query, 0, (int) $NumberOfProducts)->loadColumn())
 {
@@ -79,12 +79,12 @@ if ($productIds = $db->setQuery($query, 0, (int) $NumberOfProducts)->loadColumn(
 		->where('p.product_id IN (' . implode(',', $productIds) . ')')
 		->order('FIELD(p.product_id, ' . implode(',', $productIds) . ')');
 
-	$query = RedshopHelperProduct::getMainProductQuery($query, $user->id)
+	$query = \Redshop\Product\Product::getMainProductQuery($query, $user->id)
 		->select('CONCAT_WS(' . $db->q('.') . ', p.product_id, ' . (int) $user->id . ') AS concat_id');
 
 	if ($rows = $db->setQuery($query)->loadObjectList('concat_id'))
 	{
-		RedshopHelperProduct::setProduct($rows);
+		\Redshop\Product\Product::setProduct($rows);
 		$rows = array_values($rows);
 	}
 }

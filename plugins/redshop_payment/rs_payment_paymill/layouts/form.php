@@ -42,7 +42,7 @@ $action = JUri::base() . 'index.php?option=com_redshop&view=order_detail&layout=
             <div class="clearfix"></div>
             <div id="payment-form-cc">
                 <input class="card-amount-int" type="hidden" value="<?php echo $data['order']->order_total ?>" name="amount" />
-                <input class="card-currency" type="hidden" value="<?php echo Redshop::getConfig()->get('CURRENCY_CODE') ?>" name="currency"/>
+                <input class="card-currency" type="hidden" value="<?php echo \Redshop::getConfig()->get('CURRENCY_CODE') ?>" name="currency"/>
                 <div class="row-fluid">
                     <div class="span4">
                         <label for="card-number"><?php echo JText::_('PLG_RS_PAYMENT_PAYMILL_CARD_NUMBER'); ?></label>

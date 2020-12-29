@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshopb.Site
+ * @package     \Redshopb.Site
  * @subpackage  Fields
  *
  * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.

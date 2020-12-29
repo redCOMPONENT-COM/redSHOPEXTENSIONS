@@ -57,7 +57,7 @@ class plgRedshop_paymentrs_payment_moneris extends JPlugin
 		}
 
 		$session = JFactory::getSession();
-		$ccdata  = $session->get('ccdata');
+		$creditCardData  = $session->get('ccdata');
 
 		// Additional Customer Data
 		$user_id    = $data['billinginfo']->user_id;
@@ -67,12 +67,12 @@ class plgRedshop_paymentrs_payment_moneris extends JPlugin
 		$user_email = $data['billinginfo']->user_email;
 
 		// Get Credit card Information
-		$order_payment_name        = substr($ccdata['order_payment_name'], 0, 50);
-		$creditcard_code           = ucfirst(strtolower($ccdata['creditcard_code']));
-		$order_payment_number      = substr($ccdata['order_payment_number'], 0, 20);
-		$credit_card_code          = substr($ccdata['credit_card_code'], 0, 4);
-		$order_payment_expire_year = substr($ccdata['order_payment_expire_year'], -2);
-		$order_payment_expire_year .= substr($ccdata['order_payment_expire_month'], 0, 2);
+		$orderPaymentName        = substr($creditCardData['order_payment_name'], 0, 50);
+		$creditcard_code           = ucfirst(strtolower($creditCardData['creditcard_code']));
+		$order_payment_number      = substr($creditCardData['order_payment_number'], 0, 20);
+		$credit_card_code          = substr($creditCardData['credit_card_code'], 0, 4);
+		$orderPaymentExpireYear = substr($creditCardData['order_payment_expire_year'], -2);
+		$orderPaymentExpireYear .= substr($creditCardData['order_payment_expire_month'], 0, 2);
 
 		$crypt         = 7;
 		$cvd_indicator = 0;
@@ -100,8 +100,8 @@ class plgRedshop_paymentrs_payment_moneris extends JPlugin
 		{
 			$storeid    = $moneris_store_id;
 			$apitoken   = $moneris_api_token;
-			$tot_amount = $order_total = $data['order_total'];
-			$amount     = RedshopHelperCurrency::convert($tot_amount, '', 'USD');
+			$tot_amount = $orderTotal = $data['order_total'];
+			$amount     = \RedshopHelperCurrency::convert($tot_amount, '', 'USD');
 		}
 
 		$avs_street_number = substr($data['billinginfo']->address, 0, 60);
@@ -114,7 +114,7 @@ class plgRedshop_paymentrs_payment_moneris extends JPlugin
 			'cust_id'    => $user_id,
 			'amount'     => sprintf('%01.2f', $amount),
 			'pan'        => $order_payment_number,
-			'expdate'    => $order_payment_expire_year,
+			'expdate'    => $orderPaymentExpireYear,
 			'crypt_type' => $crypt
 		);
 

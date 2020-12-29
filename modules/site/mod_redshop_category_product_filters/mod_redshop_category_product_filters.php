@@ -3,7 +3,7 @@
  * @package     RedSHOP.Frontend
  * @subpackage  mod_redshop_filter
  *
- * @copyright   Copyright (C) 2008 - 2015 redCOMPONENT.com. All rights reserved.
+ * @copyright   Copyright (C) 2008 - 2020 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -14,7 +14,7 @@ JLoader::import('redshop.library');
 
 $input        = JFactory::getApplication()->input;
 $cid          = $input->getInt('cid', 0);
-$mainCategory = RedshopEntityCategory::getInstance($cid)->getItem();
+$mainCategory = \RedshopEntityCategory::getInstance($cid)->getItem();
 
 // retrieve product filter parameters from main category
 $registry     = new JRegistry;
@@ -39,13 +39,12 @@ $view               = $input->getString('view', '');
 $layout             = $input->getString('layout', '');
 $action             = JRoute::_("index.php?option=com_redshop&view=category&layout=detail&cid=" . $cid);
 
-$categoryModel = JModelLegacy::getInstance('Category', 'RedshopModel');
-$filterInput = $categoryModel->getState('filterform', array());
+$categoryModel = JModelLegacy::getInstance('Category', '\RedshopModel');
+$filterInput = $input->get->get('filterform', array(), 'array');
 
-
-$productList = RedshopHelperCategory::getCategoryProductList($cid, true);
-$manuList    = array();
-$pids        = array();
+$productList = \RedshopHelperCategory::getCategoryProductList($cid, true);
+$manuList    = [];
+$pids        = [];
 
 foreach ($productList as $k => $value)
 {
@@ -63,7 +62,7 @@ if (empty($pids))
 }
 
 $manufacturers   = ModRedshopCategoryProductFiltersHelper::getManufacturers(array_unique($manuList));
-$categories      = RedshopHelperCategory::getCategoryListArray($cid);
+$categories      = \RedshopHelperCategory::getCategoryListArray($cid);
 $customFields    = ModRedshopCategoryProductFiltersHelper::getCustomFields($pids, $productFields);
 $rangePrice      = ModRedshopCategoryProductFiltersHelper::getPriceRange($pids);
 $attributesGroup = ModRedshopCategoryProductFiltersHelper::getAttributeFiltersList($attributeFilters, $pids);

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package    Redshop.Cli
+ * @package    \Redshop.Cli
  *
  * @copyright  Copyright (C) 2008 - 2016 redCOMPONENT.com. All rights reserved.
  * @license    GNU General Public License version 2 or later, see LICENSE.
@@ -19,7 +19,7 @@ ini_set('display_errors', 1);
 /**
  * This script will Generate XML for websosanh
  *
- * @package  Redshop.Cli
+ * @package  \Redshop.Cli
  * @since    1.5.0
  */
 class Wss_DataFeedApplicationCli extends JApplicationCli
@@ -44,7 +44,7 @@ class Wss_DataFeedApplicationCli extends JApplicationCli
 			return;
 		}
 
-		$data = array();
+		$data = [];
 
 		foreach ($products as $key => $product)
 		{
@@ -61,18 +61,18 @@ class Wss_DataFeedApplicationCli extends JApplicationCli
 
 			$productId     = $product->product_id;
 			$categoryId    = $product->cat_in_sefurl;
-			$stockroom     = RedshopHelperStockroom::getFinalStockofProduct($productId, 0);
-			$productPrice  = RedshopHelperProductPrice::formattedPrice($product->product_price);
-			$discountPrice = RedshopHelperProductPrice::formattedPrice($product->discount_price);
+			$stockroom     = \RedshopHelperStockroom::getFinalStockofProduct($productId, 0);
+			$productPrice  = \RedshopHelperProductPrice::formattedPrice($product->product_price);
+			$discountPrice = \RedshopHelperProductPrice::formattedPrice($product->discount_price);
 
-			$itemData = producthelper::getInstance()->getMenuInformation(
+			$itemData = \RedshopHelperProduct::getMenuInformation(
 				0,
 				0,
 				'',
 				'product&pid=' . $productId
 			);
 
-			$itemId = count($itemData) > 0 ? $itemData->id : RedshopHelperRouter::getItemId($productId, $categoryId);
+			$itemId = count($itemData) > 0 ? $itemData->id : \RedshopHelperRouter::getItemId($productId, $categoryId);
 
 			$url = $params->get('url') . 'index.php?option=com_redshop&view=product&pid=' . $productId
 				. '&cid=' . $categoryId . '&Itemid=' . $itemId;
@@ -84,7 +84,7 @@ class Wss_DataFeedApplicationCli extends JApplicationCli
 				'brand'                    => $product->manufacturer_name ? $product->manufacturer_name : '',
 				'product_name'             => $product->product_name,
 				'description'              => $product->product_desc,
-				'currency'                 => Redshop::getConfig()->get('CURRENCY_CODE'),
+				'currency'                 => \Redshop::getConfig()->get('CURRENCY_CODE'),
 				'price'                    => $productPrice,
 				'discount'                 => $productPrice - $discountPrice,
 				'discounted_price'         => $discountPrice,

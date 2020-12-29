@@ -17,7 +17,7 @@ require __DIR__ . '/vendor/autoload.php';
  *
  * @since  1.0.0
  */
-class PlgRedshop_PdfMPDFHelper extends mPDF
+class PlgRedshop_PdfMPDFHelper extends \Mpdf\Mpdf
 {
 	/**
 	 * PlgRedshop_PdfMPDFHelper constructor.

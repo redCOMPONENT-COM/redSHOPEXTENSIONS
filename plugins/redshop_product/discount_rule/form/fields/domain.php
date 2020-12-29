@@ -81,7 +81,7 @@ class JFormFieldDomain extends JFormFieldList
 			{
 				if (empty($this->value->tags))
 				{
-					$this->value = array();
+					$this->value = [];
 				}
 				else
 				{
@@ -140,7 +140,7 @@ class JFormFieldDomain extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$options = array();
+		$options = [];
 
 		if (!empty($this->value))
 		{

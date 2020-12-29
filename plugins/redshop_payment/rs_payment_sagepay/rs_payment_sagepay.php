@@ -166,7 +166,7 @@ class plgRedshop_paymentrs_payment_sagepay extends JPlugin
 		set_time_limit(60);
 
 		// Initialise output variable
-		$output = array();
+		$output = [];
 
 		// Open the cURL session
 		$curlSession = curl_init();
@@ -251,8 +251,8 @@ class plgRedshop_paymentrs_payment_sagepay extends JPlugin
 			"PayerStatus", "CardType");
 
 		// Initialize arrays
-		$output = array();
-		$resultArray = array();
+		$output = [];
+		$resultArray = [];
 
 		// Get the next token in the sequence
 		for ($i = count($Tokens) - 1; $i >= 0; $i--)
@@ -308,8 +308,7 @@ class plgRedshop_paymentrs_payment_sagepay extends JPlugin
 	    // Add PKCS5 padding to the text to be encypted.
 	    $string = self::addPKCS5Padding($string);
 
-	    // Perform encryption with PHP's MCRYPT module.
-	    $crypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $string, MCRYPT_MODE_CBC, $key);
+	    $crypt = openssl_encrypt($string ,'AES-128-CBC', $key, OPENSSL_RAW_DATA, $key);
 
 	    // Perform hex encoding and return.
 	    return "@" . strtoupper(bin2hex($crypt));
@@ -340,8 +339,7 @@ class plgRedshop_paymentrs_payment_sagepay extends JPlugin
         }
         $strIn = pack('H*', $hex);
 
-        // Perform decryption with PHP's MCRYPT module.
-        $string = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $password, $strIn, MCRYPT_MODE_CBC, $strInitVector);
+        $string = openssl_decrypt($strIn ,'AES-128-CBC', $password, OPENSSL_RAW_DATA, $strInitVector);
 
         return self::removePKCS5Padding($string);
     }

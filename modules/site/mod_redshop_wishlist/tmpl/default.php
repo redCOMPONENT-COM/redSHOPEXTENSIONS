@@ -10,16 +10,16 @@
 defined('_JEXEC') or die;
 
 $user   = JFactory::getUser();
-$Itemid = RedshopHelperRouter::getItemId();
+$itemId = \RedshopHelperRouter::getItemId();
 ?>
 
 <div class="mod_redshop_wishlist <?php echo $moduleClassSuffix ?>">
 	<?php if ($user->guest && !empty($wishList)): ?>
-        <a href="<?php echo JRoute::_('index.php?view=wishlist&task=viewwishlist&option=com_redshop&Itemid=' . $Itemid) ?>">
+        <a href="<?php echo JRoute::_('index.php?view=wishlist&task=viewwishlist&option=com_redshop&Itemid=' . $itemId) ?>">
 			<?php echo JText::_('COM_REDSHOP_VIEW_WISHLIST') ?>
         </a>
 	<?php elseif (!$user->guest && !empty($wishList)): ?>
-        <a href="<?php echo JRoute::_('index.php?view=wishlist&task=viewwishlist&option=com_redshop&Itemid=' . $Itemid) ?>">
+        <a href="<?php echo JRoute::_('index.php?view=wishlist&task=viewwishlist&option=com_redshop&Itemid=' . $itemId) ?>">
 			<?php echo JText::_('COM_REDSHOP_VIEW_WISHLIST') ?>
         </a>
 	<?php else: ?>

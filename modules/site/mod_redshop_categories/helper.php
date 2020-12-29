@@ -49,15 +49,15 @@ class modProMenuHelper
 		 * Order the Category Array and build a Tree of it
 		 **/
 
-		$id_list    = array();
-		$row_list   = array();
-		$depth_list = array();
+		$id_list    = [];
+		$row_list   = [];
+		$depth_list = [];
 
-		$parent_ids      = array();
-		$parent_ids_hash = array();
+		$parent_ids      = [];
+		$parent_ids_hash = [];
 
 		// Build an array of category references
-		$category_tmp = array();
+		$category_tmp = [];
 
 		for ($i = 0; $i < $size; $i++)
 		{
@@ -86,7 +86,7 @@ class modProMenuHelper
 		$loop_count = 0;
 
 		// Hash to store children
-		$watch      = array();
+		$watch      = [];
 
 		while (count($id_list) < $nrows)
 		{
@@ -95,9 +95,9 @@ class modProMenuHelper
 				break;
 			}
 
-			$id_temp    = array();
-			$row_temp   = array();
-			$depth_temp = array();
+			$id_temp    = [];
+			$row_temp   = [];
+			$depth_temp = [];
 
 			for ($i = 0, $countIdList = count($id_list); $i < $countIdList; $i++)
 			{
@@ -228,7 +228,7 @@ class modProMenuHelper
 			$db->setQuery($query);
 			$cat_results = $db->loadObjectList();
 
-			$categories = array();
+			$categories = [];
 
 			if (count($cat_results) > 0)
 			{
@@ -303,10 +303,9 @@ class modProMenuHelper
 		return '(' . $num . ')';
 	}
 
-	function getCategoryTree($params, $category_id = 0, $links_css_class = "mainlevel", $highlighted_style = "font-style:italic;", $shopper_group_id = 0)
+	function getCategoryTree($params, $categoryId = 0, $links_css_class = "mainlevel", $highlighted_style = "font-style:italic;", $shopper_group_id = 0)
 	{
-		$objhelper              = redhelper::getInstance();
-		$parent_selected        = $params->get('redshop_category', RedshopHelperCategory::getRootId());
+		$parent_selected        = $params->get('redshop_category', \RedshopHelperCategory::getRootId());
 		$parent_selected_remove = $params->get('redshop_category_remove', '');
 
 		$categories = $this->getCategoryTreeArray(1, "", $shopper_group_id, $parent_selected_remove, $params);
@@ -327,14 +326,14 @@ class modProMenuHelper
 		$html = "";
 
 		// Find out if we have subcategories to display
-		$allowed_subcategories = array();
+		$allowed_subcategories = [];
 		$root                  = array('category_child_id' => 0, 'category_parent_id' => 0);
 
-		if (!empty($categories[$category_id]["category_parent_id"]))
+		if (!empty($categories[$categoryId]["category_parent_id"]))
 		{
 			// Find the Root Category of this category
-			$root                    = $categories[$category_id];
-			$allowed_subcategories[] = $categories[$category_id]["category_parent_id"];
+			$root                    = $categories[$categoryId];
+			$allowed_subcategories[] = $categories[$categoryId]["category_parent_id"];
 
 			// Loop through the Tree up to the root
 			while (!empty($root["category_parent_id"]))
@@ -377,7 +376,7 @@ class modProMenuHelper
 				continue;
 			}
 
-			if ($category_id == $category_tmp[$row_list[$n]]["category_child_id"] || $category_tmp[$row_list[$n]]["category_child_id"] == $root["category_child_id"]
+			if ($categoryId == $category_tmp[$row_list[$n]]["category_child_id"] || $category_tmp[$row_list[$n]]["category_child_id"] == $root["category_child_id"]
 				|| in_array($category_tmp[$row_list[$n]]["category_child_id"], $allowed_subcategories))
 			{
 				$style = $highlighted_style;
@@ -393,8 +392,8 @@ class modProMenuHelper
 			{
 				// Subcategory!
 				if ((isset($root) && in_array($category_tmp[$row_list[$n]]["category_child_id"], $allowed_subcategories))
-					|| $category_tmp[$row_list[$n]]["category_parent_id"] == $category_id
-					|| $category_tmp[$row_list[$n]]["category_parent_id"] == @$categories[$category_id]["category_parent_id"]
+					|| $category_tmp[$row_list[$n]]["category_parent_id"] == $categoryId
+					|| $category_tmp[$row_list[$n]]["category_parent_id"] == @$categories[$categoryId]["category_parent_id"]
 					|| $category_tmp[$row_list[$n]]["category_parent_id"] == $root["category_child_id"])
 				{
 					$allowed = true;
@@ -460,16 +459,16 @@ class modProMenuHelper
 
 				$catname = JText::_($category_tmp[$row_list[$n]]["category_name"]);
 
-				$Itemid = RedshopHelperRouter::getCategoryItemid($category_tmp[$row_list[$n]]["category_child_id"]);
+				$itemId = \RedshopHelperRouter::getCategoryItemid($category_tmp[$row_list[$n]]["category_child_id"]);
 
-				if (!$Itemid)
+				if (!$itemId)
 				{
-					$Itemid = JRequest::getInt('Itemid');
+					$itemId = JRequest::getInt('Itemid');
 				}
 
 				$uri = JURI::getInstance();
 
-				$catlink = 'index.php?option=com_redshop&view=category&layout=detail&cid=' . $category_tmp[$row_list[$n]]["category_child_id"] . $append . '&Itemid=' . $Itemid;
+				$catlink = 'index.php?option=com_redshop&view=category&layout=detail&cid=' . $category_tmp[$row_list[$n]]["category_child_id"] . $append . '&Itemid=' . $itemId;
 				$html .= '<li ' . $class . ' ><a title="' . $catname . '" style="display:block;' . $style . '" class="' . $css_class . '" href=' . JRoute::_($catlink) . '>'
 					. str_repeat("", $depth_list[$n]) . $catname
 					. $this->productsInCategory($category_tmp[$row_list[$n]]["category_child_id"], $params)

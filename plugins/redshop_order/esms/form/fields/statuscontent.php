@@ -39,9 +39,9 @@ class JFormFieldStatuscontent extends JFormField
 	 */
 	protected function getInput()
 	{
-		$statusList = RedshopHelperOrder::getOrderStatusList();
+		$statusList = \RedshopHelperOrder::getOrderStatusList();
 
-		return RedshopLayoutHelper::render(
+		return \RedshopLayoutHelper::render(
 			'status_content',
 			array(
 				'statusList' => $statusList,

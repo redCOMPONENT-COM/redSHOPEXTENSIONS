@@ -14,10 +14,10 @@ JLoader::import('redshop.library');
 /**
  * Handles redSHOP product and categories links
  *
- * @package  Redshop
+ * @package  \Redshop
  * @since    2.5
  */
-class Xmap_Com_Redshop
+class Xmap_Com_\Redshop
 {
 	/**
 	 * This function is called before a menu item is printed. We use it to set the
@@ -151,8 +151,6 @@ class Xmap_Com_Redshop
 	static protected function getCategoryTree($xmap, $parent, &$params, $catid = 0)
 	{
 		$db      = JFactory::getDbo();
-		$objhelper     = redhelper::getInstance();
-		$producthelper = productHelper::getInstance();
 
 		$query = $db->getQuery(true)
 			->select('a.id, a.name, a.created_date')
@@ -168,7 +166,7 @@ class Xmap_Com_Redshop
 			foreach ($rows as $row)
 			{
 				// Get Category Menu Itemid
-				$cItemid = RedshopHelperRouter::getCategoryItemid($row->id);
+				$cItemid = \RedshopHelperRouter::getCategoryItemid($row->id);
 
 				if ($cItemid != "")
 				{
@@ -223,15 +221,15 @@ class Xmap_Com_Redshop
 				foreach ($rows as $row)
 				{
 					// Get Product Menu Itemid
-					$ItemData = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+					$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
-					if (count($ItemData) > 0)
+					if (count($itemData) > 0)
 					{
-						$params['Itemid'] = $ItemData->id;
+						$params['Itemid'] = $itemData->id;
 					}
 					else
 					{
-						$params['Itemid'] = RedshopHelperRouter::getItemId($row->product_id, $row->category_id);
+						$params['Itemid'] = \RedshopHelperRouter::getItemId($row->product_id, $row->category_id);
 					}
 
 					$node = new stdclass;
@@ -276,8 +274,6 @@ class Xmap_Com_Redshop
 		}
 
 		$db = JFactory::getDbo();
-		$objhelper     = redhelper::getInstance();
-		$producthelper = productHelper::getInstance();
 
 		$query = $db->getQuery(true)
 			->select('prod.*, cpx.category_id')
@@ -315,15 +311,15 @@ class Xmap_Com_Redshop
 			foreach ($childproducts as $row)
 			{
 				// Get Product Menu Itemid
-				$ItemData = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
+				$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
-				if (count($ItemData) > 0)
+				if (count($itemData) > 0)
 				{
-					$params['Itemid'] = $ItemData->id;
+					$params['Itemid'] = $itemData->id;
 				}
 				else
 				{
-					$params['Itemid'] = RedshopHelperRouter::getItemId($row->product_id, $row->category_id);
+					$params['Itemid'] = \RedshopHelperRouter::getItemId($row->product_id, $row->category_id);
 				}
 
 				$node = new stdclass;

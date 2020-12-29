@@ -11,9 +11,9 @@ defined('_JEXEC') or die;
 
 JLoader::import('redshop.library');
 
-class plgAcymailingRedshop extends JPlugin
+class plgAcymailing\Redshop extends JPlugin
 {
-	public function plgAcymailingRedshop(&$subject, $config)
+	public function plgAcymailing\Redshop(&$subject, $config)
 	{
 		$lang  = JFactory::getLanguage();
 		$lang->load('plg_acymailing_redshop', JPATH_ADMINISTRATOR);
@@ -142,7 +142,7 @@ class plgAcymailingRedshop extends JPlugin
 		$match = '#{product(?:_name|_price|_thumb_image|):?([^:]*)}#Ui';
 		$variables = array('subject', 'body', 'altbody');
 		$found = false;
-		$results = array();
+		$results = [];
 
 		foreach ($variables as $var)
 		{
@@ -164,7 +164,7 @@ class plgAcymailingRedshop extends JPlugin
 			return;
 		}
 
-		$tags = array();
+		$tags = [];
 
 		foreach ($results as $var => $allresults)
 		{
@@ -198,28 +198,26 @@ class plgAcymailingRedshop extends JPlugin
 	public function getProduct($productId, $tag)
 	{
 		$template      = Redtemplate::getInstance();
-		$productHelper = productHelper::getInstance();
-		$helper        = redhelper::getInstance();
 
 		$templateId = trim($this->params->get('product_template', 1));
 		$templateDetail = $template->getTemplate('product_content_template', $templateId);
-		$product    = RedshopHelperProduct::getProductById($productId);
+		$product    = \Redshop\Product\Product::getProductById($productId);
 
 		// Get Product Formatted price as per redshop configuration
-		$productPrices = $productHelper->getProductNetPrice($productId);
+		$productPrices = \RedshopHelperProductPrice::getNetPrice($productId);
 		$price         = $productPrices['productPrice'] + $productPrices['productVat'];
-		$price         = $productHelper->getProductFormattedPrice($price);
+		$price         = \RedshopHelperProductPrice::formattedPrice($price);
 
 		$link = JUri::root()
 			. 'index.php?option=com_redshop&view=product&pid=' . $productId
-			. '&Itemid=' . RedshopHelperRouter::getItemId($productId);
+			. '&Itemid=' . \RedshopHelperRouter::getItemId($productId);
 
 		// Get product Image
-		$productImage = $productHelper->getProductImage(
+		$productImage = \Redshop\Product\Image\Image::getImage(
 							$productId,
 							$link,
-							Redshop::getConfig()->get('PRODUCT_MAIN_IMAGE'),
-							Redshop::getConfig()->get('PRODUCT_MAIN_IMAGE_HEIGHT'),
+							\Redshop::getConfig()->get('PRODUCT_MAIN_IMAGE'),
+							\Redshop::getConfig()->get('PRODUCT_MAIN_IMAGE_HEIGHT'),
 							0
 						);
 		$productImageLink = '<a href="' . $link . '">' . $productImage . '</a>';

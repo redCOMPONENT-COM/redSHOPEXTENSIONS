@@ -13,7 +13,7 @@ JLoader::import('helper', __DIR__);
 
 $moduleClassSuffix = htmlspecialchars($params->get('moduleclass_sfx'));
 
-if (Redshop::getConfig()->get('MY_WISHLIST'))
+if (\Redshop::getConfig()->get('MY_WISHLIST'))
 {
 	$wishList = ModRedshopWishlistHelper::getList();
 

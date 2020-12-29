@@ -13,8 +13,7 @@ global $root_label, $urlpath;
 $urllive = $urlpath;
 
 $db              = JFactory::getDbo();
-$objhelper       = new redhelper ();
-$Itemid          = JRequest::getInt('Itemid', '1');
+$itemId          = JRequest::getInt('Itemid', '1');
 $redproduct_menu = new modProMenuHelper;
 
 /************** CATEGORY TREE *******************************/
@@ -48,7 +47,7 @@ $basetext = "";
 
 // what category_id is selected?
 
-$category_id = JRequest::getInt('cid');
+$categoryId = JRequest::getInt('cid');
 
 if ($params->get('categorysorttype') == "catnameasc")
 {
@@ -121,10 +120,10 @@ $baseid = 0; //$db->f("category_parent_id");
 // create the link (if not a menu item, no link [could be: to entry page of site])
 $baselink = ($base == "first") ? $urllive . 'index.php?option=com_redshop&view=category&layout=detail' : "";
 
-// remember which item is open, normally $Itemid
+// remember which item is open, normally $itemId
 // except when we want the first item (e.g. Home) to be the base;
 // in that case we have to pretend all remaining items belong to "Home"
-$openid = $category_id;
+$openid = $categoryId;
 
 // it could be that we are displaying e.g. mainmenu in this dtree,
 // but item in usermenu is selected,
@@ -148,14 +147,14 @@ $document = JFactory::getDocument();
 
 foreach ($catdatas as $catdata)
 {
-	$cItemid = RedshopHelperRouter::getCategoryItemid($catdata->id);
+	$cItemid = \RedshopHelperRouter::getCategoryItemid($catdata->id);
 	if ($cItemid != "")
 	{
 		$tmpItemid = $cItemid;
 	}
 	else
 	{
-		$tmpItemid = $Itemid;
+		$tmpItemid = $itemId;
 	}
 
 	// get name and link (just to save space in the code later on)
@@ -176,7 +175,7 @@ $menu_htmlcode .= $openAll == "true" ? "$tree.openAll();\n" : "$tree.closeAll();
 $menu_htmlcode .= "$tree.openTo(\"$opento\",\"$opento_selected\");\n";
 $menu_htmlcode .= "</script>\n";
 $menu_htmlcode .= "<noscript>\n";
-$menu_htmlcode .= $redproduct_menu->get_category_tree($params, $category_id, $class_mainlevel, $list_css_class = "mm123", $highlighted_style = "font-style:italic;", $shopper_group_id);
+$menu_htmlcode .= $redproduct_menu->get_category_tree($params, $categoryId, $class_mainlevel, $list_css_class = "mm123", $highlighted_style = "font-style:italic;", $shopper_group_id);
 
 $menu_htmlcode .= "</noscript>\n";
 $menu_htmlcode .= "</td></tr></table>\n";

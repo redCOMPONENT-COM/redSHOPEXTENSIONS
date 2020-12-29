@@ -35,8 +35,8 @@ class JFormFieldGhncity extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$cities = array();
-		$list = array();
+		$cities = [];
+		$list = [];
 		$data = $this->getDistrictProvinceData();
 		$i = 0;
 

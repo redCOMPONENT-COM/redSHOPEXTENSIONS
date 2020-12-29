@@ -28,7 +28,7 @@ class PlgRedshop_ProductStockroom_Status extends JPlugin
 	 *                             Recognized key values include 'name', 'group', 'params', 'language'
 	 *                             (this list is not meant to be comprehensive).
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_redshop_product_stockroom_status', JPATH_ADMINISTRATOR);
@@ -47,14 +47,14 @@ class PlgRedshop_ProductStockroom_Status extends JPlugin
 	 */
 	public function getStockroomStatus($order_id)
 	{
-		if (Redshop::getConfig()->get('ADMINISTRATOR_EMAIL') == "")
+		if (\Redshop::getConfig()->get('ADMINISTRATOR_EMAIL') == "")
 		{
 			return;
 		}
 
 		$mailData = $this->params->get(
 			'template',
-			RedshopLayoutHelper::render('sample', null, JPATH_PLUGINS . '/redshop_product/stockroom_status/layouts')
+			\RedshopLayoutHelper::render('sample', null, JPATH_PLUGINS . '/redshop_product/stockroom_status/layouts')
 		);
 
 		if (!(strstr($mailData, "{product_loop_start}") && strstr($mailData, "{product_loop_end}")))
@@ -127,7 +127,7 @@ class PlgRedshop_ProductStockroom_Status extends JPlugin
 			}
 
 			JFactory::getMailer()->sendMail(
-				$mailFrom, $fromName, Redshop::getConfig()->get('ADMINISTRATOR_EMAIL'), $this->params->get('mailSubject', 'Stockroom Status Mail'), $message, 1, null, $mailbcc
+				$mailFrom, $fromName, \Redshop::getConfig()->get('ADMINISTRATOR_EMAIL'), $this->params->get('mailSubject', 'Stockroom Status Mail'), $message, 1, null, $mailbcc
 			);
 		}
 	}
@@ -197,7 +197,7 @@ class PlgRedshop_ProductStockroom_Status extends JPlugin
 								break;
 							case 'product':
 							default:
-								$sectionDetail = RedshopHelperProduct::getProductById($sectionId);
+								$sectionDetail = \Redshop\Product\Product::getProductById($sectionId);
 							break;
 						}
 

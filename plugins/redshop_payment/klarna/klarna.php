@@ -18,7 +18,7 @@ use Klarna\XMLRPC\PClass;
 
 JLoader::import('redshop.library');
 
-class plgRedshop_PaymentKlarna extends RedshopPayment
+class plgRedshop_PaymentKlarna extends \RedshopPayment
 {
 	/**
 	 * Constructor
@@ -30,7 +30,7 @@ class plgRedshop_PaymentKlarna extends RedshopPayment
 	 *
 	 * @since   11.1
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		// Load Klarna Library
 		require_once __DIR__ . '/library/vendor/autoload.php';
@@ -74,7 +74,7 @@ class plgRedshop_PaymentKlarna extends RedshopPayment
 			$this->params->get('sharedSecret'),
 			Country::fromCode($data['billinginfo']->country_2_code),
 			Language::fromCode($this->getLang()),
-			Currency::fromCode(strtolower(Redshop::getConfig()->get('CURRENCY_CODE'))),
+			Currency::fromCode(strtolower(\Redshop::getConfig()->get('CURRENCY_CODE'))),
 			$server
 		);
 
@@ -133,33 +133,33 @@ class plgRedshop_PaymentKlarna extends RedshopPayment
 		);*/
 
 		// Collect Extra Field Information
-		$pnoInfo = RedshopHelperExtrafields::getDataByName(
+		$pnoInfo = \RedshopHelperExtrafields::getDataByName(
 			'rs_pno',
-			RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
+			\RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
 			$data['order_id']
 		);
 
-		$dateOfBirth = RedshopHelperExtrafields::getDataByName(
+		$dateOfBirth = \RedshopHelperExtrafields::getDataByName(
 			'rs_birthdate',
-			RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
+			\RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
 			$data['order_id']
 		);
 
-		$genderInfo = RedshopHelperExtrafields::getDataByName(
+		$genderInfo = \RedshopHelperExtrafields::getDataByName(
 			'rs_gender',
-			RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
+			\RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
 			$data['order_id']
 		);
 
-		$houseNumberInfo = RedshopHelperExtrafields::getDataByName(
+		$houseNumberInfo = \RedshopHelperExtrafields::getDataByName(
 			'rs_house_number',
-			RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
+			\RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
 			$data['order_id']
 		);
 
-		$houseExtensionInfo = RedshopHelperExtrafields::getDataByName(
+		$houseExtensionInfo = \RedshopHelperExtrafields::getDataByName(
 			'rs_house_extension',
-			RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
+			\RedshopHelperExtrafields::SECTION_PAYMENT_GATEWAY,
 			$data['order_id']
 		);
 
@@ -248,7 +248,7 @@ class plgRedshop_PaymentKlarna extends RedshopPayment
 
 		try
 		{
-			$paymentInfo = RedshopHelperOrder::getPaymentInfo($data['order_id']);
+			$paymentInfo = \RedshopHelperOrder::getPaymentInfo($data['order_id']);
 
 			// Reserve amount only for new orders.
 			if ('' == trim($paymentInfo->order_payment_trans_id))
@@ -338,7 +338,7 @@ class plgRedshop_PaymentKlarna extends RedshopPayment
 
 		$orderHelper->changeorderstatus($values);
 
-		RedshopModel::getInstance('order_detail', 'RedshopModel')->resetcart();
+		\RedshopModel::getInstance('order_detail', '\RedshopModel')->resetcart();
 
 		$app->redirect(
 			JRoute::_('index.php?option=com_redshop&view=order_detail&layout=receipt&Itemid=' . $app->input->getInt('Itemid') . '&oid=' . $orderId, false),
@@ -395,7 +395,7 @@ class plgRedshop_PaymentKlarna extends RedshopPayment
 			$this->params->get('sharedSecret'),
 			Country::fromCode($data['billinginfo']->country_code),
 			Language::fromCode($this->getLang()),
-			Currency::fromCode(strtolower(Redshop::getConfig()->get('CURRENCY_CODE'))),
+			Currency::fromCode(strtolower(\Redshop::getConfig()->get('CURRENCY_CODE'))),
 			$server
 		);
 
@@ -480,7 +480,7 @@ class plgRedshop_PaymentKlarna extends RedshopPayment
 			return $return;
 		}
 
-		$orderBilling = RedshopHelperOrder::getOrderBillingUserInfo($data['order_id']);
+		$orderBilling = \RedshopHelperOrder::getOrderBillingUserInfo($data['order_id']);
 
 		$k = new Klarna;
 
@@ -491,7 +491,7 @@ class plgRedshop_PaymentKlarna extends RedshopPayment
 			$this->params->get('sharedSecret'),
 			Country::fromCode($orderBilling->country_code),
 			Language::fromCode($this->getLang()),
-			Currency::fromCode(strtolower(Redshop::getConfig()->get('CURRENCY_CODE'))),
+			Currency::fromCode(strtolower(\Redshop::getConfig()->get('CURRENCY_CODE'))),
 			$server
 		);
 

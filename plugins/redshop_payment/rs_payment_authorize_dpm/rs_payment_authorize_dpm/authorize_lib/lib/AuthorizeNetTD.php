@@ -95,7 +95,7 @@ class AuthorizeNetTD extends AuthorizeNetRequest
 	 */
 	public function getTransactionsForDay($month = false, $day = false, $year = false)
 	{
-		$transactions = array();
+		$transactions = [];
 		$month = ($month ? $month : date('m'));
 		$day = ($day ? $day : date('d'));
 		$year = ($year ? $year : date('Y'));

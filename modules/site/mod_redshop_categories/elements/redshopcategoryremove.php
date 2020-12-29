@@ -13,11 +13,11 @@ defined('_JEXEC') or die;
 JLoader::import('redshop.library');
 
 /**
- * Class JFormFieldRedshopCategoryRemove
+ * Class JFormField\RedshopCategoryRemove
  *
  * @since  1.5
  */
-class JFormFieldRedshopCategoryRemove extends JFormField
+class JFormField\RedshopCategoryRemove extends JFormField
 {
 	/**
 	 * @access private
@@ -36,7 +36,7 @@ class JFormFieldRedshopCategoryRemove extends JFormField
 			return JText::_('COM_REDSHOP_REDSHOP_IS_NOT_INSTALLED');
 		}
 
-		$values  = array();
+		$values  = [];
 
 		if (is_array($this->value))
 		{

@@ -9,7 +9,7 @@
 
 defined('_JEXEC') or die;
 
-$group = array();
+$group = [];
 
 
 ?>
@@ -160,14 +160,14 @@ $group = array();
 
 								?>
                                 <div id="amount-min">
-                                    <div><?php echo Redshop::getConfig()->get('CURRENCY_CODE') ?></div>
+                                    <div><?php echo \Redshop::getConfig()->get('CURRENCY_CODE') ?></div>
                                     <input type="text" pattern="^\d*(\.\d{2}$)?" class="span12"
                                            name="filterform[filterprice][min]" value="<?php echo $minPriceInput; ?>"
                                            min="0"
                                            max="<?php echo $rangeMax; ?>"/>
                                 </div>
                                 <div id="amount-max">
-                                    <div><?php echo Redshop::getConfig()->get('CURRENCY_CODE') ?></div>
+                                    <div><?php echo \Redshop::getConfig()->get('CURRENCY_CODE') ?></div>
                                     <input type="text" pattern="^\d*(\.\d{2}$)?" class="span12"
                                            name="filterform[filterprice][max]" value="<?php echo $maxPriceInput; ?>"
                                            min="0"
@@ -200,8 +200,12 @@ $group = array();
       href="<?php echo JUri::root() . 'modules/mod_redshop_category_product_filters/lib/css/jqui.css'; ?>">
 <link rel="stylesheet" type="text/css"
       href="<?php echo JUri::root() . 'modules/mod_redshop_category_product_filters/lib/css/product_filters.css'; ?>">
+<link rel="stylesheet" type="text/css"
+      href="<?php echo JUri::root() . 'modules/mod_redshop_category_product_filters/lib/fontawesome/fontawesome.min.css'; ?>">
 <script type="text/javascript"
         src="<?php echo JUri::root() . 'modules/mod_redshop_category_product_filters/lib/js/jquery-ui.min.js'; ?>"></script>
+<script type="text/javascript"
+        src="<?php echo JUri::root() . 'modules/mod_redshop_category_product_filters/lib/fontawesome/fontawesome.js'; ?>"></script>
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 
@@ -253,9 +257,11 @@ $group = array();
     }
 
     function submitFilter() {
-        var $filterForm = jQuery("#category-product-filter-form-<?php echo $module->id; ?>");
-        $filterForm.find('[name="limitstart"]').val(0);
-        $filterForm.submit();
+	    var $filterForm = jQuery("#category-product-filter-form-<?php echo $module->id; ?>");
+	    var sefEnabled = "<?php echo JFactory::getConfig()->get('sef') ?>";
+	    var appendCharacter = sefEnabled === "1" ? '?' : '&';
+	    $filterForm.attr('action', $filterForm.attr('action') + appendCharacter + $filterForm.serialize());
+	    $filterForm.submit();
     }
 
 

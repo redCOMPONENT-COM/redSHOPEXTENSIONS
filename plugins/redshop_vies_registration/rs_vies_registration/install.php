@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Plugins
+ * @package     \Redshop.Plugins
  * @subpackage  PlgRedshop_Vies_RegistrationRs_Vies_Registration
  *
  * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
@@ -12,7 +12,7 @@ use Joomla\Registry\Registry;
 /**
  *  PlgRedshop_Vies_RegistrationRs_Vies_Registration installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
 class PlgRedshop_Vies_RegistrationRs_Vies_RegistrationInstallerScript

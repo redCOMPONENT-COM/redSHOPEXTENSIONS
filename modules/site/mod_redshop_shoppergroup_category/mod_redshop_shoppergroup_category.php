@@ -17,7 +17,7 @@ $app       = JFactory::getApplication();
 $menu      = $app->getMenu();
 $active    = $menu->getActive();
 $active_id = isset($active) ? $active->id : $menu->getDefault()->id;
-$path      = isset($active) ? $active->tree : array();
+$path      = isset($active) ? $active->tree : [];
 $showAll   = $params->get('showAllChildren');
 $class_sfx = htmlspecialchars($params->get('class_sfx'));
 

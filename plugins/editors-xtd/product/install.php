@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Plugins
+ * @package     \Redshop.Plugins
  * @subpackage  PlgButtonProduct
  *
  * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
@@ -11,7 +11,7 @@ use Joomla\Registry\Registry;
 /**
  *  PlgButtonProduct installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
 class PlgButtonProductInstallerScript

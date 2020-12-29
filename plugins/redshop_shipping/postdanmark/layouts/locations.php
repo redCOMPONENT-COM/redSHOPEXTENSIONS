@@ -23,7 +23,7 @@ extract($displayData);
 	<tr>
 		<?php if (count($shops) === 1): ?>
 			<?php
-			echo RedshopLayoutHelper::render(
+			echo \RedshopLayoutHelper::render(
 				'shop',
 				array('shop' => $shops[0], 'key' => 0, 'count' => 1),
 				JPATH_PLUGINS . '/redshop_shipping/postdanmark/layouts'
@@ -34,7 +34,7 @@ extract($displayData);
 			$cnt   = 0;
 			$count = count($shops);
 			foreach ($shops as $shop):
-				echo RedshopLayoutHelper::render(
+				echo \RedshopLayoutHelper::render(
 					'shop',
 					array('shop' => $shop, 'key' => $cnt, 'count' => $count),
 					JPATH_PLUGINS . '/redshop_shipping/postdanmark/layouts'

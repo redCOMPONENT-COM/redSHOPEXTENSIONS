@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Plugins
+ * @package     \Redshop.Plugins
  * @subpackage  PlgRedshop_PaymentRs_Payment_Eway
  *
  * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
@@ -12,7 +12,7 @@ use Joomla\Registry\Registry;
 /**
  * PlgRedshop_PaymentRs_Payment_Eway installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.7.0
  */
 class PlgRedshop_PaymentRs_Payment_EwayInstallerScript

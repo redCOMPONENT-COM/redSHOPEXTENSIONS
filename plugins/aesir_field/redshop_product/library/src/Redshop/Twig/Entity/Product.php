@@ -1,13 +1,13 @@
 <?php
 /**
- * @package     Redshop.Plugin
+ * @package     \Redshop.Plugin
  * @subpackage  Entity.Twig
  *
  * @copyright   Copyright (C) 2012 - 2017 redCOMPONENT.com. All rights reserved.
  * @license     GNU General Public License version 2 or later, see LICENSE.
  */
 
-namespace Redshop\Twig\Entity;
+namespace \Redshop\Twig\Entity;
 
 use Aesir\Entity\Twig\AbstractTwigEntity;
 use function array_values;
@@ -77,7 +77,7 @@ class Product extends AbstractTwigEntity
 		\JHtml::script('com_redshop/redbox.js', false, true);
 		\JHtml::script('com_redshop/attribute.js', false, true);
 
-		$attributes = (array) $this->entity->get('attributes', array());
+		$attributes = (array) $this->entity->get('attributes', []);
 		$content    = '{form_addtocart:' . $templateName . '}';
 
 		// Has attribute
@@ -89,12 +89,12 @@ class Product extends AbstractTwigEntity
 			$template = $individualAttribute ? $attributeCartTemplate : $attributeTemplate;
 			$content  = $individualAttribute ? '' : $content;
 
-			$content = \productHelper::getInstance()->getAttributeTemplate('{' . $section . ':' . $template . '}');
+			$content = \Redshop\Template\Helper::getAttribute('{' . $section . ':' . $template . '}');
 			$content = \RedshopHelperAttribute::replaceAttributeData(
 				$this->entity->getId(), 0, 0, array_values($attributes), '{' . $section . ':' . $template . '}', $content
 			);
 		}
 
-		return \productHelper::getInstance()->replaceCartTemplate($this->entity->getId(), 0, 0, 0, $content);
+		return \Redshop\Cart\Render::replace($this->entity->getId(), 0, 0, 0, $content);
 	}
 }

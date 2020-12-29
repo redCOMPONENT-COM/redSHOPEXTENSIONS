@@ -18,7 +18,7 @@ if (!class_exists('redCategoryMenu'))
 		/***************************************************
 		 * function traverse_tree_down
 		 */
-		function traverse_tree_down(&$mymenu_content, $category_id = '0', $level = '0', $params = '', $shopper_group_id)
+		function traverse_tree_down(&$mymenu_content, $categoryId = '0', $level = '0', $params = '', $shopper_group_id)
 		{
 			static $ibg = 0;
 			global $redproduct_menu;
@@ -54,7 +54,7 @@ if (!class_exists('redCategoryMenu'))
 
 			$query = "SELECT name, id FROM #__redshop_category "
 				. "WHERE published='1' "
-				. "AND parent_id= " . (int) $category_id;
+				. "AND parent_id= " . (int) $categoryId;
 
 			if ($shopper_group_id && $shoppergroup_cat)
 			{
@@ -65,12 +65,11 @@ if (!class_exists('redCategoryMenu'))
 
 			$db->setQuery($query);
 			$traverse_results = $db->loadObjectList();
-			$objhelper        = redhelper::getInstance();
-			$Itemid           = JRequest::getInt('Itemid');
+			$itemId           = JRequest::getInt('Itemid');
 
 			foreach ($traverse_results as $traverse_result)
 			{
-				$cItemid = RedshopHelperRouter::getCategoryItemid($traverse_result->id);
+				$cItemid = \RedshopHelperRouter::getCategoryItemid($traverse_result->id);
 
 				if ($cItemid != "")
 				{
@@ -78,7 +77,7 @@ if (!class_exists('redCategoryMenu'))
 				}
 				else
 				{
-					$tmpItemid = $Itemid;
+					$tmpItemid = $itemId;
 				}
 
 				if ($ibg != 0)
@@ -98,7 +97,7 @@ if (!class_exists('redCategoryMenu'))
 	}
 }
 
-$Itemid = JRequest::getInt('Itemid');
+$itemId = JRequest::getInt('Itemid');
 $TreeId = JRequest::getInt('TreeId');
 $js_src = JURI::root() . 'modules/mod_redshop_categories';
 
@@ -121,7 +120,7 @@ if ($jscook_type == "tree")
 	JHTML::script($js_src . '/JSCookTree.js');
 
 	$document->addScriptDeclaration(
-		RedshopLayoutHelper::render(
+		\RedshopLayoutHelper::render(
 			$jscookTree_style . '.theme',
 			array(
 				'ctThemeXPBase' => $js_src . '/' . $jscookTree_style . '/'
@@ -137,7 +136,7 @@ else
 	JHTML::script($js_src . '/JSCook/JSCookMenu.js');
 
 	$document->addScriptDeclaration(
-		RedshopLayoutHelper::render(
+		\RedshopLayoutHelper::render(
 			'JSCook.theme',
 			array(
 				'cmThemeOfficeBase' => $js_src . '/ThemeOffice/'
@@ -210,6 +209,6 @@ if ($jscook_type == "tree")
 }
 
 $menu_htmlcode .= "<noscript>";
-$menu_htmlcode .= $redproduct_menu->get_category_tree($params, $category_id, $class_mainlevel, $list_css_class = "mm123", $highlighted_style = "font-style:italic;", $shopper_group_id);
+$menu_htmlcode .= $redproduct_menu->get_category_tree($params, $categoryId, $class_mainlevel, $list_css_class = "mm123", $highlighted_style = "font-style:italic;", $shopper_group_id);
 $menu_htmlcode .= "\n</noscript>\n";
 echo $menu_htmlcode;

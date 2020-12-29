@@ -44,13 +44,14 @@ $query = $db->getQuery(true)
 	->from($db->qn('#__reditem_items'))
 	->where($db->qn('id') . ' = ' . $db->q((int) $item));
 $itemId = $db->setQuery($query)->loadResult();
+
 if ($tableName)
 {
 	$query = $db->getQuery(true)
-		->select($db->qn('id'))
+		->select($db->qn('redshop_product'))
 		->from($db->qn('#__reditem_types_' . $tableName))
 		->where($db->qn('id') . ' = ' . $db->q((int) $itemId));
-	$ids = $db->setQuery($query)->loadResult();
+	$ids = json_decode($db->setQuery($query)->loadResult());
 }
 
 $query = $db->getQuery(true)
@@ -62,6 +63,14 @@ $query = $db->getQuery(true)
 	->where($db->qn('p.published') . ' = 1')
 	->group($db->qn('p.product_id'))
 	->order($db->qn('p.product_id') . ' DESC');
+
+/* REDSHOP-5967 */
+if (\Redshop::getConfig()->getInt('SHOW_DISCONTINUED_PRODUCTS')) {
+    $query->where($db->qn('p.expired') . ' IN (0, 1)');
+} else {
+    $query->where($db->qn('p.expired') . ' IN (0)');
+}
+/* End REDSHOP-5967 */
 
 if (!empty($ids) && is_array($ids))
 {
@@ -88,7 +97,7 @@ if ($showChildProducts != 1)
 	$query->where($db->qn('p.product_parent_id') . ' = 0');
 }
 
-$rows = array();
+$rows = [];
 
 if ($productIds = $db->setQuery($query, 0, $count)->loadColumn())
 {
@@ -97,12 +106,12 @@ if ($productIds = $db->setQuery($query, 0, $count)->loadColumn())
 		->where($db->qn('p.product_id') . ' IN (' . implode(',', $productIds) . ')')
 		->order('FIELD(p.product_id, ' . implode(',', $productIds) . ')');
 
-	$query = RedshopHelperProduct::getMainProductQuery($query, $user->id)
+	$query = \Redshop\Product\Product::getMainProductQuery($query, $user->id)
 		->select('CONCAT_WS(' . $db->q('.') . ', p.product_id, ' . (int) $user->id . ') AS concat_id');
 
 	if ($rows = $db->setQuery($query)->loadObjectList('concat_id'))
 	{
-		RedshopHelperProduct::setProduct($rows);
+		\Redshop\Product\Product::setProduct($rows);
 		$rows = array_values($rows);
 	}
 }

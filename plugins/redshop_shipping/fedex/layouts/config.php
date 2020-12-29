@@ -69,13 +69,13 @@ extract($displayData);
     </tr>
     <tr>
         <td><strong><?php echo JText::_('PLG_REDSHOP_SHIPPING_FEDEX_DISCOUNT_LBL') ?></strong></td>
-        <td><?php echo JHtml::_('select.booleanlist', 'FEDEX_DISCOUNT', '', Redshop::getConfig()->get('FEDEX_DISCOUNT')); ?></td>
+        <td><?php echo JHtml::_('select.booleanlist', 'FEDEX_DISCOUNT', '', \Redshop::getConfig()->get('FEDEX_DISCOUNT')); ?></td>
     </tr>
     <tr>
         <td><strong><?php echo JText::_('PLG_REDSHOP_SHIPPING_FEDEX_CARRIERCODE_LBL') ?></strong></td>
         <td>
 			<?php
-			$source         = array();
+			$source         = [];
 			$source['FDXE'] = JText::_('PLG_REDSHOP_SHIPPING_FDXE_LBL');
 			$source['FDXG'] = JText::_('PLG_REDSHOP_SHIPPING_FDXG_LBL');
 			echo JHtml::_('select.genericlist', $source, 'FEDEX_CARRIERCODE', '', 'value', 'text', FEDEX_CARRIERCODE);
@@ -86,7 +86,7 @@ extract($displayData);
         <td><strong><?php echo JText::_('PLG_REDSHOP_SHIPPING_FEDEX_SERVICE_TYPE_LBL') ?></strong></td>
         <td>
 			<?php
-			$source                                        = array();
+			$source                                        = [];
 			$source['PRIORITY_OVERNIGHT']                  = JText::_('PLG_REDSHOP_SHIPPING_PRIORITY_OVERNIGHT_LBL');
 			$source['STANDARD_OVERNIGHT']                  = JText::_('PLG_REDSHOP_SHIPPING_STANDARD_OVERNIGHT_LBL');
 			$source['FIRST_OVERNIGHT']                     = JText::_('PLG_REDSHOP_SHIPPING_FIRST_OVERNIGHT_LBL');
@@ -112,7 +112,7 @@ extract($displayData);
         <td><strong><?php echo JText::_('PLG_REDSHOP_SHIPPING_FEDEX_DROP_OFF_TYPE_LBL') ?></strong></td>
         <td>
 			<?php
-			$source                            = array();
+			$source                            = [];
 			$source['REGULAR_PICKUP']          = JText::_('PLG_REDSHOP_SHIPPING_REGULAR_PICKUP_LBL');
 			$source['REQUEST_COURIER']         = JText::_('PLG_REDSHOP_SHIPPING_REQUEST_COURIER_LBL');
 			$source['DROP_BOX']                = JText::_('PLG_REDSHOP_SHIPPING_DROP_BOX_LBL');
@@ -127,7 +127,7 @@ extract($displayData);
         <td><strong><?php echo JText::_('PLG_REDSHOP_SHIPPING_FEDEX_PACKAGING_TYPE_LBL') ?></strong></td>
         <td>
 			<?php
-			$source                   = array();
+			$source                   = [];
 			$source['FEDEX_ENVELOPE'] = JText::_('PLG_REDSHOP_SHIPPING_FEDEX_ENVELOPE_LBL');
 			$source['FEDEX_PAK']      = JText::_('PLG_REDSHOP_SHIPPING_FEDEX_PAK_LBL');
 			$source['FEDEX_BOX']      = JText::_('PLG_REDSHOP_SHIPPING_FEDEX_BOX_LBL');
@@ -144,7 +144,7 @@ extract($displayData);
         <td><strong><?php echo JText::_('PLG_REDSHOP_SHIPPING_FEDEX_WEIGHT_UNITS_LBL') ?></strong></td>
         <td>
 			<?php
-			$source        = array();
+			$source        = [];
 			$source['lbs'] = JText::_('PLG_REDSHOP_SHIPPING_LBS');
 			$source['kg']  = JText::_('PLG_REDSHOP_SHIPPING_KGS');
 

@@ -24,19 +24,18 @@ class ModRedshopCategoryProductFiltersHelper
 	 *
 	 * @return array
 	 */
-	public static function getPriceRange($pids = array())
+	public static function getPriceRange($pids = [])
 	{
 		$max              = 0;
 		$min              = 0;
-		$producthelper    = new producthelper;
-		$allProductPrices = array();
+		$allProductPrices = [];
 
 		if (!empty($pids))
 		{
 			// Get product price
 			foreach ($pids as $k => $id)
 			{
-				$productprices      = $producthelper->getProductNetPrice($id, JFactory::getUser()->id);
+				$productprices      = \RedshopHelperProductPrice::getNetPrice($id, JFactory::getUser()->id);
 				$allProductPrices[] = $productprices['productPrice'];
 			}
 
@@ -75,6 +74,7 @@ class ModRedshopCategoryProductFiltersHelper
 	 *
 	 * @return  mixed
 	 */
+
 	public static function getManufacturers($manuList = array())
 	{
 		if (empty($manuList))
@@ -84,15 +84,23 @@ class ModRedshopCategoryProductFiltersHelper
 
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select($db->qn('name'))
-			->select($db->qn('id'))
-			->from($db->qn('#__redshop_manufacturer'))
-			->where($db->qn('published') . ' = 1')
-			->order($db->qn('name') . ' ASC');
+			->select($db->qn('m.name'))
+			->select($db->qn('m.id'))
+			->from($db->qn('#__redshop_manufacturer', 'm'))
+			->where($db->qn('m.published') . ' = 1')
+			->order($db->qn('m.name') . ' ASC');
+
+		$query->select('COUNT(p.product_id) AS count_not_expired_product');
+		$query->leftJoin($db->qn('#__redshop_product', 'p')
+		                 . ' ON ' . $db->qn('p.manufacturer_id') . ' = ' . $db->qn('m.id'));
+		$query->where($db->qn('p.published') . ' IN (1)');
+		$query->where($db->qn('p.expired') . ' IN (0)');
+		$query->group($db->qn('m.id'));
+		$query->having($db->qn('count_not_expired_product') . ' > 0');
 
 		if (!empty($manuList))
 		{
-			$query->where($db->qn('id') . ' IN (' . implode(',', $manuList) . ')');
+			$query->where($db->qn('m.id') . ' IN (' . implode(',', $manuList) . ')');
 		}
 
 		return $db->setQuery($query)->loadObjectList();
@@ -106,11 +114,11 @@ class ModRedshopCategoryProductFiltersHelper
 	 *
 	 * @return  array
 	 */
-	public static function getCustomFields($pids = array(), $productFields = array())
+	public static function getCustomFields($pids = [], $productFields = [])
 	{
 		if (empty($pids) || empty($productFields))
 		{
-			return array();
+			return [];
 		}
 
 		$manufacturerId = JRequest::getVar('manufacturer_id');
@@ -129,17 +137,23 @@ class ModRedshopCategoryProductFiltersHelper
 			->leftJoin($db->qn('#__redshop_product', 'p') . ' ON ' . $db->qn('p.product_id') . ' = ' . $db->qn('fd.itemid'))
 			->where($db->qn('fd.itemid') . ' IN (' . implode(',', $pids) . ')')
 			->where($db->qn('f.name') . ' IN (' . implode(',', $db->q($productFields)) . ')')
+			->where($db->qn('f.published') . ' = 1')
 			->where($db->qn('fd.data_txt') . ' NOT LIKE "" AND ' . $db->qn('fd.data_txt') . ' IS NOT NULL ');
 
 		if ($manufacturerId)
 		{
 			$query->where($db->qn('p.manufacturer_id') . ' = ' . $db->q($manufacturerId));
 		}
+
+		if (!\Redshop::getConfig()->getInt('SHOW_DISCONTINUED_PRODUCTS')) {
+			$query->where($db->qn('p.expired') . ' NOT IN (1)');
+		}
+
 		$query->group('fv.field_value, fv.field_id')
 			->order('f.ordering, fv.field_value');
 
 		$data   = $db->setQuery($query)->loadObjectList();
-		$result = array();
+		$result = [];
 
 		foreach ($data as $key => $value)
 		{

@@ -48,11 +48,10 @@ class RedmodMenuHelper
 			$start = (int) $params->get('startLevel');
 			$end = (int) $params->get('endLevel');
 			$showAll = $params->get('showAllChildren');
-			$maxdepth = $params->get('maxdepth');
+			$maxDepth = $params->get('maxdepth');
 			$items = $menu->getItems('menutype', $params->get('menutype'));
-			$redHelper = redhelper::getInstance();
 
-			$lastitem = 0;
+			$lastItem = 0;
 
 			if ($items)
 			{
@@ -60,7 +59,7 @@ class RedmodMenuHelper
 				{
 					$link = parse_url($item->link);
 					$view = '';
-					$categoryid = 0;
+					$categoryId = 0;
 
 					if (isset($link['query']))
 					{
@@ -73,13 +72,13 @@ class RedmodMenuHelper
 
 						if (isset($output['cid']))
 						{
-							$categoryid = $output['cid'];
+							$categoryId = $output['cid'];
 						}
 					}
 
-					if (Redshop::getConfig()->get('PORTAL_SHOP') == 1 && $view == 'category' && $categoryid > 0)
+					if (\Redshop::getConfig()->get('PORTAL_SHOP') == 1 && $view == 'category' && $categoryId > 0)
 					{
-						$shoppercat = RedshopHelperAccess::checkPortalCategoryPermission($categoryid);
+						$shoppercat = \RedshopHelperAccess::checkPortalCategoryPermission($categoryId);
 
 						if (!$shoppercat)
 						{
@@ -91,7 +90,7 @@ class RedmodMenuHelper
 					if (($start && $start > $item->level)
 						|| ($end && $item->level > $end)
 						|| (!$showAll && $item->level > 1 && !in_array($item->parent_id, $path))
-						|| ($maxdepth && $item->level > $maxdepth)
+						|| ($maxDepth && $item->level > $maxDepth)
 						|| ($start > 1 && !in_array($item->tree[$start - 2], $path)))
 					{
 						unset($items[$i]);
@@ -102,25 +101,21 @@ class RedmodMenuHelper
 					$item->shallower = false;
 					$item->level_diff = 0;
 
-					if (isset($items[$lastitem]))
+					if (isset($items[$lastItem]))
 					{
-						$items[$lastitem]->deeper = ($item->level > $items[$lastitem]->level);
-						$items[$lastitem]->shallower = ($item->level < $items[$lastitem]->level);
-						$items[$lastitem]->level_diff = ($items[$lastitem]->level - $item->level);
+						$items[$lastItem]->deeper = ($item->level > $items[$lastItem]->level);
+						$items[$lastItem]->shallower = ($item->level < $items[$lastItem]->level);
+						$items[$lastItem]->level_diff = ($items[$lastItem]->level - $item->level);
 					}
 
 					$item->parent = (boolean) $menu->getItems('parent_id', (int) $item->id, true);
 
-					$lastitem = $i;
+					$lastItem = $i;
 					$item->active = false;
 					$item->flink = $item->link;
 
 					switch ($item->type)
 					{
-						case 'separator':
-							// No further action needed.
-							continue;
-
 						case 'url':
 							if ((strpos($item->link, 'index.php?') === 0) && (strpos($item->link, 'Itemid=') === false))
 							{
@@ -163,11 +158,11 @@ class RedmodMenuHelper
 					$item->menu_image = $item->params->get('menu_image', '') ? htmlspecialchars($item->params->get('menu_image', '')) : '';
 				}
 
-				if (isset($items[$lastitem]))
+				if (isset($items[$lastItem]))
 				{
-					$items[$lastitem]->deeper = (($start ? $start : 1) > $items[$lastitem]->level);
-					$items[$lastitem]->shallower = (($start ? $start : 1) < $items[$lastitem]->level);
-					$items[$lastitem]->level_diff = ($items[$lastitem]->level - ($start ? $start : 1));
+					$items[$lastItem]->deeper = (($start ? $start : 1) > $items[$lastItem]->level);
+					$items[$lastItem]->shallower = (($start ? $start : 1) < $items[$lastItem]->level);
+					$items[$lastItem]->level_diff = ($items[$lastItem]->level - ($start ? $start : 1));
 				}
 			}
 

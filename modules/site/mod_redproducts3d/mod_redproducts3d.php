@@ -9,13 +9,13 @@
 
 defined('_JEXEC') or die;
 
-$category = $params->get('category', array());
+$category = $params->get('category', []);
 
 $count                  = trim($params->get('count', 2));
 $stageWidth             = trim($params->get('stageWidth', 600));
 $stageHeight            = trim($params->get('stageHeight', 400));
-$thumbwidth             = trim($params->get('thumbwidth', 100));
-$thumbheight            = trim($params->get('thumbheight', 100));
+$thumbWidth             = trim($params->get('thumbwidth', 100));
+$thumbHeight            = trim($params->get('thumbheight', 100));
 $radius                 = trim($params->get('radius', 230));
 $focalBlur              = trim($params->get('focalBlur', 5));
 $elevation              = trim($params->get('elevation', -50));
@@ -25,24 +25,23 @@ $enableMouseOverToolTip = trim($params->get('enableMouseOverToolTip', 'yes'));
 $enableMouseOverEffects = trim($params->get('enableMouseOverEffects', 'yes'));
 
 $db = JFactory::getDbo();
+$query = $db->getQuery(true);
 JLoader::import('redshop.library');
 
-$leftjoin = "";
-$and      = "";
+$query->select('*')
+    ->from($db->qn('#__redshop_product', 'p'))
+	->where($db->qn('p.published') . ' = ' . $db->q('1'));
 
 if (is_array($category) && count($category) > 0)
 {
-	JArrayHelper::toInteger($category);
-	$leftjoin .= "LEFT JOIN #__redshop_product_category_xref cx ON cx.product_id = p.product_id ";
-	$and .= "AND cx.category_id IN (" . implode(',', $category) . ") ";
+    JArrayHelper::toInteger($category);
+    $query->leftJoin($db->qn('#__redshop_product_category_xref', 'cx')
+        . ' ON ' . $db->qn('cx.product_id') . ' = ' . $db->qn('p.product_id'));
+    $query->where($db->qn('cx.category_id') . ' IN (' . implode(',', $db->q($category)) . ') ');
 }
 
-$sql = "SELECT * FROM #__redshop_product p "
-	. $leftjoin
-	. "WHERE p.published=1 "
-	. $and
-	. "LIMIT 0," . (int) $count;
-$db->setQuery($sql);
+
+$db->setQuery($query, 0, (int) count);
 $rows = $db->loadObjectList();
 
 require JModuleHelper::getLayoutPath('mod_redproducts3d');

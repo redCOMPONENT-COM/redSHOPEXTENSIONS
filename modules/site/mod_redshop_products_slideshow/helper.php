@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 /**
- * Class RedshopProductSlideshow
+ * Class \RedshopProductSlideshow
  *
  * @since  1.5
  */
@@ -159,6 +159,15 @@ class RedshopProductSlideshow
 			->where('p.published = 1')
 			->where('c.published = 1');
 
+
+        /* REDSHOP-5967 */
+        if (\Redshop::getConfig()->getInt('SHOW_DISCONTINUED_PRODUCTS')) {
+            $query->where($db->qn('p.expired') . ' IN (0, 1)');
+        } else {
+            $query->where($db->qn('p.expired') . ' IN (0)');
+        }
+        /* End REDSHOP-5967 */
+
 		if (count($cat_arr) > 0)
 		{
 			$query->where('x.category_id IN (' . implode(',', $cat_arr) . ')');
@@ -189,7 +198,7 @@ class RedshopProductSlideshow
 		}
 
 		$xml_data = '';
-		$rows = array();
+		$rows = [];
 
 		if ($productIds = $db->setQuery($query, 0, $numbproduct)->loadColumn())
 		{
@@ -198,43 +207,41 @@ class RedshopProductSlideshow
 				->order('FIELD(p.product_id, ' . implode(',', $productIds) . ')');
 
 			$user = JFactory::getUser();
-			$query = RedshopHelperProduct::getMainProductQuery($query, $user->id)
+			$query = \Redshop\Product\Product::getMainProductQuery($query, $user->id)
 				->select('CONCAT_WS(' . $db->q('.') . ', p.product_id, ' . (int) $user->id . ') AS concat_id');
 
 			if ($rows = $db->setQuery($query)->loadObjectList('concat_id'))
 			{
-				RedshopHelperProduct::setProduct($rows);
+				\Redshop\Product\Product::setProduct($rows);
 				$rows = array_values($rows);
 			}
 		}
 
-		$producthelper = productHelper::getInstance();
-		$redhelper     = redhelper::getInstance();
 
 		for ($k = 0, $countRows = count($rows);$k < $countRows;$k++)
 		{
 			$ret_array['flag'] = true;
 			$price_txt         = '';
-			$ItemData          = $producthelper->getMenuInformation(0, 0, '', 'product&pid=' . $rows[$k]->product_id);
+			$itemData          =  \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $rows[$k]->product_id);
 
-			if (count($ItemData) > 0)
+			if (isset($itemData->id))
 			{
-				$Itemid = $ItemData->id;
+				$itemId = $itemData->id;
 			}
 			else
 			{
-				$Itemid = RedshopHelperRouter::getItemId($rows[$k]->product_id);
+				$itemId = \RedshopHelperRouter::getItemId($rows[$k]->product_id);
 			}
 
 			if ($params->get('show_price') == "yes")
 			{
 				// Without vat price
-				$productArr        = $producthelper->getProductNetPrice($rows[$k]->product_id, 0, 1);
-				$product_price     = $productArr['productPrice'];
+				$productArr        = \RedshopHelperProductPrice::getNetPrice($rows[$k]->product_id, 0, 1);
+				$productPrice     = $productArr['productPrice'];
 				$productVat        = $productArr['productVat'];
 
 				// With vat price
-				$product_price_vat = $product_price + $productVat;
+				$productPrice_vat = $productPrice + $productVat;
 				$price_txt         .= $params->get('price_text', ': ');
 				$price_txt         .= ' ';
 
@@ -242,19 +249,19 @@ class RedshopProductSlideshow
 
 				if ($pricetax == 'yes')
 				{
-					$abs_price = $product_price_vat;
+					$abs_price = $productPrice_vat;
 				}
 				else
 				{
-					$abs_price = $product_price;
+					$abs_price = $productPrice;
 				}
 
-				$abs_price = $producthelper->getProductFormattedPrice($abs_price);
+				$abs_price = \RedshopHelperProductPrice::formattedPrice($abs_price);
 				$price_txt .= $abs_price;
 			}
 
-			$curr_link = JRoute::_('index.php?option=com_redshop&amp;view=product&amp;pid=' . $rows[$k]->product_id . '&amp;Itemid=' . $Itemid, true);
-			$pname = $rows[$k]->product_name;
+			$curr_link = JRoute::_('index.php?option=com_redshop&amp;view=product&amp;pid=' . $rows[$k]->product_id . '&amp;Itemid=' . $itemId, true);
+			$productName = $rows[$k]->product_name;
 
 			if (!JFile::exists(REDSHOP_FRONT_IMAGES_RELPATH . "product/" . $rows[$k]->product_full_image))
 			{
@@ -269,14 +276,14 @@ class RedshopProductSlideshow
 					'product',
 					$imageWidth,
 					$imageHeight,
-					Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
+					\Redshop::getConfig()->get('USE_IMAGE_SIZE_SWAPPING')
 				);
 			}
 
 			$xml_data .= '<item>
 		<link>' . $curr_link . '</link>
 		<image>' . $imgpath . '</image>
-		<title>' . htmlentities($pname) . strip_tags($price_txt) . '</title>
+		<title>' . htmlentities($productName) . strip_tags($price_txt) . '</title>
 		</item>';
 		}
 

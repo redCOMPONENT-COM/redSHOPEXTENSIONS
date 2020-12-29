@@ -16,76 +16,34 @@ defined('_JEXEC') or die;
  */
 class PlgRedshop_ProductPostDanmark extends JPlugin
 {
-	/**
-	 * This event will trigger while order place and before generate Economic invoice
-	 *
-	 * @param   array   $cart         Cart information Array
-	 * @param   object  $orderResult  Order information Object
-	 *
-	 *
-	 * @return  void
-	 */
-	public function onBeforeCreateEconomicInvoice($cart, $orderResult)
+	public function onBeforeUserShippingStore($orderUser, $orderResult)
 	{
-		$this->afterOrderPlace($cart, $orderResult);
-	}
-
-	/**
-	 * Method will trigger on After redSHOP Order Place to update PostDanmark shipping info
-	 *
-	 * @param   array   $cart         Cart information Array
-	 * @param   object  $orderResult  Order information Object
-	 *
-	 * @return  void
-	 */
-	public function afterOrderPlace($cart, $orderResult)
-	{
-		if (null == $orderResult->shop_id)
-		{
+		if (null == $orderResult->shop_id) {
 			return;
 		}
 
-		$orderShippingInfo = RedshopHelperShipping::decryptShipping($orderResult->ship_method_id);
+		$orderShippingInfo = Redshop\Shipping\Rate::decrypt($orderResult->ship_method_id);
 
-		if ('plgredshop_shippingpostdanmark' != strtolower($orderShippingInfo[0]))
-		{
+		if ('plgredshop_shippingpostdanmark' != strtolower($orderShippingInfo[0])) {
 			return;
 		}
 
 		$locationInfo = explode("|", trim($orderResult->shop_id));
 
-		if (count($locationInfo) <= 0)
-		{
+		if (count($locationInfo) <= 0) {
 			return;
 		}
-
-		// Initialiase variables.
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
 		$companyName = 'ServicePointID:' . $locationInfo[0] . ':PostDanmark';
 
-		// Create the base update statement.
-		$query->update($db->qn('#__redshop_order_users_info'))
-			->set($db->qn('company_name') . ' = ' . $db->q($companyName))
-			->set($db->qn('firstname') . ' = ' . $db->q($locationInfo[1]))
-			->set($db->qn('lastname') . ' = ' . $db->q(''))
-			->set($db->qn('address') . ' = ' . $db->q($locationInfo[2]))
-			->set($db->qn('city') . ' = ' . $db->q($locationInfo[4]))
-			->set($db->qn('zipcode') . ' = ' . $db->q($locationInfo[3]))
-			->where($db->qn('order_id') . ' = ' . (int) $orderResult->order_id)
-			->where($db->qn('address_type') . ' = ' . $db->q('ST'));
+		$data = [
+			'company_name' => $companyName,
+			'firstname'    => $locationInfo[1],
+			'lastname'     => '',
+			'address'      => $locationInfo[2],
+			'city'         => $locationInfo[4],
+			'zipcode'      => $locationInfo[3]
+		];
 
-		// Set the query and execute the update.
-		$db->setQuery($query);
-
-		try
-		{
-			$db->execute();
-		}
-		catch (RuntimeException $e)
-		{
-			throw new RuntimeException($e->getMessage(), $e->getCode());
-		}
+		$orderUser->bind($data);
 	}
 }

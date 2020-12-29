@@ -84,7 +84,7 @@ class PlgEconomicEconomic extends JPlugin
 	 *
 	 * @throws  Exception
 	 */
-	public function __construct(&$subject, $config = array())
+	public function __construct(&$subject, $config = [])
 	{
 		parent::__construct($subject, $config);
 
@@ -200,7 +200,7 @@ class PlgEconomicEconomic extends JPlugin
 			$this->error    = 1;
 			$this->errorMsg = "e-conomic user is not authenticated. Access denied";
 
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -251,7 +251,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, array('number' => $data['user_info_id']));
 			}
@@ -289,7 +289,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, array('email' => trim($data['email'])));
 			}
@@ -357,7 +357,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, array('debtorHandle' => $debtorHandle));
 			}
@@ -388,7 +388,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 
 		$debtorGroupHandles = $this->client->debtorGroup_GetAll()->DebtorGroup_GetAllResult->DebtorGroupHandle;
-		$deptorGroups       = array();
+		$deptorGroups       = [];
 
 		if (is_object($debtorGroupHandles))
 		{
@@ -456,7 +456,7 @@ class PlgEconomicEconomic extends JPlugin
 			return $this->termOfPayment;
 		}
 
-		$terms           = array();
+		$terms           = [];
 		$termOfResultAll = $this->client->TermOfPayment_GetAll()->TermOfPayment_GetAllResult;
 		$termOfPayments  = $termOfResultAll->TermOfPaymentHandle;
 
@@ -525,7 +525,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, array('termOfPaymentHandle' => $termOfPaymentHandle));
 			}
@@ -551,7 +551,7 @@ class PlgEconomicEconomic extends JPlugin
 		try
 		{
 			$this->cashbook  = 1;
-			$cashBookNumbers = array();
+			$cashBookNumbers = [];
 			$cashBooks       = $this->client->CashBook_GetAll()->CashBook_GetAllResult;
 			$cashBooks       = $cashBooks->CashBookHandle;
 
@@ -591,7 +591,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -622,7 +622,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 
 		$layoutHandleId = 0;
-		$arr            = array();
+		$arr            = [];
 		$resultAll      = $this->client->TemplateCollection_GetAll()->TemplateCollection_GetAllResult;
 		$termOfPayments = $resultAll->TemplateCollectionHandle;
 
@@ -769,7 +769,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, $debtorInfor, $data);
 			}
@@ -865,7 +865,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, array('number' => (int) $userInput));
 			}
@@ -900,7 +900,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, array('number' => $data['productgroup_id']));
 			}
@@ -931,7 +931,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, array('number' => $data['product_number']));
 			}
@@ -966,7 +966,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, array('productHandle' => $productHandle));
 			}
@@ -1016,7 +1016,7 @@ class PlgEconomicEconomic extends JPlugin
 			return $this->errorMsg;
 		}
 
-		$dbt = array();
+		$dbt = [];
 
 		try
 		{
@@ -1037,7 +1037,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1057,7 +1057,7 @@ class PlgEconomicEconomic extends JPlugin
 
 		try
 		{
-			$inv     = array();
+			$inv     = [];
 			$invoice = $this->client->Invoice_GetAll()->Invoice_GetAllResult;
 			$invoice = $invoice->InvoiceHandle;
 
@@ -1083,7 +1083,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1104,7 +1104,7 @@ class PlgEconomicEconomic extends JPlugin
 		try
 		{
 			$max             = 0;
-			$cinv            = array();
+			$cinv            = [];
 			$current_invoice = $this->client->CurrentInvoice_GetAll()->CurrentInvoice_GetAllResult;
 			$current_invoice = $current_invoice->CurrentInvoiceHandle;
 
@@ -1144,7 +1144,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1172,7 +1172,7 @@ class PlgEconomicEconomic extends JPlugin
 			$UnitHandle = new stdclass;
 
 			$UnitHandleId = 1;
-			$arr          = array();
+			$arr          = [];
 			$unitall      = $this->client->Unit_GetAll()->Unit_GetAllResult->UnitHandle;
 
 			if (is_array($unitall))
@@ -1211,7 +1211,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1286,7 +1286,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, $prdinfo, $d);
 			}
@@ -1314,7 +1314,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, array('productHandle' => $productHandle), $productHandle);
 			}
@@ -1371,7 +1371,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, $prdgrpinfo, $d);
 			}
@@ -1431,7 +1431,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1463,7 +1463,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, array('entityHandle' => $entityHandle));
 			}
@@ -1495,7 +1495,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1563,7 +1563,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1651,7 +1651,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1678,7 +1678,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception, $invoiceHandle);
 			}
@@ -1733,7 +1733,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1806,7 +1806,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1885,7 +1885,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1920,7 +1920,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1952,7 +1952,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -1989,7 +1989,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -2071,7 +2071,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -2110,7 +2110,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -2142,7 +2142,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -2227,7 +2227,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -2324,7 +2324,7 @@ class PlgEconomicEconomic extends JPlugin
 		}
 		catch (Exception $exception)
 		{
-			if (Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
+			if (\Redshop::getConfig()->get('DETAIL_ERROR_MESSAGE_ON'))
 			{
 				$this->report(__METHOD__, $exception);
 			}
@@ -2345,12 +2345,12 @@ class PlgEconomicEconomic extends JPlugin
 	 * @return  boolean                True on success. False otherwise
 	 * @throws  Exception
 	 */
-	private function report($method, $exception = null, $soapData = array(), $data = array())
+	private function report($method, $exception = null, $soapData = [], $data = [])
 	{
 		$app      = JFactory::getApplication();
 		$from     = $app->get('mailfrom', '');
 		$fromName = $app->get('fromname', '');
-		$email    = Redshop::getConfig()->get('ADMINISTRATOR_EMAIL', $from);
+		$email    = \Redshop::getConfig()->get('ADMINISTRATOR_EMAIL', $from);
 		$subject  = 'E-conomic error';
 		$data     = (array) $data;
 		$soapData = (array) $soapData;
@@ -2391,6 +2391,6 @@ class PlgEconomicEconomic extends JPlugin
 			$body .= '</tbody></table>';
 		}
 
-		return RedshopHelperMail::sendEmail($from, $fromName, $email, $subject, $body, true, null, '', null, 'economic');
+		return \RedshopHelperMail::sendEmail($from, $fromName, $email, $subject, $body, true, null, '', null, 'economic');
 	}
 }

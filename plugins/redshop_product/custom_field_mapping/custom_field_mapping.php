@@ -41,9 +41,8 @@ class PlgRedshop_ProductCustom_Field_Mapping extends JPlugin
 	 */
 	public function onBeforeAddProductToCart($data)
 	{
-		$userHelper = rsUserHelper::getInstance();
 		$mapping    = $this->mappedName($data);
-		$result     = array();
+		$result     = [];
 
 		foreach ($data as $key => $value)
 		{
@@ -56,14 +55,14 @@ class PlgRedshop_ProductCustom_Field_Mapping extends JPlugin
 			}
 		}
 
-		$result['country_code'] = Redshop::getConfig()->get('SHOP_COUNTRY');
+		$result['country_code'] = \Redshop::getConfig()->get('SHOP_COUNTRY');
 		$result['address_type'] = 'BT';
 		$result['user_id'] = 0;
 		$result['usertype'] = 'Registered';
 		$result['groups'] = array(2);
 		$result['shopper_group_id'] = 1;
 
-		return $userHelper->storeRedshopUser($result, 0);
+		return \RedshopHelperUser::store\RedshopUser($result, 0);
 	}
 
 	/**
@@ -78,7 +77,7 @@ class PlgRedshop_ProductCustom_Field_Mapping extends JPlugin
 	 */
 	private function mappedName($data)
 	{
-		$result = array();
+		$result = [];
 		$mapping = $this->params->get('mapping');
 
 		if (!strstr($mapping, ';'))

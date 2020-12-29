@@ -78,12 +78,12 @@ class Shop_Menu
 		$rows = $this->_db->loadObjectList('id');
 
 		// establish the hierarchy of the menu
-		$this->children = array();
+		$this->children = [];
 		// first pass - collect children
 		foreach ($rows as $v)
 		{
 			$pt   = $v->parent;
-			$list = @$this->children[$pt] ? $this->children[$pt] : array();
+			$list = @$this->children[$pt] ? $this->children[$pt] : [];
 			array_push($list, $v);
 			$this->children[$pt] = $list;
 		}

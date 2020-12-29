@@ -9,17 +9,17 @@
 
 defined('_JEXEC') or die;
 
-global $root_label, $jscook_type, $jscookMenu_style, $jscookTree_style, $mm_action_url, $urlpath, $Itemid, $redproduct_menu, $categorysorttype;
+global $root_label, $jscook_type, $jscookMenu_style, $jscookTree_style, $mm_action_url, $urlpath, $itemId, $redproduct_menu, $categorysorttype;
 
 $uri = JURI::getInstance();
 $urlpath = $uri->root();
 $user = JFactory::getUser();
 $db = JFactory::getDbo();
 //get category id
-$category_id = JRequest::getInt('cid');
+$categoryId = JRequest::getInt('cid');
 unset($GLOBALS['category_info']['category_tree']);
 //get Item id
-$Itemid = JRequest::getInt('Itemid', '1');
+$itemId = JRequest::getInt('Itemid', '1');
 
 $js_src = $urlpath . 'modules/mod_redshop_categories';
 
@@ -43,7 +43,7 @@ $use_shoppergroup = $params->get('use_shoppergroup', 'no');
 
 if ($use_shoppergroup == "yes")
 {
-	$shopper_group_id = Redshop::getConfig()->get('SHOPPER_GROUP_DEFAULT_UNREGISTERED');
+	$shopper_group_id = \Redshop::getConfig()->get('SHOPPER_GROUP_DEFAULT_UNREGISTERED');
 
 	if ($user->id)
 	{
@@ -69,7 +69,7 @@ echo $pretext;
 
 if ($menutype == 'links')
 {
-	echo $redproduct_menu->getCategoryTree($params, $category_id, $class_mainlevel, $list_css_class = "mm123", $highlighted_style = "font-style:italic;", $shopper_group_id);
+	echo $redproduct_menu->getCategoryTree($params, $categoryId, $class_mainlevel, $list_css_class = "mm123", $highlighted_style = "font-style:italic;", $shopper_group_id);
 }
 elseif ($menutype == "transmenu")
 {

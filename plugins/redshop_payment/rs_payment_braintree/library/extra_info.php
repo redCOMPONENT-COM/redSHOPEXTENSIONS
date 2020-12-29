@@ -13,7 +13,6 @@ JLoader::import('redshop.library');
 $objOrder         = order_functions::getInstance();
 $objconfiguration = Redconfiguration::getInstance();
 $user             = JFactory::getUser();
-$redhelper        = redhelper::getInstance();
 $db               = JFactory::getDbo();
 $user             = JFActory::getUser();
 $task             = JRequest::getVar('task');
@@ -34,7 +33,7 @@ $cartId         = $data['order_id'];
 
 // Get ccdtata session
 $session = JFactory::getSession();
-$ccdata  = $session->get('ccdata');
+$creditCardData  = $session->get('ccdata');
 
 if ($this->params->get("is_test") == '1')
 {
@@ -51,9 +50,9 @@ if ($data['new_user'])
 		"transaction[customer][first_name]"         => $buyerfirstname,
 		"transaction[customer][last_name]"          => $buyerlastname,
 		"transaction[customer][email]"              => $buyeremail,
-		"transaction[credit_card][number]"          => $ccdata['order_payment_number'],
-		"transaction[credit_card][expiration_date]" => ($ccdata['order_payment_expire_month']) . "/" . ($ccdata['order_payment_expire_year']),
-		"transaction[credit_card][cvv]"             => $ccdata['credit_card_code'],
+		"transaction[credit_card][number]"          => $creditCardData['order_payment_number'],
+		"transaction[credit_card][expiration_date]" => ($creditCardData['order_payment_expire_month']) . "/" . ($creditCardData['order_payment_expire_year']),
+		"transaction[credit_card][cvv]"             => $creditCardData['credit_card_code'],
 		"tr_data"                                   => $data['braintree_token'],
 
 	);

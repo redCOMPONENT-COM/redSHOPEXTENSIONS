@@ -9,16 +9,16 @@
 
 defined('_JEXEC') or die;
 
-use Redshop\Currency\Currency;
+use \Redshop\Currency\Currency;
 
 /**
  * Ingenico payment gateway
  *
- * @package     Redshop.Plugins
+ * @package     \Redshop.Plugins
  * @subpackage  Ingenico
  * @since       1.6.1
  */
-class PlgRedshop_PaymentIngenico extends RedshopPayment
+class PlgRedshop_PaymentIngenico extends \RedshopPayment
 {
 	/**
 	 * Set transaction status

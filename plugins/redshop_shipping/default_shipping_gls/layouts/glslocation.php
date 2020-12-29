@@ -20,7 +20,7 @@ extract($displayData);
 
 <div class="form-group gls_zipcode">
     <label><?php echo JText::_('COM_REDSHOP_PROVIDE_ZIPCODE_TO_PICKUP_PARCEL') ?></label>
-    <input type="text" id="gls_zipcode" name="gls_zipcode" value="<?php echo $values->zipcode; ?>" onblur="javascript:updateGLSLocation(this.value);"" />
+    <input type="text" id="gls_zipcode" name="gls_zipcode" value="<?php echo isset($values->zipcode) ? $values->zipcode : ''; ?>" onblur="javascript:updateGLSLocation(this.value);"" />
 </div>
 
 <div class="form-group gls_shoplist">
@@ -32,5 +32,5 @@ extract($displayData);
 
 <div class="form-group gls_mobile">
     <label><?php echo JText::_('COM_REDSHOP_ENTER_GLS_MOBILE') ?></label>
-	<input type="text" id="gls_mobile" name="gls_mobile"  value="<?php echo $values->phone; ?>" />
+	<input type="text" id="gls_mobile" name="gls_mobile"  value="<?php echo isset($values->phone) ? $values->phone : ''; ?>" />
 </div>

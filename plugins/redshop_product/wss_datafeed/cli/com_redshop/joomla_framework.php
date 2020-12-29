@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshopre.Cli
+ * @package     \Redshopre.Cli
  * @subpackage  Joomla Required
  *
  * @copyright   Copyright (C) 2008 - 2017 redCOMPONENT.com. All rights reserved.

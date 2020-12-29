@@ -39,7 +39,7 @@ class JFormFieldCmclist extends JFormFieldList
 		$lists = CmcHelperBasic::getLists();
 		$input = JFActory::getApplication()->input;
 
-		$options = array();
+		$options = [];
 
 		foreach ($lists as $list)
 		{

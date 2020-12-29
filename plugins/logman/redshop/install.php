@@ -22,7 +22,7 @@ class plgLogmanAdvancedmodulesInstallerScript
 	public function preflight($type, $installer)
 	{
 		$return = true;
-		$errors = array();
+		$errors = [];
 
 		if (version_compare($this->getLogmanVersion(), '3.0.0', '<'))
 		{

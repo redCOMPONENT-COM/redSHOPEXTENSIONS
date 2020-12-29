@@ -20,6 +20,11 @@ JHtml::script('com_redshop/common.js', false, true);
     <p><?php echo $params->get('pretext', '') ?></p>
     <div style="text-align: <?php echo $scrollAlign ?>;background-color: <?php echo $scrollBackgroundColor ?>; width: <?php echo $scrollWidth ?>px;
             margin: <?php echo $scrollMargin ?>px;">
+		<style>
+			marquee a{
+				color: <?php echo $scrollTextColor ?>;
+			}
+		</style>
         <marquee
                 behavior="<?php echo $scrollBehavior ?>"
                 direction="<?php echo $scrollDirection ?>"
@@ -54,19 +59,39 @@ JHtml::script('com_redshop/common.js', false, true);
 								<?php endif; ?>
 								<?php
 								// Display Product
+								$itemIdData = \RedshopHelperRouter::getCategoryItemid($row->id);
 								$categoryName = $row->name;
+
+								$itemId = count($itemIdData) > 0 ? $itemIdData->id : \RedshopHelperRouter::getItemId($row->id);
+
+								$link = JRoute::_('index.php?option=com_redshop&view=category&layout=detail&cid=' . $row->id . '&Itemid=' . $itemId);
 
 								if ($boxWidth > 0)
 								{
 									$categoryName = wordwrap($row->name, $boxWidth / 10, "<br>\n", true);
 								}
 
-								if ($row->category_full_image || Redshop::getConfig()->get('CATEGORY_DEFAULT_IMAGE'))
+								if ($row->category_full_image || \Redshop::getConfig()->get('CATEGORY_DEFAULT_IMAGE'))
 								{
 									$title = " title='" . $row->name . "' ";
 									$alt   = " alt='" . $row->name . "' ";
 
-									if (Redshop::getConfig()->get('CAT_IS_LIGHTBOX'))
+									$linkImage = REDSHOP_FRONT_IMAGES_ABSPATH . "noimage.jpg";
+									$categoryImage = REDSHOP_FRONT_IMAGES_ABSPATH . "noimage.jpg";
+
+									if ($row->category_full_image
+                                        && file_exists(REDSHOP_FRONT_IMAGES_RELPATH . 'category/' . $row->category_full_image))
+									{
+										$categoryImage = \RedshopHelperMedia::watermark('category', $row->category_full_image, $thumbWidth, $thumbHeight, \Redshop::getConfig()->get('WATERMARK_CATEGORY_THUMB_IMAGE'));
+										$linkImage     = \RedshopHelperMedia::watermark('category', $row->category_full_image, '', '', \Redshop::getConfig()->get('WATERMARK_CATEGORY_IMAGE'));
+									}
+									else if (\Redshop::getConfig()->get('CATEGORY_DEFAULT_IMAGE') && file_exists(REDSHOP_FRONT_IMAGES_RELPATH . 'category/' . \Redshop::getConfig()->get('CATEGORY_DEFAULT_IMAGE')))
+									{
+										$categoryImage = \RedshopHelperMedia::watermark('category', \Redshop::getConfig()->get('CATEGORY_DEFAULT_IMAGE'), $thumbWidth, $thumbHeight, \Redshop::getConfig()->get('WATERMARK_CATEGORY_THUMB_IMAGE'));
+										$linkImage     = \RedshopHelperMedia::watermark('category', \Redshop::getConfig()->get('CATEGORY_DEFAULT_IMAGE'), '', '', \Redshop::getConfig()->get('WATERMARK_CATEGORY_IMAGE'));
+									}
+
+									if (\Redshop::getConfig()->get('CAT_IS_LIGHTBOX'))
 									{
 										$categoryThumb = "<a class='modal' href='" . $row->abs . "' rel=\"{handler: 'image', size: {}}\" " . $title . ">";
 									}
@@ -92,9 +117,9 @@ JHtml::script('com_redshop/common.js', false, true);
                                         </table>
                                     </td>
 								<?php else: ?>
-									<?php foreach ($scrollLineCharTimes as $scrollLineCharTime): ?>
+									<?php for ($i = 0; $i < $scrollLineCharTimes; $i++): ?>
 										<?php echo $scrollLineChar ?>
-									<?php endforeach; ?>
+									<?php endfor; ?>
 								<?php endif; ?>
 
 								<?php $i++; ?>

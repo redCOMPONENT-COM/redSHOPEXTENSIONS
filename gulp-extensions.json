@@ -5,6 +5,7 @@
     "frontend": [
       "redcategoryscroller",
       "redfeaturedproduct",
+      "redheremap",
       "redmanufacturer",
       "redmasscart",
       "redproducts3d",
@@ -20,6 +21,7 @@
       "redshop_pricefilter",
       "redshop_productcompare",
       "redshop_products",
+      "redshop_related_products",
       "redshop_products_slideshow",
       "redshop_promote_free_shipping",
       "redshop_shoppergroup_category",
@@ -58,6 +60,7 @@
       "esms"
     ],
     "redshop_payment": [
+      "alepay",
       "baokim",
       "cielo",
       "dibsdx",
@@ -67,7 +70,6 @@
       "nganluong",
       "paygate",
       "paypalcreditcard",
-      "payson",
       "quickbook",
       "quickpay",
       "rs_payment_2checkout",
@@ -88,6 +90,8 @@
       "rs_payment_imglobal",
       "rs_payment_moneris",
       "rs_payment_moneybooker",
+      "rs_payment_onepay_domestic",
+      "rs_payment_onepay_international",
       "rs_payment_payflowpro",
       "rs_payment_payment_express",
       "rs_payment_paymill",
@@ -109,7 +113,6 @@
       "custom_field_mapping",
       "discount_affect_attribute",
       "gift",
-      "gls",
       "google_microdata",
       "invoicepdf",
       "postdanmark",
@@ -151,7 +154,8 @@
       "redlightbox_slideshow",
       "redproductzoom",
       "redshop_send_discountcode",
-      "redshop_product_bundle"
+      "redshop_product_bundle",
+      "kiotviet"
     ],
     "user": [
       "highrise"

@@ -14,7 +14,7 @@ JLoader::import('redshop.library');
 /**
  * Mollie payment class
  *
- * @package  Redshop.Plugin
+ * @package  \Redshop.Plugin
  *
  * @since    2.0.0
  */
@@ -52,7 +52,7 @@ class PlgRedshop_PaymentMollieideal extends JPlugin
 		if (1 == $step)
 		{
 			// $this->showBanks($mollie);
-			echo RedshopLayoutHelper::render(
+			echo \RedshopLayoutHelper::render(
 				'form',
 				array(
 					'mollie' => $mollie,

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package     Redshop.Plugin
+ * @package     \Redshop.Plugin
  * @subpackage  ShopperGroup_Tags
  *
  * @copyright   Copyright (C) 2012 - 2016 redCOMPONENT.com. All rights reserved.
@@ -13,7 +13,7 @@ use Joomla\Registry\Registry;
 /**
  * PlgRedshop_ProductShoppergroup_Tags installer class.
  *
- * @package  Redshopb.Plugin
+ * @package  \Redshopb.Plugin
  * @since    1.6.0
  */
 class PlgRedshop_ProductShoppergroup_TagsInstallerScript
