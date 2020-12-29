@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension version="1.0" type="plugin" group="system" method="upgrade">
+	<name>PLG_SYSTEM_REDSHOP_SCHEMA_STRUCTURED_DATA</name>
+	<author>redCOMPONENT.com</author>
+	<creationDate>December 2020</creationDate>
+	<copyright>>Copyright (C) 2008 - 2020 redCOMPONENT.com. All rights reserved.</copyright>
+	<authorEmail>email@redcomponent.com</authorEmail>
+	<authorUrl>www.redcomponent.com</authorUrl>
+	<version>1.0</version>
+	<redshop>3.0.3</redshop>
+	<description>PLG_SYSTEM_REDSHOP_SCHEMA_STRUCTURED_DATA_DESC</description>
+	<files>
+		<filename plugin="redshop_schema_structured_data">redshop_schema_structured_data.php</filename>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_system_redshop_schema_structured_data.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_system_redshop_schema_structured_data.sys.ini</language>
+	</languages>
+</extension>
