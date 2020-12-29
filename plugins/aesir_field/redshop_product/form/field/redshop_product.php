@@ -83,7 +83,10 @@ class PlgAesir_FieldRedshop_ProductFormFieldRedshop_Product extends CustomField
      */
     private function getOptions($values)
     {
-        $values = json_decode($values);
+        if (gettype($values) === 'string')
+        {
+            $values = json_decode($values);
+        }
 
         $hash  = md5($this->name . $this->element);
         $db    = JFactory::getDBO();

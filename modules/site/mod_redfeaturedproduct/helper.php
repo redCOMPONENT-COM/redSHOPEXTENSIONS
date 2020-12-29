@@ -35,6 +35,15 @@ abstract class ModRedFeaturedProductHelper
 			->where('product_special = 1')
 			->group('p.product_id');
 
+
+        /* REDSHOP-5967 */
+        if (\Redshop::getConfig()->getInt('SHOW_DISCONTINUED_PRODUCTS')) {
+            $query->where($db->qn('p.expired') . ' IN (0, 1)');
+        } else {
+            $query->where($db->qn('p.expired') . ' IN (0)');
+        }
+        /* End REDSHOP-5967 */
+
 		switch ($params->get('ScrollSortMethod', 'random'))
 		{
 			case 'random':

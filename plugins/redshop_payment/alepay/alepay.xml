@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" client="site" type="plugin" group="redshop_payment" method="upgrade">
+	<name>PLG_REDSHOP_PAYMENT_ALEPAY</name>
+	<version>1.0.0</version>
+	<redshop>2.0</redshop>
+	<creationDate>September 2016</creationDate>
+	<author>redCOMPONENT.com</author>
+	<authorEmail>email@redcomponent.com</authorEmail>
+	<authorUrl>http://www.redcomponent.com</authorUrl>
+	<copyright>redCOMPONENT.com</copyright>
+	<license>GNU General Public License v2</license>
+	<description>PLG_REDSHOP_PAYMENT_ALEPAY_DESC</description>
+
+	<files>
+		<filename plugin="alepay">alepay.php</filename>
+		<folder>library</folder>
+	</files>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_alepay.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_alepay.sys.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic" label="extra">
+				<field
+						name="token"
+						type="text"
+						default=""
+						required="true"
+						label="PLG_REDSHOP_PAYMENT_ALEPAY_TOKEN"
+				/>
+				<field name="checksum"
+					   type="text"
+					   default=""
+					   required="true"
+					   label="PLG_REDSHOP_PAYMENT_ALEPAY_CHECK_SUM"
+				/>
+				<field name="encrypt_key"
+					   type="text"
+					   default=""
+					   required="true"
+					   label="PLG_REDSHOP_PAYMENT_ALEPAY_ENCRYPT_KEY"
+				/>
+				<field name="currency"
+					   type="list"
+					   default="VND"
+					   label="PLG_REDSHOP_PAYMENT_ALEPAY_CURRENCY">
+					<option value="VND">VND</option>
+					<option value="USD">USD</option>
+				</field>
+				<field
+						name="isTest"
+						type="radio"
+						class="btn-group btn-group-yesno"
+						default="1"
+						label="PLG_REDSHOP_PAYMENT_ALEPAY_ENVIRONMENT">
+					<option value="1">Sandbox</option>
+					<option value="0">Live</option>
+				</field>
+				<field
+						name="allow_domestic"
+						type="radio"
+						class="btn-group btn-group-yesno"
+						default="1"
+						label="PLG_REDSHOP_PAYMENT_ALEPAY_ALLOW_DOMESTIC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="logo"
+						label="PLG_REDSHOP_PAYMENT_ALEPAY_LOGO"
+						type="media"
+						default=""
+						preview="true"
+				/>
+			</fieldset>
+			<fieldset name="advanced">
+				<field
+						name="verify_status"
+						type="sql"
+						query="SELECT order_status_code AS st_value, order_status_name AS st_title FROM #__redshop_order_status WHERE published=1"
+						key_field="st_value"
+						value_field="st_title"
+						default="C"
+						label="PLG_REDSHOP_PAYMENT_ALEPAY_ORDER_STATUS"
+						description="PLG_REDSHOP_PAYMENT_PAYGATE_ORDER_STATUS_DESC">
+				</field>
+				<field
+						name="invalid_status"
+						type="sql"
+						query="SELECT order_status_code AS st_value, order_status_name AS st_title FROM #__redshop_order_status"
+						key_field="st_value"
+						value_field="st_title"
+						default="P"
+						label="PLG_REDSHOP_PAYMENT_ALEPAY_SUCCESS_FAILED_STATUS"
+						description="PLG_REDSHOP_PAYMENT_ALEPAY_SUCCESS_FAILED_STATUS_DESC"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

@@ -32,12 +32,14 @@ class PlgSystemKiotvietInstallerScript
 		$targetSync = JPATH_ROOT . '/cli/syncdatakiotviet.php';
 		$targetWebhook = JPATH_ROOT . '/webhook.php';
 		$targetLog = JPATH_ADMINISTRATOR . '/logs/kiotviet.txt';
+		$targetTmplProduct = JPATH_ADMINISTRATOR . '/components/com_redshop/views/product_detail/tmpl/default_kiotviet_settings.php';
 
 		if ($type === 'uninstall')
 		{
 			JFile::delete($targetSync);
 			JFile::delete($targetWebhook);
 			JFile::delete($targetLog);
+			JFile::delete($targetTmplProduct);
 			return;
 		}
 
@@ -56,6 +58,11 @@ class PlgSystemKiotvietInstallerScript
 			JFile::delete($targetLog);
 		}
 
+		if (JFile::exists($targetTmplProduct))
+		{
+			JFile::delete($targetTmplProduct);
+		}
+
 		if (!JFolder::exists(JPATH_ADMINISTRATOR . '/logs'))
 		{
 			mkdir(JPATH_ADMINISTRATOR . '/logs');
@@ -65,5 +72,6 @@ class PlgSystemKiotvietInstallerScript
 		JFile::move(__DIR__ . '/cli/syncdatakiotviet.php', $targetSync);
 		JFile::move(__DIR__ . '/webhook.php', $targetWebhook);
 		JFile::move(__DIR__ . '/admin/logs/kiotviet.txt', $targetLog);
+		JFile::move(__DIR__ . '/admin/product/tmpl/default_kiotviet_settings.php', $targetTmplProduct);
 	}
 }

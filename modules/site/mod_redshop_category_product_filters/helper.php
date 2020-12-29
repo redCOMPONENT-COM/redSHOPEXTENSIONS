@@ -74,24 +74,33 @@ class ModRedshopCategoryProductFiltersHelper
 	 *
 	 * @return  mixed
 	 */
-	public static function getManufacturers($manuList = [])
+
+	public static function getManufacturers($manuList = array())
 	{
 		if (empty($manuList))
 		{
-			return [];
+			return array();
 		}
 
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true)
-			->select($db->qn('name'))
-			->select($db->qn('id'))
-			->from($db->qn('#__redshop_manufacturer'))
-			->where($db->qn('published') . ' = 1')
-			->order($db->qn('name') . ' ASC');
+			->select($db->qn('m.name'))
+			->select($db->qn('m.id'))
+			->from($db->qn('#__redshop_manufacturer', 'm'))
+			->where($db->qn('m.published') . ' = 1')
+			->order($db->qn('m.name') . ' ASC');
+
+		$query->select('COUNT(p.product_id) AS count_not_expired_product');
+		$query->leftJoin($db->qn('#__redshop_product', 'p')
+		                 . ' ON ' . $db->qn('p.manufacturer_id') . ' = ' . $db->qn('m.id'));
+		$query->where($db->qn('p.published') . ' IN (1)');
+		$query->where($db->qn('p.expired') . ' IN (0)');
+		$query->group($db->qn('m.id'));
+		$query->having($db->qn('count_not_expired_product') . ' > 0');
 
 		if (!empty($manuList))
 		{
-			$query->where($db->qn('id') . ' IN (' . implode(',', $manuList) . ')');
+			$query->where($db->qn('m.id') . ' IN (' . implode(',', $manuList) . ')');
 		}
 
 		return $db->setQuery($query)->loadObjectList();
@@ -128,12 +137,18 @@ class ModRedshopCategoryProductFiltersHelper
 			->leftJoin($db->qn('#__redshop_product', 'p') . ' ON ' . $db->qn('p.product_id') . ' = ' . $db->qn('fd.itemid'))
 			->where($db->qn('fd.itemid') . ' IN (' . implode(',', $pids) . ')')
 			->where($db->qn('f.name') . ' IN (' . implode(',', $db->q($productFields)) . ')')
+			->where($db->qn('f.published') . ' = 1')
 			->where($db->qn('fd.data_txt') . ' NOT LIKE "" AND ' . $db->qn('fd.data_txt') . ' IS NOT NULL ');
 
 		if ($manufacturerId)
 		{
 			$query->where($db->qn('p.manufacturer_id') . ' = ' . $db->q($manufacturerId));
 		}
+
+		if (!\Redshop::getConfig()->getInt('SHOW_DISCONTINUED_PRODUCTS')) {
+			$query->where($db->qn('p.expired') . ' NOT IN (1)');
+		}
+
 		$query->group('fv.field_value, fv.field_id')
 			->order('f.ordering, fv.field_value');
 

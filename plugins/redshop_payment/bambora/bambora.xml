@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0.3" client="site" type="plugin" group="redshop_payment" method="upgrade">
+	<name>PLG_REDSHOP_PAYMENT_BAMBORA</name>
+	<version>1.0.0</version>
+	<redshop>2.0</redshop>
+	<creationDate>December 2020</creationDate>
+	<author>redCOMPONENT.com</author>
+	<authorEmail>email@redcomponent.com</authorEmail>
+	<authorUrl>http://www.redcomponent.com</authorUrl>
+	<copyright>redCOMPONENT.com</copyright>
+	<license>GNU General Public License v2</license>
+	<description>PLG_REDSHOP_PAYMENT_BAMBORA_DESC</description>
+
+	<files>
+		<filename plugin="bambora">bambora.php</filename>
+	</files>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_bambora.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_bambora.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic" label="extra">
+				<field name="access_token"
+					   type="text"
+					   default=""
+					   required="true"
+					   label="PLG_REDSHOP_PAYMENT_BAMBORA_ACCESS_TOKEN"
+				/>
+				<field name="merchant_number"
+					   type="text"
+					   default=""
+					   required="true"
+					   label="PLG_REDSHOP_PAYMENT_BAMBORA_MERCHANT_NUMBER"
+				/>
+				<field name="secret_token"
+					   type="text"
+					   default=""
+					   required="true"
+					   label="PLG_REDSHOP_PAYMENT_BAMBORA_SECRET_TOKEN"
+				/>
+				<field name="currency"
+					   type="list"
+					   default="DKK"
+					   label="PLG_REDSHOP_PAYMENT_BAMBORA_CURRENCY"
+					   description="PLG_REDSHOP_PAYMENT_BAMBORA_CURRENCY_DEPENDS_ON_COUNTRY_DESC">
+					<option value="DKK">DKK</option>
+					<option value="SEK">SEK</option>
+					<option value="EUR">EUR</option>
+					<option value="NOK">NOK</option>
+					<option value="GPB">GPB</option>
+					<option value="USD">USD</option>
+				</field>
+			</fieldset>
+			<fieldset name="advanced">
+				<field
+					name="verify_status"
+					type="sql"
+					query="SELECT order_status_code AS st_value, order_status_name AS st_title FROM #__redshop_order_status WHERE published=1"
+					key_field="st_value"
+					value_field="st_title"
+					default="C"
+					label="PLG_REDSHOP_PAYMENT_BAMBORA_ORDER_STATUS"
+					description="PLG_REDSHOP_PAYMENT_PAYGATE_ORDER_STATUS_DESC">
+				</field>
+				<field
+					name="invalid_status"
+					type="sql"
+					query="SELECT order_status_code AS st_value, order_status_name AS st_title FROM #__redshop_order_status"
+					key_field="st_value"
+					value_field="st_title"
+					default="P"
+					label="PLG_REDSHOP_PAYMENT_BAMBORA_SUCCESS_FAILED_STATUS"
+					description="PLG_REDSHOP_PAYMENT_BAMBORA_SUCCESS_FAILED_STATUS_DESC"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

@@ -60,6 +60,7 @@
       "esms"
     ],
     "redshop_payment": [
+      "alepay",
       "baokim",
       "cielo",
       "dibsdx",
@@ -69,7 +70,6 @@
       "nganluong",
       "paygate",
       "paypalcreditcard",
-      "payson",
       "quickbook",
       "quickpay",
       "rs_payment_2checkout",
@@ -113,7 +113,6 @@
       "custom_field_mapping",
       "discount_affect_attribute",
       "gift",
-      "gls",
       "google_microdata",
       "invoicepdf",
       "postdanmark",

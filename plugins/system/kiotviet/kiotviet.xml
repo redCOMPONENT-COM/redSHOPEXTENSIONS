@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" client="site" type="plugin" group="system" method="upgrade">
 	<name>PLG_SYSTEM_KIOTVIET</name>
-	<version>1.0.1</version>
+	<version>1.0.3</version>
 	<redshop>2.1.3</redshop>
 	<creationDate>September 2016</creationDate>
 	<author>redCOMPONENT.com</author>
@@ -49,13 +49,6 @@
 						required="true"
 				/>
 				<field
-						name="product_number"
-						type="text"
-						default=""
-						label="PLG_SYSTEM_KIOTVIET_PRODUCT_NUMBER"
-						description="PLG_SYSTEM_KIOTVIET_PRODUCT_NUMBER_DESC"
-				/>
-				<field
 						name="use_lalamove"
 						type="radio"
 						default="0"
@@ -86,7 +79,7 @@
 				<field
 						name="update_category_template"
 						type="radio"
-						default="0"
+						default="1"
 						label="PLG_SYSTEM_KIOTVIET_UPDATE_CATEGORY_TEMPLATE"
 						class="btn-group btn-group-yesno">
 					<option value="1">JYES</option>
@@ -100,6 +93,7 @@
 						description="PLG_SYSTEM_KIOTVIET_CATEGORY_TEMPLATE_DESC"
 						showon="update_category_template:1"
 				/>
+
 				<field
 						name="update_redshop_category"
 						type="radio"
@@ -108,6 +102,87 @@
 						class="btn-group btn-group-yesno">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
+				</field>
+				<field
+						name="Category_parent"
+						type="redshopcategory"
+						default=""
+						label="PLG_SYSTEM_KIOTVIET_CATEGORY_PARENT"
+						description="PLG_SYSTEM_KIOTVIET_CATEGORY_PARENT_DESC"
+				/>
+				<field
+						name="category_enable_filter"
+						type="radio"
+						default="0"
+						label="PLG_SYSTEM_KIOTVIET_CATEGORY_ENABLE_FILTER"
+						description="PLG_SYSTEM_KIOTVIET_CATEGORY_ENABLE_FILTER_DESC"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="keyword_enable"
+						showon="category_enable_filter:1"
+						type="redshop.radio"
+						default="0"
+						label="COM_REDSHOP_KEYWORD_ENABLE">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="product_attributes"
+						showon="category_enable_filter:1"
+						type="productattributes"
+						product_ids=""
+						label="COM_REDSHOP_PRODUCT_ATTRIBUTES"
+						multiple="true"
+				/>
+				<field
+						name="category_enable"
+						showon="category_enable_filter:1"
+						type="redshop.radio"
+						default="0"
+						label="COM_REDSHOP_FILTER_ENABLE_CATEGORY"
+						description="COM_REDSHOP_FILTER_ENABLE_CATEGORY_NOTICE">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="manufacturer_enable"
+						showon="category_enable_filter:1"
+						type="redshop.radio"
+						default="0"
+						label="COM_REDSHOP_FILTER_ENABLE_MANUFACTURER">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="price_enable"
+						showon="category_enable_filter:1"
+						type="redshop.radio"
+						default="0"
+						label="COM_REDSHOP_FILTER_ENABLE_PRICE">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="customfield_enable"
+						showon="category_enable_filter:1"
+						type="redshop.radio"
+						default="0"
+						label="COM_REDSHOP_FILTER_ENABLE_CUSTOM_FIELDS">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="customfields"
+						type="extrafields"
+						showon="category_enable_filter:1[AND]customfield_enable:1"
+						section="1"
+						field_type="3,4,5,6"
+						multiple="true"
+						label="COM_REDSHOP_PRODUCT_CUSTOM_FIELDS"
+						description="COM_REDSHOP_PRODUCT_CUSTOM_FIELDS_FILTER_NOTICE">
 				</field>
 			</fieldset>
 			<fieldset name="products">
@@ -170,6 +245,15 @@
 						type="radio"
 						default="0"
 						label="PLG_SYSTEM_KIOTVIET_REMOVE_CATEGORY_MAPING"
+						class="btn-group btn-group-yesno">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+						name="update_product_short_desc"
+						type="radio"
+						default="1"
+						label="PLG_SYSTEM_KIOTVIET_UPDATE_PRODUCT_SHORT_DESC"
 						class="btn-group btn-group-yesno">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>

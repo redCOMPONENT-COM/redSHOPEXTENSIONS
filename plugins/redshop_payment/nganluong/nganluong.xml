@@ -54,6 +54,15 @@
                     <option value="0">PLG_REDSHOP_PAYMENT_NGANLUONG_LIVE</option>
                     <option value="1">PLG_REDSHOP_PAYMENT_NGANLUONG_SANDBOX</option>
                 </field>
+                <field
+                        name="currency"
+                        type="radio"
+                        default="vnd"
+                        class="btn-group"
+                        label="PLG_REDSHOP_PAYMENT_NGANLUONG_CURRENCY">
+                    <option value="vnd">VND</option>
+                    <option value="usd">USD</option>
+                </field>
             </fieldset>
             <fieldset name="advanced">
                 <field

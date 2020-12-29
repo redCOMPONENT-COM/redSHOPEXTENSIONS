@@ -15,9 +15,13 @@ $url = $uri->root();
 $itemId = JRequest::getInt('Itemid');
 $document = JFactory::getDocument();
 
-JHtml::_('redshopjquery.ui');
-JHtml::script('com_redshop/attribute.js', false, true);
-JHtml::stylesheet('com_redshop/priceslider.css', [], true);
+JHTML::_('redshopjquery.ui');
+JHTML::script('/media/com_redshop/js/redshop.min.js');
+JHTML::script('/media/com_redshop/js/redshop.redbox.min.js');
+JHTML::script('/media/com_redshop/js/redshop.attribute.min.js');
+JHTML::script('/media/com_redshop/js/redshop.common.min.js');
+JHTML::stylesheet('com_redshop/priceslider.css', array(), true);
+
 $numberFormatParams = '\'' . \Redshop::getConfig()->get('PRICE_DECIMAL') . '\',\'' . \Redshop::getConfig()->get('PRICE_SEPERATOR') . '\',\'' . \Redshop::getConfig()->get('THOUSAND_SEPERATOR') . '\'';
 ?>
 <script type="text/javascript">

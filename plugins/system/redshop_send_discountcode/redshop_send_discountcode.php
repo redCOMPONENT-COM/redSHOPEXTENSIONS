@@ -102,7 +102,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 
 		if (empty($discountDetail))
 		{
-			return true;
+			return false;
 		}
 
 		$discountValue = $discountDetail->value;
@@ -165,7 +165,7 @@ class PlgSystemRedSHOP_Send_Discountcode extends JPlugin
 	 *
 	 * @throws  Exception
 	 */
-	public function on\RedshopAdminRender(&$render)
+	public function onRedshopAdminRender(&$render)
 	{
 		$app = JFactory::getApplication();
 

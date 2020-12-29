@@ -35,6 +35,21 @@ class plgSystemKiotviet extends JPlugin
 	 */
 	protected $app;
 
+	/**
+	 * Application object
+	 *
+	 * @var    JDatabaseDriver
+	 * @since  __DEPLOY_VERSION__
+	 */
+	public $db;
+
+	public function __construct(&$subject, $config = array())
+	{
+		parent::__construct($subject, $config);
+
+		$this->db = JFactory::getDbo();
+	}
+
 	public function onRedshopAdminBeforeRender($view)
 	{
 		$app       = JFactory::getApplication();
@@ -92,12 +107,6 @@ class plgSystemKiotviet extends JPlugin
 	public function onAjaxSyncCategories()
 	{
 		$accessToken = $this->getAccessToken();
-		$options     = array(
-			'category_products_per_page' => $this->params->get('category_products_per_page'),
-			'category_template'          => $this->params->get('category_template'),
-			'update_redshop_category'    => $this->params->get('update_redshop_category')
-		);
-
 		if ($this->params->get('update_redshop_category')) {
 			$categoryRedshop = new SyncCategoriesRedshop($accessToken, $this->params->get('retailer'), $this->params);
 			$categoryRedshop->execute();
@@ -150,7 +159,17 @@ class plgSystemKiotviet extends JPlugin
 
 	public function sendOrderShipping($orderId, $orderRef)
 	{
-		if ($this->params->get('use_lalamove')) {
+		$orderKvData = RedshopEntityField_Data::getInstance()->loadItemByArray(
+			array(
+				'fieldid' => RedshopHelperExtrafields::getField('rs_kiotviet_orders')->id,
+				'itemid'  => $orderId,
+				'section' => RedshopHelperExtrafields::SECTION_ORDER
+			)
+		)->data_txt;
+
+		$orderKvCode = json_decode($orderKvData)->code;
+
+		if ($this->params->get('use_lalamove') || !empty($orderKvCode)) {
 			return false;
 		}
 
@@ -260,5 +279,72 @@ class plgSystemKiotviet extends JPlugin
 			->where($db->qn('rs_category_id') . ' = ' . $db->q($pk));
 
 		$db->setQuery($query)->execute();
+	}
+
+	public function onAfterProductFullSave($row)
+	{
+		$post = $this->app->input->post->getArray();
+		$kiotvietSettings = $post['kiotviet'];
+		$productId = $row->product_id;
+
+		foreach ($kiotvietSettings as $key => $value)
+		{
+			if ($this->isExistRecord($productId, $key))
+			{
+				// update record
+				$db = $this->db;
+				$query = $db->getQuery(true);
+
+				$fields = array(
+					$db->qn('value_setting') . ' = ' . $db->q($value)
+				);
+
+				$conditions = array(
+					$db->qn('product_id') . ' = ' . $db->q($productId),
+					$db->qn('key_setting') . ' = ' . $db->q($key)
+				);
+
+				$query->update($db->qn('#__kiotviet_setting_product'))->set($fields)->where($conditions);
+				$db->setQuery($query)->execute();
+			}
+			else
+			{
+				// insert record
+				if ($value == '0')
+				{
+					continue;
+				}
+
+				$record = new stdClass();
+				$record->product_id = $productId;
+				$record->key_setting= $key;
+				$record->value_setting= $value;
+
+				$this->db->insertObject('#__kiotviet_setting_product', $record);
+			}
+		}
+	}
+
+	public function isExistRecord($productId, $keySetting)
+	{
+		$db = $this->db;
+		$query = $db->getQuery(true)
+			->select('product_id')
+			->from($db->qn('#__kiotviet_setting_product'))
+			->where($db->qn('product_id') . ' = ' . $db->q($productId))
+			->where($db->qn('key_setting') . ' = ' . $db->q($keySetting));
+
+		return $db->setQuery($query)->loadResult();
+
+	}
+
+	public function onDisplayTabMenu($tabMenu, $selectedTabPosition)
+	{
+		$tabMenu->addItem(
+			'#kiotviet_settings',
+			'Kiotviet setting product',
+			$selectedTabPosition === 'kiotviet_settings',
+			'kiotviet_settings'
+		);
 	}
 }

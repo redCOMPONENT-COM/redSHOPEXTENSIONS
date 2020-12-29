@@ -44,15 +44,11 @@ class CreateOrderKiotviet extends Order
 		try {
 			$response = $this->_client->request('POST', 'orders', $request);
 
-		} catch (Exception $e)
+            return $response->getBody()->getContents();
+		} catch (\Exception $e)
 		{
-			echo "<pre>";
-			print_r($e->getMessage());
-			echo "</pre>";
-			die('fdsfds');
+			return false;
 		}
-
-		return $response->getBody()->getContents();
 	}
 
 	public function generateDeliveryDetail($orderDetail, $orderRef)
@@ -153,9 +149,13 @@ class CreateOrderKiotviet extends Order
 
 	public function getProductByCode($code)
 	{
-		$response = $this->_client->request('GET', 'products/code/' . $code, $this->_headers);
+	    try {
+            $response = $this->_client->request('GET', 'products/code/' . $code, $this->_headers);
 
-		return json_decode($response->getBody()->getContents());
+            return json_decode($response->getBody()->getContents());
+        } catch (\Exception $e) {
+	        return false;
+        }
 	}
 
 	public function getFieldData($redshopOrderId, $fieldName)

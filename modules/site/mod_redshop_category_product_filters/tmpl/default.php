@@ -200,8 +200,12 @@ $group = [];
       href="<?php echo JUri::root() . 'modules/mod_redshop_category_product_filters/lib/css/jqui.css'; ?>">
 <link rel="stylesheet" type="text/css"
       href="<?php echo JUri::root() . 'modules/mod_redshop_category_product_filters/lib/css/product_filters.css'; ?>">
+<link rel="stylesheet" type="text/css"
+      href="<?php echo JUri::root() . 'modules/mod_redshop_category_product_filters/lib/fontawesome/fontawesome.min.css'; ?>">
 <script type="text/javascript"
         src="<?php echo JUri::root() . 'modules/mod_redshop_category_product_filters/lib/js/jquery-ui.min.js'; ?>"></script>
+<script type="text/javascript"
+        src="<?php echo JUri::root() . 'modules/mod_redshop_category_product_filters/lib/fontawesome/fontawesome.js'; ?>"></script>
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 
@@ -253,9 +257,11 @@ $group = [];
     }
 
     function submitFilter() {
-        var $filterForm = jQuery("#category-product-filter-form-<?php echo $module->id; ?>");
-        $filterForm.find('[name="limitstart"]').val(0);
-        $filterForm.submit();
+	    var $filterForm = jQuery("#category-product-filter-form-<?php echo $module->id; ?>");
+	    var sefEnabled = "<?php echo JFactory::getConfig()->get('sef') ?>";
+	    var appendCharacter = sefEnabled === "1" ? '?' : '&';
+	    $filterForm.attr('action', $filterForm.attr('action') + appendCharacter + $filterForm.serialize());
+	    $filterForm.submit();
     }
 
 

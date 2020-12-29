@@ -13,8 +13,7 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 
 $url         = JUri::root();
-$fullUrl     = JUri::getInstance()->toString();
-$loadmoreUrl = $fullUrl . (strpos($fullUrl, '?') === false ? '?' : '&') . 'loadmore=1';
+$loadmoreUrl = JUri::getInstance()->toString();
 
 $itemid = JFactory::getApplication()->input->getInt('Itemid');
 $user   = JFactory::getUser();
@@ -278,6 +277,10 @@ $moduleId        = 'mod_' . $module->id;
 
 				$.ajax({
 					url: '<?php echo $loadmoreUrl ?>',
+					type: 'POST',
+					data: {
+						loadmore: 1
+					},
 					success: function (html) {
 						var productsHtml = $(html).find('#<?php echo $moduleId ?>_products_wrapper');
 
