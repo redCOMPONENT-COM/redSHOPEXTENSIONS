@@ -134,6 +134,7 @@ switch ($type)
 		if (!empty($watched))
 		{
 			$query->where($db->qn('p.product_id') . ' IN (' . implode(',', $watched) . ')');
+			$query->order('FIELD(p.product_id, '. implode(",", $watched) .') ' . $params->get('sort_type_watched', 'asc'));
 		}
 		else
 		{

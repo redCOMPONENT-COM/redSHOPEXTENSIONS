@@ -46,6 +46,15 @@
                     <option value="8">MOD_REDSHOP_PRODUCTS_CATEGORY_ORDERING</option>
                 </field>
                 <field
+                        name="sort_type_watched"
+                        type="list"
+                        default="asc"
+                        showon="type:6"
+                        label="MOD_REDSHOP_PRODUCTS_SORT_TYPE_WATCHED">
+                    <option value="asc">MOD_REDSHOP_PRODUCTS_SORT_TYPE_WATCHED_ASC</option>
+                    <option value="desc">MOD_REDSHOP_PRODUCTS_SORT_TYPE_WATCHED_DESC</option>
+                </field>
+                <field
                         name="specific_products"
                         type="rproducts"
                         label="MOD_REDSHOP_PRODUCTS_SPECIFIC_PRODUCTS"
