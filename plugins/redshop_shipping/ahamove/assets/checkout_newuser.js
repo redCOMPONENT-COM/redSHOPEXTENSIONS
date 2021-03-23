@@ -80,9 +80,10 @@ jQuery(document).ready(function($) {
 						this.value = newAddress;
 					}
 				});
-				$stateElement = this.name === 'address' ? jQuery('[name="state_code"]') : jQuery('[name="state_code_ST"]');
+				$stateElement = this.name === 'address' ? jQuery('.redSHOPSiteViewCheckout select[name="state_code"]') : jQuery('.redSHOPSiteViewCheckout select[name="state_code_ST"]');
 				$stateElementValue = $stateElement.val();
 				$stateElementValue = Object.values(requester).find(function(requesters_store_owner) {
+					console.log('Invalid state');
 					return requesters_store_owner.state === $stateElementValue;
 				});
 
@@ -129,7 +130,7 @@ jQuery(document).ready(function($) {
 					});
 
 					if (typeof state == 'undefined'|| state.location_bound.center_point.split(',').length <= 1) {
-						console.log('Cannot get state element');
+						console.log('Ahamove: Cannot get state element');
 						$stateElement.attr('address_verified', 'no');
 						return;
 					}
@@ -293,14 +294,14 @@ jQuery(document).ready(function($) {
 				}
 				else {
 					showShippingRates(AHAMOVE.rate_unverified, false);
-					alert(data['service_error']['error_msg']);
+					alert(data['service_error']['error_msg'] ?? "Error");
 
 					var formValidatorSettings = jQuery('#adminForm').validate().settings;
 
 					jQuery.extend(true, formValidatorSettings, {
 						messages: {
 							shipping_rate_id: {
-								ahamove: data['service_error']['debug_msg']
+								ahamove: data['service_error']['error_msg'] ?? "Error"
 							}
 						}
 					});
@@ -426,5 +427,5 @@ jQuery(document).ready(function($) {
 			, "opacity" : 0.2
 		}).appendTo('body');
 	}
-	
+
 });

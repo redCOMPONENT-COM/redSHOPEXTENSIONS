@@ -7,7 +7,7 @@
     "node-sass": "^4.13.0"
   },
   "devDependencies": {
-    "browser-sync": "2.26.7",
+    "browser-sync": "^2.26.14",
     "del": "5.1.0",
     "fs": "^0.0.2",
     "glob-stream": "^6.1.0",
@@ -23,9 +23,9 @@
     "gulp-uglify": "^2.1.2",
     "gulp-util": "^3.0.8",
     "gulp-zip": "^4.2.0",
+    "lodash": "^4.17.15",
     "merge-stream": "^1.0.1",
     "minimatch": "^3.0.4",
-    "lodash": "^4.17.15",
     "pretty-data": "^0.40.0",
     "require-dir": "^0.3.2",
     "through2": "^2.0.5",

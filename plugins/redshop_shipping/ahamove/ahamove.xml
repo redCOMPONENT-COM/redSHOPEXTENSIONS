@@ -111,30 +111,11 @@
 
                         <field
                                 name="state"
-                                type="list"
+                                type="rstate2code"
                                 label="PLG_REDSHOP_SHIPPING_AHAMOVE_LOCATION_WAYPOINT_STATE"
                                 default="SG"
+                                country_3_code="VNM"
                         >
-                            <option value="SG">SG</option>
-                            <option value="HN">HN</option>
-                        </field>
-                        <field
-                                name="regions"
-                                type="list"
-                                label="Regions"
-                                default="SGN"
-                                description='Please specify in UN/LOCODE format. For example, "Ho Chi Minh" wil be listed as SGN'
-                        >
-                            <option value="SGN">Ho Chi Minh</option>
-                            <option value="HAN">Ha Noi</option>
-                        </field>
-                        <field
-                                name="service_types"
-                                type="list"
-                                label="PLG_REDSHOP_SHIPPING_AHAMOVE_SERVICE_TYPES"
-                                default="SGN-BIKE"
-                        >
-                            <option value="SGN-BIKE">Siêu Tốc</option>
                         </field>
                     </form>
                 </field>

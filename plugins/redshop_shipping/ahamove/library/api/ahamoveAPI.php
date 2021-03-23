@@ -141,4 +141,13 @@ class AhamoveAPI
 		$request->host = $this->host;
 		return $request->send();
 	}
+	
+	public function getServiceTypeAndCityId($lat, $lng)
+	{
+		$request = new Request();
+		$request->path = "/v1/order/service_types";
+		$request->body = 'lat=' . $lat . '&lng=' . $lng;
+		$request->host = $this->host;
+		return $request->send();
+	}
 }
