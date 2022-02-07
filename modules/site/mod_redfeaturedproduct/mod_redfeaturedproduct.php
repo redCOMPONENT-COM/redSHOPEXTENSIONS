@@ -15,6 +15,7 @@ JLoader::import('redshop.library');
 $thumbWidth = $params->get('thumbwidth', "100");
 $thumbHeight = $params->get('thumbheight', "100");
 $scrollerWidth = $params->get('scrollerwidth', "700");
+$scrollerHeight = $params->get('scrollerheight', "200");
 
 JLoader::import('helper', __DIR__);
 
