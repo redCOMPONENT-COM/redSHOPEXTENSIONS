@@ -60,9 +60,10 @@ class Plgredshop_Productstock_Notifyemail extends JPlugin
 
 				for ($u = 0, $countUserData = count($userData); $u < $countUserData; $u++)
 				{
+					$emailUser = empty($userData[$u]->user_id) ? $userData[$u]->email_not_login : $userData[$u]->user_email;
 					$productData = $this->getProductData($userData[$u]);
 
-					if (count($productData) > 0 && count($notify_template) > 0 && $userData[$u]->user_email)
+					if (count($productData) > 0 && count($notify_template) > 0 && $emailUser)
 					{
 						$productDetail = $productData['product_detail'];
 						$productName = $productData['product_name'];
@@ -73,7 +74,7 @@ class Plgredshop_Productstock_Notifyemail extends JPlugin
 						$message = str_replace("{product_detail}", $productDetail, $message);
 						$mail_subject = str_replace("{product_name}", $productName, $mail_subject);
 						$message = $redshopMail->imginmail($message);
-						JFactory::getMailer()->sendMail(\Redshop::getConfig()->get('ADMINISTRATOR_EMAIL'), \Redshop::getConfig()->get('SHOP_NAME'), $userData[$u]->user_email, $mail_subject, $message, 1);
+						JFactory::getMailer()->sendMail(\Redshop::getConfig()->get('ADMINISTRATOR_EMAIL'), \Redshop::getConfig()->get('SHOP_NAME'), $emailUser, $mail_subject, $message, 1);
 					}
 
 					$this->deleteNotifiedUsers($userData[$u]);
