@@ -55,7 +55,7 @@ if (count($list) > 0) {
             <div class="red_product-prev red_product-prev-horizontal"></div>
             <div style="left:<?php echo $rightArrow; ?>px;"
                  class="red_product-next red_product-next-horizontal"></div>
-            <div style="width:<?php echo $scrollerWidth; ?>px;" class="red_product-clip red_product-clip-horizontal">
+            <div style="width:<?php echo $scrollerWidth; ?>px;height:<?php echo $scrollerHeight; ?>px;" class="red_product-clip red_product-clip-horizontal">
                 <ul id="produkt_carousel_mod_<?php echo $module->id; ?>"
                     class="red_product-list red_product-list-horizontal">
                     <?php $i = 0;
