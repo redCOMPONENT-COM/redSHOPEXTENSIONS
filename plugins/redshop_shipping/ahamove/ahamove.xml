@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.9.10" type="plugin" group="redshop_shipping" method="upgrade">
+    <name>PLG_REDSHOP_SHIPPING_AHAMOVE</name>
+    <version>1.0</version>
+    <redshop>3.0.2</redshop>
+    <creationDate>March 19</creationDate>
+    <author>redCOMPONENT.com</author>
+    <authorEmail>van.duong@redweb.dk</authorEmail>
+    <authorUrl>www.redcomponent.com</authorUrl>
+    <copyright>(C) 2021 redCOMPONENT.com</copyright>
+    <description>PLG_REDSHOP_SHIPPING_AHAMOVE_DESC</description>
+
+    <files>
+        <filename plugin="ahamove">ahamove.php</filename>
+        <folder>sql</folder>
+        <folder>assets</folder>
+        <folder>language</folder>
+        <folder>layouts</folder>
+        <folder>library</folder>
+    </files>
+
+    <config>
+        <fields name="params">
+            <fieldset name="account_credentials"
+                      label="PLG_REDSHOP_SHIPPING_AHAMOVE_ACCOUNT_CREDENTIALS_FIELDSET_LABEL">
+                <field
+                        name="is_shipper"
+                        type="hidden"
+                        default="1"
+                        value="1"
+                />
+                <field
+                        name="api_key"
+                        type="text"
+                        default=""
+                        label="PLG_REDSHOP_SHIPPING_AHAMOVE_API_KEY"
+                />
+                <field
+                        name="environment"
+                        type="list"
+                        label="PLG_REDSHOP_SHIPPING_AHAMOVE_API_ENVIRONMENT"
+                        default="sandbox"
+                >
+                    <option value="sandbox">PLG_REDSHOP_SHIPPING_AHAMOVE_API_ENVIRONMENT_SANDBOX</option>
+                    <option value="production">PLG_REDSHOP_SHIPPING_AHAMOVE_API_ENVIRONMENT_PRODUCTION</option>
+                </field>
+                <field
+                        name="gmap_api_key"
+                        type="text"
+                        default=""
+                        label="PLG_REDSHOP_SHIPPING_AHAMOVE_GMAP_API_KEY"
+                />
+            </fieldset>
+            <fieldset name="requester_contact" label="PLG_REDSHOP_SHIPPING_AHAMOVE_REQUESTER_CONTACT_FIELDSET_LABEL">
+
+                <field
+                        name="requesters_store_owner"
+                        type="subform"
+                        multiple="true"
+                        label="PLG_REDSHOP_SHIPPING_AHAMOVE_REQUESTER_CONTACT_FIELDSET_LABEL">
+                    <form>
+                        <field
+                                name="name"
+                                type="text"
+                                label="PLG_REDSHOP_SHIPPING_AHAMOVE_REQUESTER_CONTACT_NAME"
+                                description="PLG_REDSHOP_SHIPPING_AHAMOVE_REQUESTER_CONTACT_NAME_DESC"
+                                default=""
+                        />
+                        <field
+                                name="phone"
+                                label="PLG_REDSHOP_SHIPPING_AHAMOVE_REQUESTER_CONTACT_PHONE"
+                                description="PLG_REDSHOP_SHIPPING_AHAMOVE_REQUESTER_CONTACT_PHONE_DESC"
+                                type="text"
+                                pattern="^0?(2|[35789])[0-9]{8}$|^02[48][0-9]{8}$"
+                                default=""
+                        />
+                        <field
+                                name="address"
+                                label="PLG_REDSHOP_SHIPPING_AHAMOVE_REQUESTER_CONTACT_ADDRESSES"
+                                description="PLG_REDSHOP_SHIPPING_AHAMOVE_REQUESTER_CONTACT_ADDRESSES_DESC"
+                                type="textarea"
+                                default=""
+                                required="true"
+                        />
+                        <field
+                                name="location_store"
+                                type="text"
+                                label="PLG_REDSHOP_SHIPPING_AHAMOVE_REQUESTER_CONTACT_COORDINATES"
+                                description="PLG_REDSHOP_SHIPPING_AHAMOVE_REQUESTER_CONTACT_COORDINATES_DESC"
+                                required="true"
+                        />
+                        <field
+                                name="location_bound"
+                                type="subform"
+                                label="Location bound">
+                            <form>
+                                <field
+                                        name="center_point"
+                                        type="text"
+                                        label="Center point's"
+                                        required="true"
+                                />
+                                <field
+                                        name="radius"
+                                        type="number"
+                                        label="PLG_REDSHOP_SHIPPING_AHAMOVE_RADIUS"
+                                        required="true"
+                                />
+                            </form>
+                        </field>
+
+                        <field
+                                name="state"
+                                type="rstate2code"
+                                label="PLG_REDSHOP_SHIPPING_AHAMOVE_LOCATION_WAYPOINT_STATE"
+                                default="SG"
+                                country_3_code="VNM"
+                        >
+                        </field>
+                    </form>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.sql</file>
+        </sql>
+    </install>
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.sql</file>
+        </sql>
+    </uninstall>
+</extension>

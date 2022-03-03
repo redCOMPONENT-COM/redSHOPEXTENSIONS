@@ -137,7 +137,8 @@
       "self_pickup",
       "shipper",
       "ups",
-      "uspsv4"
+      "uspsv4",
+      "ahamove"
     ],
     "redshop_user": [
       "cmc_integrate",
