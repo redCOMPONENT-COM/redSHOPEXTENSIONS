@@ -39,7 +39,7 @@ $loadmoreBtnText         = trim($params->get('loadmore_text', 'Se flere tilbud')
 $specificProducts        = $params->get('specific_products', []);
 $includeSubCategory      = (int) $params->get('includeSubCategory', 0);
 $readMoreItemid          = $params->get('read_more_itemid', 0);
-$view                    = $app->input->getInt('view');
+$view                    = $app->input->getString('view');
 
 $isLoadmore       = $app->input->getInt('loadmore', 0);
 $loadedProductIds = $session->get('mod_redshop_products.' . $module->id . '.loadedpids', []);
@@ -61,7 +61,7 @@ if (\Redshop::getConfig()->getInt('SHOW_DISCONTINUED_PRODUCTS')) {
 }
 /* End REDSHOP-5967 */
 
-if ($view == 'product')
+if ($view === 'product')
 {
 	$pid = $app->input->getInt('pid');
 	$query->where($db->qn('p.product_id') . ' != ' . $db->q($pid));
@@ -134,6 +134,11 @@ switch ($type)
 		if (!empty($watched))
 		{
 			$query->where($db->qn('p.product_id') . ' IN (' . implode(',', $watched) . ')');
+			$query->order('FIELD(p.product_id, '. implode(",", $watched) .') ' . $params->get('sort_type_watched', 'asc'));
+		}
+		else
+		{
+			$query->where($db->qn('p.product_id') . " = ''");
 		}
 
 		break;
