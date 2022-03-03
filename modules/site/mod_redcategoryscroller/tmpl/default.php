@@ -93,14 +93,14 @@ JHtml::script('com_redshop/common.js', false, true);
 
 									if (\Redshop::getConfig()->get('CAT_IS_LIGHTBOX'))
 									{
-										$categoryThumb = "<a class='modal' href='" . $linkImage . "' rel=\"{handler: 'image', size: {}}\" " . $title . ">";
+										$categoryThumb = "<a class='modal' href='" . $row->abs . "' rel=\"{handler: 'image', size: {}}\" " . $title . ">";
 									}
 									else
 									{
-										$categoryThumb = "<a href='" . $link . "' " . $title . ">";
+										$categoryThumb = "<a href='" . $row->link_category . "' " . $title . ">";
 									}
 
-									$categoryThumb .= "<img src='" . $categoryImage . "' " . $alt . $title . ">";
+									$categoryThumb .= "<img src='" . $row->abs . "' " . $alt . $title . ">";
 									$categoryThumb .= "</a>";
 									?>
                                             <tr><td><?php echo $categoryThumb ?></td></tr>
