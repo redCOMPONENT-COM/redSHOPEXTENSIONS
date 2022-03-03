@@ -6,8 +6,6 @@ class SyncCategoriesRedshop extends Category
 {
     protected $primaryKey = 'id';
 
-    protected $nameKey = 'name';
-
     public function execute()
     {
         $result     = $this->getCategory();
@@ -28,7 +26,13 @@ class SyncCategoriesRedshop extends Category
         $data['parent_id'] = $catRootId;
         $data['level']     = '';
         $data['id']        = $catId;
-        $data['published'] = 1;
+        $state             = $this->_options->get('update_state');
+
+        if ($state != 2)
+        {
+            $data['published'] = $state;
+        }
+
         $data['name']      = $category->categoryName;
 
         if ($this->_options->get('update_category_per_page')) {

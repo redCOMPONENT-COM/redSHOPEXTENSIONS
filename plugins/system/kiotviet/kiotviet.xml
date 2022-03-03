@@ -69,6 +69,15 @@
 					<option value="0">JNO</option>
 				</field>
 				<field
+						name="update_state"
+						type="list"
+						default="2"
+						label="Update State">
+					<option value="2">No Action</option>
+					<option value="1">Published</option>
+					<option value="0">Unpublished</option>
+				</field>
+				<field
 						name="category_products_per_page"
 						type="number"
 						default="5"
