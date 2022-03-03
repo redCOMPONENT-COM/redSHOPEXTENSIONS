@@ -68,7 +68,7 @@ $moduleId        = 'mod_' . $module->id;
 				}
 			}
 
-			$categoryId = \RedshopHelperProduct::getCategoryProduct($row->product_id);
+			$categoryId = $row->cat_in_sefurl;
 			$itemData   = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
 			if (isset($itemData->id))

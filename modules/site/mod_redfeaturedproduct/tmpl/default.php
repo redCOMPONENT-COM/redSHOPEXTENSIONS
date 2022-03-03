@@ -71,7 +71,7 @@ if (count($list) > 0) {
                         }
 
                         if (!$cid) {
-                            $cid = \RedshopHelperProduct::getCategoryProduct($row->product_id);
+                            $cid = $row->cat_in_sefurl;
                         }
 
                         $link = JRoute::_('index.php?option=com_redshop&view=product&pid=' . $row->product_id . '&cid=' . $cid . '&Itemid=' . $itemId);

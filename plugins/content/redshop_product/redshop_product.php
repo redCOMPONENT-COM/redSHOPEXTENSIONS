@@ -87,7 +87,7 @@ class plgContentredshop_product extends JPlugin
 
 				if (strstr($prTemplate, "{read_more}"))
 				{
-					$catId = $product->cat_in_sefurl;
+					$catId = $row->cat_in_sefurl;
 					$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $product->product_id);
 
 					if (!empty($itemData->id))

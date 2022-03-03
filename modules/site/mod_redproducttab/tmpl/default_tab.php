@@ -28,7 +28,7 @@ $j     = 0;
 <?php  endif; ?>
 	<div class="col-md-<?php echo (12/$productPerRow); ?> <?php echo $itemClass; ?>">
 	<?php
-		$categoryId = $row->category_id;
+		$categoryId = $row->cat_in_sefurl;
 		$itemData = \RedshopHelperProduct::getMenuInformation(0, 0, '', 'product&pid=' . $row->product_id);
 
 		if (is_array($itemData) && count($itemData) > 0)
