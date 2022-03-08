@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" client="site" type="plugin" group="redshop_payment" method="upgrade">
+	<name>PLG_REDSHOP_PAYMENT_MOMO</name>
+	<version>1.0.0</version>
+	<redshop>2.0</redshop>
+	<creationDate>Mar 2022</creationDate>
+	<author>redCOMPONENT.com</author>
+	<authorEmail>email@redcomponent.com</authorEmail>
+	<authorUrl>http://www.redcomponent.com</authorUrl>
+	<copyright>redCOMPONENT.com</copyright>
+	<license>GNU General Public License v2</license>
+	<description>PLG_REDSHOP_PAYMENT_MOMO_DESC</description>
+
+	<files>
+		<filename plugin="momo">momo.php</filename>
+		<filename>logo.png</filename>
+	</files>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_momo.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_momo.sys.ini</language>
+	</languages>
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic" label="extra">
+				<field
+						name="partnerCode"
+						type="text"
+						default=""
+						required="true"
+						label="PLG_REDSHOP_PAYMENT_MOMO_PARTNER_CODE"
+				/>
+				<field name="accessKey"
+					   type="text"
+					   default=""
+					   required="true"
+					   label="PLG_REDSHOP_PAYMENT_MOMO_ACCESS_KEY"
+				/>
+				<field name="secretKey"
+					   type="text"
+					   default=""
+					   required="true"
+					   label="PLG_REDSHOP_PAYMENT_MOMO_SECRET_KEY"
+				/>
+				<field
+						name="isTest"
+						type="radio"
+						class="btn-group btn-group-yesno"
+						default="1"
+						label="PLG_REDSHOP_PAYMENT_MOMO_ENVIRONMENT">
+					<option value="1">Sandbox</option>
+					<option value="0">Live</option>
+				</field>
+
+				<field
+						name="logo"
+						label="PLG_REDSHOP_PAYMENT_MOMO_LOGO"
+						type="media"
+						preview="true"
+						default="plugins/redshop_payment/momo/logo.png"
+				/>
+			</fieldset>
+			<fieldset name="advanced">
+				<field
+						name="verify_status"
+						type="sql"
+						query="SELECT order_status_code AS st_value, order_status_name AS st_title FROM #__redshop_order_status WHERE published=1"
+						key_field="st_value"
+						value_field="st_title"
+						default="C"
+						label="PLG_REDSHOP_PAYMENT_MOMO_ORDER_STATUS">
+				</field>
+				<field
+						name="invalid_status"
+						type="sql"
+						query="SELECT order_status_code AS st_value, order_status_name AS st_title FROM #__redshop_order_status"
+						key_field="st_value"
+						value_field="st_title"
+						default="P"
+						label="PLG_REDSHOP_PAYMENT_MOMO_SUCCESS_FAILED_STATUS"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
