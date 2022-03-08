@@ -100,7 +100,8 @@
       "rs_payment_sagepay",
       "rs_payment_sagepay_vps",
       "rs_payment_worldpay",
-      "stripe"
+      "stripe",
+      "momo"
     ],
     "redshop_pdf": [
       "dompdf",

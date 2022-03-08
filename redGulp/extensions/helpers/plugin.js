@@ -8,9 +8,9 @@ var browserSync = require('browser-sync');
 var del = require('del');
 
 /**
- * 
- * @param {*} group 
- * @param {*} name 
+ *
+ * @param {*} group
+ * @param {*} name
  */
 function releasePlugin(group, name) {
     var baseTask = 'plugins.' + group + '.' + name;
@@ -39,8 +39,7 @@ function releasePlugin(group, name) {
         });
 
     // Copy: plugin
-    gulp.task('copy:' + baseTask + ':plugin',
-        gulp.series('clean:' + baseTask + ':plugin')
+    gulp.task('copy:' + baseTask + ':plugin'
         , function () {
             return gulp.src([
                 extPath + '/**',
@@ -51,8 +50,7 @@ function releasePlugin(group, name) {
         });
 
     // Copy: Language
-    gulp.task('copy:' + baseTask + ':language',
-        gulp.series('clean:' + baseTask + ':language'), function () {
+    gulp.task('copy:' + baseTask + ':language', function () {
             return gulp.src(extPath + '/language/**')
                 .pipe(gulp.dest(config.wwwDir + '/language'));
         });
