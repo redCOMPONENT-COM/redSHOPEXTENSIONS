@@ -39,7 +39,8 @@ function releasePlugin(group, name) {
         });
 
     // Copy: plugin
-    gulp.task('copy:' + baseTask + ':plugin'
+    gulp.task('copy:' + baseTask + ':plugin',
+        gulp.series('clean:' + baseTask + ':plugin')
         , function () {
             return gulp.src([
                 extPath + '/**',
@@ -50,7 +51,8 @@ function releasePlugin(group, name) {
         });
 
     // Copy: Language
-    gulp.task('copy:' + baseTask + ':language', function () {
+    gulp.task('copy:' + baseTask + ':language',
+        gulp.series('clean:' + baseTask + ':language'), function () {
             return gulp.src(extPath + '/language/**')
                 .pipe(gulp.dest(config.wwwDir + '/language'));
         });

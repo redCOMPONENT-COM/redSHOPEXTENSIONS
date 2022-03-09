@@ -133,7 +133,6 @@ class PlgRedshop_PaymentMomo extends \RedshopPayment
 		$responseTime = $request["responseTime"];
 		$extraData    = $request["extraData"];
 		$m2signature  = $request["signature"]; //MoMo signature
-		$errorCode    = $request["errorCode"];
 
 		//Checksum
 		$rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&message=" . $message . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo .
@@ -142,28 +141,27 @@ class PlgRedshop_PaymentMomo extends \RedshopPayment
 
 		$partnerSignature = hash_hmac("sha256", $rawHash, $secretKey);
 
-		if ($m2signature == $partnerSignature)
+		$redshopOrderId = explode("-", $orderId);
+
+		if ($m2signature == $partnerSignature && $resultCode == '0')
 		{
-			if ($errorCode == '0')
-			{
-				return $this->setStatus(
-					$orderId,
-					$transId,
-					$this->params->get('verify_status', ''),
-					'Paid',
-					JText::_('PLG_REDSHOP_PAYMENT_MOMO_PAYMENT_SUCCESS'),
-					JText::_('PLG_REDSHOP_PAYMENT_MOMO_PAYMENT_SUCCESS_LOG')
-				);
-			}
+			return $this->setStatus(
+				$redshopOrderId[0],
+				$transId,
+				$this->params->get('verify_status', ''),
+				'Paid',
+				JText::_('PLG_REDSHOP_PAYMENT_MOMO_PAYMENT_SUCCESS'),
+				$resultCode . ": " . $message
+			);
 		}
 
 		return $this->setStatus(
-			$orderId,
+			$redshopOrderId[0],
 			$transId,
-			$this->params->get('cancel_status', ''),
+			$this->params->get('invalid_status', ''),
 			'Unpaid',
 			JText::_('PLG_REDSHOP_PAYMENT_MOMO_PAYMENT_REJECTED'),
-			JText::_('PLG_REDSHOP_PAYMENT_MOMO_PAYMENT_REJECTED_LOG')
+			$resultCode . ": " . $message
 		);
 	}
 }
