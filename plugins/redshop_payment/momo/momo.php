@@ -136,14 +136,15 @@ class PlgRedshop_PaymentMomo extends \RedshopPayment
 
 		//Checksum
 		$rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&message=" . $message . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo .
-			"&orderType=" . $orderType . "&partnerCode=" . $partnerCode . "&payType=" . $payType . "&payType=" . $payType . "&requestId=" . $requestId . "&responseTime=" . $responseTime .
+			"&orderType=" . $orderType . "&partnerCode=" . $partnerCode . "&payType=" . $payType . "&requestId=" . $requestId . "&responseTime=" . $responseTime .
 			"&resultCode=" . $resultCode . "&transId=" . $transId;
 
 		$partnerSignature = hash_hmac("sha256", $rawHash, $secretKey);
 
 		$redshopOrderId = explode("-", $orderId);
 
-		if ($m2signature == $partnerSignature && $resultCode == '0')
+
+		if ($m2signature == $partnerSignature && $resultCode == 0)
 		{
 			return $this->setStatus(
 				$redshopOrderId[0],
