@@ -112,29 +112,38 @@ class PlgRedshop_PaymentGpay_domestic extends \RedshopPayment
             return false;
         }
 
+	    $data = json_decode(base64_decode(($request['data'])), true);
 
-        $clientId     = $this->params->get('clientId');
-        $clientSecret = $this->params->get('clientSecret');
-        $orderId      = $request["orderid"];
-        $signature    = hash_hmac("sha256", "client_id=" . $clientId . "&order_id=" . $orderId, $clientSecret);
+	    $clientId     = $this->params->get('clientId');
+	    $clientSecret = $this->params->get('clientSecret');
+	    $orderId      = $data["order_id"];
+	    $signature    = hash_hmac("sha256", "client_id=" . $clientId . "&order_id=" . $orderId, $clientSecret);
 
-        $response = $this->execPostRequest(
-            "merchant/orders/" . $orderId . "?client_id=" . $clientId . "&hmac=" . $signature,
-            array(),
-            "GET"
-        );
+	    $response = $this->execPostRequest(
+		    "merchant/orders/" . $orderId . "?client_id=" . $clientId . "&hmac=" . $signature,
+		    array(),
+		    "GET"
+	    );
 
-        $result = json_decode($response, true);
+	    $result = json_decode($response, true);
 
         if ($result['return_code'] == 0 && $result['status'] == "ORDER_SUCCESS") {
-            return $this->setStatus(
-                $result['order_id'],
-                $result['gpay_order_id'],
-                $this->params->get('verify_status', ''),
-                'Paid',
-                JText::_('PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_PAYMENT_SUCCESS'),
-                $response
-            );
+	        $values =  $this->setStatus(
+		        $result['order_id'],
+		        $result['gpay_order_id'],
+		        $this->params->get('verify_status', ''),
+		        'Paid',
+		        JText::_('PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_PAYMENT_SUCCESS'),
+		        $response
+	        );
+
+	        if (isset($request['ipn']) && $request['ipn']) {
+		        $values->log = $values->log . ' IPN';
+		        //Change order status
+		        RedshopHelperOrder::changeOrderStatus($values);
+	        }
+
+	        return  $values;
         }
 
         return $this->setStatus(
