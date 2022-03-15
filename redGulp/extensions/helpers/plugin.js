@@ -8,9 +8,9 @@ var browserSync = require('browser-sync');
 var del = require('del');
 
 /**
- * 
- * @param {*} group 
- * @param {*} name 
+ *
+ * @param {*} group
+ * @param {*} name
  */
 function releasePlugin(group, name) {
     var baseTask = 'plugins.' + group + '.' + name;
