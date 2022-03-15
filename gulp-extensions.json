@@ -101,6 +101,7 @@
       "rs_payment_sagepay_vps",
       "rs_payment_worldpay",
       "stripe",
+      "momo",
       "gpay_domestic"
     ],
     "redshop_pdf": [
