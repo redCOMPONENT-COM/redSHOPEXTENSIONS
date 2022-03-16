@@ -39,7 +39,8 @@ function releasePlugin(group, name) {
         });
 
     // Copy: plugin
-    gulp.task('copy:' + baseTask + ':plugin'
+    gulp.task('copy:' + baseTask + ':plugin',
+        gulp.series('clean:' + baseTask + ':plugin')
         , function () {
             return gulp.src([
                 extPath + '/**',
