@@ -69,7 +69,7 @@ class PlgRedshop_PaymentGpay_international extends \RedshopPayment
 
 		$merchantCode = $this->params->get('merchantCode');
 		$orderTime    = time();
-		$gOrderId     = $orderId . '-' . $orderTime;
+		$gOrderId     = base64_encode($orderId);
 
 		$rawHash     = "merchant_code=" . $merchantCode . "&order_id=" . $gOrderId . "&order_amt=" . $amount;
 		$signature   = $this->getSignature($rawHash);
@@ -166,12 +166,12 @@ class PlgRedshop_PaymentGpay_international extends \RedshopPayment
 
 		$result = $this->execPostRequest("intlpayment/order/query", $data);
 
-		$redshopOrderId = explode("-", $result->response->order_id);
+		$redshopOrderId = base64_decode($result->response->order_id);
 
 		if ($result->response->order_status == "ORDER_SUCCESS")
 		{
 			$values = $this->setStatus(
-				$redshopOrderId[0],
+				$redshopOrderId,
 				$result->response->gpay_trans_id,
 				$this->params->get('verify_status', ''),
 				'Paid',
