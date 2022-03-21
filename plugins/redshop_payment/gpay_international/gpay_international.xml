@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" client="site" type="plugin" group="redshop_payment" method="upgrade">
-    <name>PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC</name>
+    <name>PLG_REDSHOP_PAYMENT_GPAY_INTERNATIONAL</name>
     <version>1.0.0</version>
     <redshop>2.0</redshop>
     <creationDate>Mar 2022</creationDate>
@@ -9,40 +9,40 @@
     <authorUrl>https://redweb.vn/</authorUrl>
     <copyright>redWEB Vietnam</copyright>
     <license>GNU General Public License v2</license>
-    <description>PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_DESC</description>
+    <description>PLG_REDSHOP_PAYMENT_GPAY_INTERNATIONAL_DESC</description>
 
     <files>
-        <filename plugin="gpay_domestic">gpay_domestic.php</filename>
+        <filename plugin="gpay_international">gpay_international.php</filename>
         <filename>logo.png</filename>
     </files>
 
     <languages>
-        <language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_gpay_domestic.ini</language>
-        <language tag="en-GB">language/en-GB/en-GB.plg_redshop_payment_gpay_domestic.sys.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.PLG_REDSHOP_PAYMENT_GPAY_INTERNATIONAL.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.PLG_REDSHOP_PAYMENT_GPAY_INTERNATIONAL.sys.ini</language>
     </languages>
 
     <config>
         <fields name="params">
             <fieldset name="basic" label="extra">
                 <field
-                        name="clientId"
+                        name="merchantCode"
                         type="text"
                         default=""
                         required="true"
-                        label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_CLIENT_ID"
+                        label="PLG_REDSHOP_PAYMENT_GPAY_INTERNATIONAL_MERCHANT_CODE"
                 />
-                <field name="clientSecret"
+                <field name="password"
                        type="text"
                        default=""
                        required="true"
-                       label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_CLIENT_SECRET"
+                       label="PLG_REDSHOP_PAYMENT_GPAY_INTERNATIONAL_PASSWORD"
                 />
 
-                <field name="customerId"
-                       type="text"
+                <field name="privateKey"
+                       type="textarea"
                        default=""
                        required="true"
-                       label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_CUSTOMER_ID"
+                       label="PLG_REDSHOP_PAYMENT_GPAY_INTERNATIONAL_PRIVATE_KEY"
                 />
 
                 <field
@@ -50,17 +50,17 @@
                         type="radio"
                         class="btn-group btn-group-yesno"
                         default="1"
-                        label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_ENVIRONMENT">
+                        label="PLG_REDSHOP_PAYMENT_GPAY_INTERNATIONAL_ENVIRONMENT">
                     <option value="1">Sandbox</option>
                     <option value="0">Live</option>
                 </field>
 
                 <field
                         name="logo"
-                        label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_LOGO"
+                        label="PLG_REDSHOP_PAYMENT_GPAY_INTERNATIONAL_LOGO"
                         type="media"
                         preview="true"
-                        default="/plugins/redshop_payment/gpay_domestic/logo.png"
+                        default="/plugins/redshop_payment/gpay_international/logo.png"
                 />
             </fieldset>
             <fieldset name="advanced">
@@ -71,7 +71,7 @@
                         key_field="st_value"
                         value_field="st_title"
                         default="C"
-                        label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_ORDER_STATUS">
+                        label="PLG_REDSHOP_PAYMENT_GPAY_INTERNATIONAL_ORDER_STATUS">
                 </field>
                 <field
                         name="invalid_status"
@@ -80,7 +80,7 @@
                         key_field="st_value"
                         value_field="st_title"
                         default="P"
-                        label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_SUCCESS_FAILED_STATUS"
+                        label="PLG_REDSHOP_PAYMENT_GPAY_INTERNATIONAL_SUCCESS_FAILED_STATUS"
                 />
             </fieldset>
         </fields>
