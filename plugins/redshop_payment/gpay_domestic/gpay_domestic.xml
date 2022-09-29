@@ -24,25 +24,37 @@
     <config>
         <fields name="params">
             <fieldset name="basic" label="extra">
+                <field name="production"
+                       type="text"
+                       default=""
+                       required="true"
+                       label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_URL_API_PRODUCTION"
+                />
+                <field name="sandbox"
+                       type="text"
+                       default=""
+                       required="true"
+                       label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_URL_API_SANDBOX"
+                />
                 <field
-                        name="clientId"
+                        name="merchantCode"
                         type="text"
                         default=""
                         required="true"
-                        label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_CLIENT_ID"
+                        label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_MERCHANT_CODE"
                 />
-                <field name="clientSecret"
+                <field name="password"
                        type="text"
                        default=""
                        required="true"
-                       label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_CLIENT_SECRET"
+                       label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_PASSWORD"
                 />
 
-                <field name="customerId"
-                       type="text"
+                <field name="privateKey"
+                       type="textarea"
                        default=""
                        required="true"
-                       label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_CUSTOMER_ID"
+                       label="PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_PRIVATE_KEY"
                 />
 
                 <field
