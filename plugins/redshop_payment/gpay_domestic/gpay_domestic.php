@@ -27,6 +27,8 @@ class PlgRedshop_PaymentGpay_domestic extends \RedshopPayment
             return;
         }
 
+        $this->getToken();
+
         $jsonResult = $this->createTransaction($data['carttotal'], $data['order_id']);
 
         JFactory::getApplication()->redirect($jsonResult['order_url']);
@@ -36,42 +38,112 @@ class PlgRedshop_PaymentGpay_domestic extends \RedshopPayment
     {
     }
 
-    private function createTransaction($orderTotal, $orderId)
+    private function getToken()
     {
-        $clientId     = $this->params->get('clientId');
-        $clientSecret = $this->params->get('clientSecret');
-        $amount       = number_format($orderTotal, 0, "", "");
-        $description  = "Order: " . $orderId;
-        $customerId   = $this->params->get('customerId');
-        $callbackUrl  = $this->getNotifyUrl($orderId);
+        $merchantCode = $this->params->get('merchantCode');
+        $password     = $this->params->get('password');
 
-        //before sign HMAC SHA256 signature
-        $rawHash   = "client_id=" . $clientId . "&order_id=" . $orderId . "&amount=" . $amount . "&customer_id=" . $customerId;
-        $signature = hash_hmac("sha256", $rawHash, $clientSecret);
-        $data      = array(
-            'client_id'    => $clientId,
-            'order_id'     => $orderId,
-            'amount'       => (int) $amount,
-            'description'  => $description,
-            'customer_id'  => $customerId,
-            'callback_url' => $callbackUrl,
-            'hmac'         => $signature
+        $data = array(
+            'merchant_code' => $merchantCode,
+            'password'      => $password
         );
 
-        $result = $this->execPostRequest("merchant/orders", json_encode($data));
+        $response = $this->execPostRequest("/authentication/token", json_encode($data));
+        $result = json_decode($response);
+        $this->accessToken = $result->response->token;
+    }
 
-        return json_decode($result, true);  // decode jsonson
+    private function createTransaction($orderTotal, $orderId)
+    {
+        $user = JFactory::getUser();
+        $merchantCode = $this->params->get('merchantCode');
+        $amount       = number_format($orderTotal, 0, "", "");
+        $orderTime    = time();
+        $enbed = "";
+
+        $rawHash     = "merchant_code=" . $merchantCode . "&order_id=" . $orderId . "&order_amt=" . $amount . "&embed_data=Customer Data&order_currency=VND&language=vi";
+        $signature   = $this->getSignature($rawHash);
+        $callbackUrl = $this->getNotifyUrl($orderId);
+        $webhookUrl = $this->getWebhookUrl($orderId);
+
+        $description  = "Order: " . $orderId;
+        $customerId   = $this->params->get('customerId');
+
+        $tokenId = RedshopEntityField_Data::getInstance()->loadItemByArray(
+            array(
+                'fieldid' => RedshopHelperExtrafields::getField('rs_token_gpay')->id,
+                'itemid'  => $user->id,
+                'section' => RedshopHelperExtrafields::SECTION_PRIVATE_BILLING_ADDRESS
+            )
+        )->getItem()->data_txt;
+
+        $data      = array(
+            'merchant_code'     => $merchantCode,
+            'order_id'          => $orderId,
+            'order_amt'         => (int) $amount,
+            'order_currency'    => 'VND',
+            'description'       => $description,
+            'order_time'        => $orderTime,
+            'customer_id'       => $customerId,
+            'callback_url'      => $callbackUrl,
+            'webhook_url'       => $webhookUrl,
+            'token_id'          => $tokenId,
+            'language'          => 'vi',
+            'service_code'      => 'PAYMENTGATEWAY',
+            'payment_method'    => 'BANK_ATM',
+            'payment_type'      => 'IMMEDIATE',
+            'signature'         => $signature,
+            'embed_data'        => 'Customer Data'
+        );
+
+        //Create order in API Gpay
+        $result = $this->execPostRequest("/order/init", json_encode($data));
+
+        $response = json_decode($result, true);
+
+        if ($response['meta']['code'] != 200 || $response == NULL)
+        {
+            $app = JFactory::getApplication();
+            $Itemid = RedshopHelperRouter::getCheckoutItemId();
+            $language = $app->input->get('lang');
+
+            switch ($language) {
+                case 'vi-VN': $lang = 'vi';break;
+                case 'en-GB': $lang = 'en';break;
+                default: $lang = 'vi';
+            }
+
+            if ($lang = 'vi')
+            {
+                $messageError = 'Lỗi thanh toán';
+            }
+            else
+            {
+                $messageError = 'Error with payment';
+            }
+
+            $msg = $response['return_message'] ?? $messageError;
+            $msgType = 'error';
+
+            // Write order log
+            \RedshopHelperOrder::writeOrderLog($orderId, 0, 'P', 'Unpaid', $msg);
+
+            $app->redirect(JRoute::_('index.php?option=com_redshop&view=checkout&Itemid=' . $Itemid . '&lang=' .$lang, false), $msg, $msgType);
+        }
+
+        return $response;  // decode jsonson
     }
 
     private function execPostRequest($url, $data, $method = "POST")
     {
-        $endpoint = 'https://payment.g-pay.vn/api/v2/';
+        $endpoint = $this->params->get('production');
 
         if ($this->params->get('isTest')) {
-            $endpoint = 'https://sandbox-payment.g-pay.vn/api/v2/';
+            $endpoint = $this->params->get('sandbox');
         }
 
         $ch = curl_init($endpoint . $url);
+
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
 
         if ($method === "POST") {
@@ -83,8 +155,10 @@ class PlgRedshop_PaymentGpay_domestic extends \RedshopPayment
             $ch,
             CURLOPT_HTTPHEADER,
             array(
+                'Signature ' . $this->getSignature($data),
+                'Accept: application/json',
                 'Content-Type: application/json',
-                'Content-Length: ' . strlen($data)
+                'Authorization: Bearer ' . $this->accessToken
             )
         );
 
@@ -92,6 +166,16 @@ class PlgRedshop_PaymentGpay_domestic extends \RedshopPayment
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         $result = curl_exec($ch);
         curl_close($ch);
+
+        //Write log
+        $this->writeLog(
+            "Request: ".json_encode($data,JSON_UNESCAPED_UNICODE),
+            'payment_api'
+        );
+        $this->writeLog(
+            "Response: ".json_encode($result,JSON_UNESCAPED_UNICODE),
+            'payment_api'
+        );
 
         return $result;
     }
@@ -112,47 +196,210 @@ class PlgRedshop_PaymentGpay_domestic extends \RedshopPayment
             return false;
         }
 
-	    $data = json_decode(base64_decode(($request['data'])), true);
+        $app = JFactory::getApplication();
+        $user = JFactory::getUser();
 
-	    $clientId     = $this->params->get('clientId');
-	    $clientSecret = $this->params->get('clientSecret');
-	    $orderId      = $data["order_id"];
-	    $signature    = hash_hmac("sha256", "client_id=" . $clientId . "&order_id=" . $orderId, $clientSecret);
+        $merchantCode = $this->params->get('merchantCode');
+        $gpayTransId  = $request['gpay_trans_id'];
+        $orderId      = $request['order_id'];
+        $token        = $request['token_info'];
 
-	    $response = $this->execPostRequest(
-		    "merchant/orders/" . $orderId . "?client_id=" . $clientId . "&hmac=" . $signature,
-		    array(),
-		    "GET"
-	    );
+        $this->getToken();
 
-	    $result = json_decode($response, true);
+        $rawHash     = "merchant_code=" . $merchantCode . "&gpay_trans_id=" . $gpayTransId;
+        $signature   = $this->getSignature($rawHash);
 
-        if ($result['return_code'] == 0 && $result['status'] == "ORDER_SUCCESS") {
-	        $values =  $this->setStatus(
-		        $result['order_id'],
-		        $result['gpay_order_id'],
-		        $this->params->get('verify_status', ''),
-		        'Paid',
-		        JText::_('PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_PAYMENT_SUCCESS'),
-		        $response
-	        );
+        $data = array(
+            'merchant_code' => $merchantCode,
+            'gpay_trans_id' => $gpayTransId,
+            'signature'     => $signature
+        );
 
-	        if (isset($request['ipn']) && $request['ipn']) {
-		        $values->log = $values->log . ' IPN';
-		        //Change order status
-		        RedshopHelperOrder::changeOrderStatus($values);
-	        }
+        $response = $this->execPostRequest("/order/detail", json_encode($data));
 
-	        return  $values;
+        $tokerUserExits = RedshopEntityField_Data::getInstance()->loadItemByArray(
+            array(
+                'fieldid' => RedshopHelperExtrafields::getField('rs_token_gpay')->id,
+                'itemid'  => $user->id,
+                'section' => RedshopHelperExtrafields::SECTION_PRIVATE_BILLING_ADDRESS
+            )
+        )->getItem()->data_txt;
+
+        if (!$tokerUserExits)
+        {
+            $this->saveTokenUser($user, $token);
         }
 
-        return $this->setStatus(
-            $result['order_id'],
-            $result['gpay_order_id'],
-            $this->params->get('invalid_status', ''),
-            'Unpaid',
-            JText::_('PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_PAYMENT_REJECTED'),
-            $response
+        $result = json_decode($response, true);
+        $responseOrderIds = $result['response']['order_id'];
+
+        //Write Log in custom field
+        $this->saveDataJson($responseOrderIds , json_encode(json_encode($result), JSON_UNESCAPED_UNICODE));
+
+        if ($result['response']['order_status'] == "ORDER_SUCCESS")
+        {
+            $values = $this->setStatus(
+                $responseOrderIds,
+                $result['response']['gpay_trans_id'],
+                $this->params->get('verify_status', ''),
+                'Paid',
+                JText::_('PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_PAYMENT_SUCCESS'),
+                JText::_('PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_PAYMENT_SUCCESS')
+            );
+
+            if (isset($request['ipn']) && $request['ipn'])
+            {
+                $values->log = $values->log . ' IPN';
+                //Change order status
+                RedshopHelperOrder::changeOrderStatus($values);
+            }
+
+            return $values;
+        }
+
+
+        if (isset($request['ipn']) && $request['ipn'])
+        {
+            $values = $this->setStatus(
+                $responseOrderIds,
+                $result['response']['gpay_trans_id'],
+                $this->params->get('verify_status', ''),
+                'Paid',
+                JText::_('PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_PAYMENT_SUCCESS'),
+                JText::_('PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_PAYMENT_SUCCESS')
+            );
+
+            $values->log = $values->log . ' IPN';
+
+            //Change order status
+            RedshopHelperOrder::changeOrderStatus($values);
+        }
+        // Redirect "checkout" page when order unpaid.
+        $app = JFactory::getApplication();
+        $itemId = $app->input->get('Itemid');
+
+        $app->redirect(JRoute::_(
+            JUri::base() . "index.php?option=com_redshop&Itemid=". $itemId."&view=checkout",
+            false
+        ));
+    }
+
+    public function saveDataJson($orderId = '', $dataJson = '')
+    {
+        try
+        {
+            $db = JFactory::getDbo();
+            $customField                         = RedshopEntityField::getInstanceByField('name',
+                'rs_gpay_order_ref');
+
+            if (!$customField || !$dataJson || !$orderId)
+            {
+                return;
+            }
+
+            $columns                            = array('fieldid', 'data_txt', 'itemid', 'section');
+
+            $values                             = array(
+                $db->q((int) $customField->get('id')),
+                $db->q($dataJson),
+                $db->q((int) $orderId),
+                $db->q((int) RedshopHelperExtrafields::SECTION_ORDER)
+            );
+
+            $query = $db->getQuery(true)
+                ->insert($db->qn('#__redshop_fields_data'))
+                ->columns($db->qn($columns))
+                ->values(implode(',', $values));
+
+            $db->setQuery($query)->execute();
+        }
+        catch (Exception $e)
+        {
+            return;
+        }
+    }
+
+    public function saveTokenUser($user, $token)
+    {
+        $db = JFactory::getDbo(true);
+
+        $values = array(
+            RedshopHelperExtrafields::getField('rs_token_gpay')->id,
+            $token,
+            $user->id,
+            (int) RedshopHelperExtrafields::SECTION_PRIVATE_BILLING_ADDRESS
         );
+
+        $query = $db->getQuery(true);
+        $query->insert($db->quoteName('#__redshop_fields_data'))
+            ->columns($db->quoteName(array('fieldid', 'data_txt', 'itemid', 'section')))
+            ->values(implode(',', $db->q($values)));
+
+        $db->setQuery($query)->execute();
+    }
+
+    /**
+     *
+     * Get webhook information
+     *
+     * @since YI-1066
+     * @return void
+     */
+    public function getInformationByWebhook($data, $payload) {
+
+        if($data['payment_method'] != 'gpay_domestic') return;
+
+        $status = $payload['status'];
+        $gpayTransId = $payload['gpay_trans_id'];
+        $gOrderId = $payload['order_id'];
+
+        if ($status === "ORDER_SUCCESS")
+        {
+            //Write Log in custom field
+            $this->saveDataJson($gOrderId , json_encode($payload, JSON_UNESCAPED_UNICODE));
+
+            if ($status === "ORDER_SUCCESS")
+            {
+                $values = $this->setStatus(
+                    $gOrderId,
+                    $gpayTransId,
+                    $this->params->get('verify_status', ''),
+                    'Paid',
+                    JText::_('PLG_REDSHOP_PAYMENT_GPAY_DOMESTIC_PAYMENT_SUCCESS'),
+                    'Success'
+                );
+
+                //Change order status
+                RedshopHelperOrder::changeOrderStatus($values);
+
+                echo json_encode( array(
+                    'code' => 200,
+                    'message' => "Order $gOrderId payment successfully!"
+                ) );
+            }
+        }
+
+        exit;
+    }
+
+    private function writeLog($comment, $name, $logType = Log::NOTICE)
+    {
+        Log::addLogger(
+            array('text_file' => $name . '.log'),
+            Log::ALL,
+            'com_redshop'
+        );
+
+        Log::add($comment, $logType, 'com_redshop');
+    }
+
+    private function getSignature($data)
+    {
+        $private_key_pem = openssl_pkey_get_private($this->params->get('privateKey')
+        );
+
+        openssl_sign($data, $binary_signature, $private_key_pem, OPENSSL_ALGO_SHA256);
+
+        return base64_encode($binary_signature);
     }
 }
